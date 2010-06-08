@@ -1,26 +1,26 @@
 /* The MIT License
-
-   Copyright (c) 2008 Genome Research Ltd (GRL).
-
-   Permission is hereby granted, free of charge, to any person obtaining
-   a copy of this software and associated documentation files (the
-   "Software"), to deal in the Software without restriction, including
-   without limitation the rights to use, copy, modify, merge, publish,
-   distribute, sublicense, and/or sell copies of the Software, and to
-   permit persons to whom the Software is furnished to do so, subject to
-   the following conditions:
-
-   The above copyright notice and this permission notice shall be
-   included in all copies or substantial portions of the Software.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-   SOFTWARE.
+**
+**   Copyright (c) 2008 Genome Research Ltd (GRL).
+**
+**   Permission is hereby granted, free of charge, to any person obtaining
+**   a copy of this software and associated documentation files (the
+**   "Software"), to deal in the Software without restriction, including
+**   without limitation the rights to use, copy, modify, merge, publish,
+**   distribute, sublicense, and/or sell copies of the Software, and to
+**   permit persons to whom the Software is furnished to do so, subject to
+**   the following conditions:
+**
+**   The above copyright notice and this permission notice shall be
+**   included in all copies or substantial portions of the Software.
+**
+**   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+**   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+**   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+**   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+**   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+**   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+**   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+**   SOFTWARE.
 */
 
 /* Contact: Heng Li <lh3@sanger.ac.uk> */
@@ -33,20 +33,22 @@
 ** fixed-length datatypes int32_t etc. changed to EMBOSS types
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef BAM_BAM_H
 #define BAM_BAM_H
 
-/*!
-  #header
-
-  BAM library provides I/O and various operations on manipulating files
-  in the BAM (Binary Alignment/Mapping) or SAM (Sequence Alignment/Map)
-  format. It now supports importing from or exporting to TAM, sorting,
-  merging, generating pileup, and quickly retrieval of reads overlapped
-  with a specified region.
-
-  #copyright Genome Research Ltd.
- */
+/*
+**  BAM library provides I/O and various operations on manipulating files
+**  in the BAM (Binary Alignment/Mapping) or SAM (Sequence Alignment/Map)
+**  format. It now supports importing from or exporting to TAM, sorting,
+**  merging, generating pileup, and quickly retrieval of reads overlapped
+**  with a specified region.
+**
+**  copyright Genome Research Ltd.
+*/
 
 #include "ajax.h"
 
@@ -56,6 +58,12 @@
 #include <stdio.h>
 
 #include "zlib.h"
+
+#ifdef WIN32
+#define inline __inline
+#endif
+
+
 
 
 /* @data AjPSeqBamBgzf ********************************************************
@@ -84,7 +92,8 @@
 **
 ******************************************************************************/
 
-typedef struct AjSSeqBamBgzf {
+typedef struct AjSSeqBamBgzf
+{
     FILE* file;
     AjPTable cache;
     void* uncompressed_block;
@@ -105,9 +114,15 @@ typedef struct AjSSeqBamBgzf {
 
 #define AjPSeqBamBgzf AjOSeqBamBgzf*
 
+
+
+
 #define BAM_VIRTUAL_OFFSET16
 
-/*! #abstract BAM file handler */
+
+
+
+/* #abstract BAM file handler */
 
 /* @data AjPSeqBamHeader *******************************************************
 **
@@ -127,7 +142,8 @@ typedef struct AjSSeqBamBgzf {
 **  member.
 ******************************************************************************/
 
-typedef struct AjSSeqBamheader {
+typedef struct AjSSeqBamheader
+{
     char **target_name;
     ajuint *target_len;
     AjPList dict;
@@ -140,34 +156,49 @@ typedef struct AjSSeqBamheader {
 
 #define AjPSeqBamHeader AjOSeqBamHeader*
 
-/*! #abstract the read is paired in sequencing, no matter whether it is mapped in a pair */
+
+
+
+/* The read is paired in sequencing, no matter whether it is mapped in a pair */
 #define BAM_FPAIRED        1
-/*! #abstract the read is mapped in a proper pair */
+
+/* The read is mapped in a proper pair */
 #define BAM_FPROPER_PAIR   2
-/*! #abstract the read itself is unmapped; conflictive with BAM_FPROPER_PAIR */
+
+/* The read itself is unmapped; conflictive with BAM_FPROPER_PAIR */
 #define BAM_FUNMAP         4
-/*! #abstract the mate is unmapped */
+
+/* The mate is unmapped */
 #define BAM_FMUNMAP        8
-/*! #abstract the read is mapped to the reverse strand */
+
+/* The read is mapped to the reverse strand */
 #define BAM_FREVERSE      16
-/*! #abstract the mate is mapped to the reverse strand */
+
+/* The mate is mapped to the reverse strand */
 #define BAM_FMREVERSE     32
-/*! #abstract this is read1 */
+
+/* This is read1 */
 #define BAM_FREAD1        64
-/*! #abstract this is read2 */
+
+/* This is read2 */
 #define BAM_FREAD2       128
-/*! #abstract not primary alignment */
+
+/* Not primary alignment */
 #define BAM_FSECONDARY   256
-/*! #abstract QC failure */
+
+/* QC failure */
 #define BAM_FQCFAIL      512
-/*! #abstract optical or PCR duplicate */
+
+/* Optical or PCR duplicate */
 #define BAM_FDUP        1024
+
 
 #define BAM_OFDEC          0
 #define BAM_OFHEX          1
 #define BAM_OFSTR          2
 
-/*! #abstract defautl mask for pileup */
+
+/* Defautl mask for pileup */
 #define BAM_DEF_MASK (BAM_FUNMAP | BAM_FSECONDARY | BAM_FQCFAIL | BAM_FDUP)
 
 #define BAM_CORE_SIZE   sizeof(AjOSeqBamCore)
@@ -183,23 +214,35 @@ typedef struct AjSSeqBamheader {
 **  CIGAR operations.
 */
 
-/*! #abstract CIGAR: M match */
+/* CIGAR: M match */
 #define BAM_CMATCH      0
-/*! #abstract CIGAR: I insertion to the reference */
+
+/* CIGAR: I insertion to the reference */
 #define BAM_CINS        1
-/*! #abstract CIGAR: D deletion from the reference */
+
+/* CIGAR: D deletion from the reference */
 #define BAM_CDEL        2
-/*! #abstract CIGAR: N skip on the reference (e.g. spliced alignment) */
+
+/* CIGAR: N skip on the reference (e.g. spliced alignment) */
 #define BAM_CREF_SKIP   3
-/*! #abstract CIGAR: S clip on the read with clipped sequence present in qseq */
+
+/* CIGAR: S clip on the read with clipped sequence present in qseq */
 #define BAM_CSOFT_CLIP  4
-/*! #abstract CIGAR: H clip on the read with clipped sequence trimmed off */
+
+/* CIGAR: H clip on the read with clipped sequence trimmed off */
 #define BAM_CHARD_CLIP  5
-/*! #abstract CIGAR: P padding */
+
+/* CIGAR: P padding */
 #define BAM_CPAD        6
+
+
+
 
 extern const char* cigarcode;
 extern const char* bam_nt16_rev_table;
+
+
+
 
 /* @data AjPSeqBamCore ********************************************************
 **
@@ -218,7 +261,8 @@ extern const char* bam_nt16_rev_table;
 ** @attr  isize  [ajint]  insert size for paired reads
 *******************************************************************************/
 
-typedef struct AjSBamSeqCore {
+typedef struct AjSBamSeqCore
+{
     ajint tid;
     ajint pos;
     ajushort bin;
@@ -233,6 +277,9 @@ typedef struct AjSBamSeqCore {
 } AjOSeqBamCore;
 
 #define AjPSeqBamCore AjOSeqBamCore*
+
+
+
 
 /* @data AjPSeqBam ************************************************************
 **
@@ -256,7 +303,9 @@ typedef struct AjSBamSeqCore {
 **   2. l_qseq is calculated from the total length of an alignment block
 **      on reading or from CIGAR.
 ******************************************************************************/
-typedef struct AjSSeqBam {
+
+typedef struct AjSSeqBam
+{
     AjOSeqBamCore core;
     int l_aux;
     int data_len;
@@ -266,94 +315,91 @@ typedef struct AjSSeqBam {
 
 #define AjPSeqBam AjOSeqBam*
 
+
+
+
 #define MAJSEQBAMSTRAND(b) (((b)->core.flag&BAM_FREVERSE) != 0)
 #define MAJSEQBAMMSTRAND(b) (((b)->core.flag&BAM_FMREVERSE) != 0)
 
-/*! #function
-  #abstract  Get the CIGAR array
-  #param  b  pointer to an alignment
-  #return    pointer to the CIGAR array
 
-  #discussion In the CIGAR array, each element is a 32-bit integer. The
-  lower 4 bits gives a CIGAR operation and the higher 28 bits keep the
-  length of a CIGAR.
+
+
+/*
+**  Get the CIGAR array
+**  param  b  pointer to an alignment
+**  return    pointer to the CIGAR array
+**
+**  In the CIGAR array, each element is a 32-bit integer. The
+**  lower 4 bits gives a CIGAR operation and the higher 28 bits keep the
+**  length of a CIGAR.
  */
 #define MAJSEQBAMCIGAR(b) ((ajuint*)((b)->data + (b)->core.l_qname))
 
-/*! #function
-  #abstract  Get the name of the query
-  #param  b  pointer to an alignment
-  #return    pointer to the name string, null terminated
- */
+
+/*
+**  Get the name of the query
+**  param  b  pointer to an alignment
+**  return    pointer to the name string, null terminated
+*/
 #define MAJSEQBAMQNAME(b) ((char*)((b)->data))
 
-/*! #function
-  #abstract  Get query sequence
-  #param  b  pointer to an alignment
-  #return    pointer to sequence
 
-  #discussion Each base is encoded in 4 bits: 1 for A, 2 for C, 4 for G,
-  8 for T and 15 for N. Two bases are packed in one byte with the base
-  at the higher 4 bits having smaller coordinate on the read. It is
-  recommended to use bam1_seqi() macro to get the base.
- */
+/*
+**  Get query sequence
+**  param  b  pointer to an alignment
+**  return    pointer to sequence
+**
+**  Each base is encoded in 4 bits: 1 for A, 2 for C, 4 for G,
+**  8 for T and 15 for N. Two bases are packed in one byte with the base
+**  at the higher 4 bits having smaller coordinate on the read. It is
+**  recommended to use bam1_seqi() macro to get the base.
+*/
 #define MAJSEQBAMSEQ(b) ((b)->data + (b)->core.n_cigar*4 + (b)->core.l_qname)
 
-/*! #function
-  #abstract  Get query quality
-  #param  b  pointer to an alignment
-  #return    pointer to quality string
- */
-#define MAJSEQBAMQUAL(b) ((b)->data + (b)->core.n_cigar*4 + (b)->core.l_qname + ((b)->core.l_qseq + 1)/2)
 
-/*! #function
-  #abstract  Get a base on read
-  #param  s  Query sequence returned by bam1_seq()
-  #param  i  The i-th position, 0-based
-  #return    4-bit integer representing the base.
- */
+/*
+**  Get query quality
+**  param  b  pointer to an alignment
+**  return    pointer to quality string
+*/
+#define MAJSEQBAMQUAL(b) ((b)->data + (b)->core.n_cigar*4 + \
+                          (b)->core.l_qname + ((b)->core.l_qseq + 1)/2)
+
+/*
+**  Get a base on read
+**  param  s  Query sequence returned by bam1_seq()
+**  param  i  The i-th position, 0-based
+**  return    4-bit integer representing the base.
+*/
 #define MAJSEQBAMSEQI(s, i) ((s)[(i)/2] >> 4*(1-(i)%2) & 0xf)
 
-/*! #function
-  #abstract  Get query sequence and quality
-  #param  b  pointer to an alignment
-  #return    pointer to the concatenated auxiliary data
- */
-#define bam1_aux(b) ((b)->data + (b)->core.n_cigar*4 + (b)->core.l_qname + (b)->core.l_qseq + ((b)->core.l_qseq + 1)/2)
+/*
+**  Get query sequence and quality
+**  param  b  pointer to an alignment
+**  return    pointer to the concatenated auxiliary data
+*/
+#define bam1_aux(b) ((b)->data + (b)->core.n_cigar*4 + (b)->core.l_qname + \
+                     (b)->core.l_qseq + ((b)->core.l_qseq + 1)/2)
 
 #ifndef kroundup32
-/*! #function
-  #abstract  Round an integer to the next closest power-2 integer.
-  #param  x  integer to be rounded (in place)
-  #discussion x will be modified.
- */
-#define kroundup32(x) (--(x), (x)|=(x)>>1, (x)|=(x)>>2, (x)|=(x)>>4, (x)|=(x)>>8, (x)|=(x)>>16, ++(x))
+/*
+**  Round an integer to the next closest power-2 integer.
+**  param  x  integer to be rounded (in place)
+**  x will be modified.
+*/
+#define kroundup32(x) (--(x), (x)|=(x)>>1, (x)|=(x)>>2, (x)|=(x)>>4, \
+                       (x)|=(x)>>8, (x)|=(x)>>16, ++(x))
 #endif
 
 
-/*! #abstract Table for converting a nucleotide character to the 4-bit encoding. */
-
-/*! #abstract Table for converting a 4-bit encoded nucleotide to a letter. */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 
 /*
- * Open an existing file descriptor for reading or writing.
- * Mode must be either "r" or "w".
- * A subsequent bgzf_close will not close the file descriptor.
- * Returns null on error.
- */
-AjPSeqBamBgzf ajSeqBamBgzfOpenfd(int fd, const char* __restrict mode);
+** Prototype definitions
+*/
 
-/*
- * Open the specified file for reading or writing.
- * Mode must be either "r" or "w".
- * Returns null on error.
- */
-AjPSeqBamBgzf ajSeqBamBgzfOpenC(const char* path, const char* __restrict mode);
+AjPSeqBamBgzf ajSeqBamBgzfOpenfd(int fd, const char *mode);
+AjPSeqBamBgzf ajSeqBamBgzfOpenC(const char* path, const char *mode);
 
 int ajSeqBamBgzfClose(AjPSeqBamBgzf fp);
 int ajSeqBamBgzfEof(AjPSeqBamBgzf fp);
@@ -372,48 +418,12 @@ int ajSeqBamWrite(AjPSeqBamBgzf fp, const AjPSeqBam b);
 
 const char *ajSeqBamGetLibrary(AjPSeqBamHeader header, const AjPSeqBam b);
 
-#ifdef __cplusplus
-}
+/*
+** End of prototype definitions
+*/
+
 #endif
 
-/*!
-  #abstract    Calculate the minimum bin that contains a region [beg,end).
-  #param  beg  start of the region, 0-based
-  #param  end  end of the region, 0-based
-  #return      bin
- */
-static inline int bam_reg2bin(ajuint beg, ajuint end)
-{
-	--end;
-	if (beg>>14 == end>>14) return 4681 + (beg>>14);
-	if (beg>>17 == end>>17) return  585 + (beg>>17);
-	if (beg>>20 == end>>20) return   73 + (beg>>20);
-	if (beg>>23 == end>>23) return    9 + (beg>>23);
-	if (beg>>26 == end>>26) return    1 + (beg>>26);
-	return 0;
+#ifdef __cplusplus
 }
-
-/*!
-  #abstract     Copy an alignment
-  #param  bdst  destination alignment struct
-  #param  bsrc  source alignment struct
-  #return       pointer to the destination alignment struct
- */
-static inline AjPSeqBam bam_copy1(AjPSeqBam bdst, const AjPSeqBam bsrc)
-{
-	unsigned char *data = bdst->data;
-	int m_data = bdst->m_data;   /* backup data and m_data */
-	if (m_data < bsrc->m_data) { /* double the capacity */
-		m_data = bsrc->m_data; kroundup32(m_data);
-		data = (unsigned char*)realloc(data, m_data);
-	}
-	memcpy(data, bsrc->data, bsrc->data_len); /* copy var-len data */
-	*bdst = *bsrc; /* copy the rest */
-	/* restore the backup */
-	bdst->m_data = m_data;
-	bdst->data = data;
-	return bdst;
-}
-
-
 #endif
