@@ -58,7 +58,6 @@ section: output [
   
   align: outfile [
     parameter: "Y"
-    standard: "$(dumpalign)"
     nullok: "@(!$(dumpalign))"
     aformat: "match"
     minseqs: "2"
