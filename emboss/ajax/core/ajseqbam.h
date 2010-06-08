@@ -88,7 +88,7 @@ extern "C" {
 ** @attr open_mode [char] Open_mode 'r' or 'w'
 ** @attr owned_file [char] Boolean
 ** @attr is_uncompressed [char] Boolean
-** @attr padbool [char] Padding
+** @attr Padding [char[5]] Padding 
 **
 ******************************************************************************/
 
@@ -109,7 +109,7 @@ typedef struct AjSSeqBamBgzf
     char open_mode;
     char owned_file;
     char is_uncompressed;
-    char padbool;
+    char Padding[5];
 } AjOSeqBamBgzf;
 
 #define AjPSeqBamBgzf AjOSeqBamBgzf*
@@ -289,11 +289,12 @@ typedef struct AjSBamSeqCore
 ** @alias AjOSeqBam
 **
 ** @attr  core      [AjOSeqBamCore]  core information about the alignment
+** @attr   data    [unsigned char*]   all variable-length data, concatenated;
+**                             structure: cigar-qname-seq-qual-aux
 ** @attr  l_aux      [int]  length of auxiliary data
 ** @attr  data_len   [int]  current length of data
 ** @attr  m_data     [int]  maximum reserved size of data
-** @attr   data    [unsigned char*]   all variable-length data, concatenated;
-**                             structure: cigar-qname-seq-qual-aux
+** @attr  Padding    [int]  Padding to alignment boundary
 **
 ** @@
 ** discussion Notes:
@@ -307,10 +308,11 @@ typedef struct AjSBamSeqCore
 typedef struct AjSSeqBam
 {
     AjOSeqBamCore core;
+    unsigned char *data;
     int l_aux;
     int data_len;
     int m_data;
-    unsigned char *data;
+    int Padding;
 } AjOSeqBam;
 
 #define AjPSeqBam AjOSeqBam*

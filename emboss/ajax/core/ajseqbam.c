@@ -79,16 +79,18 @@ unsigned char bam_nt16_table[256] =
 
 typedef struct BamSHeaderTag
 {
-    char key[2];
     char *value;
+    char key[2];
+    char Padding[6];
 } BamOHeaderTag;
 
 #define BamPHeaderTag BamOHeaderTag*
 
 typedef struct BamSHeaderLine
 {
-    char type[2];
     AjPList tags;
+    char type[2];
+    char Padding[6];
 } BamOHeaderLine;
 
 #define BamPHeaderLine BamOHeaderLine*
