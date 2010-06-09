@@ -16031,6 +16031,11 @@ void ajSeqQueryDel(AjPSeqQuery* pthis)
     ajStrDel(&thys->Filename);
     ajStrDel(&thys->Exclude);
     ajStrDel(&thys->DbFields);
+    ajStrDel(&thys->DbIdentifier);
+    ajStrDel(&thys->DbSequence);
+    ajStrDel(&thys->DbFilter);
+    ajStrDel(&thys->DbReturn);
+    ajStrDel(&thys->DbAccession);
     ajStrDel(&thys->DbProxy);
     ajStrDel(&thys->DbHttpVer);
     ajStrDel(&thys->Field);
