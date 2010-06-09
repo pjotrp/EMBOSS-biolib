@@ -867,10 +867,10 @@ void ajMartDsinfoDel(AjPMartdsinfo *thys)
         return;
 
     pthis = *thys;
-    
+
     while(ajListPop(pthis->Attributes,(void **)&t))
         ajStrDel(&t);
-
+    
     while(ajListPop(pthis->Filters,(void **)&t))
         ajStrDel(&t);
 
@@ -3100,7 +3100,10 @@ void ajMartMakeQueryXml(const AjPMartqinfo qinfo, AjPSeqin seqin)
     
     AjPStr tstr = NULL;
     ajuint i;
-
+    ajuint j;
+    ajuint len = 0;
+    AjPList lst = NULL;
+    
     mq   = ajMartGetMartqueryPtr(seqin);
 
     if(!mq)
@@ -3148,15 +3151,26 @@ void ajMartMakeQueryXml(const AjPMartqinfo qinfo, AjPSeqin seqin)
                        qinfo->Dsets[i]->Interface);
         ajFmtPrintAppS(&mq->Query,">");
 
-        while(ajListPop(qinfo->Dsets[i]->Filters,(void **)&tstr))
+        lst = qinfo->Dsets[i]->Filters;
+        len = ajListGetLength(lst);
+        for(j = 0; j < len; ++j)
+        {
+            ajListPop(lst,(void **)&tstr);
             ajFmtPrintAppS(&mq->Query,"<Filter name = %S/>",tstr);
-            
-        while(ajListPop(qinfo->Dsets[i]->Attributes,(void **)&tstr))
+            ajListPushAppend(lst,(void *) tstr);
+        }
+    
+        lst = qinfo->Dsets[i]->Attributes;
+        len = ajListGetLength(lst);
+        for(j = 0; j < len; ++j)
+        {
+            ajListPop(lst,(void **)&tstr);
             ajFmtPrintAppS(&mq->Query,"<Attribute name = \"%S\" />",tstr);
+            ajListPushAppend(lst,(void *) tstr);
+        }
 
         ajFmtPrintAppS(&mq->Query,"</Dataset>");
     }
-
 
     ajFmtPrintAppS(&mq->Query,"</Query>");
 
@@ -4127,7 +4141,7 @@ AjBool ajMartParseParameters(AjPMartqinfo qinfo, const AjPStr atts,
             while(*p == '=')
                 ++p;
 
-            valstr = ajStrNewC(p);
+            ajStrAssignC(&valstr,p);
             ajStrTrimC(&valstr,"\"'");
 
             pushstr = ajStrNew();
