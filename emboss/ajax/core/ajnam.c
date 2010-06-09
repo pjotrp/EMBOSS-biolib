@@ -2630,6 +2630,8 @@ AjBool ajNamDbData(AjPSeqQuery qry)
        ajDebug("    Filename    '%S'\n", qry->Filename);
        */
 
+    ajStrDel(&dbtype);
+    
     return ajTrue;
 }
 
