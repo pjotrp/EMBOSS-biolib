@@ -6792,31 +6792,68 @@ static void seqWriteBam(AjPSeqout outseq)
 static void seqWriteSam(AjPSeqout outseq)
 {
     AjPStr argstr = NULL;
+    AjPStr seq = NULL;
+    ajint flag = 0;
+    ajuint ilen;
+    ajuint i;
 
-    ajFmtPrintF(outseq->File, "@HD\tVN:1.0\tSO:unsorted\tGO:none\n");
+    if(!outseq->Count)
+    {
+        outseq->Cleanup = NULL;
+        ajFmtPrintF(outseq->File, "@HD\tVN:1.0\tSO:unsorted\tGO:none\n");
 
-    ajFmtPrintF(outseq->File, "@SQ\tSN:%S\tLN:%d",
-                outseq->Name, ajStrGetLen(outseq->Seq));
-    /* AS assembly identifier */
-    /* M5 checksum */
-    /* UR URI */
-    /* SP species */
-    ajFmtPrintF(outseq->File, "\n");
+        /* SQ is a reference sequence. Can we omit this if not aligned? */
 
-    /* Read group */
+        /*ajFmtPrintF(outseq->File, "@SQ\tSN:%S\tLN:%d",
+          outseq->Name, ajStrGetLen(outseq->Seq));*/
 
-    /* Program record */
-    argstr = ajStrNewS(ajUtilGetCmdline());
-    ajStrExchangeKK(&argstr, '\n', ' ');
-    ajFmtPrintF(outseq->File, "@PG\t%S\t%S\t%S\n",
-                ajUtilGetProgram(), ajNamValueVersion(), argstr);
-    ajStrDel(&argstr);
+        /* AS assembly identifier */
+        /* M5 checksum */
+        /* UR URI */
+        /* SP species */
+        /* ajFmtPrintF(outseq->File, "\n"); */ /* end of @SQ record */
 
-    /* Comment */
-    /*ajFmtPrintF(outseq->File, "@CO\t%S\n", cmtstr);*/
+        /* Read group */
+
+        /* Program record */
+        argstr = ajStrNewS(ajUtilGetCmdline());
+        ajStrExchangeKK(&argstr, '\n', ' ');
+        ajFmtPrintF(outseq->File, "@PG\t%S\t%S\t%S\n",
+                    ajUtilGetProgram(), ajNamValueVersion(), argstr);
+        ajStrDel(&argstr);
+
+        /* Comment */
+        /*ajFmtPrintF(outseq->File, "@CO\t%S\n", cmtstr);*/
+    }
+
+    flag = 0x0404;              /* query not mapped */
+
+    ilen = ajStrGetLen(outseq->Seq);
+
+    seq = ajStrNewRes(ilen+1);
+
+    if(outseq->Accuracy)
+    {
+        for(i=0;i<ilen;i++)
+	{
+	    ajStrAppendK(&seq, 33 + (int) outseq->Accuracy[i]);
+	}
+    }
+
+    else 
+    {
+        ajStrAppendCountK(&seq,'\"', ilen);
+    }
+    
+
+    ajFmtPrintF(outseq->File, "%S\t%d\t*\t0\t0\t*\t*\t0\t0\t%S\t%S\n",
+                outseq->Name, flag, outseq->Seq, seq);
+
+    /* could add tag:vtype:value fields at end of record */
 
     return;
 }
+
 
 
 
