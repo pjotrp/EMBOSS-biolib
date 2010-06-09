@@ -6738,7 +6738,8 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     {
 	ajStrDel(&host);
 	ajStrDel(&path);
-
+        ajStrDel(&searchdb);
+        
 	return ajFalse;
     }
 
@@ -6813,19 +6814,26 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     /* mart queries are case-sensitive using uppercase
     ** and have '%' as the RDBMS wildcard for '*'
     */
+
     dbid = ajStrNewS(qry->Id);
     ajStrFmtUpper(&dbid);
-    
+
     ajFmtPrintS(&filts, "%S=\"%S\"", qry->DbIdentifier, dbid);
+
     if(ajStrGetLen(qry->DbFilter))
         ajFmtPrintAppS(&filts, ",%S", qry->DbFilter);
+
     ajFmtPrintS(&atts, "%S", qry->DbIdentifier);
+
     if(ajStrGetLen(qry->DbReturn))
         ajFmtPrintAppS(&atts, ",%S", qry->DbReturn);
+
     ajFmtPrintAppS(&atts, ",%S", qry->DbSequence);
 
     qinfo = ajMartQinfoNew(1);
-    if(!qinfo) ajErr("Unable to open BioMart '%S'", qry->DbName);
+
+    if(!qinfo)
+        ajErr("Unable to open BioMart '%S'", qry->DbName);
 
     ajDebug("Parameters:\n");
     ajDebug("atts: '%S'\n", atts);
@@ -6860,10 +6868,15 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     ajStrDel(&get);
     ajStrDel(&proxyName);
     ajStrDel(&httpver);
-
+    ajStrDel(&searchdb);
+    ajStrDel(&dbid);
+    ajStrDel(&filts);
+    ajStrDel(&atts);
+    
     if(!qry->CaseId)
 	qry->QryDone = ajTrue;
 
+    ajMartQinfoDel(&qinfo);
     ajMartquerySeqinFree(seqin);
 
     return ajTrue;
