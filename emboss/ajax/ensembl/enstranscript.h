@@ -64,6 +64,9 @@ AjPStr ensTranscriptGetCreationDate(const EnsPTranscript transcript);
 
 AjPStr ensTranscriptGetModificationDate(const EnsPTranscript transcript);
 
+const AjPList ensTranscriptGetAlternativeTranslations(
+    EnsPTranscript transcript);
+
 const AjPList ensTranscriptGetAttributes(EnsPTranscript transcript);
 
 const AjPList ensTranscriptGetDatabaseEntries(EnsPTranscript transcript);
@@ -131,6 +134,9 @@ AjBool ensTranscriptSetTranslation(EnsPTranscript transcript,
 
 AjBool ensTranscriptSetEnableSequenceEdits(EnsPTranscript transcript,
                                            AjBool enablese);
+
+AjBool ensTranscriptAddAlternativeTranslation(EnsPTranscript transcript,
+                                              EnsPTranslation translation);
 
 AjBool ensTranscriptAddAttribute(EnsPTranscript transcript,
                                  EnsPAttribute attribute);
