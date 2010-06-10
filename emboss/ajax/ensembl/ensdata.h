@@ -1210,6 +1210,8 @@ typedef enum EnsOTranscriptStatus
 ** @attr Version [ajuint] Version
 ** @cc Additional elements not in SQL tables
 ** @attr GeneIdentifier [ajuint] Ensembl Gene identifier
+** @attr AlternativeTranslations [AjPList] AJAX List of alternative
+**                                         Ensembl Translations
 ** @attr Attributes [AjPList] AJAX List of Ensembl Attributes
 ** @attr DatabaseEntries [AjPList] AJAX List of Ensembl Database Entries
 ** @attr Exons [AjPList] AJAX List of Ensembl Exons
@@ -1241,6 +1243,7 @@ typedef struct EnsSTranscript {
     AjPStr ModificationDate;
     ajuint Version;
     ajuint GeneIdentifier;
+    AjPList AlternativeTranslations;
     AjPList Attributes;
     AjPList DatabaseEntries;
     AjPList Exons;
