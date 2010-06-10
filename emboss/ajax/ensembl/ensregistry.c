@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.16 $
+** @version $Revision: 1.17 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision: 1.165
@@ -229,6 +229,7 @@ typedef struct RegistrySGeneticVariation
     EnsPGvindividualadaptor Individualadaptor;
     EnsPGvpopulationadaptor Populationadaptor;
     EnsPGvsampleadaptor Sampleadaptor;
+    EnsPGvsourceadaptor Sourceadaptor;
     EnsPGvvariationadaptor Variationadaptor;
 } RegistryOGeneticVariation;
 
@@ -384,7 +385,7 @@ typedef struct RegistrySEntry
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static const char *registrySoftwareVersion = "56";
+static const char *registrySoftwareVersion = "58";
 
 static AjPTable registryAliases = NULL;
 
@@ -737,6 +738,8 @@ static void registryGeneticVariationDel(RegistryPGeneticVariation *Prgv)
     ensGvpopulationadaptorDel(&pthis->Populationadaptor);
 
     ensGvsampleadaptorDel(&pthis->Sampleadaptor);
+
+    ensGvsourceadaptorDel(&pthis->Sourceadaptor);
 
     /* Finally, delete the Ensembl Database Adaptor. */
 
@@ -2887,8 +2890,9 @@ EnsPDatabaseadaptor ensRegistryGetReferenceadaptor(EnsPDatabaseadaptor dba)
 
     EnsPDatabaseadaptor rsa = NULL;
 
-    RegistryPEntry entry   = NULL;
-    RegistryPCoreStyle rcs = NULL;
+    RegistryPEntry entry          = NULL;
+    RegistryPCoreStyle rcs        = NULL;
+    RegistryPGeneticVariation rgv = NULL;
 
     debug = ajDebugTest("ensRegistryGetReferenceadaptor");
 
@@ -2973,6 +2977,20 @@ EnsPDatabaseadaptor ensRegistryGetReferenceadaptor(EnsPDatabaseadaptor dba)
             }
 
             break;
+
+        case ensEDatabaseadaptorGroupGeneticVariation:
+
+            rgv = (RegistryPGeneticVariation)
+                entry->Registry[ensDatabaseadaptorGetGroup(dba)];
+
+            if(!rgv)
+                break;
+
+            rcs = (RegistryPCoreStyle)
+                entry->Registry[ensEDatabaseadaptorGroupCore];
+
+            if(rcs)
+                rsa = ensRegistryGetReferenceadaptor(rcs->Databaseadaptor);
 
         default:
 
@@ -5797,6 +5815,66 @@ EnsPGvsampleadaptor ensRegistryGetGvsampleadaptor(
         default:
 
             ajWarn("ensRegistryGetGvsampleadaptor got an "
+                   "Ensembl Database Adaptor "
+                   "with an unexpected group %d.\n",
+                   ensDatabaseadaptorGetGroup(dba));
+    }
+
+    return NULL;
+}
+
+
+
+
+/* @func ensRegistryGetGvsourceadaptor ****************************************
+**
+** Get an Ensembl Genetic Variation Source Adaptor from the
+** Ensembl Registry.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [EnsPGvsourceadaptor] Ensembl Genetic Variation
+**                               Source Adaptor or NULL
+** @@
+******************************************************************************/
+
+EnsPGvsourceadaptor ensRegistryGetGvsourceadaptor(
+    EnsPDatabaseadaptor dba)
+{
+    RegistryPEntry entry          = NULL;
+    RegistryPGeneticVariation rgv = NULL;
+
+    if(!dba)
+        return NULL;
+
+    entry = (RegistryPEntry)
+        ajTableFetch(registryEntries,
+                     (const void *) ensDatabaseadaptorGetSpecies(dba));
+
+    if(!entry)
+        return NULL;
+
+    switch(ensDatabaseadaptorGetGroup(dba))
+    {
+        case ensEDatabaseadaptorGroupGeneticVariation:
+
+            rgv = (RegistryPGeneticVariation)
+                entry->Registry[ensDatabaseadaptorGetGroup(dba)];
+
+            if(!rgv)
+                break;
+
+            if(!rgv->Sourceadaptor)
+                rgv->Sourceadaptor =
+                    ensGvsourceadaptorNew(dba);
+
+            return rgv->Sourceadaptor;
+
+            break;
+
+        default:
+
+            ajWarn("ensRegistryGetGvsourceadaptor got an "
                    "Ensembl Database Adaptor "
                    "with an unexpected group %d.\n",
                    ensDatabaseadaptorGetGroup(dba));
