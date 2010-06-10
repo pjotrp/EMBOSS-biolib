@@ -168,6 +168,9 @@ AjBool ensTranslationadaptorFetchByStableIdentifier(
 AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
                                               EnsPTranscript transcript);
 
+AjBool ensTranslationadaptorFetchAllByTranscript(EnsPTranslationadaptor tla,
+                                                 EnsPTranscript transcript);
+
 AjBool ensTranslationadaptorFetchAllByExternalName(
     EnsPTranslationadaptor tla,
     AjPStr externalname,
