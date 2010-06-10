@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.16 $
+** @version $Revision: 1.17 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -5682,10 +5682,10 @@ AjBool ensFeaturepairSortBySourceFeatureStartDescending(AjPList fps)
 **
 ** Functions for manipulating Ensembl Base Align Feature objects
 **
-** @cc Bio::EnsEMBL::BaseAlignFeature CVS Revision: 1.58
-** @cc Bio::EnsEMBL::DnaDnaAlignFeature CVS Revision: 1.22
-** @cc Bio::EnsEMBL::DnaPepAlignFeature CVS Revision: 1.12
-** @cc Bio::EnsEMBL::PepDnaAlignFeature CVS Revision: 1.9
+** @cc Bio::EnsEMBL::BaseAlignFeature CVS Revision: 1.60
+** @cc Bio::EnsEMBL::DnaDnaAlignFeature CVS Revision: 1.23
+** @cc Bio::EnsEMBL::DnaPepAlignFeature CVS Revision: 1.13
+** @cc Bio::EnsEMBL::PepDnaAlignFeature CVS Revision: 1.10
 **
 ** @nam2rule Basealignfeature
 **
@@ -10393,9 +10393,8 @@ static AjBool proteinfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
 
         /*
-        ** FIXME: The translation_id is currently handled as an AJAX String
-        ** to fit into the seqname element of an Ensembl Feature. Let's see
-        ** how this goes.
+        ** NOTE: The translation_id is currently handled as an AJAX String
+        ** to fit into the seqname element of an Ensembl Feature.
         */
 
         srcfeature = ensFeatureNewN(analysis, tlid, tlstart, tlend, 1);
