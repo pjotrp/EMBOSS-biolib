@@ -412,6 +412,8 @@ AjBool ajMartNameIsProtC(const char *name);
 AjBool ajMartTableNameIsNuc(const AjPTable t);
 AjBool ajMartTableNameIsProt(const AjPTable t);
 
+AjPStr *ajMartCheckHeader(AjPSeqin seqin, AjPMartqinfo qinfo);
+
 
 /*
 ** End of prototype definitions

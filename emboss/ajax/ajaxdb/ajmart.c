@@ -5,7 +5,7 @@
 **
 ** @author Copyright (C) 2009 Alan Bleasby
 ** @version 1.0
-** @modified Nov 23 pmr First version
+** @modified Nov 23 ajb First version
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -272,7 +272,7 @@ void ajStrUrlParseC(AjPUrl *parts, const char *url)
     {
 	if(p[1] == '/')
         {
-	    phost = p+2;		/* Thre is a host   */
+	    phost = p+2;		/* There is a host   */
 	    *p = '\0';
 	    p = strchr(phost,'/');	/* Find end of host */
 
@@ -4902,4 +4902,115 @@ AjBool ajMartTableNameIsProt(const AjPTable t)
     }
     
     return ajFalse;
+}
+
+
+
+
+/* @func ajMartCheckHeader ****************************************************
+**
+** Return an array of attribute names in the order in which
+** they are returned by the biomart server.
+** Requires that the header flag was set and that an attribute
+** query has previously loaded to MartAttribute field. 
+**
+** @param [u] seqin [AjPSeqin] Seqin object
+** @param [u] qinfo [AjPMartqinfo] Mart qinfo object
+** @return [AjPStr*] Array of attribute names terminated by a NULL entry.
+**                   or NULL if mapping cannot be done
+******************************************************************************/
+
+AjPStr *ajMartCheckHeader(AjPSeqin seqin, AjPMartqinfo qinfo)
+{
+    AjPMartquery mq = NULL;
+    
+    AjPMartAttribute att = NULL;
+    AjPFilebuff buff = NULL;
+    AjPStr line = NULL;
+    AjPStr *ret = NULL;
+
+    AjPStr keyname  = NULL;
+    AjPStr keydname = NULL;
+    AjPStr value    = NULL;
+
+    AjPStrTok handle = NULL;
+    AjPStr token     = NULL;
+    
+    
+    ajuint nfields = 0;
+    
+    ajuint i;
+    ajuint j;
+    
+    mq = ajMartGetMartqueryPtr(seqin);
+
+    if(!mq)
+        return NULL;
+
+    if(!qinfo)
+        return NULL;
+
+    if(!qinfo->Hheader)
+        return NULL;
+
+    att = mq->Atts;
+    if(!att)
+        return NULL;
+    
+    buff = seqin->Filebuff;
+    
+    if(!buff)
+        return NULL;
+
+    line = ajStrNew();
+
+    if(!ajBuffreadLine(buff, &line))
+    {
+        ajStrDel(&line);
+        return NULL;
+    }
+
+    nfields = ajStrCalcCountK(line,'\t');
+    ++nfields;
+
+    AJCNEW0(ret,nfields + 1);
+
+    ret[nfields] = NULL;
+
+    keyname  = ajStrNewC("name");
+    keydname = ajStrNewC("displayName");
+
+    ajStrTokenAssignC(&handle, line, "\t\n");
+    token = ajStrNew();
+    
+    for(i = 0; i < nfields; ++i)
+    {
+        ret[i] = ajStrNew();
+
+        ajStrTokenNextParseNoskip(&handle,&token);
+        
+        for(j = 0; j < att->Natts; ++j)
+        {
+            value = ajTableFetch(att->Attributes[j],(void *)keydname);
+
+            if(ajStrMatchS(value,token))
+            {
+                value = ajTableFetch(att->Attributes[j],(void *)keyname);
+                ajStrAssignS(&ret[i],value);
+                break;
+            }
+        }
+
+        if(j == att->Natts)
+            ajErr("ajMartCheckHeader: Cannot match column %S",token);
+    }
+
+
+    ajStrDel(&keyname);
+    ajStrDel(&keydname);
+    ajStrDel(&line);
+    ajStrDel(&token);
+    ajStrTokenDel(&handle);
+    
+    return ret;
 }
