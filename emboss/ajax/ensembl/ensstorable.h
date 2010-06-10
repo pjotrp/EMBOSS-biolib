@@ -35,11 +35,11 @@ typedef enum EnsOStorableType
 ** @alias EnsSStorable
 ** @alias EnsOStorable
 **
-** @attr Use [ajuint] Use counter.
-** @attr Identifier [ajuint] Internal SQL database identifier (primary key).
-** @attr Adaptor [void*] Ensembl Object Adaptor.
-** @attr Type [EnsEStorableType] Ensembl Storable Object Type.
-** @attr Padding [ajuint] Padding to alignment boundary.
+** @attr Use [ajuint] Use counter
+** @attr Identifier [ajuint] Internal SQL database identifier (primary key)
+** @attr Adaptor [void*] Ensembl Object Adaptor
+** @attr Type [EnsEStorableType] Ensembl Storable Object Type
+** @attr Padding [ajuint] Padding to alignment boundary
 **
 ** @@
 ******************************************************************************/
