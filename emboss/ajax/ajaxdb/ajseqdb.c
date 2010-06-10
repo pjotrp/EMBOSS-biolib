@@ -6845,11 +6845,20 @@ static AjBool seqAccessMart(AjPSeqin seqin)
     ajMartSetQueryVersionC(qinfo,"");
     ajMartSetQueryFormatC(qinfo,"TSV");
     ajMartSetQueryCount(qinfo,ajFalse);
-    ajMartSetQueryHeader(qinfo,ajFalse);
     ajMartSetQueryUnique(qinfo,ajFalse);
     ajMartSetQueryStamp(qinfo,ajTrue);
     ajMartSetQueryVerify(qinfo,ajTrue);
 
+    /*
+    ** If the header is set to ajTrue then you must make a
+    ** call to ajMartCheckHeader after the search has completed.
+    ** Doing so will return an AjPStr* array (NULL terminated)
+    ** containing the attribute names in the order returned
+    ** by the server
+    */
+    ajMartSetQueryHeader(qinfo,ajFalse);
+
+    
     ajMartSetQueryDatasetName(qinfo,searchdb,0);
 
     ajMartSetQueryDatasetInterfaceC(qinfo,"default",0);
