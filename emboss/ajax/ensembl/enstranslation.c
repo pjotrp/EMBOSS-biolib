@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -270,7 +270,7 @@ const AjPTrn ensTranslationCacheGetTranslation(ajint codontable)
 **
 ** Functions for manipulating Ensembl Translation objects
 **
-** @cc Bio::EnsEMBL::Translation CVS Revision: 1.67
+** @cc Bio::EnsEMBL::Translation CVS Revision: 1.68
 **
 ** @nam2rule Translation
 **
@@ -2626,7 +2626,7 @@ AjBool ensTranslationFetchSequenceSeq(EnsPTranslation translation,
 **
 ** Functions for manipulating Ensembl Translation Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::Translationadaptor CVS Revision: 1.35
+** @cc Bio::EnsEMBL::DBSQL::Translationadaptor CVS Revision: 1.41
 **
 ** @nam2rule Translationadaptor
 **
@@ -2825,9 +2825,7 @@ static AjBool translationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
         ensTranscriptDel(&transcript);
 
         ajStrDel(&stableid);
-
         ajStrDel(&cdate);
-
         ajStrDel(&mdate);
     }
 
@@ -3115,7 +3113,7 @@ AjBool ensTranslationadaptorFetchByStableIdentifier(
 **
 ** Fetch an Ensembl Translation via an Ensembl Transcript.
 **
-** The the Ensembl Translation is set and retained in the Ensembl Transcript
+** The Ensembl Translation is set and retained in the Ensembl Transcript
 ** so that it becomes accessible via ensTranscriptGetTranslation.
 **
 ** @param [u] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
@@ -3189,11 +3187,14 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
         "translation_stable_id.modified_date "
         "FROM "
         "(translation) "
+        "JOIN "
+        "transcript "
+        "ON "
+        "(transcript.canonical_translation_id = translation.translation_id) "
         "LEFT JOIN "
         "translation_stable_id "
         "ON "
-        "translation_stable_id.translation_id = "
-        "translation.translation_id "
+        "(translation_stable_id.translation_id = translation.translation_id) "
         "WHERE "
         "translation.transcript_id = %u",
         ensTranscriptGetIdentifier(transcript));
@@ -3299,6 +3300,185 @@ AjBool ensTranslationadaptorFetchByTranscript(EnsPTranslationadaptor tla,
                                         mdate);
 
         ensTranscriptSetTranslation(transcript, translation);
+
+        ensTranslationDel(&translation);
+
+        ajStrDel(&stableid);
+        ajStrDel(&cdate);
+        ajStrDel(&mdate);
+    }
+
+    ajSqlrowiterDel(&sqli);
+
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
+
+    ajStrDel(&statement);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensTranslationadaptorFetchAllByTranscript ****************************
+**
+** Fetch all alternative Ensembl Translations via an Ensembl Transcript.
+**
+** Alternative Ensembl Translation are set and retained in the
+** Ensembl Transcript so that they become accessible via
+** ensTranscriptGetAlternativeTranslations.
+**
+** @param [u] tla [EnsPTranslationadaptor] Ensembl Translation Adaptor
+** @param [u] transcript [EnsPTranscript] Ensembl Transcript
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranslationadaptorFetchAllByTranscript(EnsPTranslationadaptor tla,
+                                                 EnsPTranscript transcript)
+{
+    ajuint identifier  = 0;
+    ajuint startexonid = 0;
+    ajuint start       = 0;
+    ajuint endexonid   = 0;
+    ajuint end         = 0;
+    ajuint version     = 0;
+
+    AjBool debug = AJFALSE;
+
+    AjIList iter        = NULL;
+    const AjPList exons = NULL;
+
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
+
+    AjPStr stableid  = NULL;
+    AjPStr cdate     = NULL;
+    AjPStr mdate     = NULL;
+    AjPStr statement = NULL;
+
+    EnsPDatabaseadaptor dba = NULL;
+
+    EnsPExon exon      = NULL;
+    EnsPExon startexon = NULL;
+    EnsPExon endexon   = NULL;
+
+    EnsPTranslation translation = NULL;
+
+    debug = ajDebugTest("ensTranslationadaptorFetchAllByTranscript");
+
+    if(debug)
+        ajDebug("ensTranslationadaptorFetchAllByTranscript\n"
+                "  tla %p\n"
+                "  transcript %p\n",
+                tla,
+                transcript);
+
+    if(!tla)
+        return ajFalse;
+
+    if(!transcript)
+        return ajFalse;
+
+    dba = ensBaseadaptorGetDatabaseadaptor(tla->Adaptor);
+
+    statement = ajFmtStr(
+        "SELECT "
+        "translation.translation_id, "
+        "translation.seq_start, "
+        "translation.start_exon_id, "
+        "translation.seq_end, "
+        "translation.end_exon_id, "
+        "translation_stable_id.stable_id, "
+        "translation_stable_id.version, "
+        "translation_stable_id.created_date, "
+        "translation_stable_id.modified_date "
+        "FROM "
+        "(translation) "
+        "JOIN "
+        "transcript "
+        "ON "
+        "(transcript.transcript_id = translation.transcript_id) "
+        "LEFT JOIN "
+        "translation_stable_id "
+        "ON "
+        "(translation_stable_id.translation_id = translation.translation_id) "
+        "WHERE "
+        "translation.transcript_id = %u "
+        "AND "
+        "translation.translation_id != transcript.canonical_translation_id",
+        ensTranscriptGetIdentifier(transcript));
+
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
+
+    sqli = ajSqlrowiterNew(sqls);
+
+    while(!ajSqlrowiterDone(sqli))
+    {
+        identifier = 0;
+        start = 0;
+        startexonid = 0;
+        end = 0;
+        endexonid = 0;
+        stableid = ajStrNew();
+        version = 0;
+        cdate = ajStrNew();
+        mdate = ajStrNew();
+
+        sqlr = ajSqlrowiterGet(sqli);
+
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &start);
+        ajSqlcolumnToUint(sqlr, &startexonid);
+        ajSqlcolumnToUint(sqlr, &end);
+        ajSqlcolumnToUint(sqlr, &endexonid);
+        ajSqlcolumnToStr(sqlr, &stableid);
+        ajSqlcolumnToUint(sqlr, &version);
+        ajSqlcolumnToStr(sqlr, &cdate);
+        ajSqlcolumnToStr(sqlr, &mdate);
+
+        exons = ensTranscriptGetExons(transcript);
+
+        iter = ajListIterNewread(exons);
+
+        while(!ajListIterDone(iter))
+        {
+            exon = (EnsPExon) ajListIterGet(iter);
+
+            if(ensExonGetIdentifier(exon) == startexonid)
+                startexon = exon;
+
+            if(ensExonGetIdentifier(exon) == endexonid)
+                endexon = exon;
+        }
+
+        ajListIterDel(&iter);
+
+        if(!startexon)
+            ajFatal("ensTranslationadaptorFetchAllByTranscript could not get "
+                    "start Exon for Transcript with identifier %u.",
+                    ensTranscriptGetIdentifier(transcript));
+
+        if(!endexon)
+            ajFatal("ensTranslationadaptorFetchAllByTranscript could not get "
+                    "end Exon for Transcript with identifier %u.",
+                    ensTranscriptGetIdentifier(transcript));
+
+        translation = ensTranslationNew(tla,
+                                        identifier,
+                                        startexon,
+                                        endexon,
+                                        start,
+                                        end,
+                                        (AjPStr) NULL,
+                                        stableid,
+                                        version,
+                                        cdate,
+                                        mdate);
+
+        ensTranscriptAddAlternativeTranslation(transcript, translation);
 
         ensTranslationDel(&translation);
 
