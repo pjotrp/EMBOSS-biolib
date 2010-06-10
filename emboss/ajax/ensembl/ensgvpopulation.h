@@ -98,6 +98,10 @@ AjBool ensGvpopulationadaptorFetchDefaultLDPopulation(
     const EnsPGvpopulationadaptor gvpa,
     EnsPGvpopulation *Pgvp);
 
+AjBool ensGvpopulationadaptorFetchAllLDPopulations(
+    const EnsPGvpopulationadaptor gvpa,
+    AjPList gvps);
+
 /*
 ** End of prototype definitions
 */

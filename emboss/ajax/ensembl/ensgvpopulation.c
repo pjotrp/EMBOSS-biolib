@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -721,7 +721,7 @@ AjBool ensGvpopulationTrace(const EnsPGvpopulation gvp, ajuint level)
 ** Functions for manipulating Ensembl Genetic Variation Population Adaptor
 ** objects
 **
-** @cc Bio::EnsEMBL::Variation::DBSQL::PopulationAdaptor CVS Revision: 1.20
+** @cc Bio::EnsEMBL::Variation::DBSQL::PopulationAdaptor CVS Revision: 1.21
 **
 ** @nam2rule Gvpopulationadaptor
 **
@@ -1493,6 +1493,48 @@ AjBool ensGvpopulationadaptorFetchDefaultLDPopulation(
     ajListFree(&mis);
 
     ajStrDel(&key);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensGvpopulationadaptorFetchAllLDPopulations **************************
+**
+** Fetch all Ensembl Genetic Variation Populations, which can be used
+** in the LD display of the pairwise LD data.
+**
+** @param [r] gvpa [const EnsPGvpopulationAdaptor] Ensembl Genetic Variation
+**                                                 Population Adaptor
+** @param [wP] Pgvp [EnsPGvpopulation*] Ensembl Genetic Variation Population
+**                                      address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensGvpopulationadaptorFetchAllLDPopulations(
+    const EnsPGvpopulationadaptor gvpa,
+    AjPList gvps)
+{
+    AjPStr constraint = NULL;
+
+    if(!gvpa)
+        return ajFalse;
+
+    if(!gvps)
+        return ajFalse;
+
+    constraint = ajStrNewC("sample.display = 'LD'");
+
+    ensBaseadaptorGenericFetch(gvpa,
+                               constraint,
+                               (EnsPAssemblymapper) NULL,
+                               (EnsPSlice) NULL,
+                               gvps);
+
+    ajStrDel(&constraint);
 
     return ajTrue;
 }
