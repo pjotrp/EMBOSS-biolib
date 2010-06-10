@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.20 $
+** @version $Revision: 1.21 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -208,7 +208,7 @@ static EnsPFeature transcriptadaptorGetFeature(const void *value);
 **
 ** Functions for manipulating Ensembl Transcript objects
 **
-** @cc Bio::EnsEMBL::Transcript CVS Revision: 1.265
+** @cc Bio::EnsEMBL::Transcript CVS Revision: 1.292
 **
 ** @nam2rule Transcript
 **
@@ -325,6 +325,8 @@ EnsPTranscript ensTranscriptNew(EnsPTranscriptadaptor tca,
 
     transcript->GeneIdentifier = 0;
 
+    transcript->AlternativeTranslations = NULL;
+
     transcript->Attributes = NULL;
 
     transcript->DatabaseEntries = NULL;
@@ -402,6 +404,8 @@ EnsPTranscript ensTranscriptNewObj(const EnsPTranscript object)
 
     EnsPTranscript transcript = NULL;
 
+    EnsPTranslation translation = NULL;
+
     if(!object)
         return NULL;
 
@@ -440,6 +444,28 @@ EnsPTranscript ensTranscriptNewObj(const EnsPTranscript object)
     transcript->Version = object->Version;
 
     transcript->GeneIdentifier = object->GeneIdentifier;
+
+    /* Copy the AJAX List of alternative Ensembl Translations. */
+
+    if(object->AlternativeTranslations &&
+       ajListGetLength(object->AlternativeTranslations))
+    {
+        transcript->AlternativeTranslations = ajListNew();
+
+        iter = ajListIterNew(object->AlternativeTranslations);
+
+        while(!ajListIterDone(iter))
+        {
+            translation = (EnsPTranslation) ajListIterGet(iter);
+
+            ajListPushAppend(transcript->AlternativeTranslations,
+                             (void *) ensTranslationNewRef(translation));
+        }
+
+        ajListIterDel(&iter);
+    }
+    else
+        transcript->AlternativeTranslations = NULL;
 
     /* Copy the AJAX List of Ensembl Attributes. */
 
@@ -618,6 +644,8 @@ void ensTranscriptDel(EnsPTranscript *Ptranscript)
 
     EnsPTranscript pthis = NULL;
 
+    EnsPTranslation translation = NULL;
+
     if(!Ptranscript)
         return;
 
@@ -653,6 +681,13 @@ void ensTranscriptDel(EnsPTranscript *Ptranscript)
     ajStrDel(&pthis->CreationDate);
 
     ajStrDel(&pthis->ModificationDate);
+
+    /* Clear and delete the AJAX List of alternative Ensembl Translations. */
+
+    while(ajListPop(pthis->AlternativeTranslations, (void **) &translation))
+        ensTranslationDel(&translation);
+
+    ajListFree(&pthis->AlternativeTranslations);
 
     /* Clear and delete the AJAX List of Ensembl Attributes. */
 
@@ -716,6 +751,8 @@ void ensTranscriptDel(EnsPTranscript *Ptranscript)
 ** @nam4rule GetVersion Return the version
 ** @nam4rule GetCreationDate Return the creation date
 ** @nam4rule GetModificationDate Return the modification date
+** @nam4rule GetAlternativeTransaltions Return all alternative
+**                                      Ensembl Translations
 ** @nam4rule GetAttributes Return all Ensembl Attributes
 ** @nam4rule GetDatabaseEntries Return all Ensembl Database Entries
 ** @nam4rule GetExons Return all Ensembl Exons
@@ -1051,6 +1088,67 @@ AjPStr ensTranscriptGetModificationDate(const EnsPTranscript transcript)
         return NULL;
 
     return transcript->ModificationDate;
+}
+
+
+
+
+/* @func ensTranscriptGetAlternativeTranslations ******************************
+**
+** Get all alternative Ensembl Translations of an Ensembl Transcript.
+**
+** This is not a simple accessor function, it will fetch Ensembl Translations
+** from the Ensembl Core database in case the AJAX List is empty.
+**
+**
+** @cc Bio::EnsEMBL::Transcript::get_all_alternative_translations
+** @param [u] transcript [EnsPTranscript] Ensembl Transcript
+** @see ensTranscriptFetchAllAttributes
+**
+** @return [const AjPList] AJAX List of Ensembl Translations
+** @@
+******************************************************************************/
+
+const AjPList ensTranscriptGetAlternativeTranslations(
+    EnsPTranscript transcript)
+{
+    EnsPDatabaseadaptor dba = NULL;
+
+    EnsPTranslationadaptor tla  = NULL;
+
+    if(!transcript)
+        return NULL;
+
+    if(transcript->AlternativeTranslations)
+        return transcript->AlternativeTranslations;
+
+    if(!transcript->Adaptor)
+    {
+        ajDebug("ensTranscriptGetAlternativeTranslations cannot fetch "
+                "Ensembl Translations for a Transcript without a "
+                "Transcript Adaptor.\n");
+
+        return NULL;
+    }
+
+    dba = ensTranscriptadaptorGetDatabaseadaptor(transcript->Adaptor);
+
+    if(!dba)
+    {
+        ajDebug("ensTranscriptGetAlternativeTranslations cannot fetch "
+                "Ensembl Translations for a Transcript without a "
+                "Database Adaptor set in the Transcript Adaptor.\n");
+
+        return NULL;
+    }
+
+    tla = ensRegistryGetTranslationadaptor(dba);
+
+    transcript->AlternativeTranslations = ajListNew();
+
+    ensTranslationadaptorFetchAllByTranscript(tla, transcript);
+
+    return transcript->AlternativeTranslations;
 }
 
 
@@ -1836,6 +1934,8 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
 
     EnsPExon exon = NULL;
 
+    EnsPTranslation translation = NULL;
+
     if(!transcript)
         return 0;
 
@@ -1878,6 +1978,24 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
         size += (ajuint) sizeof (AjOStr);
 
         size += ajStrGetRes(transcript->ModificationDate);
+    }
+
+    /* Summarise the AJAX List of alternative Ensembl Translations. */
+
+    if(transcript->AlternativeTranslations)
+    {
+        size += (ajuint) sizeof (AjOList);
+
+        iter = ajListIterNewread(transcript->AlternativeTranslations);
+
+        while(!ajListIterDone(iter))
+        {
+            translation = (EnsPTranslation) ajListIterGet(iter);
+
+            size += ensTranslationGetMemsize(translation);
+        }
+
+        ajListIterDel(&iter);
     }
 
     /* Summarise the AJAX List of Ensembl Attributes. */
@@ -2542,6 +2660,39 @@ AjBool ensTranscriptSetEnableSequenceEdits(EnsPTranscript transcript,
 
 
 
+/* @func ensTranscriptAddAlternativeTranslation *******************************
+**
+** Add an alternative Ensembl Translation to an Ensembl Transcript.
+**
+** @cc Bio::EnsEMBL::Transcript::add_alternative_translation
+** @param [u] transcript [EnsPTranscript] Ensembl Transcript
+** @param [u] translation [EnsPTranslation] Ensembl Translation
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTranscriptAddAlternativeTranslation(EnsPTranscript transcript,
+                                              EnsPTranslation translation)
+{
+    if(!transcript)
+        return ajFalse;
+
+    if(!translation)
+        return ajFalse;
+
+    if(!transcript->AlternativeTranslations)
+        transcript->AlternativeTranslations = ajListNew();
+
+    ajListPushAppend(transcript->AlternativeTranslations,
+                     (void *) ensTranslationNewRef(translation));
+
+    return ajTrue;
+}
+
+
+
+
 /* @func ensTranscriptAddAttribute ********************************************
 **
 ** Add an Ensembl Attribute to an Ensembl Transcript.
@@ -2915,6 +3066,8 @@ AjBool ensTranscriptTrace(const EnsPTranscript transcript, ajuint level)
 
     EnsPExon exon = NULL;
 
+    EnsPTranslation translation = NULL;
+
     if(!transcript)
         return ajFalse;
 
@@ -2937,6 +3090,7 @@ AjBool ensTranscriptTrace(const EnsPTranscript transcript, ajuint level)
             "%S  ModificationDate '%S'\n"
             "%S  Version %u\n"
             "%S  GeneIdentifier %u\n"
+            "%S  AlternativeTranslations %p\n"
             "%S  Attributes %p\n"
             "%S  DatabaseEntries %p\n"
             "%S  Exons %p\n"
@@ -2964,6 +3118,7 @@ AjBool ensTranscriptTrace(const EnsPTranscript transcript, ajuint level)
             indent, transcript->ModificationDate,
             indent, transcript->Version,
             indent, transcript->GeneIdentifier,
+            indent, transcript->AlternativeTranslations,
             indent, transcript->Attributes,
             indent, transcript->DatabaseEntries,
             indent, transcript->Exons,
@@ -2980,6 +3135,25 @@ AjBool ensTranscriptTrace(const EnsPTranscript transcript, ajuint level)
     ensFeatureTrace(transcript->Feature, level + 1);
 
     ensDatabaseentryTrace(transcript->DisplayReference, level + 1);
+
+    /* Trace the AJAX List of alternative Ensembl Translations. */
+
+    if(transcript->AlternativeTranslations)
+    {
+        ajDebug("%S    AJAX List %p of alternative Ensembl Translations\n",
+                indent, transcript->AlternativeTranslations);
+
+        iter = ajListIterNewread(transcript->AlternativeTranslations);
+
+        while(!ajListIterDone(iter))
+        {
+            translation = (EnsPTranslation) ajListIterGet(iter);
+
+            ensTranslationTrace(translation, level + 2);
+        }
+
+        ajListIterDel(&iter);
+    }
 
     /* Trace the AJAX List of Ensembl Attributes. */
 
@@ -4259,6 +4433,10 @@ AjBool ensTranscriptFetchTranslationSequenceStr(EnsPTranscript transcript,
     ** NOTE: This test is simpler and hopefully more efficient than the one
     ** in the Perl API, which tests for a termination codon in a
     ** codon table-specifc manner and removes the last triplet from the cDNA.
+    ** NOTE: This implementation does not use the 'complete5' and 'complete3'
+    ** Sequence Region Attributes to modify the translated sequence. The
+    ** initiator codon should be correctly translated by ajTrnSeqS based on
+    ** the codon table and the stop codon, if present, is removed above.
     */
 
     if(ajStrGetCharLast(*Psequence) == '*')
@@ -4495,635 +4673,6 @@ AjBool ensTranscriptSortByStartDescending(AjPList transcripts)
     ajListSort(transcripts, transcriptCompareStartDescending);
 
     return ajTrue;
-}
-
-
-
-
-static const char *transcriptadaptorTables[] =
-{
-    "transcript",
-    "transcript_stable_id",
-    "xref",
-    "external_db",
-    NULL
-};
-
-static const char *transcriptadaptorColumns[] =
-{
-    "transcript.transcript_id",
-    "transcript.seq_region_id",
-    "transcript.seq_region_start",
-    "transcript.seq_region_end",
-    "transcript.seq_region_strand",
-    "transcript.analysis_id",
-    "transcript.display_xref_id",
-    "transcript.description",
-    "transcript.biotype",
-    "transcript.status",
-    "transcript.is_current",
-    "transcript.gene_id",
-    "transcript_stable_id.stable_id",
-    "transcript_stable_id.version",
-    "transcript_stable_id.created_date",
-    "transcript_stable_id.modified_date",
-    "xref.external_db_id",
-    "xref.dbprimary_acc",
-    "xref.display_label",
-    "xref.version",
-    "xref.description",
-    "xref.info_type",
-    "xref.info_text",
-    NULL
-};
-
-static EnsOBaseadaptorLeftJoin transcriptadaptorLeftJoin[] =
-{
-    {
-        "transcript_stable_id",
-        "transcript_stable_id.transcript_id = transcript.transcript_id"
-    },
-    {"xref", "xref.xref_id = transcript.display_xref_id"},
-    {"external_db", "external_db.external_db_id = xref.external_db_id"},
-    {NULL, NULL}
-};
-
-static const char *transcriptadaptorDefaultCondition = NULL;
-
-static const char *transcriptadaptorFinalCondition = NULL;
-
-
-
-
-/* @funcstatic transcriptadaptorFetchAllBySQL *********************************
-**
-** Fetch all Ensembl Transcript objects via an SQL statement.
-**
-** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
-** @param [r] statement [const AjPStr] SQL statement
-** @param [uN] am [EnsPAssemblymapper] Ensembl Assembly Mapper
-** @param [uN] slice [EnsPSlice] Ensembl Slice
-** @param [u] transcripts [AjPList] AJAX List of Ensembl Transcripts
-**
-** @return [AjBool] ajTrue upon success, ajFalse otherwise
-** @@
-******************************************************************************/
-
-static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
-                                             const AjPStr statement,
-                                             EnsPAssemblymapper am,
-                                             EnsPSlice slice,
-                                             AjPList transcripts)
-{
-    ajuint identifier = 0;
-    ajuint analysisid = 0;
-    ajuint erid   = 0;
-    ajuint geneid = 0;
-    ajuint edbid  = 0;
-
-    ajuint srid    = 0;
-    ajuint srstart = 0;
-    ajuint srend   = 0;
-    ajint srstrand = 0;
-
-    ajint slstart  = 0;
-    ajint slend    = 0;
-    ajint slstrand = 0;
-    ajint sllength = 0;
-
-    ajuint version = 0;
-
-    AjBool current = AJFALSE;
-
-    EnsETranscriptStatus estatus =
-        ensETranscriptStatusNULL;
-
-    EnsEExternalreferenceInfoType einfotype =
-        ensEExternalreferenceInfoTypeNULL;
-
-    AjPList mrs = NULL;
-
-    AjPSqlstatement sqls = NULL;
-    AjISqlrow sqli       = NULL;
-    AjPSqlrow sqlr       = NULL;
-
-    AjPStr description   = NULL;
-    AjPStr biotype       = NULL;
-    AjPStr status        = NULL;
-    AjPStr stableid      = NULL;
-    AjPStr cdate         = NULL;
-    AjPStr mdate         = NULL;
-    AjPStr erprimaryid   = NULL;
-    AjPStr erdisplayid   = NULL;
-    AjPStr erversion     = NULL;
-    AjPStr erdescription = NULL;
-    AjPStr erinfotype    = NULL;
-    AjPStr erinfotext    = NULL;
-
-    EnsPAnalysis analysis  = NULL;
-    EnsPAnalysisadaptor aa = NULL;
-
-    EnsPAssemblymapperadaptor ama = NULL;
-
-    EnsPCoordsystemadaptor csa = NULL;
-
-    EnsPDatabaseentry dbe = NULL;
-
-    EnsPFeature feature = NULL;
-
-    EnsPExternaldatabase edb         = NULL;
-    EnsPExternaldatabaseadaptor edba = NULL;
-
-    EnsPTranscript transcript = NULL;
-    EnsPTranscriptadaptor tca  = NULL;
-
-    EnsPMapperresult mr = NULL;
-
-    EnsPSlice srslice   = NULL;
-    EnsPSliceadaptor sa = NULL;
-
-    if(ajDebugTest("transcriptadaptorFetchAllBySQL"))
-        ajDebug("transcriptadaptorFetchAllBySQL\n"
-                "  dba %p\n"
-                "  statement %p\n"
-                "  am %p\n"
-                "  slice %p\n"
-                "  transcripts %p\n",
-                dba,
-                statement,
-                am,
-                slice,
-                transcripts);
-
-    if(!dba)
-        return ajFalse;
-
-    if(!statement)
-        return ajFalse;
-
-    if(!transcripts)
-        return ajFalse;
-
-    aa = ensRegistryGetAnalysisadaptor(dba);
-
-    csa = ensRegistryGetCoordsystemadaptor(dba);
-
-    edba = ensRegistryGetExternaldatabaseadaptor(dba);
-
-    sa = ensRegistryGetSliceadaptor(dba);
-
-    tca = ensRegistryGetTranscriptadaptor(dba);
-
-    if(slice)
-        ama = ensRegistryGetAssemblymapperadaptor(dba);
-
-    mrs = ajListNew();
-
-    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
-
-    sqli = ajSqlrowiterNew(sqls);
-
-    while(!ajSqlrowiterDone(sqli))
-    {
-        identifier  = 0;
-        srid        = 0;
-        srstart     = 0;
-        srend       = 0;
-        srstrand    = 0;
-        analysisid  = 0;
-        erid        = 0;
-        description = ajStrNew();
-        biotype     = ajStrNew();
-        status      = ajStrNew();
-        current     = ajFalse;
-        geneid      = 0;
-        stableid    = ajStrNew();
-        version     = 0;
-        cdate       = ajStrNew();
-        mdate       = ajStrNew();
-        edbid       = 0;
-        erprimaryid = ajStrNew();
-        erdisplayid = ajStrNew();
-        erversion   = ajStrNew();
-
-        erdescription = ajStrNew();
-        erinfotype    = ajStrNew();
-        erinfotext    = ajStrNew();
-
-        estatus   = ensETranscriptStatusNULL;
-        einfotype = ensEExternalreferenceInfoTypeNULL;
-
-        sqlr = ajSqlrowiterGet(sqli);
-
-        ajSqlcolumnToUint(sqlr, &identifier);
-        ajSqlcolumnToUint(sqlr, &srid);
-        ajSqlcolumnToUint(sqlr, &srstart);
-        ajSqlcolumnToUint(sqlr, &srend);
-        ajSqlcolumnToInt(sqlr, &srstrand);
-        ajSqlcolumnToUint(sqlr, &analysisid);
-        ajSqlcolumnToUint(sqlr, &erid);
-        ajSqlcolumnToStr(sqlr, &description);
-        ajSqlcolumnToStr(sqlr, &biotype);
-        ajSqlcolumnToStr(sqlr, &status);
-        ajSqlcolumnToBool(sqlr, &current);
-        ajSqlcolumnToUint(sqlr, &geneid);
-        ajSqlcolumnToStr(sqlr, &stableid);
-        ajSqlcolumnToUint(sqlr, &version);
-        ajSqlcolumnToStr(sqlr, &cdate);
-        ajSqlcolumnToStr(sqlr, &mdate);
-        ajSqlcolumnToUint(sqlr, &edbid);
-        ajSqlcolumnToStr(sqlr, &erprimaryid);
-        ajSqlcolumnToStr(sqlr, &erdisplayid);
-        ajSqlcolumnToStr(sqlr, &erversion);
-        ajSqlcolumnToStr(sqlr, &erdescription);
-        ajSqlcolumnToStr(sqlr, &erinfotype);
-        ajSqlcolumnToStr(sqlr, &erinfotext);
-
-        /* Need to get the internal Ensembl Sequence Region identifier. */
-
-        srid = ensCoordsystemadaptorGetInternalSeqregionIdentifier(csa, srid);
-
-        /*
-        ** Since the Ensembl SQL schema defines Sequence Region start and end
-        ** coordinates as unsigned integers for all Features, the range needs
-        ** checking.
-        */
-
-        if(srstart <= INT_MAX)
-            slstart = (ajint) srstart;
-        else
-            ajFatal("transcriptadaptorFetchAllBySQL got a "
-                    "Sequence Region start coordinate (%u) outside the "
-                    "maximum integer limit (%d).",
-                    srstart, INT_MAX);
-
-        if(srend <= INT_MAX)
-            slend = (ajint) srend;
-        else
-            ajFatal("transcriptadaptorFetchAllBySQL got a "
-                    "Sequence Region end coordinate (%u) outside the "
-                    "maximum integer limit (%d).",
-                    srend, INT_MAX);
-
-        slstrand = srstrand;
-
-        /* Fetch a Slice spanning the entire Sequence Region. */
-
-        ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &srslice);
-
-        /*
-        ** Increase the reference counter of the Ensembl Assembly Mapper if
-        ** one has been specified, otherwise fetch it from the database if a
-        ** destination Slice has been specified.
-        */
-
-        if(am)
-            am = ensAssemblymapperNewRef(am);
-        else if(slice && (!ensCoordsystemMatch(
-                              ensSliceGetCoordsystem(slice),
-                              ensSliceGetCoordsystem(srslice))))
-            am = ensAssemblymapperadaptorFetchBySlices(ama, slice, srslice);
-
-        /*
-        ** Remap the Feature coordinates to another Ensembl Coordinate System
-        ** if an Ensembl Assembly Mapper is defined at this point.
-        */
-
-        if(am)
-        {
-            ensAssemblymapperFastMap(am,
-                                     ensSliceGetSeqregion(srslice),
-                                     slstart,
-                                     slend,
-                                     slstrand,
-                                     mrs);
-
-            /*
-            ** The ensAssemblymapperFastMap function returns at best one
-            ** Ensembl Mapper Result.
-            */
-
-            ajListPop(mrs, (void **) &mr);
-
-            /*
-            ** Skip Features that map to gaps or
-            ** Coordinate System boundaries.
-            */
-
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
-            {
-                /* Load the next Feature but destroy first! */
-
-                ajStrDel(&description);
-                ajStrDel(&biotype);
-                ajStrDel(&status);
-                ajStrDel(&stableid);
-                ajStrDel(&cdate);
-                ajStrDel(&mdate);
-                ajStrDel(&erprimaryid);
-                ajStrDel(&erdisplayid);
-                ajStrDel(&erversion);
-                ajStrDel(&erdescription);
-                ajStrDel(&erinfotype);
-                ajStrDel(&erinfotext);
-
-                ensSliceDel(&srslice);
-
-                ensAssemblymapperDel(&am);
-
-                ensMapperresultDel(&mr);
-
-                continue;
-            }
-
-            srid = ensMapperresultGetObjectIdentifier(mr);
-
-            slstart = ensMapperresultGetStart(mr);
-
-            slend = ensMapperresultGetEnd(mr);
-
-            slstrand = ensMapperresultGetStrand(mr);
-
-            /*
-            ** Delete the Sequence Region Slice and fetch a Slice in the
-            ** Coordinate System we just mapped to.
-            */
-
-            ensSliceDel(&srslice);
-
-            ensSliceadaptorFetchBySeqregionIdentifier(sa,
-                                                      srid,
-                                                      0,
-                                                      0,
-                                                      0,
-                                                      &srslice);
-
-            ensMapperresultDel(&mr);
-        }
-
-        /*
-        ** Convert Sequence Region Slice coordinates to destination Slice
-        ** coordinates, if a destination Slice has been provided.
-        */
-
-        if(slice)
-        {
-            /* Check that the length of the Slice is within range. */
-
-            if(ensSliceGetLength(slice) <= INT_MAX)
-                sllength = (ajint) ensSliceGetLength(slice);
-            else
-                ajFatal("transcriptadaptorFetchAllBySQL got a Slice, "
-                        "which length (%u) exceeds the "
-                        "maximum integer limit (%d).",
-                        ensSliceGetLength(slice), INT_MAX);
-
-            /*
-            ** Nothing needs to be done if the destination Slice starts at 1
-            ** and is on the forward strand.
-            */
-
-            if((ensSliceGetStart(slice) != 1) ||
-               (ensSliceGetStrand(slice) < 0))
-            {
-                if(ensSliceGetStrand(slice) >= 0)
-                {
-                    slstart = slstart - ensSliceGetStart(slice) + 1;
-
-                    slend = slend - ensSliceGetStart(slice) + 1;
-                }
-                else
-                {
-                    slend = ensSliceGetEnd(slice) - slstart + 1;
-
-                    slstart = ensSliceGetEnd(slice) - slend + 1;
-
-                    slstrand *= -1;
-                }
-            }
-
-            /*
-            ** Throw away Features off the end of the requested Slice or on
-            ** any other than the requested Slice.
-            */
-
-            if((slend < 1) ||
-               (slstart > sllength) ||
-               (srid != ensSliceGetSeqregionIdentifier(slice)))
-            {
-                /* Next feature but destroy first! */
-
-                ajStrDel(&description);
-                ajStrDel(&biotype);
-                ajStrDel(&status);
-                ajStrDel(&stableid);
-                ajStrDel(&cdate);
-                ajStrDel(&mdate);
-                ajStrDel(&erprimaryid);
-                ajStrDel(&erdisplayid);
-                ajStrDel(&erversion);
-                ajStrDel(&erdescription);
-                ajStrDel(&erinfotype);
-                ajStrDel(&erinfotext);
-
-                ensSliceDel(&srslice);
-
-                ensAssemblymapperDel(&am);
-
-                continue;
-            }
-
-            /* Delete the Sequence Region Slice and set the requested Slice. */
-
-            ensSliceDel(&srslice);
-
-            srslice = ensSliceNewRef(slice);
-        }
-
-        if(erid)
-        {
-            ensExternaldatabaseadaptorFetchByIdentifier(edba, edbid, &edb);
-
-            einfotype = ensExternalreferenceInfoTypeFromStr(erinfotype);
-
-            if(!einfotype)
-                ajDebug("transcriptadaptorFetchAllBySQL encountered "
-                        "unexpected string '%S' in the "
-                        "'xref.infotype' field.\n", erinfotype);
-
-            dbe = ensDatabaseentryNew((EnsPDatabaseentryadaptor) NULL,
-                                      erid,
-                                      (EnsPAnalysis) NULL,
-                                      edb,
-                                      erprimaryid,
-                                      erdisplayid,
-                                      erversion,
-                                      erdescription,
-                                      (AjPStr) NULL,
-                                      einfotype,
-                                      erinfotext);
-
-            ensExternaldatabaseDel(&edb);
-        }
-        else
-            dbe = NULL;
-
-        ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
-
-        /* Set the Transcript status. */
-
-        estatus = ensTranscriptStatusFromStr(status);
-
-        if(!estatus)
-            ajFatal("transcriptadaptorFetchAllBySQL encountered "
-                    "unexpected string '%S' in the "
-                    "'transcript.status' field.\n", status);
-
-        /* Finally, create a new Ensembl Transcript. */
-
-        feature = ensFeatureNewS(analysis,
-                                 srslice,
-                                 slstart,
-                                 slend,
-                                 slstrand);
-
-        transcript = ensTranscriptNew(tca,
-                                      identifier,
-                                      feature,
-                                      dbe,
-                                      description,
-                                      biotype,
-                                      estatus,
-                                      current,
-                                      stableid,
-                                      version,
-                                      cdate,
-                                      mdate,
-                                      (AjPList) NULL);
-
-        ajListPushAppend(transcripts, (void *) transcript);
-
-        ensFeatureDel(&feature);
-
-        ajStrDel(&description);
-        ajStrDel(&biotype);
-        ajStrDel(&status);
-        ajStrDel(&stableid);
-        ajStrDel(&cdate);
-        ajStrDel(&mdate);
-        ajStrDel(&erprimaryid);
-        ajStrDel(&erdisplayid);
-        ajStrDel(&erversion);
-        ajStrDel(&erdescription);
-        ajStrDel(&erinfotype);
-        ajStrDel(&erinfotext);
-
-        ensAnalysisDel(&analysis);
-
-        ensDatabaseentryDel(&dbe);
-
-        ensSliceDel(&srslice);
-
-        ensAssemblymapperDel(&am);
-    }
-
-    ajSqlrowiterDel(&sqli);
-
-    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
-
-    ajListFree(&mrs);
-
-    return ajTrue;
-}
-
-
-
-
-/* @funcstatic transcriptadaptorCacheReference ********************************
-**
-** Wrapper function to reference an Ensembl Transcript
-** from an Ensembl Cache.
-**
-** @param [r] value [void*] Ensembl Transcript
-**
-** @return [void*] Ensembl Transcript or NULL
-** @@
-******************************************************************************/
-
-static void* transcriptadaptorCacheReference(void *value)
-{
-    if(!value)
-        return NULL;
-
-    return (void *) ensTranscriptNewRef((EnsPTranscript) value);
-}
-
-
-
-
-/* @funcstatic transcriptadaptorCacheDelete ***********************************
-**
-** Wrapper function to delete an Ensembl Transcript
-** from an Ensembl Cache.
-**
-** @param [r] value [void**] Ensembl Transcript address
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-static void transcriptadaptorCacheDelete(void **value)
-{
-    if(!value)
-        return;
-
-    ensTranscriptDel((EnsPTranscript *) value);
-
-    return;
-}
-
-
-
-
-/* @funcstatic transcriptadaptorCacheSize *************************************
-**
-** Wrapper function to determine the memory size of an Ensembl Transcript
-** via an Ensembl Cache.
-**
-** @param [r] value [const void*] Ensembl Transcript
-**
-** @return [ajuint] Memory size
-** @@
-******************************************************************************/
-
-static ajuint transcriptadaptorCacheSize(const void *value)
-{
-    if(!value)
-        return 0;
-
-    return ensTranscriptGetMemsize((const EnsPTranscript) value);
-}
-
-
-
-
-/* @funcstatic transcriptadaptorGetFeature ************************************
-**
-** Wrapper function to get the Ensembl Feature of an
-** Ensembl Transcript from an Ensembl Feature Adaptor.
-**
-** @param [r] value [const void*] Ensembl Transcript
-**
-** @return [EnsPFeature] Ensembl Feature
-** @@
-******************************************************************************/
-
-static EnsPFeature transcriptadaptorGetFeature(const void *value)
-{
-    if(!value)
-        return NULL;
-
-    return ensTranscriptGetFeature((const EnsPTranscript) value);
 }
 
 
@@ -6079,11 +5628,637 @@ AjBool ensSupportingfeatureadaptorFetchAllByTranscript(
 **
 ** Functions for manipulating Ensembl Transcript Adaptor objects
 **
-** @cc Bio::EnsEMBL::DBSQL::TranscriptAdaptor CVS Revision: 1.101
+** @cc Bio::EnsEMBL::DBSQL::TranscriptAdaptor CVS Revision: 1.121
 **
 ** @nam2rule Transcriptadaptor
 **
 ******************************************************************************/
+
+static const char *transcriptadaptorTables[] =
+{
+    "transcript",
+    "transcript_stable_id",
+    "xref",
+    "external_db",
+    NULL
+};
+
+static const char *transcriptadaptorColumns[] =
+{
+    "transcript.transcript_id",
+    "transcript.seq_region_id",
+    "transcript.seq_region_start",
+    "transcript.seq_region_end",
+    "transcript.seq_region_strand",
+    "transcript.analysis_id",
+    "transcript.display_xref_id",
+    "transcript.description",
+    "transcript.biotype",
+    "transcript.status",
+    "transcript.is_current",
+    "transcript.gene_id",
+    "transcript_stable_id.stable_id",
+    "transcript_stable_id.version",
+    "transcript_stable_id.created_date",
+    "transcript_stable_id.modified_date",
+    "xref.external_db_id",
+    "xref.dbprimary_acc",
+    "xref.display_label",
+    "xref.version",
+    "xref.description",
+    "xref.info_type",
+    "xref.info_text",
+    NULL
+};
+
+static EnsOBaseadaptorLeftJoin transcriptadaptorLeftJoin[] =
+{
+    {
+        "transcript_stable_id",
+        "transcript_stable_id.transcript_id = transcript.transcript_id"
+    },
+    {"xref", "xref.xref_id = transcript.display_xref_id"},
+    {"external_db", "external_db.external_db_id = xref.external_db_id"},
+    {NULL, NULL}
+};
+
+static const char *transcriptadaptorDefaultCondition = NULL;
+
+static const char *transcriptadaptorFinalCondition = NULL;
+
+
+
+
+/* @funcstatic transcriptadaptorFetchAllBySQL *********************************
+**
+** Fetch all Ensembl Transcript objects via an SQL statement.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+** @param [r] statement [const AjPStr] SQL statement
+** @param [uN] am [EnsPAssemblymapper] Ensembl Assembly Mapper
+** @param [uN] slice [EnsPSlice] Ensembl Slice
+** @param [u] transcripts [AjPList] AJAX List of Ensembl Transcripts
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+                                             const AjPStr statement,
+                                             EnsPAssemblymapper am,
+                                             EnsPSlice slice,
+                                             AjPList transcripts)
+{
+    ajuint identifier = 0;
+    ajuint analysisid = 0;
+    ajuint erid   = 0;
+    ajuint geneid = 0;
+    ajuint edbid  = 0;
+
+    ajuint srid    = 0;
+    ajuint srstart = 0;
+    ajuint srend   = 0;
+    ajint srstrand = 0;
+
+    ajint slstart  = 0;
+    ajint slend    = 0;
+    ajint slstrand = 0;
+    ajint sllength = 0;
+
+    ajuint version = 0;
+
+    AjBool current = AJFALSE;
+
+    EnsETranscriptStatus estatus =
+        ensETranscriptStatusNULL;
+
+    EnsEExternalreferenceInfoType einfotype =
+        ensEExternalreferenceInfoTypeNULL;
+
+    AjPList mrs = NULL;
+
+    AjPSqlstatement sqls = NULL;
+    AjISqlrow sqli       = NULL;
+    AjPSqlrow sqlr       = NULL;
+
+    AjPStr description   = NULL;
+    AjPStr biotype       = NULL;
+    AjPStr status        = NULL;
+    AjPStr stableid      = NULL;
+    AjPStr cdate         = NULL;
+    AjPStr mdate         = NULL;
+    AjPStr erprimaryid   = NULL;
+    AjPStr erdisplayid   = NULL;
+    AjPStr erversion     = NULL;
+    AjPStr erdescription = NULL;
+    AjPStr erinfotype    = NULL;
+    AjPStr erinfotext    = NULL;
+
+    EnsPAnalysis analysis  = NULL;
+    EnsPAnalysisadaptor aa = NULL;
+
+    EnsPAssemblymapperadaptor ama = NULL;
+
+    EnsPCoordsystemadaptor csa = NULL;
+
+    EnsPDatabaseentry dbe = NULL;
+
+    EnsPFeature feature = NULL;
+
+    EnsPExternaldatabase edb         = NULL;
+    EnsPExternaldatabaseadaptor edba = NULL;
+
+    EnsPTranscript transcript = NULL;
+    EnsPTranscriptadaptor tca  = NULL;
+
+    EnsPMapperresult mr = NULL;
+
+    EnsPSlice srslice   = NULL;
+    EnsPSliceadaptor sa = NULL;
+
+    if(ajDebugTest("transcriptadaptorFetchAllBySQL"))
+        ajDebug("transcriptadaptorFetchAllBySQL\n"
+                "  dba %p\n"
+                "  statement %p\n"
+                "  am %p\n"
+                "  slice %p\n"
+                "  transcripts %p\n",
+                dba,
+                statement,
+                am,
+                slice,
+                transcripts);
+
+    if(!dba)
+        return ajFalse;
+
+    if(!statement)
+        return ajFalse;
+
+    if(!transcripts)
+        return ajFalse;
+
+    aa = ensRegistryGetAnalysisadaptor(dba);
+
+    csa = ensRegistryGetCoordsystemadaptor(dba);
+
+    edba = ensRegistryGetExternaldatabaseadaptor(dba);
+
+    sa = ensRegistryGetSliceadaptor(dba);
+
+    tca = ensRegistryGetTranscriptadaptor(dba);
+
+    if(slice)
+        ama = ensRegistryGetAssemblymapperadaptor(dba);
+
+    mrs = ajListNew();
+
+    sqls = ensDatabaseadaptorSqlstatementNew(dba, statement);
+
+    sqli = ajSqlrowiterNew(sqls);
+
+    while(!ajSqlrowiterDone(sqli))
+    {
+        identifier  = 0;
+        srid        = 0;
+        srstart     = 0;
+        srend       = 0;
+        srstrand    = 0;
+        analysisid  = 0;
+        erid        = 0;
+        description = ajStrNew();
+        biotype     = ajStrNew();
+        status      = ajStrNew();
+        current     = ajFalse;
+        geneid      = 0;
+        stableid    = ajStrNew();
+        version     = 0;
+        cdate       = ajStrNew();
+        mdate       = ajStrNew();
+        edbid       = 0;
+        erprimaryid = ajStrNew();
+        erdisplayid = ajStrNew();
+        erversion   = ajStrNew();
+
+        erdescription = ajStrNew();
+        erinfotype    = ajStrNew();
+        erinfotext    = ajStrNew();
+
+        estatus   = ensETranscriptStatusNULL;
+        einfotype = ensEExternalreferenceInfoTypeNULL;
+
+        sqlr = ajSqlrowiterGet(sqli);
+
+        ajSqlcolumnToUint(sqlr, &identifier);
+        ajSqlcolumnToUint(sqlr, &srid);
+        ajSqlcolumnToUint(sqlr, &srstart);
+        ajSqlcolumnToUint(sqlr, &srend);
+        ajSqlcolumnToInt(sqlr, &srstrand);
+        ajSqlcolumnToUint(sqlr, &analysisid);
+        ajSqlcolumnToUint(sqlr, &erid);
+        ajSqlcolumnToStr(sqlr, &description);
+        ajSqlcolumnToStr(sqlr, &biotype);
+        ajSqlcolumnToStr(sqlr, &status);
+        ajSqlcolumnToBool(sqlr, &current);
+        ajSqlcolumnToUint(sqlr, &geneid);
+        ajSqlcolumnToStr(sqlr, &stableid);
+        ajSqlcolumnToUint(sqlr, &version);
+        ajSqlcolumnToStr(sqlr, &cdate);
+        ajSqlcolumnToStr(sqlr, &mdate);
+        ajSqlcolumnToUint(sqlr, &edbid);
+        ajSqlcolumnToStr(sqlr, &erprimaryid);
+        ajSqlcolumnToStr(sqlr, &erdisplayid);
+        ajSqlcolumnToStr(sqlr, &erversion);
+        ajSqlcolumnToStr(sqlr, &erdescription);
+        ajSqlcolumnToStr(sqlr, &erinfotype);
+        ajSqlcolumnToStr(sqlr, &erinfotext);
+
+        /* Need to get the internal Ensembl Sequence Region identifier. */
+
+        srid = ensCoordsystemadaptorGetInternalSeqregionIdentifier(csa, srid);
+
+        /*
+        ** Since the Ensembl SQL schema defines Sequence Region start and end
+        ** coordinates as unsigned integers for all Features, the range needs
+        ** checking.
+        */
+
+        if(srstart <= INT_MAX)
+            slstart = (ajint) srstart;
+        else
+            ajFatal("transcriptadaptorFetchAllBySQL got a "
+                    "Sequence Region start coordinate (%u) outside the "
+                    "maximum integer limit (%d).",
+                    srstart, INT_MAX);
+
+        if(srend <= INT_MAX)
+            slend = (ajint) srend;
+        else
+            ajFatal("transcriptadaptorFetchAllBySQL got a "
+                    "Sequence Region end coordinate (%u) outside the "
+                    "maximum integer limit (%d).",
+                    srend, INT_MAX);
+
+        slstrand = srstrand;
+
+        /* Fetch a Slice spanning the entire Sequence Region. */
+
+        ensSliceadaptorFetchBySeqregionIdentifier(sa, srid, 0, 0, 0, &srslice);
+
+        /*
+        ** Increase the reference counter of the Ensembl Assembly Mapper if
+        ** one has been specified, otherwise fetch it from the database if a
+        ** destination Slice has been specified.
+        */
+
+        if(am)
+            am = ensAssemblymapperNewRef(am);
+        else if(slice && (!ensCoordsystemMatch(
+                              ensSliceGetCoordsystem(slice),
+                              ensSliceGetCoordsystem(srslice))))
+            am = ensAssemblymapperadaptorFetchBySlices(ama, slice, srslice);
+
+        /*
+        ** Remap the Feature coordinates to another Ensembl Coordinate System
+        ** if an Ensembl Assembly Mapper is defined at this point.
+        */
+
+        if(am)
+        {
+            ensAssemblymapperFastMap(am,
+                                     ensSliceGetSeqregion(srslice),
+                                     slstart,
+                                     slend,
+                                     slstrand,
+                                     mrs);
+
+            /*
+            ** The ensAssemblymapperFastMap function returns at best one
+            ** Ensembl Mapper Result.
+            */
+
+            ajListPop(mrs, (void **) &mr);
+
+            /*
+            ** Skip Features that map to gaps or
+            ** Coordinate System boundaries.
+            */
+
+            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            {
+                /* Load the next Feature but destroy first! */
+
+                ajStrDel(&description);
+                ajStrDel(&biotype);
+                ajStrDel(&status);
+                ajStrDel(&stableid);
+                ajStrDel(&cdate);
+                ajStrDel(&mdate);
+                ajStrDel(&erprimaryid);
+                ajStrDel(&erdisplayid);
+                ajStrDel(&erversion);
+                ajStrDel(&erdescription);
+                ajStrDel(&erinfotype);
+                ajStrDel(&erinfotext);
+
+                ensSliceDel(&srslice);
+
+                ensAssemblymapperDel(&am);
+
+                ensMapperresultDel(&mr);
+
+                continue;
+            }
+
+            srid = ensMapperresultGetObjectIdentifier(mr);
+
+            slstart = ensMapperresultGetStart(mr);
+
+            slend = ensMapperresultGetEnd(mr);
+
+            slstrand = ensMapperresultGetStrand(mr);
+
+            /*
+            ** Delete the Sequence Region Slice and fetch a Slice in the
+            ** Coordinate System we just mapped to.
+            */
+
+            ensSliceDel(&srslice);
+
+            ensSliceadaptorFetchBySeqregionIdentifier(sa,
+                                                      srid,
+                                                      0,
+                                                      0,
+                                                      0,
+                                                      &srslice);
+
+            ensMapperresultDel(&mr);
+        }
+
+        /*
+        ** Convert Sequence Region Slice coordinates to destination Slice
+        ** coordinates, if a destination Slice has been provided.
+        */
+
+        if(slice)
+        {
+            /* Check that the length of the Slice is within range. */
+
+            if(ensSliceGetLength(slice) <= INT_MAX)
+                sllength = (ajint) ensSliceGetLength(slice);
+            else
+                ajFatal("transcriptadaptorFetchAllBySQL got a Slice, "
+                        "which length (%u) exceeds the "
+                        "maximum integer limit (%d).",
+                        ensSliceGetLength(slice), INT_MAX);
+
+            /*
+            ** Nothing needs to be done if the destination Slice starts at 1
+            ** and is on the forward strand.
+            */
+
+            if((ensSliceGetStart(slice) != 1) ||
+               (ensSliceGetStrand(slice) < 0))
+            {
+                if(ensSliceGetStrand(slice) >= 0)
+                {
+                    slstart = slstart - ensSliceGetStart(slice) + 1;
+
+                    slend = slend - ensSliceGetStart(slice) + 1;
+                }
+                else
+                {
+                    slend = ensSliceGetEnd(slice) - slstart + 1;
+
+                    slstart = ensSliceGetEnd(slice) - slend + 1;
+
+                    slstrand *= -1;
+                }
+            }
+
+            /*
+            ** Throw away Features off the end of the requested Slice or on
+            ** any other than the requested Slice.
+            */
+
+            if((slend < 1) ||
+               (slstart > sllength) ||
+               (srid != ensSliceGetSeqregionIdentifier(slice)))
+            {
+                /* Next feature but destroy first! */
+
+                ajStrDel(&description);
+                ajStrDel(&biotype);
+                ajStrDel(&status);
+                ajStrDel(&stableid);
+                ajStrDel(&cdate);
+                ajStrDel(&mdate);
+                ajStrDel(&erprimaryid);
+                ajStrDel(&erdisplayid);
+                ajStrDel(&erversion);
+                ajStrDel(&erdescription);
+                ajStrDel(&erinfotype);
+                ajStrDel(&erinfotext);
+
+                ensSliceDel(&srslice);
+
+                ensAssemblymapperDel(&am);
+
+                continue;
+            }
+
+            /* Delete the Sequence Region Slice and set the requested Slice. */
+
+            ensSliceDel(&srslice);
+
+            srslice = ensSliceNewRef(slice);
+        }
+
+        if(erid)
+        {
+            ensExternaldatabaseadaptorFetchByIdentifier(edba, edbid, &edb);
+
+            einfotype = ensExternalreferenceInfoTypeFromStr(erinfotype);
+
+            if(!einfotype)
+                ajDebug("transcriptadaptorFetchAllBySQL encountered "
+                        "unexpected string '%S' in the "
+                        "'xref.infotype' field.\n", erinfotype);
+
+            dbe = ensDatabaseentryNew((EnsPDatabaseentryadaptor) NULL,
+                                      erid,
+                                      (EnsPAnalysis) NULL,
+                                      edb,
+                                      erprimaryid,
+                                      erdisplayid,
+                                      erversion,
+                                      erdescription,
+                                      (AjPStr) NULL,
+                                      einfotype,
+                                      erinfotext);
+
+            ensExternaldatabaseDel(&edb);
+        }
+        else
+            dbe = NULL;
+
+        ensAnalysisadaptorFetchByIdentifier(aa, analysisid, &analysis);
+
+        /* Set the Transcript status. */
+
+        estatus = ensTranscriptStatusFromStr(status);
+
+        if(!estatus)
+            ajFatal("transcriptadaptorFetchAllBySQL encountered "
+                    "unexpected string '%S' in the "
+                    "'transcript.status' field.\n", status);
+
+        /* Finally, create a new Ensembl Transcript. */
+
+        feature = ensFeatureNewS(analysis,
+                                 srslice,
+                                 slstart,
+                                 slend,
+                                 slstrand);
+
+        transcript = ensTranscriptNew(tca,
+                                      identifier,
+                                      feature,
+                                      dbe,
+                                      description,
+                                      biotype,
+                                      estatus,
+                                      current,
+                                      stableid,
+                                      version,
+                                      cdate,
+                                      mdate,
+                                      (AjPList) NULL);
+
+        ajListPushAppend(transcripts, (void *) transcript);
+
+        ensFeatureDel(&feature);
+
+        ajStrDel(&description);
+        ajStrDel(&biotype);
+        ajStrDel(&status);
+        ajStrDel(&stableid);
+        ajStrDel(&cdate);
+        ajStrDel(&mdate);
+        ajStrDel(&erprimaryid);
+        ajStrDel(&erdisplayid);
+        ajStrDel(&erversion);
+        ajStrDel(&erdescription);
+        ajStrDel(&erinfotype);
+        ajStrDel(&erinfotext);
+
+        ensAnalysisDel(&analysis);
+
+        ensDatabaseentryDel(&dbe);
+
+        ensSliceDel(&srslice);
+
+        ensAssemblymapperDel(&am);
+    }
+
+    ajSqlrowiterDel(&sqli);
+
+    ensDatabaseadaptorSqlstatementDel(dba, &sqls);
+
+    ajListFree(&mrs);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic transcriptadaptorCacheReference ********************************
+**
+** Wrapper function to reference an Ensembl Transcript
+** from an Ensembl Cache.
+**
+** @param [r] value [void*] Ensembl Transcript
+**
+** @return [void*] Ensembl Transcript or NULL
+** @@
+******************************************************************************/
+
+static void* transcriptadaptorCacheReference(void *value)
+{
+    if(!value)
+        return NULL;
+
+    return (void *) ensTranscriptNewRef((EnsPTranscript) value);
+}
+
+
+
+
+/* @funcstatic transcriptadaptorCacheDelete ***********************************
+**
+** Wrapper function to delete an Ensembl Transcript
+** from an Ensembl Cache.
+**
+** @param [r] value [void**] Ensembl Transcript address
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void transcriptadaptorCacheDelete(void **value)
+{
+    if(!value)
+        return;
+
+    ensTranscriptDel((EnsPTranscript *) value);
+
+    return;
+}
+
+
+
+
+/* @funcstatic transcriptadaptorCacheSize *************************************
+**
+** Wrapper function to determine the memory size of an Ensembl Transcript
+** via an Ensembl Cache.
+**
+** @param [r] value [const void*] Ensembl Transcript
+**
+** @return [ajuint] Memory size
+** @@
+******************************************************************************/
+
+static ajuint transcriptadaptorCacheSize(const void *value)
+{
+    if(!value)
+        return 0;
+
+    return ensTranscriptGetMemsize((const EnsPTranscript) value);
+}
+
+
+
+
+/* @funcstatic transcriptadaptorGetFeature ************************************
+**
+** Wrapper function to get the Ensembl Feature of an
+** Ensembl Transcript from an Ensembl Feature Adaptor.
+**
+** @param [r] value [const void*] Ensembl Transcript
+**
+** @return [EnsPFeature] Ensembl Feature
+** @@
+******************************************************************************/
+
+static EnsPFeature transcriptadaptorGetFeature(const void *value)
+{
+    if(!value)
+        return NULL;
+
+    return ensTranscriptGetFeature((const EnsPTranscript) value);
+}
 
 
 
@@ -6277,6 +6452,9 @@ EnsPDatabaseadaptor ensTranscriptadaptorGetDatabaseadaptor(
 **
 ** @return [AjBool] ajTrue upon success, ajFalse otherwise
 ** @@
+** NOTE: In this implementation fetch all really fetches all. The Perl API
+** adds the following constraint:
+** "transcript.biotype != 'LRG_gene' and transcript.is_current = 1"
 ******************************************************************************/
 
 AjBool ensTranscriptadaptorFetchAll(EnsPTranscriptadaptor tca,
