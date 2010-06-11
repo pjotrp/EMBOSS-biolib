@@ -75,6 +75,7 @@ extern "C"
 #include "ajsql.h"
 #include "ajobo.h"
 #include "ajtax.h"
+#include "ajresource.h"
     
 #endif
 
