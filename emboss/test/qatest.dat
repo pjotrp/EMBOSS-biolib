@@ -375,7 +375,7 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5681
+FC = 5683
 FP 51 /^acdProcess/
 FI stderr
 FC = 2
@@ -18560,7 +18560,7 @@ FZ > 608
 FP /^ +5 HBA_HUMAN +[+] +59\.\.63 +HBB_HUMAN +[+] +64\.\.68\n/
 FP /^ +4 HBA_HUMAN +[+] +15\.\.18 +HBB_HUMAN +[+] +16\.\.19\n/
 FP /^ +4 HBA_HUMAN +[+] +117\.\.120 +HBB_HUMAN +[+] +122\.\.125\n/
-FI hba_human.gff
+FI HBA_HUMAN.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
@@ -20048,9 +20048,6 @@ CL tembl:v00294 tembl:v00294 -word 50 -auto
 FI v00294.wordmatch
 FC = 23
 FP /^ +1113 +V00294 +[+] +1\.\.1113 +V00294 +[+] +1\.\.1113\n/
-FI v00294.gff
-FZ = 186
-FP /^V00294\twordmatch\tsequence_feature\t1\t1113\t1\.000\t/
 FI V00294.gff
 FZ = 186
 FP /^V00294\twordmatch\tsequence_feature\t1\t1113\t1\.000\t/
@@ -20077,7 +20074,7 @@ FP 1 /^HBA_HUMAN         59 HGKKV     63\n/
 FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
-FI hba_human.gff
+FI HBA_HUMAN.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
@@ -20105,7 +20102,7 @@ FP 1 /^HBA_HUMAN         59 HGKKV     63\n/
 FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
-FI hba_human.gff
+FI HBA_HUMAN.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
@@ -20134,7 +20131,7 @@ FP 1 /^HBA_HU HGKKV\n/
 FP 1 /^       :::::\n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
-FI hba_human.gff
+FI HBA_HUMAN.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
@@ -20163,7 +20160,7 @@ FP 1 /^HBA_HU HGKKV\n/
 FP 2 /^           \n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
-FI hba_human.gff
+FI HBA_HUMAN.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
@@ -20191,7 +20188,7 @@ FP 1 /^       60   \n/
 FP 1 /^HBA_HU HGKKV\n/
 FP 1 /^HBB_HU -----\n/
 FP 2 /^HBB_HU ----\n/
-FI hba_human.gff
+FI HBA_HUMAN.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
@@ -20217,7 +20214,7 @@ FI hba_human.wordmatch
 FZ > 608
 FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
 FP 1 /^>HBB_HUMAN \.\.\nHGKKV\n/
-FI hba_human.gff
+FI HBA_HUMAN.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
@@ -20252,7 +20249,7 @@ FP 3 /^; sq_len: 147\n/
 FP 1 /^; al_start: 64\n/
 FP 1 /^; al_stop: 68\n/
 FP 1 /^; al_display_start: 64\n/
-FI hba_human.gff
+FI HBA_HUMAN.gff
 FZ = 382
 FP /^HBA_HUMAN\twordmatch\tpolypeptide_region\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
@@ -22107,7 +22104,7 @@ FI stderr
 FC = 2
 FP 8 /:/
 FP 1 /Length \[7477\]: /
-FP 1 /Name: /
+FP 1 /Name \[J01636\]: /
 FP 1 /Begin \[1\]: /
 FP 1 /End \[7477\]: /
 FP 1 /Protein \[N\]:/
@@ -24298,6 +24295,8 @@ AB memenew
 RQ meme
 AA ememe
 DL keep
+PP EMBOSS_MEME=/shared/software/meme440/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/crp0.s -mod oops
 IN
 FI stderr
@@ -24324,7 +24323,7 @@ FI logo_rc1.png
 FZ > 11000
 FP /PNG/
 FI meme.html
-FC = 2249
+FC = 2261
 FP /^ce1cg 1\.74e-03 1 105 [+]1 63 1\.91e-05 \n/
 FP /^ce1cg  \( 63\) TTTGATCGTTTTCAC 1\n/
 FI meme.fasta
@@ -24343,6 +24342,8 @@ ID ememetext-ex
 AB memenew
 RQ meme
 AA ememetext
+PP EMBOSS_MEME=/shared/software/meme420/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/crp0.s  -mod oops -revcomp ex.text
 IN
 FI stderr
@@ -24365,6 +24366,8 @@ ID ememetext-ex2
 AB memenew
 RQ meme
 AA ememetext
+PP EMBOSS_MEME=/shared/software/meme420/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/crp0.s -mod oops -revcomp -w 20 ex2.text
 IN
 FI stderr
@@ -24388,6 +24391,8 @@ AB memenew
 RQ meme
 AA ememetext
 TI 300
+PP EMBOSS_MEME=/shared/software/meme420/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/INO_up800.s -mod anr -revcomp
 CL -bfile ../../data/memenew/yeast.nc.6.freq ex3.text
 IN
@@ -24411,6 +24416,8 @@ ID ememetext-ex4
 AB memenew
 RQ meme
 AA ememetext
+PP EMBOSS_MEME=/shared/software/meme420/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex4.text
 IN
 FI stderr
@@ -24433,6 +24440,8 @@ ID ememetext-ex5
 AB memenew
 RQ meme
 AA ememetext
+PP EMBOSS_MEME=/shared/software/meme420/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/farntrans5.s -mod anr -maxw 40 -maxsites 50
 CL ex5.text
 IN
@@ -24456,6 +24465,8 @@ ID ememetext-ex6
 AB memenew
 RQ meme
 AA ememetext
+PP EMBOSS_MEME=/shared/software/meme420/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3
 CL ex6.text
 IN
@@ -24479,6 +24490,8 @@ ID ememetext-ex7
 AB memenew
 RQ meme
 AA ememetext
+PP EMBOSS_MEME=/shared/software/meme420/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3
 CL ex7.text
 IN
@@ -24503,6 +24516,8 @@ AB memenew
 RQ meme
 AA ememetext
 TI 300
+PP EMBOSS_MEME=/shared/software/meme420/bin/meme
+PP export EMBOSS_MEME
 CL ../../data/memenew/adh.s -mod zoops -nmotifs 20 -evt 0.01
 CL ex8.text
 IN
@@ -24526,6 +24541,8 @@ ID emast-ex
 AB memenew
 RQ meme
 AA emast
+PP EMBOSS_MAST=/shared/software/meme420/bin/mast
+PP export EMBOSS_MAST
 ## PP cp ../ememe-keep/ex1.html .
 ## Cannot use output of ememe-keep test as input,
 ## because temporary sequence file named in /ememe-keep/ex1.html
