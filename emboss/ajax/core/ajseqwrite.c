@@ -6826,7 +6826,7 @@ static void seqWriteSam(AjPSeqout outseq)
         /*ajFmtPrintF(outseq->File, "@CO\t%S\n", cmtstr);*/
     }
 
-    flag = 0x0404;              /* query not mapped */
+    flag = 0x0004;              /* query not mapped */
 
     ilen = ajStrGetLen(outseq->Seq);
 
