@@ -5298,15 +5298,15 @@ static AcdPAcd acdFindAcdTest(const AjPStr name, const AjPStr token)
     AcdPAcd pa;
     AjBool usetoken = ajFalse;
 
-    ajuint minunique=6;
+    ajuint minunique=7;
 
-    ajStrAssignSubS(&acdPrefName, name, 0, minunique);
+    ajStrAssignSubS(&acdPrefName, name, 0, minunique-1);
 
     usetoken = !ajStrMatchS(name, token);
 
     if(usetoken)
     {
-      ajStrAssignSubS(&acdPrefToken, token, 0, minunique);
+      ajStrAssignSubS(&acdPrefToken, token, 0, minunique-1);
       acdLog("acdFindAcdTest ('%S' ['%S'], '%S' ['%S'])\n",
 	     name, acdPrefName, token, acdPrefToken);
     }
@@ -7520,6 +7520,7 @@ static void acdSetDirectory(AcdPAcd thys)
     ajint itry;
 
     AjBool nullok = ajFalse;
+    AjBool nulldefault = ajFalse;
     AjBool dopath = ajFalse;
     AjPStr ext = NULL;
 
@@ -7527,10 +7528,20 @@ static void acdSetDirectory(AcdPAcd thys)
 
     acdAttrToBool(thys, "fullpath", ajFalse, &dopath);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "nulldefault", ajFalse, &nulldefault);
     acdGetValueAssoc(thys, "extension", &ext);
 
     required = acdIsRequired(thys);
-    acdReplyInitC(thys, ".", &acdReplyDef);
+    if(nullok && nulldefault)
+    {
+	if (acdDefinedEmpty(thys))  /* user set to empty - make default name */
+	    acdReplyInitC(thys, ".", &acdReplyDef);
+	else				/* leave empty */
+	    acdReplyInitC(thys, "", &acdReplyDef);
+    }
+    else
+        acdReplyInitC(thys, ".", &acdReplyDef);
+
     acdPromptDirectory(thys);
 
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -9319,9 +9330,6 @@ static void acdSetInfile(AcdPAcd thys)
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToBool(thys, "trydefault", ajFalse, &trydefault);
 
-    if(ajStrGetLen(inpath))
-        ajUser("infile '%S' inpath: '%S'",
-               thys->Name, inpath);
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInitS(thys, infname, &acdReplyDef);
@@ -13897,7 +13905,12 @@ static void acdSetSeqset(AcdPAcd thys)
         ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetGetLen(val));
         ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqsetIsProt(val));
         ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqsetIsNuc(val));
-        ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val->Name);
+        if(ajStrGetLen(val->Name))
+            ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME],
+                         val->Name);
+        else
+            ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME],
+                         ajSeqsetGetseqNameS(val,0));
         ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqsetGetUsa(val));
         ajStrFromFloat(&thys->SetStr[ACD_SEQ_WEIGHT],
                        ajSeqsetGetTotweight(val), 3);
@@ -27820,15 +27833,19 @@ static void acdValidAppl(const AcdPAcd thys)
     i = acdFindAttrC(acdAttrAppl, "keywords");
     acdValidApplKeywords(thys->AttrStr[i]);
 
-    /* for now, skip EMBASSY applications */
-    if(acdFindAttrC(acdAttrAppl, "embassy"))
-        acdEdam = NULL;
+    if(acdEdam)
+    {
+        /* for now, skip EMBASSY applications */
+        i = acdFindAttrC(acdAttrAppl, "embassy");
+        if(ajStrGetLen(thys->AttrStr[i]))
+            acdEdam = NULL;
+    }
 
     if(acdEdam)
     {
-
         i = acdFindAttrC(acdAttrAppl, "relations");
         tokenhandle = ajStrTokenNewC(thys->AttrStr[i], "|");
+
         while(ajStrTokenNextParse(&tokenhandle, &relation))
         {
             namespace = acdEdamTest(relation);
@@ -31083,12 +31100,47 @@ static const AjPStr acdEdamTest(const AjPStr relation)
     AjPStr token = NULL;
     AjPStr namespace = NULL;
     AjPOboTerm oboterm = NULL;
+    AjPOboTerm obonameterm = NULL;
+    AjPStr namequery = NULL;
+    AjBool obonamefound = ajFalse;
 
     if(!acdEdam)
         return NULL;
 
     if(!ajStrPrefixC(relation, "/edam/"))
-        acdErrorValid("Not an EDAM term in relation '%S'", relation);
+    {
+        ajFmtPrintS(&namequery, "data:%S", relation);        
+        obonameterm = ajOboFetchName(acdEdam, namequery);
+        if(obonameterm)
+        {
+            obonamefound = ajTrue;
+            acdErrorValid("Relation '%S' matches EDAM term /edam/%S/%S",
+                          relation, oboterm->Namespace, oboterm->Id);
+        }
+
+        ajFmtPrintS(&namequery, "topic:%S", relation);        
+        obonameterm = ajOboFetchName(acdEdam, namequery);
+        if(obonameterm)
+        {
+            obonamefound = ajTrue;
+            acdErrorValid("Relation '%S' matches EDAM term /edam/%S/%S",
+                          relation, oboterm->Namespace, oboterm->Id);
+        }
+
+        ajFmtPrintS(&namequery, "operation:%S", relation);        
+        obonameterm = ajOboFetchName(acdEdam, namequery);
+        if(obonameterm)
+        {
+            obonamefound = ajTrue;
+            acdErrorValid("Relation '%S' matches EDAM term /edam/%S/%S",
+                          relation, oboterm->Namespace, oboterm->Id);
+        }
+
+        if(!obonamefound)
+            acdErrorValid("Not an EDAM term in relation '%S'", relation);
+
+        return NULL;
+    }
 
     ajStrExtractFirst(relation, &name, &term);
 
@@ -31096,13 +31148,13 @@ static const AjPStr acdEdamTest(const AjPStr relation)
     if(!ajStrTokenNextParse(&handle, &token)) /* empty */
         acdErrorValid("Bad relation term '%S'", term);
 
-    if(!ajStrTokenNextParse(&handle, &token)) /* "edam" */
+    else if(!ajStrTokenNextParse(&handle, &token)) /* "edam" */
         acdErrorValid("Bad relation term '%S'", term);
 
-    if(!ajStrTokenNextParse(&handle, &namespace))
+    else if(!ajStrTokenNextParse(&handle, &namespace))
         acdErrorValid("Bad relation term '%S'", term);
 
-    if(!ajStrTokenNextParse(&handle, &token))
+    else if(!ajStrTokenNextParse(&handle, &token))
         acdErrorValid("Bad relation term '%S'", term);
 
     ajFmtPrintS(&id, "EDAM:%S", token);
@@ -31110,16 +31162,57 @@ static const AjPStr acdEdamTest(const AjPStr relation)
     oboterm =  ajOboFetchTerm(acdEdam, id);
 
     if(!oboterm)
+    {
+        acdErrorValid("Unknown relation term '%S'", term);
         return NULL;
+    }
 
     if(!ajStrMatchS(id, oboterm->Id))
         acdErrorValid("Relation term '%S' bad id, expected '%S'",
                     term, oboterm->Id);
        
     if(!ajStrMatchS(name, oboterm->Name))
-        acdErrorValid("Relation term '%S' bad name, expected '%S'",
+    {
+        obonamefound = ajFalse;
+
+        ajFmtPrintS(&namequery, "data:%S", name);        
+        obonameterm = ajOboFetchName(acdEdam, namequery);
+        if(obonameterm)
+        {
+            obonamefound = ajTrue;
+            acdErrorValid("Relation term '%S' bad name, expected '%S' "
+                          "but matches name for /edam/%S/%S",
+                          term, oboterm->Name,
+                          obonameterm->Namespace, obonameterm->Id);
+        }
+
+        ajFmtPrintS(&namequery, "topic:%S", name);        
+        obonameterm = ajOboFetchName(acdEdam, namequery);
+        if(obonameterm)
+        {
+            obonamefound = ajTrue;
+            acdErrorValid("Relation term '%S' bad name, expected '%S' "
+                          "but matches name for /edam/%S/%S",
+                          term, oboterm->Name,
+                          obonameterm->Namespace,  obonameterm->Id);
+        }
+
+        ajFmtPrintS(&namequery, "operation:%S", name);        
+        obonameterm = ajOboFetchName(acdEdam, namequery);
+        if(obonameterm)
+        {
+            obonamefound = ajTrue;
+            acdErrorValid("Relation term '%S' bad name, expected '%S' "
+                          "but matches name for /edam/%S/%S",
+                          term, oboterm->Name,
+                          obonameterm->Namespace, obonameterm->Id);
+        }
+
+        if(!obonamefound)
+            acdErrorValid("Relation term '%S' bad name, expected '%S'",
                     term, oboterm->Name);
-       
+    }
+
     if(!ajStrMatchS(namespace, oboterm->Namespace))
         acdErrorValid("Relation term '%S' bad namespace, expected '%S'",
                     term, oboterm->Namespace);
