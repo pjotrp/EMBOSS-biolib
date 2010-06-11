@@ -128,13 +128,13 @@ static int            bamTagExists(const char *tag, const char **tags);
 
 
 
-/* @funcstatic bam_reg2bin ***************************************************
+/* #funcstatic bam_reg2bin ***************************************************
 **
 ** Calculate the minimum bin that contains a region [beg,end).
 **
-** @param [r] beg [ajuint] start of the region, 0-based
-** @param [r] end [ajuint] end of the region, 0-based
-** @return [int] bin
+** #param [r] beg [ajuint] start of the region, 0-based
+** #param [r] end [ajuint] end of the region, 0-based
+** #return [int] bin
 **
 ******************************************************************************/
 
@@ -163,13 +163,13 @@ static inline int bam_reg2bin(ajuint beg, ajuint end)
 
 
 
-/* @funcstatic bam_copy1 *****************************************************
+/* #funcstatic bam_copy1 *****************************************************
 **
 ** Copy an alignment
 **
-** @param [u] bdst [AjPSeqBam] destination alignment struct
-** @param [r] bsrc [const AjPSeqBam] source alignment struct
-** @return [AjPSeqBam] pointer to the destination alignment struct
+** #param [u] bdst [AjPSeqBam] destination alignment struct
+** #param [r] bsrc [const AjPSeqBam] source alignment struct
+** #return [AjPSeqBam] pointer to the destination alignment struct
 **
 ******************************************************************************/
 
@@ -659,7 +659,7 @@ static inline int BAMBGZFMIN(int x, int y);
 
 
 
-/* @funcstatic packInt16 *****************************************************
+/* #funcstatic packInt16 *****************************************************
 **
 ** Undocumented
 ******************************************************************************/
@@ -672,7 +672,7 @@ static inline void packInt16(unsigned char* buffer, ajushort value)
 
 
 
-/* @funcstatic upackInt16 ****************************************************
+/* #funcstatic upackInt16 ****************************************************
 **
 ** Undocumented
 ******************************************************************************/
@@ -685,7 +685,7 @@ static inline int unpackInt16(const unsigned char* buffer)
 
 
 
-/* @funcstatic packInt32 *****************************************************
+/* #funcstatic packInt32 *****************************************************
 **
 ** Undocumented
 ******************************************************************************/
@@ -701,7 +701,7 @@ static inline void packInt32(unsigned char* buffer, ajuint value)
 
 
 
-/* @funcstatic BAMBGZFMIN ****************************************************
+/* #funcstatic BAMBGZFMIN ****************************************************
 **
 ** Undocumented
 ******************************************************************************/
@@ -716,7 +716,7 @@ static inline int BAMBGZFMIN(int x, int y)
 
 /* @funcstatic bamReportError **************************************************
 **
-** Report error and save in the BGZ file error attribute
+** Save error message in the BGZ file error attribute
 **
 ** @param [u] fp [AjPSeqBamBgzf] BGZ file
 ** @param [r] message [const char*] message text
@@ -726,7 +726,7 @@ static inline int BAMBGZFMIN(int x, int y)
 
 static void bamReportError(AjPSeqBamBgzf fp, const char* message)
 {
-    ajErr("bamReportError '%s'", message);
+    ajUser("++bamReportError '%s'", message);
     fp->error = message;
 
     return;
@@ -784,6 +784,7 @@ static AjPSeqBamBgzf bamBgzfOpenfdRead(int fd)
     fp->file_descriptor = fd;
     fp->open_mode = 'r';
     fp->file = file;
+    fseek(fp->file, 0L, SEEK_SET);
 
     return fp;
 }
@@ -1287,7 +1288,7 @@ static int bamReadBlock(AjPSeqBamBgzf fp)
 
     block_address = ftell(fp->file);
 
-    if(bamCacheLoadBlock(fp, block_address))
+    if(bamCacheLoadBlock(fp, block_address)) 
         return 0;
 
     count = fread(header, 1, sizeof(header), fp->file);
@@ -1419,7 +1420,10 @@ int ajSeqBamBgzfRead(AjPSeqBamBgzf fp, void* data, int length)
 
 /* @funcstatic flush_block ***************************************************
 **
-** Undocumented
+** Flush block to output file
+**
+** @param [u] fp [AjPSeqBamBgzf] Output file
+** @return [int] 0 on success, -1 on failure
 ******************************************************************************/
 
 static int flush_block(AjPSeqBamBgzf fp)
@@ -1573,11 +1577,13 @@ int ajSeqBamBgzfEof(AjPSeqBamBgzf fp)
     static unsigned char magic[28] = "\037\213\010\4\0\0\0\0\0\377\6\0"
         "\102\103\2\0\033\0\3\0\0\0\0\0\0\0\0\0";
     unsigned char buf[28];
-    off_t offset;
+    ajint offset;
+    int status;
 
     offset = ftell(fp->file);
 
-    if(fseek(fp->file, -28, SEEK_END) != 0)
+    status = fseek(fp->file, -28, SEEK_END);
+    if(status != 0)
         return -1;
 
     fread(buf, 1, 28, fp->file);
