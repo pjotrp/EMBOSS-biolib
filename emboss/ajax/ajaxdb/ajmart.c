@@ -4920,7 +4920,7 @@ AjBool ajMartTableNameIsProt(const AjPTable t)
 **                   or NULL if mapping cannot be done
 ******************************************************************************/
 
-AjPStr *ajMartCheckHeader(AjPSeqin seqin, AjPMartqinfo qinfo)
+AjPStr* ajMartCheckHeader(AjPSeqin seqin, AjPMartqinfo qinfo)
 {
     AjPMartquery mq = NULL;
     
