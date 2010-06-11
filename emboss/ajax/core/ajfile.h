@@ -385,6 +385,7 @@ AjBool         ajFilenameExistsWrite(const AjPStr filename);
 AjBool         ajFileValueRedirectStderr(void);
 AjBool         ajFileValueRedirectStdin(void);
 AjBool         ajFileValueRedirectStdout(void);
+AjBool         ajFileIsFile(const AjPFile file);
 AjBool         ajFileIsStderr(const AjPFile file);
 AjBool         ajFileIsStdin(const AjPFile file);
 AjBool         ajFileIsStdout(const AjPFile file);
