@@ -20,8 +20,8 @@ section: required [
 
 endsection: required
 
-section: advanced [
-  information: "Advanced section"
+section: additional [
+  information: "Additional section"
   type: "page"
 ]
 
@@ -38,10 +38,10 @@ section: advanced [
     # parameter: "N"
     information: "Maximum number of genes to process or -1 for all."
     default: "25"
-    standard: "$(large)"
+    additional: "$(large)"
   ]
   
-endsection: advanced
+endsection: additional
 
 section: output [
   information: "Output section"
