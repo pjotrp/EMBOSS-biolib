@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.17 $
+** @version $Revision: 1.18 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision: 1.165
@@ -216,6 +216,8 @@ typedef struct RegistrySCoreStyle
 **         Ensembl Genetic Variation Population Adaptor
 ** @attr Sampleadaptor [EnsPGvsampleadaptor]
 **         Ensembl Genetic Variation Sample Adaptor
+** @attr Sourceadaptor [EnsPGvsourceadaptor]
+**         Ensembl Genetic Variation Source Adaptor
 ** @attr Variationadaptor [EnsPGvvariationadaptor]
 **         Ensembl Genetic Variation Variation Adaptor
 ** @@
