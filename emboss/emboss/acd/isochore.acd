@@ -32,7 +32,6 @@ section: additional [
     failrange: "N"
     trueminimum: "Y"
     information: "Window size"
-    trueminimum: "Y"                                    
     warnrange: "N"                                  
     relations: "/edam/data/0001251 Window size"
   ]
