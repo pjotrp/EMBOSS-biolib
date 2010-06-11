@@ -27,6 +27,22 @@ section: input [
     relations: "/edam/data/0002178 1 or more"
   ]
 
+  infile: obofile [
+    nullok: "Y"
+    information: "OBO file"
+  ]
+
+  infile: dbxreffile [
+    nullok: "Y"
+    information: "Dbxref file"
+  ]
+
+  directory: taxdir [
+    nulldefault: "Y"
+    nullok: "Y"
+    information: "Taxonomy directory"
+  ]
+  
 endsection: input
 
 section: output [
@@ -40,7 +56,7 @@ section: output [
     nulldefault: "Y"
     extension: "nulloutfile"
     knowntype: "ajtest output"
-    relations: "/edam/data/0000969 Free text"                                      
+    relations: "/edam/data/0000969 Free text"
   ]
 
   seqout: outseq [
@@ -48,7 +64,7 @@ section: output [
     nullok: "Y"
     nulldefault: "Y"
     type: "any"
-    relations: "/edam/data/0000848 Sequence"                                            
+    relations: "/edam/data/0000848 Sequence"
     relations: "/edam/data/0000849 Sequence record" 
   ]
 
@@ -57,14 +73,14 @@ section: output [
     nullok: "Y"
     nulldefault: "Y"
     type: "any"
-    relations: "/edam/data/0001270 Sequence feature table"                              
+
   ]
 
   outdir: outdir [
     information: "Temporary working file output directory"
     default: "/tmp"
     knowntype: "temporary"
-    relations:  "/edam/data/0001049 Directory name"                                   
+    relations:  "/edam/data/0001049 Directory name"
   ]
 
 endsection: output
