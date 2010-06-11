@@ -304,6 +304,7 @@ ajNamRootVersion -
 ajNamRoot -
 ajNamRootBase -
 #ajnexus
+#ajobo
 #ajpat
 #ajpdb
 #ajpdbio
@@ -338,6 +339,7 @@ ajReportAppendSubTailC ajReportAppendSubtailC
 ajReportAppendSubTail ajReportAppendSubtailS
 ajReportSeqName ajReportGetSeqnameSeq
 ajReportFileAdd ajReportAddFile
+#ajresource
 #ajseq
 ajSeqNewC ajSeqNewNameC
 ajSeqNewStr ajSeqNewNameS
@@ -474,6 +476,7 @@ ajSeqCrc ajSeqstrCalcCrc
 ajSeqGapStandardS -
 ajSeqCalcCrc -
 #ajseqabi
+#ajseqbam
 #ajseqread
 #ajseqtype
 #ajseqwrite
@@ -692,12 +695,12 @@ ajSysFopen ajSysFuncFopen
 ajSysStrdup ajSysFuncStrdup
 ajSysStrtok ajSysFuncStrtok
 ajSysStrtokR ajSysFuncStrtokR
-ajSystem ajSysSystem
-ajSysSystem ajSysExecS
 ajSystemEnv ajSysExecEnvS
-ajSystemEnv ajSysExecEnvS
+ajSysSystemEnv ajSysExecEnvS
 ajSystemOut ajSysExecOutnameS
 ajSysSystemOut ajSysExecOutnameS
+ajSystem ajSysSystem
+ajSysSystem ajSysExecS
 ajSysBasename ajFilenameTrimPath
 ajSysIsDirectory -
 ajSysIsRegular -
@@ -725,6 +728,7 @@ ajStrTableCmpCaseC ajTablecharCmpCase
 ajStrTableHashC ajTablecharHash
 ajStrTableHashCaseC ajTablecharHashCase
 ajStrTablePrintC ajTablecharPrint
+#ajtax
 #ajtime
 ajTimeSet ajTimeNewDayFmt
 ajTimeToday ajTimeNewToday
@@ -774,7 +778,6 @@ ajAcdProgram -
 #samtoolsbam
 #samtoolsbam_aux
 #samtoolsbam_import
-#samtoolsbgzf
 #samtoolskstring
 #samtoolssam_header
 #template
@@ -935,7 +938,6 @@ ajHistSetMultiYTitle ajHistSetmultiYlabelS
 ajHistSetPtrToData ajHistDataAdd
 ajHistCopyData ajHistDataCopy
 #ajmart
-#ajseqdb-no
 #ajseqdb
 #ajacd
 ajAcdGetBool ajAcdGetBoolean
@@ -984,6 +986,7 @@ ajGraphInitPV ajAcdGraphicsInitPV
 #enskaryotype
 #ensmapper
 #ensmarker
+ensMarkeradaptorFetchAttributes -
 #ensmetacoordinate
 #ensmetainformation
 #ensmiscellaneous
@@ -1036,6 +1039,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #aaindexextract
 #abiview
 #acdc
+#acdgalaxy
 #acdlog
 #acdpretty
 #acdrelations
