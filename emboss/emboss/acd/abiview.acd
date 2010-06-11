@@ -2,7 +2,7 @@ application: abiview [
   documentation: "Display the trace in an ABI sequencer file"
   groups: "Display"
   relations: "/edam/topic/0000102 Sequencing"
-  relations: "/edam/topic/0000337 Visualisation and rendering"
+  relations: "/edam/operation/0000337 Visualisation and rendering"
   relations: "/edam/operation/0000564 Sequence visualisation"
 ]
 
@@ -17,7 +17,7 @@ section: input [
     binary: "Y"
     knowntype: "abi trace"
     information: "ABI sequencing trace file"
-    relations: "/edam/data/0000924 Sequence read data"
+    relations: "/edam/data/0000924 Sequence trace"
     relations: "/edam/data/0001207 Nucleotide sequence"
   ]
 
