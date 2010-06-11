@@ -12,6 +12,7 @@ debug             boolean "N"                   "Write debug output to program.d
 debugbuffer       boolean "N"                   "Buffer debug output to save I/O time but risk losing output on a crash"
 die               boolean "Y"                   "Print program abort messages to standard error"
 docroot           string  "(install directory)" "EMBOSS directory for finding application documentation"
+edam           	  string  ""                    "Full path to EDAM obo format file for checking of relations attributes by acdvalid"
 embossrc          string  "(current directory)" "Directory to search for an additional .embossrc file"
 featwarn          boolean "Y"                   "Print warning messages when parsing feature table input"
 filter            boolean "Y"                   "By default read standard input and write to standard output unless -nofilter is on the command line"
