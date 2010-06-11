@@ -2631,7 +2631,7 @@ AjBool ajNamDbData(AjPSeqQuery qry)
        */
 
     ajStrDel(&dbtype);
-    
+
     return ajTrue;
 }
 
