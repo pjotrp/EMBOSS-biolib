@@ -96,7 +96,7 @@ typedef struct EmbSWordSeqLocs {
 ** @attr nseqs [ajuint] Number of pattern-sequences word has been seen
 ** @attr nMatches [ajuint] Number of matches in query sequences
 ** @attr lenMatches [ajulong] Total length of extended matches
-** @attr nSeqMatches [ajuint] Number of matches
+** @attr nSeqMatches [ajuint*] Number of matches
 **                            recorded on per pattern-sequence base
 ** @@
 ******************************************************************************/
