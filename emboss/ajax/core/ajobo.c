@@ -545,8 +545,12 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
     AjBool obovalid        = ajTrue;
     AjBool obovalididorder = ajTrue;
     AjBool obovalididunk   = ajTrue;
+    AjPStr namekey = NULL;
+    AjPStr namestr = NULL;
+    AjPList namelist = NULL;
 
     ret = ajOboNew();
+    namelist = ajListNew();
 
     if(validations)
     {
@@ -573,6 +577,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
     }
     
     ret->Termtable = ajTablestrNewLen(35000);
+    ret->Termnametable = ajTablestrNewLen(35000);
     ret->Typedeftable = ajTablestrNew();
     ret->Instancetable = ajTablestrNew();
 
@@ -632,6 +637,29 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                                     "Duplicate %S id '%S'",
                                     stanzatype, id);
                             oldterm = NULL;
+                        }
+
+                        while(ajListGetLength(namelist))
+                        {
+                            namekey = NULL;
+                            ajListstrPop(namelist, &namestr);
+                            if(ajStrGetLen(term->Namespace))
+                                ajFmtPrintS(&namekey, "%S:%S",
+                                            term->Namespace,
+                                            namestr);
+                            else
+                                namekey = ajStrNewS(namestr);
+                            if(term->Obsolete)
+                                ajStrAppendC(&namekey, " (obsolete)");
+                            oldterm = ajTablePut(ret->Termnametable,
+                                                 namekey, term);
+                            if(oldterm)
+                            {
+                                oboWarn(obofile, linecnt,
+                                        "%S Name/Synonym %S duplicates '%S'",
+                                        term->Id, namekey, oldterm->Id);
+                                oldterm = NULL;
+                            }
                         }
                      }
                     else
@@ -825,6 +853,21 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                                     "Multiple '%S' tags for ID '%S'",
                                     name, id);
                         ajStrAssignS(&term->Name, rest);
+                        namekey = ajStrNewS(rest);
+                        ajListstrPushAppend(namelist, namekey);
+                    }
+                    else if(ajStrMatchC(name, "synonym"))
+                    {
+                        if(ajStrGetCharFirst(rest) == '"')
+                        {
+                            i = ajStrFindlastK(rest, '"');
+                            if(i > 1)
+                            {
+                                namekey = ajStrNewRes(i);
+                                ajStrAssignSubS(&namekey, rest, 1, i-1);
+                                ajListstrPushAppend(namelist, namekey);
+                            }
+                        }
                     }
                     else if(ajStrMatchC(name, "namespace"))
                     {
@@ -850,7 +893,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                                     name, id);
                         ajStrAssignS(&term->Comment, rest);
                     }
-                    else if(ajStrMatchC(name, "obsolete"))
+                    else if(ajStrMatchC(name, "is_obsolete"))
                     {
                         if(term->Obsolete)
                             oboWarn(obofile, linecnt,
@@ -937,6 +980,30 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                             "Duplicate %S id '%S'",
                             stanzatype, id);
                     ajOboTermDel(&oldterm);
+                }
+
+                while(ajListGetLength(namelist))
+                {
+                    namekey = NULL;
+                    ajListstrPop(namelist, &namestr);
+                    if(ajStrGetLen(term->Namespace))
+                        ajFmtPrintS(&namekey, "%S:%S",
+                                    term->Namespace,
+                                    namestr);
+                    else
+                        namekey = ajStrNewS(namestr);
+                    if(term->Obsolete)
+                        ajStrAppendC(&namekey, " (obsolete)");
+                            
+                    oldterm = ajTablePut(ret->Termnametable,
+                                         namekey, term);
+                    if(oldterm)
+                    {
+                        oboWarn(obofile, linecnt,
+                                "%S Name/Synonym %S duplicates '%S'",
+                                term->Id, namekey, oldterm->Id);
+                        oldterm = NULL;
+                    }
                 }
 
                 term = NULL;
@@ -1305,6 +1372,7 @@ static AjBool oboCutComment(AjPStr *Pline, AjPStr *Pcomment)
 
 
 
+#if 0
 /* @funcstatic oboCutDbxref *************************************************
 **
 ** Remove trailing dbxrefs in square braces
@@ -1314,7 +1382,6 @@ static AjBool oboCutComment(AjPStr *Pline, AjPStr *Pcomment)
 ** @return [AjBool] True if a trailing dbxref was found
 ******************************************************************************/
 
-#if 0
 static AjBool oboCutDbxref(AjPStr *Pline, AjPStr *Pdbxref)
 {
     ajint i = 0;
@@ -1446,6 +1513,41 @@ AjPOboTerm ajOboFetchTerm(const AjPObo thys, const AjPStr query)
         return NULL;
 
     ret = ajTableFetch(thys->Termtable, query);
+
+    while(ret && ajStrGetLen(ret->Trueid))
+    {
+        if(++irecurs > 256)
+            return NULL;
+
+        ret = ajTableFetch(thys->Termtable, ret->Trueid);
+    }
+
+    return ret;
+}
+
+
+
+
+/* @func ajOboFetchName *******************************************************
+**
+** Retrieves an OBO term by name
+**
+** The name must be an exact match to a name or synonym for the term
+**
+** @param [r] thys [const AjPObo] Parsed ontology
+** @param [r] query [const AjPStr] OBO identifier
+** @return [AjPOboTerm] OBO term
+******************************************************************************/
+
+AjPOboTerm ajOboFetchName(const AjPObo thys, const AjPStr query)
+{
+    AjPOboTerm ret;
+    ajuint irecurs = 0;
+
+    if(!thys)
+        return NULL;
+
+    ret = ajTableFetch(thys->Termnametable, query);
 
     while(ret && ajStrGetLen(ret->Trueid))
     {

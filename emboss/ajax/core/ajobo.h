@@ -15,7 +15,8 @@ extern "C"
 **
 ** OBO parsed data
 **
-** @attr Termtable [AjPTable] Table of terms
+** @attr Termtable [AjPTable] Table of terms by id
+** @attr Termnametable [AjPTable] Table of terms by name
 ** @attr Typedeftable [AjPTable] Table of typedefs
 ** @attr Instancetable [AjPTable] Table of instances
 ** @attr Annotable [AjPTable] Table of annotation stanzas
@@ -27,6 +28,7 @@ extern "C"
 typedef struct AjSObo
 {
     AjPTable Termtable;
+    AjPTable Termnametable;
     AjPTable Typedeftable;
     AjPTable Instancetable;
     AjPTable Annotable;
@@ -136,6 +138,7 @@ AjPOboTag        ajOboTagNew(const AjPStr name, const AjPStr value,
                              ajuint linenum);
 void             ajOboTagDel(AjPOboTag* Ptag);
 AjPOboTerm       ajOboFetchTerm(const AjPObo thys, const AjPStr query);
+AjPOboTerm       ajOboFetchName(const AjPObo thys, const AjPStr query);
 
 /*
 ** End of prototype definitions
