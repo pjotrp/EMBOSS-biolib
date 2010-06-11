@@ -76,7 +76,7 @@ section: output
   outfile: log
   [
     parameter: "Y"
-    information: "edamclean log file"
+    information: "Log file"
     relations:  "/edam/data/0001678 Tool log"
     default: "EDAM_out.log"
   ]

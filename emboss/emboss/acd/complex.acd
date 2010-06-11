@@ -111,6 +111,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "complex output"
+    information: "Program complex output file"
     relations:  "/edam/data/0001259 Sequence complexity"                     
   ]
 
