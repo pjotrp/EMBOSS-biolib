@@ -110,11 +110,11 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs, ajint nrefseq,
 			      const AjPRange uppercase, AjBool number,
 			      AjBool ruler, ajuint nseqs,
 			      ajuint begin, ajuint end);
-static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
-                                         ajuint firstpos, ajuint lastpos,
-                                         ajuint margin);
-static const AjPStr showalign_OutputTicks(ajint nrefseq, const AjPSeq ref,
-                                          ajuint *firstpos, ajuint *lastpos);
+static AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
+                                   ajuint firstpos, ajuint lastpos,
+                                   ajuint margin);
+static AjPStr showalign_OutputTicks(ajint nrefseq, const AjPSeq ref,
+                                    ajuint *firstpos, ajuint *lastpos);
 static ajint showalign_OutputSeq(AjPFile outf, const AjPSeq seq,
 				 ajint pos, ajint end, ajint width,
 				 ajint margin, AjBool html,
@@ -878,8 +878,8 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
 
     ajuint firstpos = 0;
     ajuint lastpos = 0;
-    const AjPStr numline = NULL;
-    const AjPStr tickline = NULL;
+    AjPStr numline = NULL;
+    AjPStr tickline = NULL;
     AjPStr showstr = NULL;
     ajuint istart = 0;
     ajuint iend = 0;
@@ -989,6 +989,8 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
 	ajFmtPrintF(outf, "</pre>\n");
 
     ajStrDel(&showstr);
+    ajStrDel(&tickline);
+    ajStrDel(&numline);
 
     return 0;
 }
@@ -1006,13 +1008,13 @@ static ajint showalign_Output(AjPFile outf, AjPSeq const * seqs,
 ** @param [r] firstpos [ajuint] length of left hand margin
 ** @param [r] lastpos [ajuint] length of left hand margin
 ** @param [r] margin [ajuint] length of left hand margin
-** @return [const AjPStr] Numbers line with margin at start
+** @return [AjPStr] Numbers line with margin at start
 ** @@
 ******************************************************************************/
 
-static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
-                                         ajuint firstpos, ajuint lastpos,
-                                         ajuint margin)
+static AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
+                                   ajuint firstpos, ajuint lastpos,
+                                   ajuint margin)
 {
     AjPStr line;
     ajuint i;
@@ -1104,12 +1106,12 @@ static const AjPStr showalign_OutputNums(ajint nrefseq, const AjPSeq ref,
 ** @param [r] ref [const AjPSeq] Reference sequence
 ** @param [w] firstpos [ajuint*] length of left hand margin
 ** @param [w] lastpos [ajuint*] length of left hand margin
-** @return [const AjPStr] Tick line matching reference sequence
+** @return [AjPStr] Tick line matching reference sequence
 ** @@
 ******************************************************************************/
 
-static const AjPStr showalign_OutputTicks(ajint nrefseq, const AjPSeq ref,
-                                          ajuint* firstpos, ajuint* lastpos)
+static AjPStr showalign_OutputTicks(ajint nrefseq, const AjPSeq ref,
+                                    ajuint* firstpos, ajuint* lastpos)
 {
     AjPStr line = NULL;
     const AjPStr refstr = ajSeqGetSeqS(ref);

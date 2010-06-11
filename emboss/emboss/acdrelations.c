@@ -270,8 +270,8 @@ int main(ajint argc, char **argv)
   embInitP("acdrelations",argc,argv,"MYEMBOSS");
     
   /* ACD data handling */
-  inf_edam   = ajAcdGetDatafile("infileedam");
-  inf_ktype  = ajAcdGetInfile("infiletype");
+  inf_edam   = ajAcdGetDatafile("inedamfile");
+  inf_ktype  = ajAcdGetInfile("intypefile");
   acdinlist  = ajAcdGetDirlist("indir");  
   acdoutdir  = ajAcdGetOutdir("outdir");
   

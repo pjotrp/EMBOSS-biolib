@@ -74,6 +74,7 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
 
     ajStrDel(&line);
+    ajStrDel(&option);
 
     embExit();
 

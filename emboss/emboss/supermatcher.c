@@ -287,6 +287,7 @@ int main(int argc, char **argv)
     for(k=0;k<nkmers;k++)
     {
 	AJFREE(wordsw[k]->seqindxs);
+	AJFREE(wordsw[k]->nSeqMatches);
 
 	for(j=0;j<wordsw[k]->nseqs;j++)
 	    AJFREE(wordsw[k]->locs[j]);
