@@ -22,12 +22,18 @@ int main(int argc, char **argv)
     ajint i = 0;
     AjPStr kimout = NULL;
     AjPStr dir = NULL;
+    AjPFile obofile = NULL;
+    AjPFile resfile = NULL;
+    AjPDir taxdir = NULL;
 
     embInit("ajtest", argc, argv);
 
     seqall = ajAcdGetSeqall ("sequence");
     seqset = ajAcdGetSeqset ("bsequence");
     dir = ajAcdGetOutdirName("outdir");
+    obofile = ajAcdGetInfile ("obofile");
+    taxdir = ajAcdGetDirectory ("taxdir");
+    resfile = ajAcdGetInfile ("dbxreffile");
 
     ajUser("Directory '%S'", dir);
     ajUser("Set of %d", ajSeqsetGetSize(seqset));
@@ -43,6 +49,18 @@ int main(int argc, char **argv)
     ajSeqsetDel(&seqset);
     ajStrDel(&kimout);
     ajStrDel(&dir);
+
+    if(taxdir)
+        ajTaxLoad(taxdir);
+    ajDirDel(&taxdir);
+
+    if(obofile)
+        ajOboParseObo(obofile, "");
+    ajFileClose(&obofile);
+
+    if(resfile)
+        ajResourceParse(resfile, "");
+    ajFileClose(&resfile);
 
     embExit();
 
