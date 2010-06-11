@@ -126,7 +126,7 @@ section: output [
     parameter: "Y"
     knowntype: "distance matrix"
     information: "Phylip distance matrix output file"
-    relations:  "/edam/data/0000289 Sequence distance matrix"       
+    relations:  "/edam/data/0000870 Sequence distance matrix"       
   ]
 
 endsection: output

@@ -16,7 +16,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "The sequence alignment to be displayed."
-    relations: "/edam/data/0000848 Sequence alignment data"                             
+    relations: "/edam/data/0000863 Sequence alignment"                             
   ]
 
   matrix: matrix [
@@ -50,7 +50,7 @@ section: additional [
            sequence. By default the consensus sequence is used as the
            reference sequence."
     knowntype: "sequence id input"
-    relations:  "/edam/data/0000848 Sequence unique identifier"                     
+    relations:  "/edam/data/0001063 Sequence unique identifier"                     
   ]
 
   boolean: bottom [

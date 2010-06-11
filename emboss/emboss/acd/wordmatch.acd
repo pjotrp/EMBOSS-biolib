@@ -85,7 +85,7 @@ section: output [
     nullok: "@(!$(dumpfeat))"
     ofname: "$(asequence.name)"
     offormat: "gff"
-    relations: "/edam/data/0000848 Sequence feature table"                              
+    relations: "/edam/data/0001270 Sequence feature table"                              
   ]
 
   featout: boutfeat [
@@ -93,7 +93,7 @@ section: output [
     ofname: "$(bsequence.name)"
     offormat: "gff"
     nullok: "@(!$(dumpfeat))"
-    relations: "/edam/data/0000848 Sequence feature table"                              
+    relations: "/edam/data/0001270 Sequence feature table"                              
   ]
  
 endsection: output

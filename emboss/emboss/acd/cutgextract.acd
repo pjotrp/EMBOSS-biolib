@@ -18,7 +18,7 @@ section: input [
     parameter: "Y"
     information: "Codon usage directories"
     knowntype: "codon usage"
-    relations:  "/edam/data/0001597 Codon usage table file"                         
+    relations:  "/edam/data/0001597 Codon usage table"                         
   ]
 
 endsection: input
@@ -53,7 +53,7 @@ section: advanced [
     default: "*"
     information: "Species wildcard"
     knowntype: "wildcard string"
-    relations:  "/edam/data/0000968 Wildcard string"                                
+    relations:  "/edam/data/0000968 Keyword"                                
   ]
 
   boolean: allrecords [

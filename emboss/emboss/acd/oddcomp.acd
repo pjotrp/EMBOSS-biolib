@@ -25,7 +25,7 @@ section: input [
            'compseq' that is used to set the minimum frequencies of words in
            this analysis."
     knowntype: "compseq output"
-    relations:  "/edam/data/0000848 Sequence composition report"                    
+    relations:  "/edam/data/0001261 Sequence composition"                    
   ]
 
 endsection: input

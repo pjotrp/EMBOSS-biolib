@@ -14,7 +14,7 @@ section: input [
     parameter: "Y"
     information: "Profile or weight matrix file"
     knowntype: "profile or matrix"
-    relations:  "/edam/data/0000848 Sequence profile"                               
+    relations:  "/edam/data/0001354 Sequence profile"                               
   ]
 
   seqall: sequence [
@@ -35,7 +35,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "profit output"
-    relations:  "/edam/data/0000300 Sequence-profile alignment"                   
+    relations:  "/edam/data/0000869 Sequence-profile alignment"                   
   ]
 
 endsection: output

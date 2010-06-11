@@ -14,7 +14,7 @@ section: input [
   features: features [
     parameter: "Y"
     type: "any"
-    relations: "/edam/data/0000848 Sequence feature table"                              
+    relations: "/edam/data/0001270 Sequence feature table"                              
   ]
 
 endsection: input
@@ -27,7 +27,7 @@ section: output [
   featout: outfeat [
     parameter: "Y"
     type: "$(features.type)"
-    relations: "/edam/data/0000848 Sequence feature table"                              
+    relations: "/edam/data/0001270 Sequence feature table"                              
   ]
 
 endsection: output

@@ -394,7 +394,7 @@ section: output [
            feature types. If you specify an invalid feature type name, then
            the default name 'misc_feature' is used."
     knowntype: "feature key"
-    relations:  "/edam/data/0000848 Sequence feature type"                          
+    relations:  "/edam/data/0001020 Sequence feature key"                          
   ]
 
   report: outfile [

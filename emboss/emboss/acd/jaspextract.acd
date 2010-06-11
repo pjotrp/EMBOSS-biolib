@@ -20,7 +20,7 @@ section: input [
     help: "The FlatFileDir directory containing the .pfm files
            and the matrix_list.txt file"
     knowntype: "Jaspar database"
-    relations: "/edam/data/0000744 Sequence profile library"                                           
+    relations: "/edam/data/0000583 Directory"                                           
   ]
 
 endsection: input

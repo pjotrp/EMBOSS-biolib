@@ -49,7 +49,7 @@ section: input [
            For example, [CG](5)TG{A}N(1,5)C"
     type: "nucleotide"
     pmismatch: "0"
-    relations: "EMBOSS sequence pattern"                                   
+    relations: "/edam/data/0001353 Sequence motif"
   ]
 
 endsection: input

@@ -49,7 +49,7 @@ section: input [
            For example, [DE](2)HS{P}X(2)PX(2,4)C"
     type: "protein"
     pmismatch: "0"
-    relations: "EMBOSS sequence pattern"                                   
+    relations: "/edam/data/0001353 Sequence motif" 
   ]
 
 endsection: input

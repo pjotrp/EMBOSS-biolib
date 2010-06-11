@@ -16,7 +16,7 @@ section: input [
     aligned: "Y"
     minseqs: "2"
     help: "File containing a sequence alignment."
-    relations: "/edam/data/0000848 Sequence alignment data"                             
+    relations: "/edam/data/0000863 Sequence alignment"                             
   ]
 
   matrix: datafile [
@@ -89,7 +89,7 @@ section: output [
     default: ""
     information: "Name of the consensus sequence"
     knowntype: "sequence id output"
-    relations:  "/edam/data/0000848 Sequence unique identifier"                     
+    relations:  "/edam/data/0001063 Sequence identifier"                     
   ]
 
 endsection: output

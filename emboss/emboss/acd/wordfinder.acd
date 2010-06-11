@@ -106,7 +106,7 @@ section: additional [
     default: "0"
     minimum: "0"
     information: "Maximum alignment length (zero for no limit)"
-    relations: "/edam/data/0002136 Alignment width"
+    relations: "/edam/data/0002136 Sequence width"
   ]
 
   integer: lowmatch [
@@ -122,7 +122,7 @@ section: additional [
     default: "0"
     minimum: "0"
     information: "Minimum alignment length (zero for no limit)"
-    relations: "/edam/data/0002136 Alignment width"
+    relations: "/edam/data/0002136 Sequence width"
   ]
 
 endsection: additional

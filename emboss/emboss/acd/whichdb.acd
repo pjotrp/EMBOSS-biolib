@@ -17,7 +17,7 @@ section: input [
     parameter: "Y"
     information: "ID or Accession number"
     knowntype: "sequence id input"
-    relations:  "/edam/data/0000848 Sequence unique identifier"                     
+    relations:  "/edam/data/0001063 Sequence identifier"                     
   ]
 
 endsection: input

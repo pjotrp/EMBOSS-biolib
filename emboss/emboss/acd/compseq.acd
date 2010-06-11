@@ -30,7 +30,7 @@ section: input [
            frequencies, and you must use one made from nucleotide frequencies
            if you are analysing a nucleotide sequence."
     knowntype: "compseq output"
-    relations:  "/edam/data/0000848 Sequence composition report"                    
+    relations:  "/edam/data/0001261 Sequence composition"                    
   ]
 
 endsection: input
@@ -136,7 +136,7 @@ section: output [
     help: "This is the results file."
     information: "Program compseq output file"
     knowntype: "compseq output"
-    relations:  "/edam/data/0000848 Sequence composition report"                    
+    relations:  "/edam/data/0001261 Sequence composition"                    
   ]
 
   boolean: zerocount [

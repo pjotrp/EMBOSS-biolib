@@ -20,7 +20,7 @@ section: input [
 
   features: features [
     parameter: "Y"
-    relations: "/edam/data/0000848 Sequence feature table"                              
+    relations: "/edam/data/0001270 Sequence feature table"                              
   ]
 
 endsection: input
@@ -33,7 +33,7 @@ section: output [
   report: outfile [
     parameter: "Y"
     rformat: "gff"
-    relations: "/edam/data/0000848 Sequence feature table"                              
+    relations: "/edam/data/0001270 Sequence feature table"                              
   ]
 
 endsection: output

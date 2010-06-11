@@ -57,7 +57,7 @@ section: output [
     nullok: "Y"
     nulldefault: "Y"
     type: "any"
-    relations: "/edam/data/0000848 Sequence feature table"                              
+    relations: "/edam/data/0001270 Sequence feature table"                              
   ]
 
   outdir: outdir [

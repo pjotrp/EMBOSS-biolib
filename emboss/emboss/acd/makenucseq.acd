@@ -18,7 +18,7 @@ section: input [
            end trimmed to be in the correct reading frame."
     nullok: "Y"
     knowntype: "codon usage"
-    relations:  "/edam/data/0001597 Codon usage table file"                         
+    relations:  "/edam/data/0001597 Codon usage table"                         
   ]
 
 endsection: input

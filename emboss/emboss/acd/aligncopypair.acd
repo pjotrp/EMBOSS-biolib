@@ -25,7 +25,7 @@ seqset: sequences
     type: "gapany"
     aligned: "Y"
     help: "File containing a sequence alignment."
-    relations: "/edam/data/0000848 Sequence alignment data"                             
+    relations: "/edam/data/0000863 Sequence alignment"                             
 ]
 
 endsection: input
@@ -56,7 +56,7 @@ section: additional
     default: ""
     information: "Name of the alignment"
     knowntype: "sequence id output"
-    relations:  "/edam/data/0000848 Sequence unique identifier"                     
+    relations:  "/edam/data/0001063 Sequence identifier"                     
   ]
 
   string: comment 

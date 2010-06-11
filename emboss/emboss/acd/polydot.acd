@@ -71,7 +71,7 @@ section: output [
     standard: "$(dumpfeat)"
     nullok: "@(!$(dumpfeat))"
     nulldefault: "@(!$(dumpfeat))"
-    relations: "/edam/data/0000848 Sequence feature table"                              
+    relations: "/edam/data/0001270 Sequence feature table"                              
   ]
 
   graph: graph [

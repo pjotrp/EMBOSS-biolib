@@ -14,7 +14,7 @@ section: input [
     parameter: "Y"
     type: "gapany"
     aligned: "Y"
-    relations: "/edam/data/0000848 Sequence alignment data"                             
+    relations: "/edam/data/0000863 Sequence alignment"                             
   ]
 
 endsection: input

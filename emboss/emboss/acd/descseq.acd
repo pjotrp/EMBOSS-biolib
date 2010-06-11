@@ -30,7 +30,7 @@ section: additional [
     default: ""
     information: "Name of the sequence"
     knowntype: "sequence id output"
-    relations:  "/edam/data/0000848 Sequence unique identifier"                     
+    relations:  "/edam/data/0001063 Sequence identifier"                     
   ]
 
   string: description [

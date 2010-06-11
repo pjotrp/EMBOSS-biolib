@@ -15,7 +15,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     minseqs: "2"
-    relations: "/edam/data/0000848 Sequence alignment data"                             
+    relations: "/edam/data/0000863 Sequence alignment"                             
   ]
 
   list: type [

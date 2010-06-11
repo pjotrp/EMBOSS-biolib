@@ -48,7 +48,7 @@ section: input [
     minimum: "0"
     default: "0"
     help: "Minimum alignment score to report an alignment."
-    relations: "EDAM: Generic float"                                       
+    relations: "/edam/data/0002146 Threshold"                             
   ]
   
 endsection: input

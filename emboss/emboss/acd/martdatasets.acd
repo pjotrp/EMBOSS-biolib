@@ -14,7 +14,7 @@ section: input [
     standard: "Y"
     default: "ensembl"
     information: "Mart name"
-    relations: "/edam/data/0000600 Database name"
+    relations: "/edam/data/0001056 Database name"
   ]
 
 

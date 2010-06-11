@@ -36,7 +36,7 @@ section: required [
     help: "This sets the score for each CG sequence found. A value of
            17 is more sensitive, but 28 has also been used with some
            success."
-    relations: "/edam/data/0002146 Score"                                     
+    relations: "/edam/data/0001772 Score"                                     
   ]
 
 endsection: required

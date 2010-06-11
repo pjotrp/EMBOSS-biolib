@@ -111,7 +111,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "complex output"
-    relations:  "/edam/data/0000848 Sequence complexity report"                     
+    relations:  "/edam/data/0001259 Sequence complexity"                     
   ]
 
   outfile: ujtablefile [
