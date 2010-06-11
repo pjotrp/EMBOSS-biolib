@@ -826,11 +826,8 @@ static SeqOInFormat seqInFormatDef[] =
 **       AJFALSE, AJFALSE, seqReadFastqInt, AJFALSE, AJFALSE},
 */
   {"sam",         "Sequence Alignment/Map (SAM) format",
-       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, seqReadSam, AJFALSE, AJFALSE},
-  {"bam",         "Binary Sequence Alignment/Map (BAM) format",
-       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE, seqReadBam, AJFALSE, AJTRUE},
   {"genbank",     "Genbank entry format",
        AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,
        AJTRUE,  AJTRUE,  seqReadGenbank, AJFALSE, AJFALSE},
@@ -963,6 +960,9 @@ static SeqOInFormat seqInFormatDef[] =
   {"abi",         "ABI trace file",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadAbi, AJFALSE, AJTRUE},
+  {"bam",         "Binary Sequence Alignment/Map (BAM) format",
+       AJFALSE, AJTRUE, AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE, seqReadBam, AJFALSE, AJTRUE},
   {NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, 0, 0}
 };
 
@@ -2320,6 +2320,7 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     ajuint jstat = 0;
 
     AjPFilebuff buff = seqin->Filebuff;
+    AjBool regfile = ajFalse;
     AjBool ok;
 
     ajSeqClear(thys);
@@ -2375,10 +2376,19 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     if(!seqin->Format)
     {			   /* no format specified, try all defaults */
 
+        regfile = ajFileIsFile(ajFilebuffGetFile(seqin->Filebuff));
+
 	for(i = 1; seqInFormatDef[i].Name; i++)
 	{
 	    if(!seqInFormatDef[i].Try)	/* skip if Try is ajFalse */
 		continue;
+
+            if(seqInFormatDef[i].Binary && !regfile)
+            {
+                ajDebug("seqRead: binary stdin skip format %d (%s)\n",
+                        i, seqInFormatDef[i].Name);
+                continue;
+            }
 
 	    ajDebug("seqRead:try format %d (%s)\n",
 		    i, seqInFormatDef[i].Name);
@@ -2419,7 +2429,7 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    if(seqin->Format)
 		break;			/* we read something */
 
-	    ajFilebuffTrace(seqin->Filebuff);
+            ajFilebuffTrace(seqin->Filebuff);
 	}
 
 	if(!seqin->Format)
@@ -5494,9 +5504,9 @@ static AjBool seqReadRaw(AjPSeq thys, AjPSeqin seqin)
 	}
 	seqAppend(&thys->Seq, seqReadLine);
 	seqin->Records++;
+        ajDebug("read %d lines\n", seqin->Records);
     }
 
-    ajDebug("read %d lines\n", seqin->Records);
     ajFilebuffClear(buff, 0);
 
     if(!seqin->Records)
@@ -9003,6 +9013,7 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
     AjPStr qualstr = NULL;
     AjPStr tagstr = NULL;
     unsigned char dp;
+    ajint filestat;
 
     if(!called)
     {
@@ -9016,15 +9027,14 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
 
     if(!seqin->Data)
     {
+        ajFileTrace(infile);
+        ajFilebuffTrace(buff);
         AJNEW0(bamdata);
-        seqin->Data = bamdata;
 
         /* reset to beginning of file -
         ** has at least been tested for blank lines */
-        ajFileSeek(ajFilebuffGetFile(buff), 0L, 0);
+        filestat = ajFileSeek(infile, 0L, SEEK_SET);
 
-        ajDebug("bam input file '%F' fd %d\n", infile,
-               fileno(ajFilebuffGetFileptr(buff)));
         /* reopen BAM file as a BGZF file */
         bamdata->gzfile = ajSeqBamBgzfOpenfd(fileno(ajFilebuffGetFileptr(buff)),
                                              "rb");
@@ -9039,25 +9049,35 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
 
 	status = ajSeqBamBgzfEof(bamdata->gzfile);
 
-	if (status < 0)
+	if (status < 0 && (errno == ESPIPE))
         {
             /*
             ** If the file is a pipe, checking the EOF marker will *always* fail
             ** with ESPIPE.  Suppress the error message in this case.
             */
-            if (errno != ESPIPE)
-                perror("seqReadBam ajSeqBamBgzfEof");
 	}
-	else if (status == 0)
-            fprintf(stderr, "seqReadBam EOF marker is absent.\n");
+	else if (status <= 0)
+        {
+            /* seqReadBam EOF marker is absent */
+            ajSeqBamBgzfClose(bamdata->gzfile);
+            AJFREE(bamdata);
+            ajFileSeek(infile,filestat,0);
+            ajFilebuffResetPos(buff);
+            ajFileTrace(infile);
+            ajFilebuffTrace(buff);
+            return ajFalse;
+        }
 
         status = ajSeqBamBgzfRead(bamdata->gzfile, bambuf, 4);
 
         if(status < 0)
-            ajErr("seqReadBam status %d BAD error '%s'",
-                  status, bamdata->gzfile->error);
-        else
-            ajDebug("seqReadBam status %d OK\n", status);
+        {
+            ajSeqBamBgzfClose(bamdata->gzfile);
+            AJFREE(bamdata);
+            ajFileSeek(infile,filestat,0);
+            ajFilebuffResetPos(buff);
+            return ajFalse;
+        }
 
         ajDebug("gzfile %x  fd:%d file:%x ubs:%d cbs:%d blen:%d "
                "boff:%d cache:%d open:'%c'\n",
@@ -9070,12 +9090,13 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
                bamdata->gzfile->open_mode);
 
         if (strncmp(bambuf, "BAM\001", 4))
-            ajErr("bam bad magic bytes '%x' '%x' '%x' '%x'",
-                   (int) bambuf[0], (int) bambuf[1],
-                   (int) bambuf[2], (int) bambuf[3]);
-
-        if (strncmp(bambuf, "BAM\001", 4))
+        {
+            ajSeqBamBgzfClose(bamdata->gzfile);
+            AJFREE(bamdata);
+            ajFileSeek(infile,filestat,0);
+            ajFilebuffResetPos(buff);
             return ajFalse;
+        }
 
         /* BAM header */
 
@@ -9122,6 +9143,7 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
         }
 
         bamdata->bam = (AjPSeqBam)calloc(1, sizeof(AjOSeqBam));
+        seqin->Data = bamdata;
     }
 
     /* next BAM record */
@@ -9330,6 +9352,9 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
     
     ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
+    if(ajStrGetCharFirst(seqReadLine) != '@')
+        return ajFalse;
+
     while(ok && ajStrGetCharFirst(seqReadLine) == '@')
     {
         ajStrTokenAssignC(&handle, seqReadLine, "\t");
@@ -9374,41 +9399,41 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
 
     seqin->Records++;
 
-    ajStrTokenAssignC(&handle, seqReadLine, "\t");
+    ajStrTokenAssignC(&handle, seqReadLine, "\t\n");
     ajStrTokenNextParseNoskip(&handle,&token); /* QNAME */
-    ajUser("QNAME '%S'", token);
-    seqSetName(thys, token);
+    ajDebug("QNAME '%S'\n", token);
+    seqSetNameNospace(&thys->Name, token);
 
     ajStrTokenNextParseNoskip(&handle,&token); /* FLAG */
-    ajUser("FLAG  '%S'", token);
+    ajDebug("FLAG  '%S'\n", token);
     ajStrToUint(token, &flags);
-    ajUser("flags %x", flags);
+    ajDebug("flags %x\n", flags);
     ajStrTokenNextParseNoskip(&handle,&token); /* RNAME */
-    ajUser("RNAME '%S'", token);
+    ajDebug("RNAME '%S'\n", token);
     ajStrTokenNextParseNoskip(&handle,&token); /* POS */
-    ajUser("POS   '%S'", token);
+    ajDebug("POS   '%S'\n", token);
     ajStrTokenNextParseNoskip(&handle,&token); /* MAPQ */
-    ajUser("MAPQ  '%S'", token);
+    ajDebug("MAPQ  '%S'\n", token);
     ajStrTokenNextParseNoskip(&handle,&token); /* CIGAR */
-    ajUser("CIGAR '%S'", token);
+    ajDebug("CIGAR '%S'\n", token);
     ajStrTokenNextParseNoskip(&handle,&token); /* MRNM */
-    ajUser("MRNM  '%S'", token);
+    ajDebug("MRNM  '%S'\n", token);
     ajStrTokenNextParseNoskip(&handle,&token); /* MPOS */
-    ajUser("MPOS  '%S'", token);
+    ajDebug("MPOS  '%S'\n", token);
     ajStrTokenNextParseNoskip(&handle,&token); /* ISIZE */
-    ajUser("ISIZE '%S'", token);
+    ajDebug("ISIZE '%S'\n", token);
     ajStrTokenNextParseNoskip(&handle,&token); /* SEQ */
-    ajUser("SEQ   '%S'", token);
+    ajDebug("SEQ   '%S'\n", token);
     seqAppend(&thys->Seq, token);
     seqlen = MAJSTRGETLEN(token);
     ajStrTokenNextParseNoskip(&handle,&token); /* QUAL */
-    ajUser("QUAL  '%S'", token);
+    ajDebug("QUAL  '%S'", token);
     if(MAJSTRGETLEN(token) != seqlen)
     {
       	ajWarn("SAM quality length mismatch '%F' '%S' "
-               "expected: %u found: %u",
+               "expected: %u found: %u '%S' '%S'",
 	       infile, thys->Name,
-	       seqlen, ajStrGetLen(seqQualStr));
+	       seqlen, ajStrGetLen(seqQualStr), thys->Seq, token);
     }
     
     cp = MAJSTRGETPTR(token);
@@ -9431,9 +9456,9 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
         if(iqual < qmin)
 	{
             ajWarn("SAM '%F' sequence '%S' "
-                   "quality value '%c' too low",
+                   "quality value %d '%c' too low",
                    infile, thys->Name,
-                   (char) iqual);
+                   (ajint) (cp - MAJSTRGETPTR(token)), (char) iqual);
             iqual = qmin;
 	}
         if(iqual > qmax)
@@ -14557,7 +14582,7 @@ static AjBool seqGcgMsfDots(AjPSeq thys, const AjPSeqin seqin, AjPStr* Pline,
     {
 	if(nlines++)
 	    if(!ajBuffreadLineStore(buff, Pline,
-				   seqin->Text, &thys->TextPtr))
+                                    seqin->Text, &thys->TextPtr))
 		return ajFalse;
 
 	ajDebug("testing line %d\n'%S'\n", nlines,*Pline);
