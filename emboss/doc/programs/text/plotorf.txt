@@ -71,7 +71,8 @@ Version: EMBOSS:6.2.0
                                   format, or reference (input USA)
    -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tek, tekt, none, data, xterm, png, gif)
+                                  tek, tekt, none, data, xterm, png, gif, pdf,
+                                  svg, pdf, svg)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:

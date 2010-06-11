@@ -1079,7 +1079,7 @@ valid: ""<br>
 minimum: <i>(-FLT_MAX)</i><br>
 maximum: <i>(FLT_MAX)</i><br>
 increment: 0<br>
-precision: 0<br>
+precision: 3<br>
 warnrange: Y<br>
 size: 1<br>
 sum: 1.0<br>
@@ -4210,7 +4210,7 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   <p>precision: <i>integer<i></p>
   </td>
   <td>
-  <p>(Not used by ACD) Floating precision for GUIs<br>Default: 0</p>
+  <p>(Not used by ACD) Floating precision for GUIs<br>Default: 3</p>
   </td>
  </tr>
 
@@ -12810,6 +12810,18 @@ a variable to be defined in this file.</p>
   </td>
   <td>
   <p>EMBOSS directory for finding application documentation<br>Default: <i>(install directory)</i></p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>EMBOSS_EDAM</p>
+  </td>
+  <td>
+  <p>string</p>
+  </td>
+  <td>
+  <p>Full path to EDAM obo format file for checking of relations attributes by acdvalid<br>Default: ""</p>
   </td>
  </tr>
 

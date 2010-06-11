@@ -19,7 +19,8 @@ Version: EMBOSS:6.2.0
                                   1,5,HG,8,10,HY,23,45,SR,57,99,UG
    -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tek, tekt, none, data, xterm, png, gif)
+                                  tek, tekt, none, data, xterm, png, gif, pdf,
+                                  svg, pdf, svg)
 
    Additional (Optional) qualifiers:
    -cyssymbol          menu       [CF] Code representing shape and colour for

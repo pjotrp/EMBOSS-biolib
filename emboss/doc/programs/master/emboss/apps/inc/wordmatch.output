@@ -29,7 +29,7 @@
 #---------------------------------------
 </pre>
 </td></tr></table><p>
-<p><h3>File: hba_human.gff</h3>
+<p><h3>File: HBA_HUMAN.gff</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 3
@@ -58,11 +58,11 @@ HBB_HUMAN	wordmatch	polypeptide_region	122	125	1.000	+	.	ID="HBB_HUMAN.3";note="
 <p><h3>File: wordmatch.log</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-Sequence file for patterns: &lt;null&gt;
-Sequence file to be scanned for patterns: &lt;null&gt;
+Small sequence/file for constructing target patterns: &lt;null&gt;
+Large sequence/file to be scanned for patterns: &lt;null&gt;
 Number of sequences in the patterns file: 1
 Pattern/word length: 4
-Number of patterns/words: 139
+Number of patterns/words found: 139
 Number of sequences in the file scanned for patterns: 1
 Number of all matches: 3 (wordmatch finds exact matches only)
 Sum of match lengths: 13
@@ -74,9 +74,9 @@ HBA_HUMAN                                 :        3
 
 Pattern statistics:
 -------------------
-Pattern   #all-matches   avg-match-length
-EFTP   :            1               4.00
-HGKK   :            1               5.00
-WGKV   :            1               4.00
+Pattern   #pat-sequences  #all-matches  avg-match-length
+EFTP   :            1             1              4.00
+HGKK   :            1             1              5.00
+WGKV   :            1             1              4.00
 </pre>
 </td></tr></table><p>

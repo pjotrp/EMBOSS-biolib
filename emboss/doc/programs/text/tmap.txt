@@ -49,7 +49,8 @@ Version: EMBOSS:6.2.0
   [-sequences]         seqset     File containing a sequence alignment
    -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
-                                  tek, tekt, none, data, xterm, png, gif)
+                                  tek, tekt, none, data, xterm, png, gif, pdf,
+                                  svg, pdf, svg)
   [-outfile]           report     [*.tmap] Output report file name
 
    Additional (Optional) qualifiers: (none)
@@ -187,12 +188,12 @@ Output file format
 #=======================================
 
   Start     End TransMem Sequence
-     43      70        1 YMFLLIvLGxPINFlTLyVTvQHKKLRT
-     71      98        2 PLNYILLNLxxAdxFMVLxGFTxTlYTS
+     43      70        1 YMFLLIvLG-PINFlTLyVTvQHKKLRT
+     71      98        2 PLNYILLNL--Ad-FMVL-GFT-TlYTS
     112     140        3 lEGFFATLGGEiALWSLVVLAiERYvVVC
-    148     176        4 FGENHAIMGVAFTWvMALaCAAPPLxGWS
-    201     229        5 ESFVIYMFvVHFTIPmIiIFFCYGqLvxT
-    256     276        6 IMVixFLICWVPYAxVAFYIF
+    148     176        4 FGENHAIMGVAFTWvMALaCAAPPL-GWS
+    201     229        5 ESFVIYMFvVHFTIPmIiIFFCYGqLv-T
+    256     276        6 IMVi-FLICWVPYA-VAFYIF
     285     305        7 PiFMTiPAFFAKSaAIYNPVI
 
 #---------------------------------------
