@@ -2378,6 +2378,7 @@ __deprecated void ajFileUnbuffer(AjPFile thys)
 ** @nam3rule Is Return true if attribute is set
 ** @nam4rule IsAppend Test file is open for appending output
 ** @nam4rule IsEof Test end of file has been reached
+** @nam4rule IsFile Test file is a regular file, not a pipe or terminal
 ** @nam4rule IsStderr Test file is writing to standard error
 ** @nam4rule IsStdin test file is reading from standard input
 ** @nam4rule IsStdout test file is writing to standard output
@@ -2574,6 +2575,33 @@ __deprecated AjBool ajFileEof(const AjPFile thys)
 
 
 
+/* @func ajFileIsFile *********************************************************
+**
+** Tests whether a file object is really a regular file.
+**
+** Used to test for character devices, for example standard input from
+** a terminal.
+**
+** @param [r] file [const AjPFile] File object.
+** @return [AjBool] ajTrue if the file matches stderr.
+** @@
+******************************************************************************/
+
+AjBool ajFileIsFile(const AjPFile file)
+{
+    struct stat buf;
+
+    fstat(fileno(file->fp), &buf);
+
+    if(buf.st_mode & S_IFREG)
+        return ajTrue;
+
+    return ajFalse;
+}
+
+
+
+
 /* @func ajFileIsStderr *******************************************************
 **
 ** Tests whether a file object is really stderr.
@@ -2719,6 +2747,8 @@ void ajFileTrace(const AjPFile file)
 #ifndef WIN32
     ajDebug("  PID:  %d\n", file->Pid);
 #endif
+    ajDebug(" feof:  %d\n", feof(file->fp));
+    ajDebug("ftell:  %ld\n", ftell(file->fp));
     i =  ajListGetLength(file->List);
     ajDebug("  List:  %u\n", i);
 
@@ -3934,13 +3964,15 @@ __deprecated void ajFileBuffReset(AjPFilebuff buff)
 
 void ajFilebuffResetPos(AjPFilebuff buff)
 {
-    ajFilebuffTraceFull(buff, 10, 10);
+    ajDebug("ajFilebuffResetPos   End: %B  Fpos: %ld ftell: %ld\n",
+            buff->File->End, buff->Fpos, ftell(buff->File->fp));
+    /*ajFilebuffTraceFull(buff, 10, 10);*/
 
     buff->Pos  = 0;
     buff->Curr = buff->Lines;
 
     if(!buff->File->End && (buff->File->fp != stdin))
-	ajFileSeek(buff->File, buff->Fpos, SEEK_SET);
+	ajFileSeek(buff->File, buff->File->Filepos, SEEK_SET);
 
     /*ajFilebuffTraceFull(buff,10,10);*/
 
@@ -5174,7 +5206,7 @@ void ajFilebuffTrace(const AjPFilebuff buff)
 
     if(buff->Size)
     {
-	ajDebug(" Lines:\n");
+	ajDebug(" Lines: %u\n", buff->Size);
 
 	if(buff->Curr)
 	    ajDebug("  Curr: %8Ld %x %x <%S>\n",
