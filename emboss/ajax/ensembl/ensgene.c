@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.16 $
+** @version $Revision: 1.17 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1791,7 +1791,7 @@ AjBool ensGeneTrace(const EnsPGene gene, ajuint level)
 
 ajulong ensGeneGetMemsize(const EnsPGene gene)
 {
-    ajuint size = 0;
+    ajlong size = 0;
 
     AjIList iter = NULL;
 

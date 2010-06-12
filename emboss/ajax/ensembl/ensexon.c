@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1637,7 +1637,7 @@ ajint ensExonGetFrame(const EnsPExon exon)
 
 ajulong ensExonGetMemsize(const EnsPExon exon)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 

@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.17 $
+** @version $Revision: 1.18 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -973,7 +973,7 @@ ajuint ensSliceGetLength(const EnsPSlice slice)
 
 ajulong ensSliceGetMemsize(const EnsPSlice slice)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!slice)
         return 0;
@@ -2417,7 +2417,10 @@ AjBool ensSliceProjectToSlice(EnsPSlice srcslice,
     EnsPCoordsystem srccs = NULL;
     EnsPCoordsystem trgcs = NULL;
     EnsPCoordsystem nrmcs = NULL;
+    /*
+    ** FIXME: Apparently not required.
     EnsPCoordsystem mrcs  = NULL;
+    */
 
     EnsPDatabaseadaptor dba = NULL;
 
@@ -2527,10 +2530,10 @@ AjBool ensSliceProjectToSlice(EnsPSlice srcslice,
             {
                 /*
                 ** AJB: The variable mrcs, set below, is not used
-                ** elsewhere. Needs fixing appropriately.
+                ** elsewhere.
+                ** FIXME: Needs fixing appropriately.
+                ** mrcs = ensMapperresultGetCoordsystem(mr);
                 */
-
-                mrcs = ensMapperresultGetCoordsystem(mr);
 
                 /* Create a Slice for the target Coordinate System. */
 

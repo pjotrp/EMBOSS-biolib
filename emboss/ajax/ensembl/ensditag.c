@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2114,7 +2114,7 @@ AjBool ensDitagfeatureTrace(const EnsPDitagfeature dtf, ajuint level)
 
 ajulong ensDitagfeatureGetMemsize(const EnsPDitagfeature dtf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!dtf)
         return 0;
