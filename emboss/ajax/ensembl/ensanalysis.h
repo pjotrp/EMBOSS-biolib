@@ -130,7 +130,7 @@ AjBool ensAnalysisIsDatabase(const EnsPAnalysis analysis);
 AjBool ensAnalysisMatch(const EnsPAnalysis analysis1,
                         const EnsPAnalysis analysis2);
 
-ajuint ensAnalysisGetMemsize(const EnsPAnalysis analysis);
+ajulong ensAnalysisGetMemsize(const EnsPAnalysis analysis);
 
 /* Ensembl Analysis Adaptor */
 

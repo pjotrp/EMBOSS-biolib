@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -955,13 +955,13 @@ AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level)
 **
 ** @param [r] ae [const EnsPAssemblyexception] Ensembl Assembly Exception
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyexceptionGetMemsize(const EnsPAssemblyexception ae)
+ajulong ensAssemblyexceptionGetMemsize(const EnsPAssemblyexception ae)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!ae)
         return 0;

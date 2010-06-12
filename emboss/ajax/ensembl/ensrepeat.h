@@ -175,7 +175,7 @@ AjBool ensRepeatconsensusSetConsensus(EnsPRepeatconsensus rc,
 
 AjBool ensRepeatconsensusSetLength(EnsPRepeatconsensus rc, ajuint length);
 
-ajuint ensRepeatconsensusGetMemsize(const EnsPRepeatconsensus rc);
+ajulong ensRepeatconsensusGetMemsize(const EnsPRepeatconsensus rc);
 
 AjBool ensRepeatconsensusTrace(const EnsPRepeatconsensus rc, ajuint level);
 
@@ -261,7 +261,7 @@ AjBool ensRepeatfeatureSetScore(EnsPRepeatfeature rf, double score);
 
 AjBool ensRepeatfeatureTrace(const EnsPRepeatfeature rf, ajuint level);
 
-ajuint ensRepeatfeatureGetMemsize(const EnsPRepeatfeature rf);
+ajulong ensRepeatfeatureGetMemsize(const EnsPRepeatfeature rf);
 
 AjBool ensRepeatfeatureSortByStartAscending(AjPList rfs);
 

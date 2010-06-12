@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ static void *markerfeatureadaptorCacheReference(void *value);
 
 static void markerfeatureadaptorCacheDelete(void **value);
 
-static ajuint markerfeatureadaptorCacheSize(const void *value);
+static ajulong markerfeatureadaptorCacheSize(const void *value);
 
 static EnsPFeature markerfeatureadaptorGetFeature(const void *value);
 
@@ -568,29 +568,29 @@ AjBool ensMarkersynonymTrace(const EnsPMarkersynonym ms, ajuint level)
 **
 ** @param [r] ms [const EnsPMarkersynonym] Ensembl Marker Synonym
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkersynonymGetMemsize(const EnsPMarkersynonym ms)
+ajulong ensMarkersynonymGetMemsize(const EnsPMarkersynonym ms)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!ms)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMarkersynonym);
+    size += sizeof (EnsOMarkersynonym);
 
     if(ms->Source)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(ms->Source);
     }
 
     if(ms->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(ms->Name);
     }
@@ -1402,38 +1402,38 @@ AjBool ensMarkermaplocationTrace(const EnsPMarkermaplocation mml,
 **
 ** @param [r] mml [const EnsPMarkermaplocation] Ensembl Marker Map Location
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkermaplocationGetMemsize(const EnsPMarkermaplocation mml)
+ajulong ensMarkermaplocationGetMemsize(const EnsPMarkermaplocation mml)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!mml)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMarkermaplocation);
+    size += sizeof (EnsOMarkermaplocation);
 
     size += ensMarkersynonymGetMemsize(mml->Markersynonym);
 
     if(mml->MapName)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(mml->MapName);
     }
 
     if(mml->ChromosomeName)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(mml->ChromosomeName);
     }
 
     if(mml->Position)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(mml->Position);
     }
@@ -2712,13 +2712,13 @@ AjBool ensMarkerTrace(const EnsPMarker marker, ajuint level)
 **
 ** @param [r] marker [const EnsPMarker] Ensembl Marker
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerGetMemsize(const EnsPMarker marker)
+ajulong ensMarkerGetMemsize(const EnsPMarker marker)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -2729,20 +2729,20 @@ ajuint ensMarkerGetMemsize(const EnsPMarker marker)
     if(!marker)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMarker);
+    size += sizeof (EnsOMarker);
 
     size += ensMarkersynonymGetMemsize(marker->DisplaySynonym);
 
     if(marker->LeftPrimer)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(marker->LeftPrimer);
     }
 
     if(marker->RightPrimer)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(marker->RightPrimer);
     }
@@ -4416,18 +4416,18 @@ AjBool ensMarkerfeatureTrace(const EnsPMarkerfeature mf, ajuint level)
 **
 ** @param [r] mf [const EnsPMarkerfeature] Ensembl Marker Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMarkerfeatureGetMemsize(const EnsPMarkerfeature mf)
+ajulong ensMarkerfeatureGetMemsize(const EnsPMarkerfeature mf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!mf)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMarkerfeature);
+    size += sizeof (EnsOMarkerfeature);
 
     size += ensFeatureGetMemsize(mf->Feature);
     size += ensMarkerGetMemsize(mf->Marker);
@@ -5150,11 +5150,11 @@ static void markerfeatureadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Marker Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint markerfeatureadaptorCacheSize(const void *value)
+static ajulong markerfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

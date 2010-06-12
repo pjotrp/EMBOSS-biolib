@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -956,29 +956,29 @@ AjBool ensCoordsystemMatch(const EnsPCoordsystem cs1,
 **
 ** @param [r] cs [const EnsPCoordsystem] Ensembl Coordinate System
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensCoordsystemGetMemsize(const EnsPCoordsystem cs)
+ajulong ensCoordsystemGetMemsize(const EnsPCoordsystem cs)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!cs)
         return 0;
 
-    size += (ajuint) sizeof (EnsOCoordsystem);
+    size += sizeof (EnsOCoordsystem);
 
     if(cs->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(cs->Name);
     }
 
     if(cs->Version)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(cs->Version);
     }

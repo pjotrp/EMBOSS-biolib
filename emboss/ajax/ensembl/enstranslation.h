@@ -77,7 +77,7 @@ ajuint ensTranslationGetSliceStart(EnsPTranslation translation);
 
 ajuint ensTranslationGetSliceEnd(EnsPTranslation translation);
 
-ajuint ensTranslationGetMemsize(const EnsPTranslation translation);
+ajulong ensTranslationGetMemsize(const EnsPTranslation translation);
 
 AjBool ensTranslationSetAdaptor(EnsPTranslation translation,
                                 EnsPTranslationadaptor tla);

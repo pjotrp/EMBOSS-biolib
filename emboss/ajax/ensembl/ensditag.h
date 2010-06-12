@@ -191,7 +191,7 @@ AjBool ensDitagSetCount(EnsPDitag dt, ajuint count);
 
 AjBool ensDitagTrace(const EnsPDitag dt, ajuint level);
 
-ajuint ensDitagGetMemsize(const EnsPDitag dt);
+ajulong ensDitagGetMemsize(const EnsPDitag dt);
 
 /* Ensembl Ditag Adaptor */
 
@@ -279,7 +279,7 @@ AjBool ensDitagfeatureSetPairIdentifier(EnsPDitagfeature dtf, ajuint pairid);
 
 AjBool ensDitagfeatureTrace(const EnsPDitagfeature dtf, ajuint level);
 
-ajuint ensDitagfeatureGetMemsize(const EnsPDitagfeature dtf);
+ajulong ensDitagfeatureGetMemsize(const EnsPDitagfeature dtf);
 
 EnsEDitagfeatureSide ensDitagfeatureSideFromStr(const AjPStr side);
 

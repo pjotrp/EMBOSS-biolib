@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@ static void *geneadaptorCacheReference(void *value);
 
 static void geneadaptorCacheDelete(void **value);
 
-static ajuint geneadaptorCacheSize(const void *value);
+static ajulong geneadaptorCacheSize(const void *value);
 
 static EnsPFeature geneadaptorGetFeature(const void *value);
 
@@ -1785,11 +1785,11 @@ AjBool ensGeneTrace(const EnsPGene gene, ajuint level)
 **
 ** @param [r] gene [const EnsPGene] Ensembl Gene
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensGeneGetMemsize(const EnsPGene gene)
+ajulong ensGeneGetMemsize(const EnsPGene gene)
 {
     ajuint size = 0;
 
@@ -1804,7 +1804,7 @@ ajuint ensGeneGetMemsize(const EnsPGene gene)
     if(!gene)
         return 0;
 
-    size += (ajuint) sizeof (EnsOGene);
+    size += sizeof (EnsOGene);
 
     size += ensFeatureGetMemsize(gene->Feature);
 
@@ -1812,49 +1812,49 @@ ajuint ensGeneGetMemsize(const EnsPGene gene)
 
     if(gene->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gene->Description);
     }
 
     if(gene->Source)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gene->Source);
     }
 
     if(gene->BioType)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gene->BioType);
     }
 
     if(gene->CanonicalAnnotation)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gene->CanonicalAnnotation);
     }
 
     if(gene->StableIdentifier)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gene->StableIdentifier);
     }
 
     if(gene->CreationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gene->CreationDate);
     }
 
     if(gene->ModificationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gene->ModificationDate);
     }
@@ -1863,7 +1863,7 @@ ajuint ensGeneGetMemsize(const EnsPGene gene)
 
     if(gene->Attributes)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(gene->Attributes);
 
@@ -1881,7 +1881,7 @@ ajuint ensGeneGetMemsize(const EnsPGene gene)
 
     if(gene->DatabaseEntries)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(gene->DatabaseEntries);
 
@@ -1899,7 +1899,7 @@ ajuint ensGeneGetMemsize(const EnsPGene gene)
 
     if(gene->Transcripts)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(gene->Transcripts);
 
@@ -3495,11 +3495,11 @@ static void geneadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Gene
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint geneadaptorCacheSize(const void *value)
+static ajulong geneadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

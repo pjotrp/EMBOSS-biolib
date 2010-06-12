@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.16 $
+** @version $Revision: 1.17 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1325,13 +1325,13 @@ ajuint ensTranslationGetSliceEnd(EnsPTranslation translation)
 **
 ** @param [r] translation [const EnsPTranslation] Ensembl Translation
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensTranslationGetMemsize(const EnsPTranslation translation)
+ajulong ensTranslationGetMemsize(const EnsPTranslation translation)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -1344,7 +1344,7 @@ ajuint ensTranslationGetMemsize(const EnsPTranslation translation)
     if(!translation)
         return 0;
 
-    size += (ajuint) sizeof (EnsOTranslation);
+    size += sizeof (EnsOTranslation);
 
     size += ensExonGetMemsize(translation->StartExon);
 
@@ -1352,28 +1352,28 @@ ajuint ensTranslationGetMemsize(const EnsPTranslation translation)
 
     if(translation->Sequence)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(translation->Sequence);
     }
 
     if(translation->StableIdentifier)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(translation->StableIdentifier);
     }
 
     if(translation->CreationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(translation->CreationDate);
     }
 
     if(translation->ModificationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(translation->ModificationDate);
     }
@@ -1382,7 +1382,7 @@ ajuint ensTranslationGetMemsize(const EnsPTranslation translation)
 
     if(translation->Attributes)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(translation->Attributes);
 
@@ -1400,7 +1400,7 @@ ajuint ensTranslationGetMemsize(const EnsPTranslation translation)
 
     if(translation->DatabaseEntries)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(translation->DatabaseEntries);
 
@@ -1418,7 +1418,7 @@ ajuint ensTranslationGetMemsize(const EnsPTranslation translation)
 
     if(translation->Proteinfeatures)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(translation->Proteinfeatures);
 

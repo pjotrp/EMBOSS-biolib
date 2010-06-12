@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -945,18 +945,18 @@ const char* ensGvindividualTypeToChar(EnsEGvindividualType type)
 **
 ** @param [r] gvi [const EnsPGvindividual] Ensembl Genetic Variation Individual
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensGvindividualGetMemsize(const EnsPGvindividual gvi)
+ajulong ensGvindividualGetMemsize(const EnsPGvindividual gvi)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!gvi)
         return 0;
 
-    size += (ajuint) sizeof (EnsOGvindividual);
+    size += sizeof (EnsOGvindividual);
 
     size += ensGvsampleGetMemsize(gvi->Gvsample);
 
@@ -966,7 +966,7 @@ ajuint ensGvindividualGetMemsize(const EnsPGvindividual gvi)
 
     if(gvi->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvi->Description);
     }

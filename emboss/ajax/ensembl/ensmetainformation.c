@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -650,18 +650,18 @@ AjBool ensMetainformationTrace(const EnsPMetainformation mi, ajuint level)
 **
 ** @param [r] mi [const EnsPMetainformation] Ensembl Meta-Information
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMetainformationGetMemsize(const EnsPMetainformation mi)
+ajulong ensMetainformationGetMemsize(const EnsPMetainformation mi)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!mi)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMetainformation);
+    size += sizeof (EnsOMetainformation);
 
     if(mi->Key)
     {

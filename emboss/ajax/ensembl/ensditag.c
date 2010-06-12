@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -83,7 +83,7 @@ static void *ditagfeatureadaptorCacheReference(void *value);
 
 static void ditagfeatureadaptorCacheDelete(void **value);
 
-static ajuint ditagfeatureadaptorCacheSize(const void *value);
+static ajulong ditagfeatureadaptorCacheSize(const void *value);
 
 static EnsPFeature ditagfeatureadaptorGetFeature(const void *value);
 
@@ -737,36 +737,36 @@ AjBool ensDitagTrace(const EnsPDitag dt, ajuint level)
 **
 ** @param [r] dt [const EnsPDitag] Ensembl Ditag
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensDitagGetMemsize(const EnsPDitag dt)
+ajulong ensDitagGetMemsize(const EnsPDitag dt)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!dt)
         return 0;
 
-    size += (ajuint) sizeof (EnsODitag);
+    size += sizeof (EnsODitag);
 
     if(dt->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(dt->Name);
     }
 
     if(dt->Type)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(dt->Type);
     }
 
     if(dt->Sequence)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(dt->Sequence);
     }
@@ -2108,18 +2108,18 @@ AjBool ensDitagfeatureTrace(const EnsPDitagfeature dtf, ajuint level)
 **
 ** @param [r] dtf [const EnsPDitagfeature] Ensembl Ditag Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensDitagfeatureGetMemsize(const EnsPDitagfeature dtf)
+ajulong ensDitagfeatureGetMemsize(const EnsPDitagfeature dtf)
 {
     ajuint size = 0;
 
     if(!dtf)
         return 0;
 
-    size += (ajuint) sizeof (EnsODitagfeature);
+    size += sizeof (EnsODitagfeature);
 
     size += ensFeatureGetMemsize(dtf->Feature);
 
@@ -2127,7 +2127,7 @@ ajuint ensDitagfeatureGetMemsize(const EnsPDitagfeature dtf)
 
     if(dtf->Cigar)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(dtf->Cigar);
     }
@@ -2814,11 +2814,11 @@ static void ditagfeatureadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Ditag Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint ditagfeatureadaptorCacheSize(const void *value)
+static ajulong ditagfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

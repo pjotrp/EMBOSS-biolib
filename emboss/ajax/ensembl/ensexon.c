@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -107,7 +107,7 @@ static void *exonadaptorCacheReference(void *value);
 
 static void exonadaptorCacheDelete(void **value);
 
-static ajuint exonadaptorCacheSize(const void *value);
+static ajulong exonadaptorCacheSize(const void *value);
 
 static EnsPFeature exonadaptorGetFeature(const void *value);
 
@@ -1631,11 +1631,11 @@ ajint ensExonGetFrame(const EnsPExon exon)
 **
 ** @param [r] exon [const EnsPExon] Ensembl Exon
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensExonGetMemsize(const EnsPExon exon)
+ajulong ensExonGetMemsize(const EnsPExon exon)
 {
     ajuint size = 0;
 
@@ -1646,34 +1646,34 @@ ajuint ensExonGetMemsize(const EnsPExon exon)
     if(!exon)
         return 0;
 
-    size += (ajuint) sizeof (EnsOExon);
+    size += sizeof (EnsOExon);
 
     size += ensFeatureGetMemsize(exon->Feature);
 
     if(exon->StableIdentifier)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(exon->StableIdentifier);
     }
 
     if(exon->CreationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(exon->CreationDate);
     }
 
     if(exon->ModificationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(exon->ModificationDate);
     }
 
     if(exon->SequenceCache)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(exon->SequenceCache);
     }
@@ -1682,10 +1682,9 @@ ajuint ensExonGetMemsize(const EnsPExon exon)
 
     if(exon->Coordinates)
     {
-        size += (ajuint) sizeof (AjOTable);
+        size += sizeof (AjOTable);
 
-        size += ((ajuint) sizeof (ajuint) +
-                 (ajuint) sizeof (ExonOCoordinates)) *
+        size += (sizeof (ajuint) + sizeof (ExonOCoordinates)) *
             ajTableGetLength(exon->Coordinates);
 
         /* NOTE: The AJAX Table-internal buckets are not considered here. */
@@ -1695,7 +1694,7 @@ ajuint ensExonGetMemsize(const EnsPExon exon)
 
     if(exon->Supportingfeatures)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(exon->Supportingfeatures);
 
@@ -3092,11 +3091,11 @@ static void exonadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Exon
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint exonadaptorCacheSize(const void *value)
+static ajulong exonadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

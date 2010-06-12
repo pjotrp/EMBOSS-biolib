@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1012,45 +1012,45 @@ AjBool ensQcsequenceSetDescription(EnsPQcsequence qcs, AjPStr description)
 **
 ** @param [r] qcs [const EnsPQcsequence] Ensembl QC Sequence
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQcsequenceGetMemsize(const EnsPQcsequence qcs)
+ajulong ensQcsequenceGetMemsize(const EnsPQcsequence qcs)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!qcs)
         return 0;
 
-    size += (ajuint) sizeof (EnsOQcsequence);
+    size += sizeof (EnsOQcsequence);
 
     size += ensQcdatabaseGetMemsize(qcs->Qcdatabase);
 
     if(qcs->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcs->Name);
     }
 
     if(qcs->Accession)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcs->Accession);
     }
 
     if(qcs->Type)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcs->Type);
     }
 
     if(qcs->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcs->Description);
     }

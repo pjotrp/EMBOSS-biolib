@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ static void* seqregionadaptorCacheReference(void *value);
 
 static void seqregionadaptorCacheDelete(void **value);
 
-static ajuint seqregionadaptorCacheSize(const void* value);
+static ajulong seqregionadaptorCacheSize(const void* value);
 
 static void seqregionadaptorCacheInsert(void** x, void* cl);
 
@@ -799,13 +799,13 @@ AjBool ensSeqregionTrace(const EnsPSeqregion sr, ajuint level)
 **
 ** @param [r] sr [const EnsPSeqregion] Ensembl Sequence Region
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensSeqregionGetMemsize(const EnsPSeqregion sr)
+ajulong ensSeqregionGetMemsize(const EnsPSeqregion sr)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -814,13 +814,13 @@ ajuint ensSeqregionGetMemsize(const EnsPSeqregion sr)
     if(!sr)
         return 0;
 
-    size += (ajuint) sizeof (EnsOSeqregion);
+    size += sizeof (EnsOSeqregion);
 
     size += ensCoordsystemGetMemsize(sr->Coordsystem);
 
     if(sr->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(sr->Name);
     }
@@ -1155,11 +1155,11 @@ static void seqregionadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Sequence Region
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint seqregionadaptorCacheSize(const void* value)
+static ajulong seqregionadaptorCacheSize(const void* value)
 {
     if(!value)
         return 0;

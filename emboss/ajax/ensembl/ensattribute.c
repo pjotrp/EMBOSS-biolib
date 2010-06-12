@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.8 $
+** @version $Revision: 1.9 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -392,43 +392,43 @@ AjPStr ensAttributeGetValue(const EnsPAttribute attribute)
 **
 ** @param [r] attribute [const EnsPAttribute] Ensembl Attribute
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensAttributeGetMemsize(const EnsPAttribute attribute)
+ajulong ensAttributeGetMemsize(const EnsPAttribute attribute)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!attribute)
         return 0;
 
-    size += (ajuint) sizeof (EnsOAttribute);
+    size += sizeof (EnsOAttribute);
 
     if(attribute->Code)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(attribute->Code);
     }
 
     if(attribute->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(attribute->Name);
     }
 
     if(attribute->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(attribute->Description);
     }
 
     if(attribute->Value)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(attribute->Value);
     }

@@ -190,7 +190,7 @@ AjBool ensQcalignmentSetIdentity(EnsPQcalignment qca,
 AjBool ensQcalignmentSetVULGAR(EnsPQcalignment qca,
                                AjPStr vulgar);
 
-ajuint ensQcalignmentGetMemsize(const EnsPQcalignment qca);
+ajulong ensQcalignmentGetMemsize(const EnsPQcalignment qca);
 
 AjBool ensQcalignmentTrace(const EnsPQcalignment qca, ajuint level);
 

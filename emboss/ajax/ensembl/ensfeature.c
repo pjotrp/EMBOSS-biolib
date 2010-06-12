@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.17 $
+** @version $Revision: 1.18 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ static void *basealignfeatureadaptorCacheReference(void *value);
 
 static void basealignfeatureadaptorCacheDelete(void **value);
 
-static ajuint basealignfeatureadaptorCacheSize(const void *value);
+static ajulong basealignfeatureadaptorCacheSize(const void *value);
 
 static EnsPFeature basealignfeatureadaptorGetFeature(const void *value);
 
@@ -111,7 +111,7 @@ static void *simplefeatureadaptorCacheReference(void *value);
 
 static void simplefeatureadaptorCacheDelete(void **value);
 
-static ajuint simplefeatureadaptorCacheSize(const void *value);
+static ajulong simplefeatureadaptorCacheSize(const void *value);
 
 static EnsPFeature simplefeatureadaptorGetFeature(const void *value);
 
@@ -880,18 +880,18 @@ ajuint ensFeatureGetLength(const EnsPFeature feature)
 **
 ** @param [r] feature [const EnsPFeature] Ensembl Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensFeatureGetMemsize(const EnsPFeature feature)
+ajulong ensFeatureGetMemsize(const EnsPFeature feature)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!feature)
         return 0;
 
-    size += (ajuint) sizeof (EnsOFeature);
+    size += sizeof (EnsOFeature);
 
     size += ensSliceGetMemsize(feature->Slice);
 
@@ -899,7 +899,7 @@ ajuint ensFeatureGetMemsize(const EnsPFeature feature)
 
     if(feature->SequenceName)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(feature->SequenceName);
     }
@@ -2432,7 +2432,7 @@ static ajuint featureadaptorCacheMaxSize = 0;
 ** @param [f] Fwrite [AjBool function] Function address to write back modified
 **                                     cache entries
 ** @param [f] Fdelete [void function] Function address to delete objects
-** @param [f] Fsize [ajuint function] Function address to determine the
+** @param [f] Fsize [ajulong function] Function address to determine the
 **                             value data (or object) memory size
 ** @param [f] Fgetfeature [EnsPFeature function] Pointer to an Ensembl Object
 **                                               specific function to get an
@@ -2469,7 +2469,7 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
     void* Freference(void* value),
     AjBool Fwrite(const void* value),
     void Fdelete(void** value),
-    ajuint Fsize(const void* value),
+    ajulong Fsize(const void* value),
     EnsPFeature Fgetfeature(const void *object),
     const char *label)
 {
@@ -2486,7 +2486,7 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
     {
         /* Extend the array of table names. */
 
-        AJCNEW0(fa->Tables, sizeof (Ptables) + 2);
+        AJCNEW0(fa->Tables, sizeof (Ptables) + 2 * sizeof (char *));
 
         for(i = 0; Ptables[i]; i++)
             fa->Tables[i] = ajCharNewC(Ptables[i]);
@@ -5380,18 +5380,18 @@ AjBool ensFeaturepairTrace(const EnsPFeaturepair fp, ajuint level)
 **
 ** @param [r] fp [const EnsPFeaturepair] Ensembl Feature Pair
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensFeaturepairGetMemsize(const EnsPFeaturepair fp)
+ajulong ensFeaturepairGetMemsize(const EnsPFeaturepair fp)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!fp)
         return 0;
 
-    size += (ajuint) sizeof (EnsOFeaturepair);
+    size += sizeof (EnsOFeaturepair);
 
     size += ensFeatureGetMemsize(fp->SourceFeature);
 
@@ -5399,21 +5399,21 @@ ajuint ensFeaturepairGetMemsize(const EnsPFeaturepair fp)
 
     if(fp->ExtraData)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(fp->ExtraData);
     }
 
     if(fp->SourceSpecies)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(fp->SourceSpecies);
     }
 
     if(fp->TargetSpecies)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(fp->TargetSpecies);
     }
@@ -7078,24 +7078,24 @@ ajuint ensBasealignfeatureGetTargetUnit(const EnsPBasealignfeature baf)
 **
 ** @param [r] baf [const EnsPBasealignfeature] Ensembl Base Align Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensBasealignfeatureGetMemsize(const EnsPBasealignfeature baf)
+ajulong ensBasealignfeatureGetMemsize(const EnsPBasealignfeature baf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!baf)
         return 0;
 
-    size += (ajuint) sizeof (EnsOBasealignfeature);
+    size += sizeof (EnsOBasealignfeature);
 
     size += ensFeaturepairGetMemsize(baf->Featurepair);
 
     if(baf->Cigar)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(baf->Cigar);
     }
@@ -7517,11 +7517,11 @@ static void basealignfeatureadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Base Align Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint basealignfeatureadaptorCacheSize(const void *value)
+static ajulong basealignfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -10184,31 +10184,31 @@ AjBool ensProteinfeatureTrace(const EnsPProteinfeature pf, ajuint level)
 **
 ** @param [r] pf [const EnsPProteinfeature] Ensembl Protein Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensProteinfeatureGetMemsize(const EnsPProteinfeature pf)
+ajulong ensProteinfeatureGetMemsize(const EnsPProteinfeature pf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!pf)
         return 0;
 
-    size += (ajuint) sizeof (EnsOProteinfeature);
+    size += sizeof (EnsOProteinfeature);
 
     size += ensFeaturepairGetMemsize(pf->Featurepair);
 
     if(pf->Accession)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(pf->Accession);
     }
 
     if(pf->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(pf->Description);
     }
@@ -11255,24 +11255,24 @@ AjBool ensSimplefeatureTrace(const EnsPSimplefeature sf, ajuint level)
 **
 ** @param [r] sf [const EnsPSimplefeature] Ensembl Simple Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensSimplefeatureGetMemsize(const EnsPSimplefeature sf)
+ajulong ensSimplefeatureGetMemsize(const EnsPSimplefeature sf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!sf)
         return 0;
 
-    size += (ajuint) sizeof (EnsOSimplefeature);
+    size += sizeof (EnsOSimplefeature);
 
     size += ensFeatureGetMemsize(sf->Feature);
 
     if(sf->DisplayLabel)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(sf->DisplayLabel);
     }
@@ -11874,11 +11874,11 @@ static void simplefeatureadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Simple Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint simplefeatureadaptorCacheSize(const void *value)
+static ajulong simplefeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -12822,11 +12822,11 @@ AjBool ensAssemblyexceptionfeatureFetchDisplayIdentifier(
 **
 ******************************************************************************/
 
-static ajuint assemblyexceptionfeatureadaptorCacheMaxBytes = 1 << 26;
+static ajulong assemblyexceptionfeatureadaptorCacheMaxBytes = 1 << 26;
 
 static ajuint assemblyexceptionfeatureadaptorCacheMaxCount = 1 << 16;
 
-static ajuint assemblyexceptionfeatureadaptorCacheMaxSize = 0;
+static ajulong assemblyexceptionfeatureadaptorCacheMaxSize = 0;
 
 
 
@@ -13085,7 +13085,7 @@ EnsPAssemblyexceptionfeatureadaptor ensAssemblyexceptionfeatureadaptorNew(
         assemblyexceptionfeatureadaptorCacheMaxSize,
         (void* (*)(void* value)) NULL,
         (void (*)(void** value)) NULL,
-        (ajuint (*)(const void* value)) NULL,
+        (ajulong (*)(const void* value)) NULL,
         (void* (*)(const void* key)) NULL,
         (AjBool (*)(const void* value)) NULL,
         ajFalse,

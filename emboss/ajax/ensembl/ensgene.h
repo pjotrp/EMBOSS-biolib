@@ -109,7 +109,7 @@ AjBool ensGeneSetModificationDate(EnsPGene gene, AjPStr mdate);
 
 AjBool ensGeneTrace(const EnsPGene gene, ajuint level);
 
-ajuint ensGeneGetMemsize(const EnsPGene gene);
+ajulong ensGeneGetMemsize(const EnsPGene gene);
 
 AjBool ensGeneAddAttribute(EnsPGene gene, EnsPAttribute attribute);
 

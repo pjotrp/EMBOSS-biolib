@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.21 $
+** @version $Revision: 1.22 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -188,7 +188,7 @@ static void *transcriptadaptorCacheReference(void *value);
 
 static void transcriptadaptorCacheDelete(void **value);
 
-static ajuint transcriptadaptorCacheSize(const void *value);
+static ajulong transcriptadaptorCacheSize(const void *value);
 
 static EnsPFeature transcriptadaptorGetFeature(const void *value);
 
@@ -1916,13 +1916,13 @@ ajuint ensTranscriptGetLength(EnsPTranscript transcript)
 **
 ** @param [r] transcript [const EnsPTranscript] Ensembl Transcript
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
+ajulong ensTranscriptGetMemsize(const EnsPTranscript transcript)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -1939,7 +1939,7 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
     if(!transcript)
         return 0;
 
-    size += (ajuint) sizeof (EnsOTranscript);
+    size += sizeof (EnsOTranscript);
 
     size += ensFeatureGetMemsize(transcript->Feature);
 
@@ -1947,35 +1947,35 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
 
     if(transcript->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(transcript->Description);
     }
 
     if(transcript->BioType)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(transcript->BioType);
     }
 
     if(transcript->StableIdentifier)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(transcript->StableIdentifier);
     }
 
     if(transcript->CreationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(transcript->CreationDate);
     }
 
     if(transcript->ModificationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(transcript->ModificationDate);
     }
@@ -1984,7 +1984,7 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
 
     if(transcript->AlternativeTranslations)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(transcript->AlternativeTranslations);
 
@@ -2002,7 +2002,7 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
 
     if(transcript->Attributes)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(transcript->Attributes);
 
@@ -2020,7 +2020,7 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
 
     if(transcript->DatabaseEntries)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(transcript->DatabaseEntries);
 
@@ -2038,7 +2038,7 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
 
     if(transcript->Exons)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(transcript->Exons);
 
@@ -2056,7 +2056,7 @@ ajuint ensTranscriptGetMemsize(const EnsPTranscript transcript)
 
     if(transcript->Supportingfeatures)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(transcript->Supportingfeatures);
 
@@ -6226,11 +6226,11 @@ static void transcriptadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Transcript
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint transcriptadaptorCacheSize(const void *value)
+static ajulong transcriptadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

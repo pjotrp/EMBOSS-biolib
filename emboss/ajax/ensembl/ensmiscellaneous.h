@@ -182,7 +182,7 @@ AjBool ensMiscellaneoussetSetDescription(EnsPMiscellaneousset ms,
 AjBool ensMiscellaneoussetSetMaximumlength(EnsPMiscellaneousset ms,
                                            ajuint maxlen);
 
-ajuint ensMiscellaneoussetGetMemsize(const EnsPMiscellaneousset ms);
+ajulong ensMiscellaneoussetGetMemsize(const EnsPMiscellaneousset ms);
 
 AjBool ensMiscellaneoussetTrace(const EnsPMiscellaneousset ms, ajuint level);
 
@@ -261,7 +261,7 @@ AjBool ensMiscellaneousfeatureAddMiscellaneousset(EnsPMiscellaneousfeature mf,
 AjBool ensMiscellaneousfeatureTrace(const EnsPMiscellaneousfeature mf,
                                     ajuint level);
 
-ajuint ensMiscellaneousfeatureGetMemsize(const EnsPMiscellaneousfeature mf);
+ajulong ensMiscellaneousfeatureGetMemsize(const EnsPMiscellaneousfeature mf);
 
 AjBool ensMiscellaneousfeatureFetchAllAttributes(EnsPMiscellaneousfeature mf,
                                                  const AjPStr code,

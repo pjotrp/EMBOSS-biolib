@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.6 $
+** @version $Revision: 1.7 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -525,18 +525,18 @@ AjBool ensAssemblyTrace(const EnsPAssembly assembly, ajuint level)
 **
 ** @param [r] assembly [const EnsPAssembly] Ensembl Assembly
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensAssemblyGetMemsize(const EnsPAssembly assembly)
+ajulong ensAssemblyGetMemsize(const EnsPAssembly assembly)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!assembly)
         return 0;
 
-    size += (ajuint) sizeof (EnsOAssembly);
+    size += sizeof (EnsOAssembly);
 
     return size;
 }

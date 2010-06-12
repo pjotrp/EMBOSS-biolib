@@ -165,7 +165,7 @@ AjBool ensQcsequenceSetPolyA(EnsPQcsequence qcs, ajuint polya);
 
 AjBool ensQcsequenceSetDescription(EnsPQcsequence qcs, AjPStr description);
 
-ajuint ensQcsequenceGetMemsize(const EnsPQcsequence qcs);
+ajulong ensQcsequenceGetMemsize(const EnsPQcsequence qcs);
 
 AjBool ensQcsequenceTrace(const EnsPQcsequence qcs, ajuint level);
 

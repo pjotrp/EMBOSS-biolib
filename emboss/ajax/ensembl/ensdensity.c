@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.18 $
+** @version $Revision: 1.19 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -159,7 +159,7 @@ static void *densityfeatureadaptorCacheReference(void *value);
 
 static void densityfeatureadaptorCacheDelete(void **value);
 
-static ajuint densityfeatureadaptorCacheSize(const void *value);
+static ajulong densityfeatureadaptorCacheSize(const void *value);
 
 static EnsPFeature densityfeatureadaptorGetFeature(const void *value);
 
@@ -858,18 +858,18 @@ AjBool ensDensitytypeTrace(const EnsPDensitytype dt, ajuint level)
 **
 ** @param [r] dt [const EnsPDensitytype] Ensembl Density Type
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensDensitytypeGetMemsize(const EnsPDensitytype dt)
+ajulong ensDensitytypeGetMemsize(const EnsPDensitytype dt)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!dt)
         return 0;
 
-    size += (ajuint) sizeof (EnsODensitytype);
+    size += sizeof (EnsODensitytype);
 
     size += ensAnalysisGetMemsize(dt->Analysis);
 
@@ -2340,18 +2340,18 @@ AjBool ensDensityfeatureTrace(const EnsPDensityfeature df, ajuint level)
 **
 ** @param [r] df [const EnsPDensityfeature] Ensembl Density Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensDensityfeatureGetMemsize(const EnsPDensityfeature df)
+ajulong ensDensityfeatureGetMemsize(const EnsPDensityfeature df)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!df)
         return 0;
 
-    size += (ajuint) sizeof (EnsODensityfeature);
+    size += sizeof (EnsODensityfeature);
 
     size += ensFeatureGetMemsize(df->Feature);
 
@@ -2928,11 +2928,11 @@ static void densityfeatureadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Density Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint densityfeatureadaptorCacheSize(const void *value)
+static ajulong densityfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

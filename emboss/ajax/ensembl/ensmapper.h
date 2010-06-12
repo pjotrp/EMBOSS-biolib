@@ -301,7 +301,7 @@ AjBool ensMapperunitSetStart(EnsPMapperunit mu, ajint start);
 
 AjBool ensMapperunitSetEnd(EnsPMapperunit mu, ajint end);
 
-ajuint ensMapperunitGetMemsize(const EnsPMapperunit mu);
+ajulong ensMapperunitGetMemsize(const EnsPMapperunit mu);
 
 AjBool ensMapperunitTrace(const EnsPMapperunit mu, ajuint level);
 
@@ -338,7 +338,7 @@ AjBool ensMapperpairGetInsertionDeletion(const EnsPMapperpair mp);
 EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp,
                                     EnsEMapperunitType type);
 
-ajuint ensMapperpairGetMemsize(const EnsPMapperpair mp);
+ajulong ensMapperpairGetMemsize(const EnsPMapperpair mp);
 
 AjBool ensMapperpairTrace(const EnsPMapperpair mp, ajuint level);
 
@@ -512,7 +512,7 @@ AjBool ensMapperMapInDel(EnsPMapper mapper,
 
 AjBool ensMapperAddMapper(EnsPMapper mapper1, EnsPMapper mapper2);
 
-ajuint ensMapperGetMemsize(const EnsPMapper mapper);
+ajulong ensMapperGetMemsize(const EnsPMapper mapper);
 
 AjBool ensMapperTrace(const EnsPMapper mapper, ajuint level);
 

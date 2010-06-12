@@ -195,7 +195,7 @@ AjBool ensAssemblyexceptionSetType(EnsPAssemblyexception ae,
 
 AjBool ensAssemblyexceptionTrace(const EnsPAssemblyexception ae, ajuint level);
 
-ajuint ensAssemblyexceptionGetMemsize(const EnsPAssemblyexception ae);
+ajulong ensAssemblyexceptionGetMemsize(const EnsPAssemblyexception ae);
 
 EnsEAssemblyexceptionType ensAssemblyexceptionTypeFromStr(const AjPStr type);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -693,24 +693,24 @@ ensGvalleleSetSubSNPIdentifier(EnsPGvallele gva, ajuint subsnpid)
 **
 ** @param [r] gva [const EnsPGvallele] Ensembl Genetic Variation Allele
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensGvalleleGetMemsize(const EnsPGvallele gva)
+ajulong ensGvalleleGetMemsize(const EnsPGvallele gva)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!gva)
         return 0;
 
-    size += (ajuint) sizeof (EnsOGvallele);
+    size += sizeof (EnsOGvallele);
 
     size += ensGvpopulationGetMemsize(gva->Gvpopulation);
 
     if(gva->Allele)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gva->Allele);
     }
@@ -1255,29 +1255,29 @@ AjBool ensGvgenotypeSetAllele2(EnsPGvgenotype gvg, AjPStr allele2)
 **
 ** @param [r] gvg [const EnsPGvgenotype] Ensembl Genetic Variation Genotype
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensGvgenotypeGetMemsize(const EnsPGvgenotype gvg)
+ajulong ensGvgenotypeGetMemsize(const EnsPGvgenotype gvg)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!gvg)
         return 0;
 
-    size += (ajuint) sizeof (EnsOGvgenotype);
+    size += sizeof (EnsOGvgenotype);
 
     if(gvg->Allele1)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvg->Allele1);
     }
 
     if(gvg->Allele2)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvg->Allele2);
     }
@@ -1941,43 +1941,43 @@ AjBool ensGvsourceSetURL(EnsPGvsource gvs, AjPStr url)
 **
 ** @param [r] gvs [const EnsPGvsource] Ensembl Genetic Variation Source
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensGvsourceGetMemsize(const EnsPGvsource gvs)
+ajulong ensGvsourceGetMemsize(const EnsPGvsource gvs)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!gvs)
         return 0;
 
-    size += (ajuint) sizeof (EnsOGvsource);
+    size += sizeof (EnsOGvsource);
 
     if(gvs->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvs->Name);
     }
 
     if(gvs->Version)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvs->Version);
     }
 
     if(gvs->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvs->Description);
     }
 
     if(gvs->URL)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvs->URL);
     }
@@ -4195,18 +4195,18 @@ AjBool ensGvvariationSetFailedDescription(EnsPGvvariation gvv,
 **
 ** @param [r] gvv [const EnsPGvvariation] Ensembl Genetic Variation Variation
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv)
+ajulong ensGvvariationGetMemsize(const EnsPGvvariation gvv)
 {
     void **keyarray = NULL;
     void **valarray = NULL;
 
     register ajuint i = 0;
 
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -4217,13 +4217,13 @@ ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv)
     if(!gvv)
         return 0;
 
-    size += (ajuint) sizeof (EnsOGvvariation);
+    size += sizeof (EnsOGvvariation);
 
     size += ensGvsourceGetMemsize(gvv->Gvsource);
 
     if(gvv->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvv->Name);
     }
@@ -4234,10 +4234,11 @@ ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv)
 
     for(i = 0; keyarray[i]; i++)
     {
-        size += (ajuint) sizeof (AjOStr);
-        size += (ajuint) ajStrGetLen((AjPStr) keyarray[i]);
+        size += sizeof (AjOStr);
 
-        size += (ajuint) sizeof (AjOList);
+        size += ajStrGetRes((AjPStr) keyarray[i]);
+
+        size += sizeof (AjOList);
 
         iter = ajListIterNew((AjPList) valarray[i]);
 
@@ -4245,8 +4246,9 @@ ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv)
         {
             synonym = (AjPStr) ajListIterGet(iter);
 
-            size += (ajuint) sizeof (AjOStr);
-            size += ajStrGetLen(synonym);
+            size += sizeof (AjOStr);
+
+            size += ajStrGetRes(synonym);
         }
 
         ajListIterDel(&iter);
@@ -4257,7 +4259,7 @@ ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv)
 
     if(gvv->AncestralAllele)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvv->AncestralAllele);
     }
@@ -4277,28 +4279,28 @@ ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv)
 
     if(gvv->MoleculeType)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvv->MoleculeType);
     }
 
     if(gvv->FivePrimeFlank)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvv->FivePrimeFlank);
     }
 
     if(gvv->ThreePrimeFlank)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvv->ThreePrimeFlank);
     }
 
     if(gvv->FailedDescription)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvv->FailedDescription);
     }
@@ -7120,18 +7122,18 @@ AjBool ensGvvariationfeatureSetMapWeight(EnsPGvvariationfeature gvvf,
 ** @param [r] gvvf [const EnsPGvvariationfeature] Ensembl Genetic Variation
 **                                                Variation Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensGvvariationfeatureGetMemsize(const EnsPGvvariationfeature gvvf)
+ajulong ensGvvariationfeatureGetMemsize(const EnsPGvvariationfeature gvvf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!gvvf)
         return 0;
 
-    size += (ajuint) sizeof (EnsOGvvariationfeature);
+    size += sizeof (EnsOGvvariationfeature);
 
     size += ensFeatureGetMemsize(gvvf->Feature);
 
@@ -7139,28 +7141,28 @@ ajuint ensGvvariationfeatureGetMemsize(const EnsPGvvariationfeature gvvf)
 
     if(gvvf->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvvf->Name);
     }
 
     if(gvvf->Source)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvvf->Source);
     }
 
     if(gvvf->ValidationCode)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvvf->ValidationCode);
     }
 
     if(gvvf->ConsequenceType)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(gvvf->ConsequenceType);
     }

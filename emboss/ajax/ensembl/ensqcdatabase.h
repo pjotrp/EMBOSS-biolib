@@ -224,7 +224,7 @@ AjBool ensQcdatabaseSetExternalURL(EnsPQcdatabase qcdb, AjPStr url);
 
 AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb, AjPStr url);
 
-ajuint ensQcdatabaseGetMemsize(const EnsPQcdatabase qcdb);
+ajulong ensQcdatabaseGetMemsize(const EnsPQcdatabase qcdb);
 
 AjBool ensQcdatabaseTrace(const EnsPQcdatabase qcdb, ajuint level);
 

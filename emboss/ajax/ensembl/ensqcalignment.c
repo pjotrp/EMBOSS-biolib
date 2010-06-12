@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1180,18 +1180,18 @@ AjBool ensQcalignmentSetVULGAR(EnsPQcalignment qca,
 **
 ** @param [r] qca [const EnsPQcalignment] Ensembl QC Alignment
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQcalignmentGetMemsize(const EnsPQcalignment qca)
+ajulong ensQcalignmentGetMemsize(const EnsPQcalignment qca)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!qca)
         return 0;
 
-    size += (ajuint) sizeof (EnsOQcalignment);
+    size += sizeof (EnsOQcalignment);
 
     size += ensAnalysisGetMemsize(qca->Analysis);
 

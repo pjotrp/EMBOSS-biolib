@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -458,18 +458,18 @@ AjBool ensMapperunitSetEnd(EnsPMapperunit mu, ajint end)
 **
 ** @param [r] mu [const EnsPMapperunit] Ensembl Mapper Unit
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMapperunitGetMemsize(const EnsPMapperunit mu)
+ajulong ensMapperunitGetMemsize(const EnsPMapperunit mu)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!mu)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMapperunit);
+    size += sizeof (EnsOMapperunit);
 
     return size;
 }
@@ -957,18 +957,18 @@ EnsPMapperunit ensMapperpairGetUnit(const EnsPMapperpair mp,
 **
 ** @param [r] mp [const EnsPMapperpair] Ensembl Mapper Pair
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMapperpairGetMemsize(const EnsPMapperpair mp)
+ajulong ensMapperpairGetMemsize(const EnsPMapperpair mp)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!mp)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMapperpair);
+    size += sizeof (EnsOMapperpair);
 
     size += ensMapperunitGetMemsize(mp->Source);
     size += ensMapperunitGetMemsize(mp->Target);
@@ -4992,11 +4992,11 @@ AjBool ensMapperAddMapper(EnsPMapper mapper1, EnsPMapper mapper2)
 **
 ** @param [r] mapper [const EnsPMapper] Ensembl Mapper
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMapperGetMemsize(const EnsPMapper mapper)
+ajulong ensMapperGetMemsize(const EnsPMapper mapper)
 {
     void **keyarray1 = NULL;
     void **valarray1 = NULL;
@@ -5006,7 +5006,7 @@ ajuint ensMapperGetMemsize(const EnsPMapper mapper)
     register ajuint i = 0;
     register ajuint j = 0;
 
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -5015,18 +5015,18 @@ ajuint ensMapperGetMemsize(const EnsPMapper mapper)
     if(!mapper)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMapper);
+    size += sizeof (EnsOMapper);
 
     if(mapper->SourceType)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(mapper->SourceType);
     }
 
     if(mapper->TargetType)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(mapper->TargetType);
     }
@@ -5036,7 +5036,7 @@ ajuint ensMapperGetMemsize(const EnsPMapper mapper)
 
     /* Level 0 data (AjOTable). */
 
-    size += (ajuint) sizeof (AjOTable);
+    size += sizeof (AjOTable);
 
     ajTableToarrayKeysValues(mapper->Pairs, &keyarray1, &valarray1);
 
@@ -5044,13 +5044,13 @@ ajuint ensMapperGetMemsize(const EnsPMapper mapper)
     {
         /* Level 1 key data (AjOStr). */
 
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes((AjPStr) keyarray1[i]);
 
         /* Level 1 value data (AjOTable). */
 
-        size += (ajuint) sizeof (AjOTable);
+        size += sizeof (AjOTable);
 
         ajTableToarrayValues(valarray1[i], &valarray2);
 
@@ -5058,11 +5058,11 @@ ajuint ensMapperGetMemsize(const EnsPMapper mapper)
         {
             /* Level 2 key data (ajuint). */
 
-            size += (ajuint) sizeof (ajuint);
+            size += sizeof (ajuint);
 
             /* Level 2 value data (AjOList). */
 
-            size += (ajuint) sizeof (AjOList);
+            size += sizeof (AjOList);
 
             iter = ajListIterNew((AjPList) valarray2[j]);
 

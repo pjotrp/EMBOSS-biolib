@@ -375,7 +375,7 @@ AjBool ensGvalleleSetFrequency(EnsPGvallele gva, float frequency);
 
 AjBool ensGvalleleSetSubSNPIdentifier(EnsPGvallele gva, ajuint subsnpid);
 
-ajuint ensGvalleleGetMemsize(const EnsPGvallele gva);
+ajulong ensGvalleleGetMemsize(const EnsPGvallele gva);
 
 AjBool ensGvalleleTrace(const EnsPGvallele gva, ajuint level);
 
@@ -413,7 +413,7 @@ AjBool ensGvgenotypeSetAllele1(EnsPGvgenotype gvg, AjPStr allele1);
 
 AjBool ensGvgenotypeSetAllele2(EnsPGvgenotype gvg, AjPStr allele2);
 
-ajuint ensGvgenotypeGetMemsize(const EnsPGvgenotype gvg);
+ajulong ensGvgenotypeGetMemsize(const EnsPGvgenotype gvg);
 
 AjBool ensGvgenotypeTrace(const EnsPGvgenotype gvg, ajuint level);
 
@@ -461,7 +461,7 @@ AjBool ensGvsourceSetDescription(EnsPGvsource gvs, AjPStr description);
 
 AjBool ensGvsourceSetURL(EnsPGvsource gvs, AjPStr url);
 
-ajuint ensGvsourceGetMemsize(const EnsPGvsource gvs);
+ajulong ensGvsourceGetMemsize(const EnsPGvsource gvs);
 
 AjBool ensGvsourceTrace(const EnsPGvsource gvs, ajuint level);
 
@@ -563,7 +563,7 @@ AjBool ensGvvariationSetThreePrimeFlank(EnsPGvvariation gvv,
 AjBool ensGvvariationSetFailedDescription(EnsPGvvariation gvv,
                                           AjPStr faileddescription);
 
-ajuint ensGvvariationGetMemsize(const EnsPGvvariation gvv);
+ajulong ensGvvariationGetMemsize(const EnsPGvvariation gvv);
 
 AjBool ensGvvariationTrace(const EnsPGvvariation gvv, ajuint level);
 
@@ -704,7 +704,7 @@ AjBool ensGvvariationfeatureSetConsequenceType(EnsPGvvariationfeature gvvf,
 AjBool ensGvvariationfeatureSetMapWeight(EnsPGvvariationfeature gvvf,
                                          ajuint mapweight);
 
-ajuint ensGvvariationfeatureGetMemsize(const EnsPGvvariationfeature gvvf);
+ajulong ensGvvariationfeatureGetMemsize(const EnsPGvvariationfeature gvvf);
 
 AjBool ensGvvariationfeatureTrace(const EnsPGvvariationfeature gvvf,
                                   ajuint level);

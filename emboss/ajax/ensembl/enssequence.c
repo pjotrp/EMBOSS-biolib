@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ static void* sequenceadaptorCacheReference(void *value);
 
 static void sequenceadaptorCacheDelete(void **value);
 
-static ajuint sequenceadaptorCacheSize(const void *value);
+static ajulong sequenceadaptorCacheSize(const void *value);
 
 
 
@@ -148,18 +148,18 @@ static void sequenceadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] AJAX String
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint sequenceadaptorCacheSize(const void *value)
+static ajulong sequenceadaptorCacheSize(const void *value)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!value)
         return 0;
 
-    size += (ajuint) sizeof (AjOStr);
+    size += sizeof (AjOStr);
 
     size += ajStrGetRes((const AjPStr) value);
 

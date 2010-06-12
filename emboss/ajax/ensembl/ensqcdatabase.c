@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1257,87 +1257,87 @@ AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb, AjPStr url)
 **
 ** @param [r] qcdb [const EnsPQcdatabase] Ensembl QC Database
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdatabaseGetMemsize(const EnsPQcdatabase qcdb)
+ajulong ensQcdatabaseGetMemsize(const EnsPQcdatabase qcdb)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!qcdb)
         return 0;
 
-    size += (ajuint) sizeof (EnsOQcdatabase);
+    size += sizeof (EnsOQcdatabase);
 
     size += ensAnalysisGetMemsize(qcdb->Analysis);
 
     if(qcdb->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->Name);
     }
 
     if(qcdb->Release)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->Release);
     }
 
     if(qcdb->Date)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->Date);
     }
 
     if(qcdb->Format)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->Format);
     }
 
     if(qcdb->Species)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->Species);
     }
 
     if(qcdb->Host)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->Host);
     }
 
     if(qcdb->Directory)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->Directory);
     }
 
     if(qcdb->File)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->File);
     }
 
     if(qcdb->ExternalURL)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->ExternalURL);
     }
 
     if(qcdb->InternalURL)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcdb->InternalURL);
     }

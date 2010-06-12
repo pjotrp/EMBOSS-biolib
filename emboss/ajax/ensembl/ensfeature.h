@@ -396,7 +396,7 @@ AjBool ensFeatureTrace(const EnsPFeature feature, ajuint level);
 
 ajuint ensFeatureGetLength(const EnsPFeature feature);
 
-ajuint ensFeatureGetMemsize(const EnsPFeature feature);
+ajulong ensFeatureGetMemsize(const EnsPFeature feature);
 
 const EnsPSeqregion ensFeatureGetSeqregion(const EnsPFeature feature);
 
@@ -466,7 +466,7 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
     void* Freference(void* value),
     AjBool Fwrite(const void* value),
     void Fdelete(void** value),
-    ajuint Fsize(const void* value),
+    ajulong Fsize(const void* value),
     EnsPFeature Fgetfeature(const void *object),
     const char *label);
 
@@ -603,7 +603,7 @@ AjBool ensFeaturepairTrace(const EnsPFeaturepair fp, ajuint level);
 
 AjBool ensFeaturepairSetSequenceIdentity(EnsPFeaturepair fp, float identity);
 
-ajuint ensFeaturepairGetMemsize(const EnsPFeaturepair fp);
+ajulong ensFeaturepairGetMemsize(const EnsPFeaturepair fp);
 
 EnsPFeaturepair ensFeaturepairTransform(const EnsPFeaturepair fp,
                                         const AjPStr csname,
@@ -674,7 +674,7 @@ ajuint ensBasealignfeatureGetSourceUnit(const EnsPBasealignfeature baf);
 
 ajuint ensBasealignfeatureGetTargetUnit(const EnsPBasealignfeature baf);
 
-ajuint ensBasealignfeatureGetMemsize(const EnsPBasealignfeature baf);
+ajulong ensBasealignfeatureGetMemsize(const EnsPBasealignfeature baf);
 
 EnsPBasealignfeature ensBasealignfeatureTransform(
     const EnsPBasealignfeature baf,
@@ -838,7 +838,7 @@ AjBool ensProteinfeatureSetDescription(EnsPProteinfeature pf,
 
 AjBool ensProteinfeatureTrace(const EnsPProteinfeature pf, ajuint level);
 
-ajuint ensProteinfeatureGetMemsize(const EnsPProteinfeature pf);
+ajulong ensProteinfeatureGetMemsize(const EnsPProteinfeature pf);
 
 /* Ensembl Protein Feature Adaptor */
 
@@ -897,7 +897,7 @@ AjBool ensSimplefeatureSetScore(EnsPSimplefeature sf, double score);
 
 AjBool ensSimplefeatureTrace(const EnsPSimplefeature sf, ajuint level);
 
-ajuint ensSimplefeatureGetMemsize(const EnsPSimplefeature sf);
+ajulong ensSimplefeatureGetMemsize(const EnsPSimplefeature sf);
 
 AjBool ensSimplefeatureSortByStartAscending(AjPList sfs);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ static void *karyotypebandadaptorCacheReference(void *value);
 
 static void karyotypebandadaptorCacheDelete(void **value);
 
-static ajuint karyotypebandadaptorCacheSize(const void *value);
+static ajulong karyotypebandadaptorCacheSize(const void *value);
 
 static EnsPFeature karyotypebandadaptorGetFeature(const void *value);
 
@@ -643,13 +643,13 @@ AjBool ensKaryotypebandTrace(const EnsPKaryotypeband kb, ajuint level)
 **
 ** @param [r] kb [const EnsPKaryotypeband] Ensembl Karyotype Band
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensKaryotypebandGetMemsize(const EnsPKaryotypeband kb)
+ajulong ensKaryotypebandGetMemsize(const EnsPKaryotypeband kb)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!kb)
         return 0;
@@ -1054,11 +1054,11 @@ static void karyotypebandadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Karyotype Band
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint karyotypebandadaptorCacheSize(const void *value)
+static ajulong karyotypebandadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

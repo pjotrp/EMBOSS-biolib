@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -753,127 +753,127 @@ ajuint ensAnalysisGetIdentifier(const EnsPAnalysis analysis)
 **
 ** @param [r] analysis [const EnsPAnalysis] Ensembl Analysis
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensAnalysisGetMemsize(const EnsPAnalysis analysis)
+ajulong ensAnalysisGetMemsize(const EnsPAnalysis analysis)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!analysis)
         return 0;
 
-    size += (ajuint) sizeof (EnsOAnalysis);
+    size += sizeof (EnsOAnalysis);
 
     if(analysis->CreationDate)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->CreationDate);
     }
 
     if(analysis->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->Name);
     }
 
     if(analysis->DatabaseName)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->DatabaseName);
     }
 
     if(analysis->DatabaseVersion)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->DatabaseVersion);
     }
 
     if(analysis->DatabaseFile)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->DatabaseFile);
     }
 
     if(analysis->ProgramName)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->ProgramName);
     }
 
     if(analysis->ProgramVersion)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->ProgramVersion);
     }
 
     if(analysis->ProgramFile)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->ProgramFile);
     }
 
     if(analysis->Parameters)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->Parameters);
     }
 
     if(analysis->ModuleName)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->ModuleName);
     }
 
     if(analysis->ModuleVersion)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->ModuleVersion);
     }
 
     if(analysis->GFFSource)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->GFFSource);
     }
 
     if(analysis->GFFFeature)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->GFFFeature);
     }
 
     if(analysis->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->Description);
     }
 
     if(analysis->DisplayLabel)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->DisplayLabel);
     }
 
     if(analysis->WebData)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(analysis->WebData);
     }

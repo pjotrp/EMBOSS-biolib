@@ -107,7 +107,7 @@ EnsEExternalreferenceInfoType ensExternalreferenceInfoTypeFromStr(
 const char *ensExternalreferenceInfoTypeToChar(
     EnsEExternalreferenceInfoType type);
 
-ajuint ensExternalreferenceGetMemsize(const EnsPExternalreference er);
+ajulong ensExternalreferenceGetMemsize(const EnsPExternalreference er);
 
 /* Ensembl Identity Reference */
 
@@ -173,7 +173,7 @@ AjBool ensIdentityreferenceSetScore(EnsPIdentityreference ir,
 
 AjBool ensIdentityreferenceTrace(const EnsPIdentityreference ir, ajuint level);
 
-ajuint ensIdentityreferenceGetMemsize(const EnsPIdentityreference ir);
+ajulong ensIdentityreferenceGetMemsize(const EnsPIdentityreference ir);
 
 /* Ensembl Gene Ontology Linkage */
 
@@ -249,7 +249,7 @@ AjPList ensDatabaseentryGetSynonyms(const EnsPDatabaseentry dbe);
 
 AjBool ensDatabaseentryTrace(const EnsPDatabaseentry dbe, ajuint level);
 
-ajuint ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe);
+ajulong ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe);
 
 AjBool ensDatabaseentryAddGeneontologylinkage(EnsPDatabaseentry dbe,
                                               AjPStr linkagetype,

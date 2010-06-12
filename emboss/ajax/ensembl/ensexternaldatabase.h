@@ -122,7 +122,7 @@ const char *ensExternaldatabaseStatusToChar(EnsEExternaldatabaseStatus status);
 
 const char *ensExternaldatabaseTypeToChar(EnsEExternaldatabaseType type);
 
-ajuint ensExternaldatabaseGetMemsize(const EnsPExternaldatabase edb);
+ajulong ensExternaldatabaseGetMemsize(const EnsPExternaldatabase edb);
 
 /* Ensembl External Database Adaptor */
 

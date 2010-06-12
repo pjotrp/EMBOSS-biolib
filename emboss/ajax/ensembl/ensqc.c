@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1236,18 +1236,18 @@ AjBool ensQcdasfeatureSetType(EnsPQcdasfeature qcdasf,
 **
 ** @param [r] qcdasf [const EnsPQcdasfeature] Ensembl QC DAS Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQcdasfeatureGetMemsize(const EnsPQcdasfeature qcdasf)
+ajulong ensQcdasfeatureGetMemsize(const EnsPQcdasfeature qcdasf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!qcdasf)
         return 0;
 
-    size += (ajuint) sizeof (EnsOQcdasfeature);
+    size += sizeof (EnsOQcdasfeature);
 
     size += ensAnalysisGetMemsize(qcdasf->Analysis);
 
@@ -3473,18 +3473,18 @@ AjBool ensQcvariationSetState(EnsPQcvariation qcv,
 **
 ** @param [r] qcv [const EnsPQcvariation] Ensembl QC Variation
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQcvariationGetMemsize(const EnsPQcvariation qcv)
+ajulong ensQcvariationGetMemsize(const EnsPQcvariation qcv)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!qcv)
         return 0;
 
-    size += (ajuint) sizeof (EnsOQcvariation);
+    size += sizeof (EnsOQcvariation);
 
     size += ensQcalignmentGetMemsize(qcv->Qcalignment);
 
@@ -3495,14 +3495,14 @@ ajuint ensQcvariationGetMemsize(const EnsPQcvariation qcv)
 
     if(qcv->QueryString)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcv->QueryString);
     }
 
     if(qcv->TargetString)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(qcv->TargetString);
     }
@@ -5567,18 +5567,18 @@ AjBool ensQcsubmissionSetAnalysisJobIdentifier(EnsPQcsubmission qcsb,
 **
 ** @param [r] qcsb [const EnsPQcsubmission] Ensembl QC Submission
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensQcsubmissionGetMemsize(const EnsPQcsubmission qcsb)
+ajulong ensQcsubmissionGetMemsize(const EnsPQcsubmission qcsb)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!qcsb)
         return 0;
 
-    size += (ajuint) sizeof (EnsOQcsubmission);
+    size += sizeof (EnsOQcsubmission);
 
     size += ensAnalysisGetMemsize(qcsb->Analysis);
 

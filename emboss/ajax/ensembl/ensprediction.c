@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ static void *predictionexonadaptorCacheReference(void *value);
 
 static void predictionexonadaptorCacheDelete(void **value);
 
-static ajuint predictionexonadaptorCacheSize(const void *value);
+static ajulong predictionexonadaptorCacheSize(const void *value);
 
 static EnsPFeature predictionexonadaptorGetFeature(const void *value);
 
@@ -79,7 +79,7 @@ static void *predictiontranscriptadaptorCacheReference(void *value);
 
 static void predictiontranscriptadaptorCacheDelete(void **value);
 
-static ajuint predictiontranscriptadaptorCacheSize(const void *value);
+static ajulong predictiontranscriptadaptorCacheSize(const void *value);
 
 static EnsPFeature predictiontranscriptadaptorGetFeature(const void *value);
 
@@ -778,18 +778,18 @@ AjBool ensPredictionexonTrace(const EnsPPredictionexon pe, ajuint level)
 **
 ** @param [r] pe [const EnsPPredictionexon] Ensembl Prediction Exon
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensPredictionexonGetMemsize(const EnsPPredictionexon pe)
+ajulong ensPredictionexonGetMemsize(const EnsPPredictionexon pe)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!pe)
         return 0;
 
-    size += (ajuint) sizeof (EnsOPredictionexon);
+    size += sizeof (EnsOPredictionexon);
 
     size += ensFeatureGetMemsize(pe->Feature);
 
@@ -1595,11 +1595,11 @@ static void predictionexonadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Prediction Exon
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint predictionexonadaptorCacheSize(const void *value)
+static ajulong predictionexonadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;
@@ -2475,14 +2475,14 @@ AjBool ensPredictiontranscriptTrace(
 **
 ** @param [r] pt [const EnsPPredictiontranscript] Ensembl Prediction Transcript
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensPredictiontranscriptGetMemsize(
+ajulong ensPredictiontranscriptGetMemsize(
     const EnsPPredictiontranscript pt)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -2491,13 +2491,13 @@ ajuint ensPredictiontranscriptGetMemsize(
     if(!pt)
         return 0;
 
-    size += (ajuint) sizeof (EnsOPredictiontranscript);
+    size += sizeof (EnsOPredictiontranscript);
 
     size += ensFeatureGetMemsize(pt->Feature);
 
     if(pt->DisplayLabel)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(pt->DisplayLabel);
     }
@@ -2506,7 +2506,7 @@ ajuint ensPredictiontranscriptGetMemsize(
 
     if(pt->Predictionexons)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNewread(pt->Predictionexons);
 
@@ -3546,11 +3546,11 @@ static void predictiontranscriptadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Prediction Transcript
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint predictiontranscriptadaptorCacheSize(const void *value)
+static ajulong predictiontranscriptadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

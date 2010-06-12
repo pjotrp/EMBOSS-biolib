@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.11 $
+** @version $Revision: 1.12 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ static void *repeatfeatureadaptorCacheReference(void *value);
 
 static void repeatfeatureadaptorCacheDelete(void **value);
 
-static ajuint repeatfeatureadaptorCacheSize(const void *value);
+static ajulong repeatfeatureadaptorCacheSize(const void *value);
 
 static EnsPFeature repeatfeatureadaptorGetFeature(const void *rf);
 
@@ -787,43 +787,43 @@ AjBool ensRepeatconsensusTrace(const EnsPRepeatconsensus rc, ajuint level)
 **
 ** @param [r] rc [const EnsPRepeatconsensus] Ensembl Repeat Consensus
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensRepeatconsensusGetMemsize(const EnsPRepeatconsensus rc)
+ajulong ensRepeatconsensusGetMemsize(const EnsPRepeatconsensus rc)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!rc)
         return 0;
 
-    size += (ajuint) sizeof (EnsORepeatconsensus);
+    size += sizeof (EnsORepeatconsensus);
 
     if(rc->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(rc->Name);
     }
 
     if(rc->Class)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(rc->Class);
     }
 
     if(rc->Type)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(rc->Type);
     }
 
     if(rc->Consensus)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(rc->Consensus);
     }
@@ -2037,18 +2037,18 @@ AjBool ensRepeatfeatureTrace(const EnsPRepeatfeature rf, ajuint level)
 **
 ** @param [r] rf [const EnsPRepeatfeature] Ensembl Repeat Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensRepeatfeatureGetMemsize(const EnsPRepeatfeature rf)
+ajulong ensRepeatfeatureGetMemsize(const EnsPRepeatfeature rf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!rf)
         return 0;
 
-    size += (ajuint) sizeof (EnsORepeatfeature);
+    size += sizeof (EnsORepeatfeature);
 
     size += ensFeatureGetMemsize(rf->Feature);
 
@@ -2280,11 +2280,11 @@ static void repeatfeatureadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Repeat Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint repeatfeatureadaptorCacheSize(const void *value)
+static ajulong repeatfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

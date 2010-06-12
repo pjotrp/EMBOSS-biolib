@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -104,7 +104,7 @@ static void *miscellaneousfeatureadaptorCacheReference(void *value);
 
 static void miscellaneousfeatureadaptorCacheDelete(void **value);
 
-static ajuint miscellaneousfeatureadaptorCacheSize(const void *value);
+static ajulong miscellaneousfeatureadaptorCacheSize(const void *value);
 
 static EnsPFeature miscellaneousfeatureadaptorGetFeature(const void *value);
 
@@ -777,36 +777,36 @@ AjBool ensMiscellaneoussetTrace(const EnsPMiscellaneousset ms, ajuint level)
 **
 ** @param [r] ms [const EnsPMiscellaneousset] Ensembl Miscellaneous Set
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMiscellaneoussetGetMemsize(const EnsPMiscellaneousset ms)
+ajulong ensMiscellaneoussetGetMemsize(const EnsPMiscellaneousset ms)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!ms)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMiscellaneousset);
+    size += sizeof (EnsOMiscellaneousset);
 
     if(ms->Code)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(ms->Code);
     }
 
     if(ms->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(ms->Name);
     }
 
     if(ms->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(ms->Description);
     }
@@ -2418,13 +2418,13 @@ AjBool ensMiscellaneousfeatureTrace(const EnsPMiscellaneousfeature mf,
 ** @param [r] mf [const EnsPMiscellaneousfeature] Ensembl Miscellaneous
 **                                                Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensMiscellaneousfeatureGetMemsize(const EnsPMiscellaneousfeature mf)
+ajulong ensMiscellaneousfeatureGetMemsize(const EnsPMiscellaneousfeature mf)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -2435,7 +2435,7 @@ ajuint ensMiscellaneousfeatureGetMemsize(const EnsPMiscellaneousfeature mf)
     if(!mf)
         return 0;
 
-    size += (ajuint) sizeof (EnsOMiscellaneousfeature);
+    size += sizeof (EnsOMiscellaneousfeature);
 
     size += ensFeatureGetMemsize(mf->Feature);
 
@@ -3502,11 +3502,11 @@ static void miscellaneousfeatureadaptorCacheDelete(void **value)
 **
 ** @param [r] value [const void*] Ensembl Miscellaneous Feature
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-static ajuint miscellaneousfeatureadaptorCacheSize(const void *value)
+static ajulong miscellaneousfeatureadaptorCacheSize(const void *value)
 {
     if(!value)
         return 0;

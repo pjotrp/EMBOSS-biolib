@@ -196,7 +196,7 @@ AjBool ensDensitytypeSetRegionFeatures(EnsPDensitytype dt,
 
 AjBool ensDensitytypeTrace(const EnsPDensitytype dt, ajuint level);
 
-ajuint ensDensitytypeGetMemsize(const EnsPDensitytype dt);
+ajulong ensDensitytypeGetMemsize(const EnsPDensitytype dt);
 
 EnsEDensitytypeValueType ensDensitytypeValeTypeFromStr(const AjPStr type);
 
@@ -274,7 +274,7 @@ AjBool ensDensityfeatureSetDensityValue(EnsPDensityfeature df,
 
 AjBool ensDensityfeatureTrace(const EnsPDensityfeature df, ajuint level);
 
-ajuint ensDensityfeatureGetMemsize(const EnsPDensityfeature df);
+ajulong ensDensityfeatureGetMemsize(const EnsPDensityfeature df);
 
 AjBool ensDensityfeatureSortByStartAscending(AjPList dfs);
 

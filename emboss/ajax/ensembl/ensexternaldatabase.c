@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1377,57 +1377,57 @@ const char* ensExternaldatabaseTypeToChar(EnsEExternaldatabaseType type)
 **
 ** @param [r] edb [const EnsPExternaldatabase] Ensembl External Database
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensExternaldatabaseGetMemsize(const EnsPExternaldatabase edb)
+ajulong ensExternaldatabaseGetMemsize(const EnsPExternaldatabase edb)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!edb)
         return 0;
 
-    size += (ajuint) sizeof (EnsOExternaldatabase);
+    size += sizeof (EnsOExternaldatabase);
 
     if(edb->Name)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(edb->Name);
     }
 
     if(edb->Release)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(edb->Release);
     }
 
     if(edb->DisplayName)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(edb->DisplayName);
     }
 
     if(edb->SecondaryName)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(edb->SecondaryName);
     }
 
     if(edb->SecondaryTable)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(edb->SecondaryTable);
     }
 
     if(edb->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(edb->Description);
     }

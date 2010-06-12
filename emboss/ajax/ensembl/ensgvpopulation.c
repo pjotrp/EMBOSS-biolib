@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -586,13 +586,13 @@ AjBool ensGvpopulationAddSubPopulation(EnsPGvpopulation gvp,
 **
 ** @param [r] gvp [const EnsPGvpopulation] Ensembl Genetic Variation Population
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensGvpopulationGetMemsize(const EnsPGvpopulation gvp)
+ajulong ensGvpopulationGetMemsize(const EnsPGvpopulation gvp)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -601,7 +601,7 @@ ajuint ensGvpopulationGetMemsize(const EnsPGvpopulation gvp)
     if(!gvp)
         return 0;
 
-    size += (ajuint) sizeof (EnsOGvpopulation);
+    size += sizeof (EnsOGvpopulation);
 
     size += ensGvsampleGetMemsize(gvp->Gvsample);
 

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1226,18 +1226,18 @@ const char* ensExternalreferenceInfoTypeToChar(
 **
 ** @param [r] er [const EnsPExternalreference] Ensembl External Reference
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensExternalreferenceGetMemsize(const EnsPExternalreference er)
+ajulong ensExternalreferenceGetMemsize(const EnsPExternalreference er)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!er)
         return 0;
 
-    size += (ajuint) sizeof (EnsOExternalreference);
+    size += sizeof (EnsOExternalreference);
 
     size += ensAnalysisGetMemsize(er->Analysis);
 
@@ -1245,42 +1245,42 @@ ajuint ensExternalreferenceGetMemsize(const EnsPExternalreference er)
 
     if(er->PrimaryIdentifier)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(er->PrimaryIdentifier);
     }
 
     if(er->DisplayIdentifier)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(er->DisplayIdentifier);
     }
 
     if(er->Version)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(er->Version);
     }
 
     if(er->Description)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(er->Description);
     }
 
     if(er->LinkageAnnotation)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(er->LinkageAnnotation);
     }
 
     if(er->InfoText)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(er->InfoText);
     }
@@ -2059,22 +2059,22 @@ AjBool ensIdentityreferenceTrace(const EnsPIdentityreference ir, ajuint level)
 **
 ** @param [r] ir [const EnsPIdentityreference] Ensembl Identity Reference
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensIdentityreferenceGetMemsize(const EnsPIdentityreference ir)
+ajulong ensIdentityreferenceGetMemsize(const EnsPIdentityreference ir)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     if(!ir)
         return 0;
 
-    size += (ajuint) sizeof (EnsOIdentityreference);
+    size += sizeof (EnsOIdentityreference);
 
     if(ir->Cigar)
     {
-        size += (ajuint) sizeof (AjOStr);
+        size += sizeof (AjOStr);
 
         size += ajStrGetRes(ir->Cigar);
     }
@@ -3239,13 +3239,13 @@ AjBool ensDatabaseentryTrace(const EnsPDatabaseentry dbe, ajuint level)
 **
 ** @param [r] dbe [const EnsPDatabaseentry] Ensembl Database Entry
 **
-** @return [ajuint] Memory size
+** @return [ajulong] Memory size
 ** @@
 ******************************************************************************/
 
-ajuint ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe)
+ajulong ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe)
 {
-    ajuint size = 0;
+    ajulong size = 0;
 
     AjIList iter = NULL;
 
@@ -3255,7 +3255,7 @@ ajuint ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe)
     if(!dbe)
         return 0;
 
-    size += (ajuint) sizeof (EnsODatabaseentry);
+    size += sizeof (EnsODatabaseentry);
 
     size += ensExternalreferenceGetMemsize(dbe->Externalreference);
 
@@ -3265,7 +3265,7 @@ ajuint ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe)
 
     if(dbe->Synonyms)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNew(dbe->Synonyms);
 
@@ -3275,7 +3275,7 @@ ajuint ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe)
 
             if(synonym)
             {
-                size += (ajuint) sizeof (AjOStr);
+                size += sizeof (AjOStr);
 
                 size += ajStrGetRes(synonym);
             }
@@ -3288,7 +3288,7 @@ ajuint ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe)
 
     if(dbe->GoLinkageTypes)
     {
-        size += (ajuint) sizeof (AjOList);
+        size += sizeof (AjOList);
 
         iter = ajListIterNew(dbe->GoLinkageTypes);
 
@@ -3298,7 +3298,7 @@ ajuint ensDatabaseentryGetMemsize(const EnsPDatabaseentry dbe)
 
             if(linkage)
             {
-                size += (ajuint) sizeof (AjOStr);
+                size += sizeof (AjOStr);
 
                 size += ajStrGetRes(linkage);
             }
