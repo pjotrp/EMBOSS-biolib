@@ -28,7 +28,7 @@ float embAlignPathCalc(const char *a, const char *b,
                        ajint *compass, AjBool show);
 
 float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
-                       ajuint lena, ajuint lenb,
+                       ajint lena, ajint lenb,
                        float gapopen, float gapextend,
                        float endgapopen, float endgapextend,
                        ajint *start1, ajint *start2,
