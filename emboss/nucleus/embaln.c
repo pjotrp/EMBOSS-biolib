@@ -311,7 +311,16 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     {
 	match = sub[ajSeqcvtGetCodeK(cvt,a[ypos])][ajSeqcvtGetCodeK(cvt,b[0])];
 	cursor = ypos * lenb;
-	iy[cursor] = - (gapopen + (ypos+1) * gapextend);
+	cursorp = (ypos-1) * lenb;
+
+	testog = m[cursorp] - gapopen;
+	testeg = iy[cursorp] - gapextend;
+
+	if(testog >= testeg)
+	    iy[cursor] = testog;
+	else
+	    iy[cursor] = testeg;
+
 	m[cursor] = match - (endgapopen + (ypos - 1) * endgapextend);
 	ix[cursor] = -endgapopen - ypos * endgapextend - gapopen;
     }
@@ -326,7 +335,16 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     {
 	match = sub[ajSeqcvtGetCodeK(cvt,a[0])][ajSeqcvtGetCodeK(cvt,b[xpos])];
 	cursor = xpos;
-	ix[cursor] = - (gapopen + (xpos+1) * gapextend);
+	cursorp = xpos -1;
+
+	testog = m[cursorp] - gapopen;
+        testeg = ix[cursorp] - gapextend;
+
+        if(testog >= testeg)
+            ix[cursor] = testog;
+        else
+            ix[cursor] = testeg;
+
 	m[cursor] = match - (endgapopen + (xpos - 1) * endgapextend);
 	iy[cursor] = -endgapopen - xpos * endgapextend -gapopen;
     }
