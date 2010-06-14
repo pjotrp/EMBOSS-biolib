@@ -78,7 +78,7 @@ section: output [
     parameter: "Y"
     help: "File for output features"
     type: "protein"
-    relations: "/edam/data/0001208 Protein sequence feature table"                      
+    relations: "/edam/data/0001272 Protein sequence feature table"                      
   ]
 
 endsection: output
