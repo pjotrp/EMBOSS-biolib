@@ -18462,6 +18462,17 @@ FP /^# Identity: +63/145 \(43\.4%\)\n/
 FP /^# Similarity: +88/145 \(60\.7%\)\n/
 //
 
+ID water-gapafterfirstresidues
+CC this test known to fail
+AP water
+CL asis:catt asis:cgatt stdout -auto -gapopen 1 -gapextend 1
+FI stdout 
+FZ > 15
+FP /# Score: 19/
+FP /.*c-att/
+FP /.*cgatt/
+//
+
 ID whichdb-ex
 AP whichdb
 PP EMBOSS_RCHOME=N
@@ -20919,7 +20930,7 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/11 \(45\.5%\)/
 FP /^# Score: +1\.0\n/
-FP /^asis               1 -(-P)|(P-)-AW-HEAE      7\n/
+FP /^asis               1 -(-P)|(P-)|(PA)-(A)|(-)W-HEAE      7\n/
 FP /^asis               1 HEAGAWGHE-E     10\n/
 FC = 42
 //
@@ -21048,6 +21059,23 @@ FP /^asis +1 ----ca--atagactggtccgttcgc--/
 FC = 39
 //
 
+ID needle-traceback3
+AP needle
+CL -auto -stdout
+CL asis::CDISRILQTHADAKVQVLDNQNVSNGCVSKILGRYYETG
+CL asis::CDISRILQ--------------VSNGCVSKILGRYYETG
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +25\/39 \(64\.1%\)/
+FP /^# Score: +115\.5\n/
+FP /^asis +1 CDISRILQTHADAKVQVLDNQNVSNGCVSKILGRYYETG/
+FP /^asis +1 CDISRILQ--------------VSNGCVSKILGRYYETG/
+FC = 37
+//
+
 ID needle-indel
 AP needle
 CL asis:cttttcgtggtatta asis:gcgaccatgagagag
@@ -21060,9 +21088,9 @@ FI stdout
 FP /^# Identity: +7\/23 \(30\.4%\)/
 FP /^# Gaps:    +16\/23 \(69\.6%\)/
 FP /^# Score: +19\.0\n/
-FP /^asis +1 -cttttcg----tg-gta[ta-]{5}/
-FP /      +        ||    || | |   |/
-FP /^asis +1 g-----cgaccatgag-a[ga-]{5}/
+FP /^asis +1 (ctttt-)|(-ctttt)cg----tg-gta[ta-]{5}/
+FP                         / +||    || | |   |/
+FP /^asis +1 (-----g)|(g-----)cgaccatgag-a[ga-]{5}/
 FC = 42
 //
 
