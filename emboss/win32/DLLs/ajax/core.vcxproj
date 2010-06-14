@@ -148,6 +148,7 @@
     <ClCompile Include="..\..\..\ajax\core\ajrange.c" />
     <ClCompile Include="..\..\..\ajax\core\ajreg.c" />
     <ClCompile Include="..\..\..\ajax\core\ajreport.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajresource.c" />
     <ClCompile Include="..\..\..\ajax\core\ajseq.c" />
     <ClCompile Include="..\..\..\ajax\core\ajseqabi.c" />
     <ClCompile Include="..\..\..\ajax\core\ajseqbam.c" />
@@ -205,6 +206,7 @@
     <ClInclude Include="..\..\..\ajax\core\ajrange.h" />
     <ClInclude Include="..\..\..\ajax\core\ajreg.h" />
     <ClInclude Include="..\..\..\ajax\core\ajreport.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajresource.h" />
     <ClInclude Include="..\..\..\ajax\core\ajseq.h" />
     <ClInclude Include="..\..\..\ajax\core\ajseqabi.h" />
     <ClInclude Include="..\..\..\ajax\core\ajseqbam.h" />
