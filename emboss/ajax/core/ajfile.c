@@ -29,8 +29,6 @@
 #include "win32.h"
 #include "dirent_w32.h"
 #include <direct.h>
-#define PATH_MAX _MAX_PATH
-#define getcwd _getcwd
 #endif
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -44,6 +42,12 @@
 #endif
 #include <limits.h>
 #include <fcntl.h>
+
+#ifdef WIN32
+#define PATH_MAX _MAX_PATH
+#define getcwd _getcwd
+#define fileno _fileno
+#endif
 
 #define FILERECURSLV 20
 
@@ -2589,11 +2593,19 @@ __deprecated AjBool ajFileEof(const AjPFile thys)
 
 AjBool ajFileIsFile(const AjPFile file)
 {
+#if defined(AJ_IRIXLF)
+    struct stat64 buf;
+#else
     struct stat buf;
+#endif
 
-    fstat(fileno(file->fp), &buf);
+#if defined(AJ_IRIXLF)
+    if(!fstat64(fileno(file->fp), &buf))
+#else
+    if(!fstat(fileno(file->fp), &buf))
+#endif
 
-    if(buf.st_mode & S_IFREG)
+    if((ajuint)buf.st_mode & AJ_FILE_R)
         return ajTrue;
 
     return ajFalse;
