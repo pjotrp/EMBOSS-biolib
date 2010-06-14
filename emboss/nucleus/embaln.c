@@ -238,8 +238,8 @@ float embAlignPathCalc(const char *a, const char *b,
 **
 ** @param [r] a [const char *] first sequence
 ** @param [r] b [const char *] second sequence
-** @param [r] lena [ajuint] length of first sequence
-** @param [r] lenb [ajuint] length of second sequence
+** @param [r] lena [ajint] length of first sequence
+** @param [r] lenb [ajint] length of second sequence
 ** @param [r] gapopen [float] gap opening penalty
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [r] endgapopen [float] end gap opening penalty
@@ -265,7 +265,7 @@ float embAlignPathCalc(const char *a, const char *b,
 ******************************************************************************/
 
 float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
-                       ajuint lena, ajuint lenb,
+                       ajint lena, ajint lenb,
                        float gapopen, float gapextend,
                        float endgapopen, float endgapextend,
                        ajint *start1, ajint *start2,
@@ -274,10 +274,8 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
                        ajint *compass, AjBool show,
                        AjBool endweight)
 {
-    ajuint xpos;
-    ajuint ypos;
-    ajuint i;
-    ajuint j;
+    ajint xpos;
+    ajint ypos;
     ajint bconvcode;
 
     float match;
@@ -297,90 +295,48 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     {
 	endgapopen=0;
 	endgapextend=0;
+	endweight=ajTrue;
     }
 
     match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[0])];
-    compass[0] = 0;
 
-    ix[0] = endweight ? -endgapopen-endgapextend : INT_MIN;
-    iy[0] = endweight ? -endgapopen-endgapextend : INT_MIN;
+    ix[0] = -endgapopen-gapopen;
+    iy[0] = -endgapopen-gapopen;
     m[0] = match;
 
-    /* First initialise the first column and row */
-    for (i = 1; i < lena; ++i)
+    cursor =0;
+
+    /* First initialise the first column */
+    for (ypos = 1; ypos < lena; ++ypos)
     {
-        match = sub[ajSeqcvtGetCodeK(cvt, a[i])][ajSeqcvtGetCodeK(cvt, b[0])];
-        ypos=i;
-        cursor = ypos * lenb;
-        cursorp = (ypos-1) * lenb;
-
-        if(!endweight)
-        {
-            testog = m[cursorp] - gapopen;
-            testeg = iy[cursorp] - gapextend;
-
-            if(testog >= testeg)
-                iy[cursor] = testog;
-            else
-                iy[cursor] = testeg;
-
-            m[cursor] = (float)match;
-
-            ix[cursor] = INT_MIN;
-        }
-        else
-        {
-            testog = m[cursorp] - gapopen;
-            testeg = iy[cursorp] - gapextend;
-
-            if(testog >= testeg)
-                iy[cursor] = testog;
-            else
-                iy[cursor] = testeg;
-
-            m[cursor] = match - (endgapopen + (i - 1) * endgapextend);
-            ix[cursor] = INT_MIN;
-            }
+	match = sub[ajSeqcvtGetCodeK(cvt,a[ypos])][ajSeqcvtGetCodeK(cvt,b[0])];
+	cursor = ypos * lenb;
+	iy[cursor] = - (gapopen + (ypos+1) * gapextend);
+	m[cursor] = match - (endgapopen + (ypos - 1) * endgapextend);
+	ix[cursor] = -endgapopen - ypos * endgapextend - gapopen;
     }
 
-    for (j = 1; j < lenb; ++j)
+    ix[cursor] -= endgapopen;
+    ix[cursor] += gapopen;
+
+    cursor=0;
+
+    /* Now initialise the first row */
+    for (xpos = 1; xpos < lenb; ++xpos)
     {
-        match = sub[ajSeqcvtGetCodeK(cvt, a[0])][ajSeqcvtGetCodeK(cvt, b[j])];
-        xpos=j;
-        cursor = xpos;
-        cursorp = xpos -1;
-
-        if(!endweight)
-        {
-            testog = m[cursorp] - gapopen;
-            testeg = ix[cursorp] - gapextend;
-
-            if(testog >= testeg)
-                ix[cursor] = testog;
-            else
-                ix[cursor] = testeg;
-
-            iy[cursor] = INT_MIN;
-            m[cursor] = (float) match;
-        }
-        else
-        {
-            testog = m[cursorp] - gapopen;
-            testeg = ix[cursorp] - gapextend;
-
-            if(testog >= testeg)
-                ix[cursor] = testog;
-            else
-                ix[cursor] = testeg;
-
-            m[cursor] = match - (endgapopen + (j - 1) * endgapextend);
-            iy[cursor] = INT_MIN;
-        }
+	match = sub[ajSeqcvtGetCodeK(cvt,a[0])][ajSeqcvtGetCodeK(cvt,b[xpos])];
+	cursor = xpos;
+	ix[cursor] = - (gapopen + (xpos+1) * gapextend);
+	m[cursor] = match - (endgapopen + (xpos - 1) * endgapextend);
+	iy[cursor] = -endgapopen - xpos * endgapextend -gapopen;
     }
 
-    /* xpos and ypos are the diagonal steps so start at 1 */
+    iy[cursor] -= endgapopen;
+    iy[cursor] += gapopen;
+
     xpos = 1;
-    
+
+    /* Now construct match, ix, and iy matrices */
     while (xpos != lenb)
     {
         ypos = 1;
@@ -396,7 +352,8 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             match = sub[ajSeqcvtGetCodeK(cvt, a[ypos++])][bconvcode];
 
             cursor += lenb;
-            
+
+            /* match matrix calculations */
             mp = m[cursorp];
             ixp = ix[cursorp];
             iyp = iy[cursorp];
@@ -408,7 +365,8 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
             else
                 m[cursor] = iyp+match;
 
-            if(endweight && xpos==lenb)
+            /* iy matrix calculations */
+            if(xpos==lenb)
             {
         	testog = m[++cursorp] - endgapopen;
         	testeg = iy[cursorp] - endgapextend;
@@ -430,8 +388,9 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
         	iy[cursor] = testeg;
 
             cursorp += lenb;
-            
-            if(endweight && ypos==lena)
+
+            /* ix matrix calculations */
+            if(ypos==lena)
             {
         	testog = m[--cursorp] - endgapopen;
         	testeg = ix[cursorp] - endgapextend;
@@ -470,18 +429,19 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
     cursorp=0;
     cursor=1;
     
-    while (cursor>0){
-	cursor = ypos * lenb + xpos;
+    while (xpos>=0 && ypos>=0)
+    {
+	cursor = ypos*lenb+xpos;
 	mp = m[cursor];
 
-	if(cursorp == 1 && E_FPEQ((ypos==0?endgapextend:gapextend),
-		(ix[cursor]-ix[cursor+1]),U_FEPS))
+	if(cursorp == LEFT && E_FPEQ((ypos==0||(ypos==lena-1)?
+		endgapextend:gapextend), (ix[cursor]-ix[cursor+1]),U_FEPS))
 	{
 	    compass[cursor] = LEFT;
 	    xpos--;
 	}
-	else if(cursorp== 2 && E_FPEQ((xpos==0?endgapextend:gapextend),
-		(iy[cursor]-iy[cursor+lenb]),U_FEPS))
+	else if(cursorp== DOWN && E_FPEQ((xpos==0||(xpos==lenb-1)?
+		endgapextend:gapextend), (iy[cursor]-iy[cursor+lenb]),U_FEPS))
 	{
 	    compass[cursor] = DOWN;
 	    ypos--;
@@ -489,12 +449,12 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	else if(mp >= ix[cursor] && mp>= iy[cursor])
 	{
 
-	    if(cursorp == 1 && E_FPEQ(mp,ix[cursor],U_FEPS))
+	    if(cursorp == LEFT && E_FPEQ(mp,ix[cursor],U_FEPS))
 	    {
 		compass[cursor] = LEFT;
 		xpos--;
 	    }
-	    else if(cursorp == 2 && E_FPEQ(mp,iy[cursor],U_FEPS))
+	    else if(cursorp == DOWN && E_FPEQ(mp,iy[cursor],U_FEPS))
 	    {
 		compass[cursor] = DOWN;
 		ypos--;
@@ -502,27 +462,25 @@ float embAlignPathCalcWithEndGapPenalties(const char *a, const char *b,
 	    else
 	    {
 		compass[cursor] = 0;
-		
-		if (ypos>0)
-		    ypos--;
-		if (xpos>0)
-		    xpos--;
+		ypos--;
+		xpos--;
 	    }
 
 	}
-	else if(ix[cursor]>=iy[cursor] && xpos!=0)
+	else if(ix[cursor]>=iy[cursor] && xpos>-1)
 	{
 	    compass[cursor] = LEFT;
 	    xpos--;
 	}
-	else if(ypos!=0)
+	else if(ypos>-1)
 	{
 	    compass[cursor] = DOWN;
 	    ypos--;
 	}
 	else
 	{
-	    ajFatal("something is seriously wrong in the traceback algorithm");
+	    ajErr("something is seriously wrong in the traceback algorithm");
+	    ajExitAbort();
 	}
 	cursorp = compass[cursor];
     }
@@ -2939,7 +2897,7 @@ static float embAlignGetScoreNWMatrix(
         AjBool endweight)
 {
     ajint i,j, cursor;
-    float score = FLT_MIN;
+    float score = INT_MIN;
     *start1 = lena-1;
     *start2 = lenb-1;
     
@@ -3394,10 +3352,7 @@ static void printPathMatrix(const float* path, const ajint* compass,
             else
                 compasschar = ' ';
 
-            if (path[i * lenb + j]==INT_MIN)
-        	ajDebug("  -inf%c ", compasschar);
-            else
-        	ajDebug("%6.2f%c ", path[i * lenb + j], compasschar);
+            ajDebug("%6.2f%c ", path[i * lenb + j], compasschar);
         }
         ajDebug("\n");
     }
