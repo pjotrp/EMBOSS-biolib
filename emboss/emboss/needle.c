@@ -40,8 +40,8 @@ int main(int argc, char **argv)
     AjPStr algb;
     AjPStr ss;
 
-    ajuint    lena;
-    ajuint    lenb;
+    ajint    lena;
+    ajint    lenb;
 
     const char   *p;
     const char   *q;
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 	ajSeqTrim(b);
 	lenb = ajSeqGetLen(b);
 
-	if(lenb > (ULONG_MAX/(ajulong)(lena+1)))
+	if(lenb > (LONG_MAX/(ajlong)(lena+1)))
 	   ajFatal("Sequences too big. Try 'stretcher'");
 
 	len = lena*lenb;

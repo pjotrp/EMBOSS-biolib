@@ -46,8 +46,8 @@ int main(int argc, char **argv)
     AjPStr ss;
     AjPFile errorf;
 
-    ajuint lena;
-    ajuint lenb;
+    ajint lena;
+    ajint lenb;
     ajuint k;
 
     const char *p;
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
             lena = ajSeqGetLen(seqa);
 
 
-            if(lenb > (ULONG_MAX/(ajulong)(lena+1)))
+            if(lenb > (LONG_MAX/(ajlong)(lena+1)))
                 ajFatal("Sequences too big.");
 
             len = lena*lenb;
