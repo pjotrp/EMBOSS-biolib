@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.17 $
+** @version $Revision: 1.18 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1804,11 +1804,11 @@ ajulong ensGeneGetMemsize(const EnsPGene gene)
     if(!gene)
         return 0;
 
-    size += sizeof (EnsOGene);
+    size += sizeof(EnsOGene);
 
-    size += ensFeatureGetMemsize(gene->Feature);
+    size += (ajlong) ensFeatureGetMemsize(gene->Feature);
 
-    size += ensDatabaseentryGetMemsize(gene->DisplayReference);
+    size += (ajlong) ensDatabaseentryGetMemsize(gene->DisplayReference);
 
     if(gene->Description)
     {
@@ -1871,7 +1871,7 @@ ajulong ensGeneGetMemsize(const EnsPGene gene)
         {
             attribute = (EnsPAttribute) ajListIterGet(iter);
 
-            size += ensAttributeGetMemsize(attribute);
+            size += (ajlong) ensAttributeGetMemsize(attribute);
         }
 
         ajListIterDel(&iter);
@@ -1889,7 +1889,7 @@ ajulong ensGeneGetMemsize(const EnsPGene gene)
         {
             dbe = (EnsPDatabaseentry) ajListIterGet(iter);
 
-            size += ensDatabaseentryGetMemsize(dbe);
+            size += (ajlong) ensDatabaseentryGetMemsize(dbe);
         }
 
         ajListIterDel(&iter);
@@ -1907,7 +1907,7 @@ ajulong ensGeneGetMemsize(const EnsPGene gene)
         {
             transcript = (EnsPTranscript) ajListIterGet(iter);
 
-            size += ensTranscriptGetMemsize(transcript);
+            size += (ajlong) ensTranscriptGetMemsize(transcript);
         }
 
         ajListIterDel(&iter);
