@@ -21094,6 +21094,39 @@ FP /^asis +1 (-----g)|(g-----)cgaccatgag-a[ga-]{5}/
 FC = 42
 //
 
+ID needle-simple1
+AP needle
+CL asis:aag asis:gg stdout -auto -endw
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity: +1\/3 \(33\.3%\)/
+FP /^# Gaps:    +1\/3 \(33\.3%\)/
+FP /^# Score: +-9\.0\n/
+FP /^asis +1 aag/
+FP / +       \.|/
+FP /^asis +1 -gg/
+FC = 38
+//
+
+ID needle-simple2
+AP needle
+CL asis:aa asis:gg stdout -auto
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /^# Identity:   +0\/4 \( 0\.0%\)/
+FP /^# Similarity: +0\/4 \( 0\.0%\)/
+FP /^# Score: 0\.0\n/
+FP /^asis +1 aa--/
+FP /^asis +1 --gg/
+FC = 37
+//
+
 ID needleall-withendweight
 AP needleall
 CL -auto -stdout -endweight -aformat simple
