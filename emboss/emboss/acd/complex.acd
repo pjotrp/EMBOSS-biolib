@@ -121,7 +121,6 @@ section: output [
     knowntype: "complex temporary output"
     help: ""
     nullok: "Y"
-    relations: ""
   ]
 
   seqoutall: outseq [

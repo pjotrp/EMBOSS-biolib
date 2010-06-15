@@ -16,7 +16,6 @@ section: input [
     knowntype: "integer long data"
     information: "Standard format information on int and long
                   data file"
-    relations: ""
   ]
 
 endsection: input
@@ -31,7 +30,6 @@ section: output [
     knowntype: "ajint ajlong data"
     information: "Standard format info on ajint and ajlong
                   output file"
-    relations: ""
   ]
 
 endsection: output
