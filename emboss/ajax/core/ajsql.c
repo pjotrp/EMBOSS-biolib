@@ -54,6 +54,28 @@
 
 static AjBool sqlInit = AJFALSE;
 
+
+
+
+/* sqlconectionClient *********************************************************
+**
+** AJAX SQL Connection client library enumeration. The following strings are
+** used for conversion in database operations and correspond to
+** AjESqlconnectionClient.
+**
+******************************************************************************/
+
+static const char *sqlconnectionClient[] =
+{
+    NULL,
+    "mysql",
+    "postgresql",
+    NULL
+};
+
+
+
+
 #ifdef AJ_SAVESTATS
 
 static ajlong sqlconnectionTotalCount = 0;
@@ -323,7 +345,7 @@ static AjPSqlconnection sqlconnectionMysqlNewData(
 
         sqlc->Pconnection = (void *) Pmysql;
 
-        sqlc->Client = ajESqlClientMySQL;
+        sqlc->Client = ajESqlconnectionClientMySQL;
 
         sqlc->Use = 1;
 
@@ -497,7 +519,7 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
 
             sqlc->Pconnection = (void *) Ppgconn;
 
-            sqlc->Client = ajESqlClientPostgreSQL;
+            sqlc->Client = ajESqlconnectionClientPostgreSQL;
 
             sqlc->Use = 1;
 
@@ -552,7 +574,7 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
 ** @nam4rule NewData Constructor with set of initial values
 ** @nam4rule NewRef Constructor by incrementing the reference counter
 **
-** @argrule NewData client [AjESqlClient] SQL client
+** @argrule NewData client [AjESqlconnectionClient] SQL client
 ** @argrule NewData user [const AjPStr] SQL account user name
 ** @argrule NewData password [const AjPStr] SQL account password
 ** @argrule NewData host [const AjPStr] SQL server hostname or IP address
@@ -585,7 +607,7 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
 ** For MySQL clients options will be read from the [client] and [EMBOSS] groups
 ** of the default my.cnf options file.
 **
-** @param [u] client [AjESqlClient] SQL client
+** @param [u] client [AjESqlconnectionClient] SQL client
 ** @param [r] user [const AjPStr] SQL account user name
 ** @param [r] password [const AjPStr] SQL account password
 ** @param [r] host [const AjPStr] SQL server hostname or IP address
@@ -603,7 +625,7 @@ static AjPSqlconnection sqlconnectionPostgresqlNewData(
 ** @@
 ******************************************************************************/
 
-AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
+AjPSqlconnection ajSqlconnectionNewData(AjESqlconnectionClient client,
                                         const AjPStr user,
                                         const AjPStr password,
                                         const AjPStr host,
@@ -639,7 +661,7 @@ AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
 
     switch(client)
     {
-        case ajESqlClientMySQL:
+        case ajESqlconnectionClientMySQL:
 
 #ifdef HAVE_MYSQL
 
@@ -660,7 +682,7 @@ AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
 
             break;
 
-        case ajESqlClientPostgreSQL:
+        case ajESqlconnectionClientPostgreSQL:
 
 #ifdef HAVE_POSTGRESQL
 
@@ -795,7 +817,7 @@ void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 
     switch(pthis->Client)
     {
-        case ajESqlClientMySQL:
+        case ajESqlconnectionClientMySQL:
 
 #ifdef HAVE_MYSQL
 
@@ -815,7 +837,7 @@ void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 
             break;
 
-        case ajESqlClientPostgreSQL:
+        case ajESqlconnectionClientPostgreSQL:
 
 #ifdef HAVE_POSTGRESQL
 
@@ -876,7 +898,7 @@ void ajSqlconnectionDel(AjPSqlconnection *Psqlc)
 ** @argrule S Pstr [AjPStr*] Address of the (new) SQL-escaped AJAX String
 ** @argrule Escape str [const AjPStr] AJAX String to be escaped
 **
-** @valrule Client [AjESqlClient] Client enumeration
+** @valrule Client [AjESqlconnectionClient] Client library enumeration
 ** @valrule Use [ajuint] Use counter
 ** @valrule Escape [AjBool] True on success
 **
@@ -928,7 +950,7 @@ AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
 
     switch(sqlc->Client)
     {
-        case ajESqlClientMySQL:
+        case ajESqlconnectionClientMySQL:
 
 #ifdef HAVE_MYSQL
 
@@ -964,7 +986,7 @@ AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
 
             break;
 
-        case ajESqlClientPostgreSQL:
+        case ajESqlconnectionClientPostgreSQL:
 
 #ifdef HAVE_POSTGRESQL
 
@@ -1066,20 +1088,83 @@ AjBool ajSqlconnectionEscapeS(const AjPSqlconnection sqlc,
 
 
 
+/* @func ajSqlconnectionClientFromStr *****************************************
+**
+** Convert an AJAX String into an AJAX SQL Connection client element.
+**
+** @param [r] client [const AjPStr] Client string
+**
+** @return [AjESqlconnectionClient] AJAX SQL Connection client or
+**                                  ajESqlconnectionClientNULL
+** @@
+******************************************************************************/
+
+AjESqlconnectionClient ajSqlconnectionClientFromStr(const AjPStr client)
+{
+    register AjESqlconnectionClient i = ajESqlconnectionClientNULL;
+
+    AjESqlconnectionClient eclient = ajESqlconnectionClientNULL;
+
+    for(i = ajESqlconnectionClientMySQL; sqlconnectionClient[i]; i++)
+        if(ajStrMatchC(client, sqlconnectionClient[i]))
+            eclient = i;
+
+    if(!eclient)
+        ajDebug("ajSqlconnectionClientFromStr encountered "
+                "unexpected string '%S'.\n", client);
+
+    return eclient;
+}
+
+
+
+
+/* @func ajSqlconnectionClientToChar ******************************************
+**
+** Convert an AJAX SQL Connection client element into a C-type (char*) string.
+**
+** @param [u] client [AjESqlconnectionClient] SQL Connection client
+**
+** @return [const char*] SQL Connection client C-type (char*) string
+** @@
+******************************************************************************/
+
+const char* ajSqlconnectionClientToChar(AjESqlconnectionClient client)
+{
+    register AjESqlconnectionClient i = ajESqlconnectionClientNULL;
+
+    if(!client)
+        return NULL;
+
+    for(i = ajESqlconnectionClientMySQL;
+        sqlconnectionClient[i] && (i < client);
+        i++);
+
+    if(!sqlconnectionClient[i])
+        ajDebug("ajSqlconnectionClientToChar encountered an "
+                "out of boundary error on client %d.\n", client);
+
+    return sqlconnectionClient[i];
+}
+
+
+
+
 /* @func ajSqlconnectionGetClient *********************************************
 **
 ** Get the client element of an AJAX SQL Connection.
 **
 ** @param [r] sqlc [const AjPSqlconnection] AJAX SQL Connection
 **
-** @return [AjESqlClient] SQL client or ajESqlClientNULL
+** @return [AjESqlconnectionClient] AJAX SQL Connection client or
+**                                  ajESqlconnectionClientNULL
 ** @@
 ******************************************************************************/
 
-AjESqlClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc)
+AjESqlconnectionClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc)
 {
     if(!sqlc)
-        return ajESqlClientNULL;
+        return ajESqlconnectionClientNULL;
 
     return sqlc->Client;
 }
@@ -1603,7 +1688,7 @@ AjPSqlstatement ajSqlstatementNewRun(AjPSqlconnection sqlc,
 
     switch(sqlc->Client)
     {
-        case ajESqlClientMySQL:
+        case ajESqlconnectionClientMySQL:
 
 #ifdef HAVE_MYSQL
 
@@ -1620,7 +1705,7 @@ AjPSqlstatement ajSqlstatementNewRun(AjPSqlconnection sqlc,
 
             break;
 
-        case ajESqlClientPostgreSQL:
+        case ajESqlconnectionClientPostgreSQL:
 
 #ifdef HAVE_POSTGRESQL
 
@@ -1709,7 +1794,7 @@ void ajSqlstatementDel(AjPSqlstatement *Psqls)
 
     switch(pthis->Sqlconnection->Client)
     {
-        case ajESqlClientMySQL:
+        case ajESqlconnectionClientMySQL:
 
 #ifdef HAVE_MYSQL
 
@@ -1726,7 +1811,7 @@ void ajSqlstatementDel(AjPSqlstatement *Psqls)
 
             break;
 
-        case ajESqlClientPostgreSQL:
+        case ajESqlconnectionClientPostgreSQL:
 
 #ifdef HAVE_POSTGRESQL
 
@@ -1867,7 +1952,7 @@ ajuint ajSqlstatementGetIdentifier(const AjPSqlstatement sqls)
 
     switch(sqls->Sqlconnection->Client)
     {
-        case ajESqlClientMySQL:
+        case ajESqlconnectionClientMySQL:
 
 #ifdef HAVE_MYSQL
 
@@ -1886,7 +1971,7 @@ ajuint ajSqlstatementGetIdentifier(const AjPSqlstatement sqls)
 
             break;
 
-        case ajESqlClientPostgreSQL:
+        case ajESqlconnectionClientPostgreSQL:
 
 #ifdef HAVE_POSTGRESQL
 
@@ -2172,7 +2257,7 @@ AjPSqlrow ajSqlrowiterGet(AjISqlrow sqli)
 
     switch(sqli->Sqlstatement->Sqlconnection->Client)
     {
-        case ajESqlClientMySQL:
+        case ajESqlconnectionClientMySQL:
 
 #ifdef HAVE_MYSQL
 
@@ -2219,7 +2304,7 @@ AjPSqlrow ajSqlrowiterGet(AjISqlrow sqli)
 
             break;
 
-        case ajESqlClientPostgreSQL:
+        case ajESqlconnectionClientPostgreSQL:
 
 #ifdef HAVE_POSTGRESQL
 
@@ -2302,7 +2387,7 @@ AjBool ajSqlrowiterRewind(AjISqlrow sqli)
 
     switch(sqli->Sqlstatement->Sqlconnection->Client)
     {
-        case ajESqlClientMySQL:
+        case ajESqlconnectionClientMySQL:
 
 #ifdef HAVE_MYSQL
 
@@ -2325,7 +2410,7 @@ AjBool ajSqlrowiterRewind(AjISqlrow sqli)
 
             break;
 
-        case ajESqlClientPostgreSQL:
+        case ajESqlconnectionClientPostgreSQL:
 
 #ifdef HAVE_POSTGRESQL
 

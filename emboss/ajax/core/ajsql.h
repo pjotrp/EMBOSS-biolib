@@ -47,18 +47,18 @@ typedef struct AjSVoid
 
 
 
-/* AjESqlClient ***************************************************************
+/* AjESqlconnectionClient *****************************************************
 **
-** AJAX SQL Client enumeration.
+** AJAX SQL Connection client library enumeration.
 **
 ******************************************************************************/
 
-typedef enum AjOSqlClient
+typedef enum AjOSqlconnectionClient
 {
-    ajESqlClientNULL,
-    ajESqlClientMySQL,
-    ajESqlClientPostgreSQL
-} AjESqlClient;
+    ajESqlconnectionClientNULL,
+    ajESqlconnectionClientMySQL,
+    ajESqlconnectionClientPostgreSQL
+} AjESqlconnectionClient;
 
 
 
@@ -76,7 +76,7 @@ typedef enum AjOSqlClient
 ** @attr Pconnection [void*]  SQL client library-specific connection object
 **                            (MYSQL*) for the MySQL client library
 **                            (PGconn*) for the PostgreSQL client library
-** @attr Client [AjESqlClient] SQL client type
+** @attr Client [AjESqlconnectionClient] Client library
 ** @attr Use [ajuint] Use counter
 ** @@
 ******************************************************************************/
@@ -84,7 +84,7 @@ typedef enum AjOSqlClient
 typedef struct AjSSqlconnection
 {
     void *Pconnection;
-    AjESqlClient Client;
+    AjESqlconnectionClient Client;
     ajuint Use;
 } AjOSqlconnection;
 
@@ -202,7 +202,7 @@ void ajSqlExit(void);
 
 /* AJAX SQL Connection */
 
-AjPSqlconnection ajSqlconnectionNewData(AjESqlClient client,
+AjPSqlconnection ajSqlconnectionNewData(AjESqlconnectionClient client,
                                         const AjPStr user,
                                         const AjPStr password,
                                         const AjPStr host,
@@ -214,7 +214,7 @@ AjPSqlconnection ajSqlconnectionNewRef(AjPSqlconnection sqlc);
 
 void ajSqlconnectionDel(AjPSqlconnection* Psqlc);
 
-AjESqlClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc);
+AjESqlconnectionClient ajSqlconnectionGetClient(const AjPSqlconnection sqlc);
 
 ajuint ajSqlconnectionGetUse(const AjPSqlconnection sqlc);
 
@@ -227,6 +227,10 @@ AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
 AjBool ajSqlconnectionEscapeS(const AjPSqlconnection sqlc,
                               AjPStr *Pstr,
                               const AjPStr str);
+
+AjESqlconnectionClient ajSqlconnectionClientFromStr(const AjPStr client);
+
+const char* ajSqlconnectionClientToChar(AjESqlconnectionClient client);
 
 /* AJAX SQL Statement */
 
