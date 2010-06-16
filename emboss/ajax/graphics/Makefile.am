@@ -23,7 +23,7 @@ include_HEADERS = ajgraph.h ajgraphstruct.h  ajhist.h
 
 libajaxg_la_SOURCES = $(AJAXGSRC)
 
-VERS_INF = -version-info 6:2:0
+VERS_INF = -version-info 6:3:0
 
 if ISCYGWIN
 LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS) $(CYGWIN_LDAJAXG)

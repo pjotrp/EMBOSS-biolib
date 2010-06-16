@@ -46,7 +46,7 @@ include_HEADERS = emboss.h embaln.h embcom.h embcons.h \
 
 libnucleus_la_SOURCES = $(NUCLSRC)
 
-VERS_INF =  -version-info 6:2:0
+VERS_INF =  -version-info 6:3:0
 
 if ISCYGWIN
 LINKFLAGS =  $(VERS_INF) $(CYGWIN_LDFLAGS) $(CYGWIN_LIBS)

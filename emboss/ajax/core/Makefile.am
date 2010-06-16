@@ -52,7 +52,7 @@ ajtable.h ajtax.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h
 
 libajax_la_SOURCES = $(AJAXSRC)
 
-VERS_INF = -version-info 6:2:0
+VERS_INF = -version-info 6:3:0
 
 if ISCYGWIN
 LINKFLAGS = $(VERS_INF) $(CYGWIN_LDFLAGS) $(CYGWIN_LDAJAX)
