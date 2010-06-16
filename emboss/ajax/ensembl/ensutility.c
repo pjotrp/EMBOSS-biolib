@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.3 $
+** @version $Revision: 1.4 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -35,6 +35,15 @@
 /* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* utilityInit ****************************************************************
+**
+** Private boolean variable to ascertain that ensInit has been called once
+** and only once.
+**
+******************************************************************************/
+
+static AjBool utilityInit = AJFALSE;
 
 
 
@@ -89,9 +98,14 @@
 
 void ensInit(void)
 {
+    if(utilityInit)
+        return;
+
     ensRegistryInit();
 
     ensTranslationInit();
+
+    utilityInit = ajTrue;
 
     return;
 }
