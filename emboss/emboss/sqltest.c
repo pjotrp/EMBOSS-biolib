@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     ajulong i = 0;
     ajuint j = 0;
     
-    AjESqlClient client = ajESqlClientMySQL;
+    AjESqlconnectionClient client = ajESqlconnectionClientMySQL;
     
     AjPFile outf = NULL;
     

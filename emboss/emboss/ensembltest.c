@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 
     AjBool large = AJFALSE;
 
-    AjESqlClient client = ajESqlClientMySQL;
+    AjESqlconnectionClient client = ajESqlconnectionClientMySQL;
 
     EnsEDatabaseadaptorGroup group  = ensEDatabaseadaptorGroupCore;
 
