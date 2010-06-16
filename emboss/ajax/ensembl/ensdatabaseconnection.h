@@ -29,7 +29,8 @@ extern "C"
 ** @attr SocketFile [AjPStr] UNIX socket file
 ** @attr DatabaseName [AjPStr] SQL database name
 ** @attr AutoDisconnect [AjBool] Automatic disconnections
-** @attr SqlClientType [AjESqlClient] AJAX SQL client type
+** @attr SqlconnectionClient [AjESqlconnectionClient] AJAX SQL
+**                                                    Connection client
 ** @attr Use [ajuint] Use counter
 ** @attr Padding [ajuint] Padding to alignment boundary
 **
@@ -46,7 +47,7 @@ typedef struct EnsSDatabaseconnection
     AjPStr SocketFile;
     AjPStr DatabaseName;
     AjBool AutoDisconnect;
-    AjESqlClient SqlClientType;
+    AjESqlconnectionClient SqlconnectionClient;
     ajuint Use;
     ajuint Padding;
 } EnsODatabaseconnection;
@@ -60,7 +61,7 @@ typedef struct EnsSDatabaseconnection
 ** Prototype definitions
 */
 
-EnsPDatabaseconnection ensDatabaseconnectionNew(AjESqlClient client,
+EnsPDatabaseconnection ensDatabaseconnectionNew(AjESqlconnectionClient client,
                                                 AjPStr user,
                                                 AjPStr password,
                                                 AjPStr host,
@@ -72,6 +73,8 @@ EnsPDatabaseconnection ensDatabaseconnectionNewC(EnsPDatabaseconnection dbc,
                                                  AjPStr database);
 
 EnsPDatabaseconnection ensDatabaseconnectionNewRef(EnsPDatabaseconnection dbc);
+
+EnsPDatabaseconnection ensDatabaseconnectionNewUrl(const AjPStr url);
 
 void ensDatabaseconnectionDel(EnsPDatabaseconnection* Pdbc);
 
@@ -93,7 +96,7 @@ AjPStr ensDatabaseconnectionGetDatabaseName(const EnsPDatabaseconnection dbc);
 AjBool ensDatabaseconnectionGetAutoDisconnect(
     const EnsPDatabaseconnection dbc);
 
-AjESqlClient ensDatabaseconnectionGetSqlClientType(
+AjESqlconnectionClient ensDatabaseconnectionGetSqlconnectionClient(
     const EnsPDatabaseconnection dbc);
 
 AjBool ensDatabaseconnectionSetAutoDisconnect(EnsPDatabaseconnection dbc,

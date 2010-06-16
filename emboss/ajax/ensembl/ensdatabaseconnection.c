@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2010/06/04 12:29:25 $ by $Author: rice $
-** @version $Revision: 1.11 $
+** @modified $Date: 2010/06/16 20:58:43 $ by $Author: mks $
+** @version $Revision: 1.12 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -97,7 +97,7 @@
 ** Default Ensembl Database Connection constructor.
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBConnection::new
-** @param [r] client [AjESqlClient] AJAX SQL client type
+** @param [r] client [AjESqlconnectionClient] AJAX SQL Connection client
 ** @param [u] user [AjPStr] User name
 ** @param [u] password [AjPStr] Password
 ** @param [u] host [AjPStr] Host name or IP address
@@ -109,7 +109,7 @@
 ** @@
 ******************************************************************************/
 
-EnsPDatabaseconnection ensDatabaseconnectionNew(AjESqlClient client,
+EnsPDatabaseconnection ensDatabaseconnectionNew(AjESqlconnectionClient client,
                                                 AjPStr user,
                                                 AjPStr password,
                                                 AjPStr host,
@@ -140,7 +140,7 @@ EnsPDatabaseconnection ensDatabaseconnectionNew(AjESqlClient client,
 
     AJNEW0(dbc);
 
-    dbc->SqlClientType = client;
+    dbc->SqlconnectionClient = client;
 
     if(user)
         dbc->UserName = ajStrNewRef(user);
@@ -203,7 +203,7 @@ EnsPDatabaseconnection ensDatabaseconnectionNewC(
 
     AJNEW0(newdbc);
 
-    newdbc->SqlClientType = dbc->SqlClientType;
+    newdbc->SqlconnectionClient = dbc->SqlconnectionClient;
 
     if(dbc->UserName)
         newdbc->UserName = ajStrNewRef(dbc->UserName);
@@ -253,6 +253,98 @@ EnsPDatabaseconnection ensDatabaseconnectionNewRef(EnsPDatabaseconnection dbc)
         return NULL;
 
     dbc->Use++;
+
+    return dbc;
+}
+
+
+
+
+/* @func ensDatabaseconnectionNewUrl ******************************************
+**
+** Construct an Ensembl Database Connection from a Uniform Resource Locator
+** with the following schema where brackets indicate optional components.
+**
+** client://username[:password]@host[:port][/databasename]
+**
+** The following URL would be an example for the public Ensembl MySQL instance.
+**
+** mysql://anonymous@ensembldb.ensembl.org:5306/
+**
+** @cc Bio::EnsEMBL::DBSQL::DBConnection::*
+** @param [r] url [const AjPStr] Uniform Resource Locator
+**
+** @return [EnsPDatabaseconnection] Ensembl Database Connection or NULL
+** @@
+******************************************************************************/
+
+EnsPDatabaseconnection ensDatabaseconnectionNewUrl(const AjPStr url)
+{
+    AjPRegexp urlre = NULL;
+
+    AjESqlconnectionClient eclient = ajESqlconnectionClientNULL;
+
+    EnsPDatabaseconnection dbc = NULL;
+
+    AjPStr client   = NULL;
+    AjPStr user     = NULL;
+    AjPStr password = NULL;
+    AjPStr host     = NULL;
+    AjPStr port     = NULL;
+    AjPStr database = NULL;
+
+    if(ajDebugTest("ensDatabaseconnectionNewUrl"))
+        ajDebug("ensDatabaseconnectionNewUrl\n"
+                "  url '%S'\n",
+                url);
+
+    if(!(url && ajStrGetLen(url)))
+        return NULL;
+
+    urlre = ajRegCompC("([^:]+)://(?:([^@:]+)(?:\\:([^@]*))?@)?"
+                       "([^:/]+)(?:\\:)?(\\d+)?(?:\\/(\\w+))?");
+
+    if(ajRegExec(urlre, url))
+    {
+        client   = ajStrNew();
+        user     = ajStrNew();
+        password = ajStrNew();
+        host     = ajStrNew();
+        port     = ajStrNew();
+        database = ajStrNew();
+
+        ajRegSubI(urlre, 1, &client);
+        ajRegSubI(urlre, 2, &user);
+        ajRegSubI(urlre, 3, &password);
+        ajRegSubI(urlre, 4, &host);
+        ajRegSubI(urlre, 5, &port);
+        ajRegSubI(urlre, 6, &database);
+
+        eclient = ajSqlconnectionClientFromStr(client);
+
+        if(!eclient)
+            ajDebug("ensDatabaseconnectionNewUrl encountered "
+                    "unexpected string '%S' in the "
+                    "client part of the URL '%S'.\n",
+                    client, url);
+
+        dbc = ensDatabaseconnectionNew(eclient,
+                                       user,
+                                       password,
+                                       host,
+                                       port,
+                                       (AjPStr) NULL,
+                                       database);
+
+        ajStrDel(&client);
+        ajStrDel(&user);
+        ajStrDel(&password);
+        ajStrDel(&host);
+        ajStrDel(&port);
+        ajStrDel(&database);
+    }
+
+    ajRegFree(&urlre);
 
     return dbc;
 }
@@ -322,15 +414,10 @@ void ensDatabaseconnectionDel(EnsPDatabaseconnection* Pdbc)
     ajSqlconnectionDel(&pthis->Sqlconnection);
 
     ajStrDel(&pthis->UserName);
-
     ajStrDel(&pthis->Password);
-
     ajStrDel(&pthis->HostName);
-
     ajStrDel(&pthis->HostPort);
-
     ajStrDel(&pthis->SocketFile);
-
     ajStrDel(&pthis->DatabaseName);
 
     AJFREE(pthis);
@@ -358,7 +445,7 @@ void ensDatabaseconnectionDel(EnsPDatabaseconnection* Pdbc)
 ** @nam4rule GetHostPort Return host port
 ** @nam4rule GetSocketFile Return the UNIX socket file
 ** @nam4rule GetDatabaseName Return the database name
-** @nam4rule GetSqlClientType Return the SQL client type
+** @nam4rule GetSqlconnectionClient Return the AJAX SQL Connection client
 **
 ** @argrule * dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
@@ -369,7 +456,8 @@ void ensDatabaseconnectionDel(EnsPDatabaseconnection* Pdbc)
 ** @valrule HostPort [AjPStr] Host port
 ** @valrule SocketFile [AjPStr] UNIX socket file
 ** @valrule DatabaseName [AjPStr] Database name
-** @valrule SqlClientType [AjESqlClient] SQL client type
+** @valrule SqlconnectionClient [AjESqlconnectionClient] AJAX SQL
+**                                                       Connection client
 **
 ** @fcategory use
 ******************************************************************************/
@@ -557,24 +645,25 @@ AjBool ensDatabaseconnectionGetAutoDisconnect(
 
 
 
-/* @func ensDatabaseconnectionGetSqlClientType ********************************
+/* @func ensDatabaseconnectionGetSqlconnectionClient **************************
 **
-** Get the SQL client type element of an Ensembl Database Connection.
+** Get the AJAX SQL Connection client element of an
+** Ensembl Database Connection.
 **
 ** @cc Bio::EnsEMBL::DBSQL::DBConnection::driver
 ** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
 **
-** @return [AjESqlClient] SQL client type
+** @return [AjESqlconnectionClient] AJAX SQL Connection client
 ** @@
 ******************************************************************************/
 
-AjESqlClient ensDatabaseconnectionGetSqlClientType(
+AjESqlconnectionClient ensDatabaseconnectionGetSqlconnectionClient(
     const EnsPDatabaseconnection dbc)
 {
     if(!dbc)
-        return ajESqlClientNULL;
+        return ajESqlconnectionClientNULL;
 
-    return dbc->SqlClientType;
+    return dbc->SqlconnectionClient;
 }
 
 
@@ -682,7 +771,7 @@ AjBool ensDatabaseconnectionMatch(const EnsPDatabaseconnection dbc1,
     if(!ajStrMatchS(dbc1->SocketFile, dbc2->SocketFile))
         return ajFalse;
 
-    if(dbc1->SqlClientType != dbc2->SqlClientType)
+    if(dbc1->SqlconnectionClient != dbc2->SqlconnectionClient)
         return ajFalse;
 
     return ajTrue;
@@ -715,7 +804,7 @@ AjBool ensDatabaseconnectionConnect(EnsPDatabaseconnection dbc)
                 "  dbc %p\n",
                 dbc);
 
-    dbc->Sqlconnection = ajSqlconnectionNewData(dbc->SqlClientType,
+    dbc->Sqlconnection = ajSqlconnectionNewData(dbc->SqlconnectionClient,
                                                 dbc->UserName,
                                                 dbc->Password,
                                                 dbc->HostName,
@@ -1040,7 +1129,7 @@ AjBool ensDatabaseconnectionTrace(const EnsPDatabaseconnection dbc,
 
     ajDebug("%SensDatabaseconnectionTrace %p\n"
             "%S  Sqlconnection %p\n"
-            "%S  SqlClientType %d\n"
+            "%S  SqlconnectionClient '%s'\n"
             "%S  UserName '%S'\n"
             "%S  Password '***'\n"
             "%S  HostName '%S'\n"
@@ -1050,7 +1139,7 @@ AjBool ensDatabaseconnectionTrace(const EnsPDatabaseconnection dbc,
             "%S  Use %u\n",
             indent, dbc,
             indent, dbc->Sqlconnection,
-            indent, dbc->SqlClientType,
+            indent, ajSqlconnectionClientToChar(dbc->SqlconnectionClient),
             indent, dbc->UserName,
             indent,
             indent, dbc->HostName,
