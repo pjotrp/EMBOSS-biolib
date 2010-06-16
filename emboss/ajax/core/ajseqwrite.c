@@ -6818,7 +6818,7 @@ static void seqWriteSam(AjPSeqout outseq)
         /* Program record */
         argstr = ajStrNewS(ajUtilGetCmdline());
         ajStrExchangeKK(&argstr, '\n', ' ');
-        ajFmtPrintF(outseq->File, "@PG\t%S\t%S\t%S\n",
+        ajFmtPrintF(outseq->File, "@PG\tID:%S\tVN:%S\tCL:%S\n",
                     ajUtilGetProgram(), ajNamValueVersion(), argstr);
         ajStrDel(&argstr);
 
@@ -6850,6 +6850,8 @@ static void seqWriteSam(AjPSeqout outseq)
                 outseq->Name, flag, outseq->Seq, seq);
 
     /* could add tag:vtype:value fields at end of record */
+
+    ajStrDel(&seq);
 
     return;
 }
