@@ -78,9 +78,12 @@ water whichdb wobble \
 wordcount wordfinder wordmatch wossname \
 yank
 
+if !ESYSTEMLIBS
+EXTRA_INCLUDES = -I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib
+endif
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax/pcre \
-	-I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib \
+	$(EXTRA_INCLUDES) \
 	-I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/graphics \
 	-I$(top_srcdir)/ajax/ensembl -I$(top_srcdir)/ajax/ajaxdb \
 	-I$(top_srcdir)/ajax/acd -I$(top_srcdir)/plplot
@@ -315,10 +318,15 @@ sqltest_SOURCES = sqltest.c
 testplot_SOURCES = testplot.c
 treetypedisplay_SOURCES = treetypedisplay.c
 
+if !ESYSTEMLIBS
+EXTRA_LDS = ../ajax/zlib/libezlib.la ../ajax/expat/libeexpat.la
+endif
+
+
 LDADD = ../nucleus/libnucleus.la ../ajax/acd/libacd.la \
 	../ajax/ajaxdb/libajaxdb.la ../ajax/ensembl/libensembl.la \
 	../ajax/graphics/libajaxg.la ../ajax/core/libajax.la \
-	../ajax/zlib/libezlib.la ../ajax/expat/libeexpat.la \
+	$(EXTRA_LDS) \
 	../ajax/pcre/libepcre.la ../plplot/libeplplot.la \
 	$(XLIB)
 

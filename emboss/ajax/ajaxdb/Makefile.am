@@ -12,8 +12,13 @@ CYGWIN_LDAJAXDB = -L../../plplot -L../pcre -L../expat -L../zlib -L../core \
 -L../ensembl -lensembl lajax -leplplot -leexpat -lepcre -lezlib
 endif
 
+if !ESYSTEMLIBS
+EXTRA_INCLUDES = -I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib
+endif
+
+
 INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
--I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib \
+$(EXTRA_INCLUDES) \
 -I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/ensembl
 
 AJAXDBSRC = ajmart.c ajseqdb.c

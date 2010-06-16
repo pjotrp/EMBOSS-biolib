@@ -11,10 +11,14 @@ CYGWIN_LDAJAX = -L../../plplot -L../expat -L../pcre -L../zlib \
 -leplplot -leexpat -lepcre -lezlib
 endif
 
+if !ESYSTEMLIBS
+EXTRA_INCLUDES = -I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib
+endif
+
+
 INCLUDES = -DAJAX_FIXED_ROOT=$(AJAX_FIXED_ROOT) \
 -DAJAX_SYSTEM="$(AJAX_SYSTEM)" -DPREFIX=\"$(prefix)\" \
--I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre -I$(top_srcdir)/ajax/expat \
--I$(top_srcdir)/ajax/zlib
+-I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre $(EXTRA_INCLUDES)
 
 AJAXSRC = ajalign.c ajarr.c ajassert.c \
 ajbase.c ajcall.c ajcod.c \

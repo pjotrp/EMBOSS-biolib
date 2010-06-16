@@ -380,8 +380,15 @@ fi
 
 
 
-
-
+dnl Test if --enable-systemlibs given
+have_systemlibs=no
+AC_ARG_ENABLE(systemlibs,
+   AS_HELP_STRING([--enable-systemlibs], [Use system versions of zlib/expat]))
+if test "${enable_systemlibs}" = "yes" ; then
+    have_systemlibs=yes
+fi          
+AM_CONDITIONAL(ESYSTEMLIBS, test "$have_systemlibs" = "yes")
+AC_SUBST(ESYSTEMLIBS)
 
 
 

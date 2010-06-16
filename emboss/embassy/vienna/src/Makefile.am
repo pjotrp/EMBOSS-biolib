@@ -15,15 +15,25 @@ CYGWIN_LDVIENNA = -L${embprefix}/lib -lnucleus -lacd -lajaxdb -lensembl \
 endif
 endif
 
+if !ESYSTEMLIBS
+LLINCLUDES = -I../../../ajax/expat -I../../../ajax/zlib
+NLINCLUDES = -I${embprefix}/include/ezlib -I${embprefix}/include/eexpat
+LLAIXLIBS  = -L../../../ajax/expat/.libs -L../../../ajax/zlib/.libs
+NLAIXLIBS  = -leexpat -lezlib
+LLADD = ../../../ajax/pcre/libeexpat.la ../../../ajax/zlib/libezlib.la
+NLADD = -leexpat -lezlib
+endif
+
+
 if LOCALLINK
 INCLUDES = -I../H -I../../../nucleus -I../../../ajax/pcre \
-	-I../../../ajax/expat -I../../../ajax/zlib \
+	$(LLINCLUDES) \
 	-I../../../ajax/core -I../../../ajax/graphics \
 	-I../../../ajax/ensembl -I../../../ajax/ajaxdb \
 	-I../../../ajax/acd -I../../../plplot
 else
 INCLUDES = -I../H -I${embprefix}/include -I${embprefix}/include/eplplot \
-	-I${embprefix}/include/ezlib -I${embprefix}/include/eexpat \
+	$(NLINCLUDES) \
 	-I${embprefix}/include/epcre
 endif
 
@@ -31,16 +41,16 @@ if ISSHARED
 if ISAIXIA64
 if LOCALLINK
 AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs \
--L../../../ajax/pcre/.libs -L../../../ajax/expat/.libs \
--L../../../ajax/zlib/.libs -L../../../ajax/core/.libs \
+-L../../../ajax/pcre/.libs $(LLAIXLIBS) \
+-L../../../ajax/core/.libs \
 -L../../../ajax/graphics/.libs -L../../../ajax/ensembl/.libs \
 -L../../../ajax/ajaxdb/.libs -L../../../ajax/acd/.libs \
 -L../../../nucleus/.libs \
 -lnucleus -lacd -lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre \
--lezlib -leplplot
+ $(NLAIXLIBS) -leplplot
 else
 AIX_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lacd \
--lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre -lezlib -leplplot
+-lajaxdb -lensembl -lajaxg -lajax -leexpat -lepcre $(NLAIXLIBS) -leplplot
 endif
 endif
 endif
@@ -103,12 +113,11 @@ LDADD = libviennarna.la \
 	../../../ajax/ensembl/libensembl.la \
 	../../../ajax/graphics/libajaxg.la \
 	../../../ajax/core/libajax.la \
-	../../../ajax/zlib/libezlib.la \
-	../../../ajax/expat/libeexpat.la \
+	$(LLADD) \
 	../../../ajax/pcre/libepcre.la \
 	../../../plplot/libeplplot.la \
 	$(XLIB)
 else
 LDADD = libviennarna.la -L${embprefix}/lib -lnucleus -lacd -lajaxdb \
-	-lensembl -lajaxg -lajax -leexpat -lepcre -lezlib -leplplot $(XLIB)
+	-lensembl -lajaxg -lajax -lepcre $(NLADD) -leplplot $(XLIB)
 endif
