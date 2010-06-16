@@ -11,7 +11,6 @@ extern "C"
 #define ensembl_h
 
 #include "ajax.h"
-#include "ajgraph.h"
 
 #include "ensdatabaseconnection.h"
 #include "ensdatabaseadaptor.h"
