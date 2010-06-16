@@ -26,21 +26,11 @@ section: additional [
 ]
 
   boolean: large [
-    # additional: "N"
     default: "N"
     help: "Set this to 'Y' to download large test data sets."
     information: "Process large data sets"
-    # parameter: "N"
-    # standard: "N"
   ]
 
-  integer: maxnum [
-    # parameter: "N"
-    information: "Maximum number of genes to process or -1 for all."
-    default: "25"
-    additional: "$(large)"
-  ]
-  
 endsection: additional
 
 section: output [
@@ -59,8 +49,13 @@ section: output [
     type: "nucleotide"
   ]
 
+  integer: maxnum [
+    information: "Maximum number of genes to process or -1 for all."
+    default: "25"
+    standard: "$(large)"
+  ]
+
   seqoutall: exonsoutseq [
-    # parameter: "N"
     information: "Output file for Ensembl Exons"
     name: "exons"
     extension: "fa"
@@ -70,7 +65,6 @@ section: output [
   ]
 
   seqoutall: transcriptsoutseq [
-    # parameter: "N"
     information: "Output file for Ensembl Transcripts"
     name: "transcripts"
     extension: "fa"
@@ -80,7 +74,6 @@ section: output [
   ]
 
   seqoutall: translationsoutseq [
-    # parameter: "N"
     information: "Output file for Ensembl Translations"
     name: "translations"
     extension: "fa"
