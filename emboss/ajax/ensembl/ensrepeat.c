@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -2913,7 +2913,7 @@ void ensRepeatfeatureadaptorDel(EnsPRepeatfeatureadaptor *Prfa)
 ** @param [r] rfa [const EnsPRepeatfeatureadaptor] Ensembl Repeat
 **                                                 Feature Adaptor
 ** @param [u] slice [EnsPSlice] Ensembl Slice
-** @param [r] anname [const AjPStr] Ensembl Analysis name
+** @param [rN] anname [const AjPStr] Ensembl Analysis name
 ** @param [rN] rctype [const AjPStr] Ensembl Repeat Consensus type
 ** @param [rN] rcclass [const AjPStr] Ensembl Repeat Consensus class
 ** @param [rN] rcname [const AjPStr] Ensembl Repeat Consensus name
@@ -2959,9 +2959,6 @@ AjBool ensRepeatfeatureadaptorFetchAllBySlice(
         return ajFalse;
 
     if(!slice)
-        return ajFalse;
-
-    if(!anname)
         return ajFalse;
 
     if(!rfs)
