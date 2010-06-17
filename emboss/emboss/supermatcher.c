@@ -223,6 +223,11 @@ int main(int argc, char **argv)
 		ajDebug("++ memory re/allocation for path/compass arrays"
 			" to size: %d\n", newmax);
 	    }
+	    else
+	    {
+		AJCSET0(path,newmax);
+		AJCSET0(compass,newmax);
+	    }
 
 	    ajDebug("Calling embAlignPathCalcSWFast "
 		    "%d..%d [%d/%d] %d..%d [%d/%d] width:%d\n",
@@ -260,7 +265,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-		    ajDebug("queryaln:%S \n  targetaln:%S\n",
+		    ajDebug(" queryaln:%S \ntargetaln:%S\n",
 		            queryaln,targetaln);
 		    embAlignReportLocal(align,
 			    queryseq, targetseq,
