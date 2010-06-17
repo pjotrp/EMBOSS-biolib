@@ -16,7 +16,7 @@ section: input [
     default: "inputfile"
     information: "Commands to the lindna drawing program file"
     knowntype: "lindna mapping commands"
-    relations: ""
+    relations: "/edam/data/0002152 Rendering parameter"
   ]
 
 endsection: input

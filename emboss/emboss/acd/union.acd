@@ -65,7 +65,7 @@ section: output [
     extension: "overlaps"
     nullok: "Y"
     nulldefault: "Y"
-    relations: ""
+    relations: "/edam/data/0000850 Sequence set"
   ]
 
 endsection: output
