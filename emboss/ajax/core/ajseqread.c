@@ -3058,17 +3058,14 @@ static AjBool seqReadFastqSanger(AjPSeq thys, AjPSeqin seqin)
     
     cp = MAJSTRGETPTR(seqQualStr);
     i=0;
+
     if(seqlen > thys->Qualsize)
-    {
         AJCRESIZE(thys->Accuracy, seqlen);
-        thys->Qualsize = seqlen;
-    }
+
+    thys->Qualsize = seqlen;
 
     if(MAJSTRGETLEN(seqQualStr) > thys->Qualsize)
-    {
         AJCRESIZE(thys->Accuracy, MAJSTRGETLEN(seqQualStr));
-        thys->Qualsize = seqlen;
-    }
 
     /*
     ** Sanger uses Phred quality calculated from error probability p
@@ -3466,11 +3463,11 @@ static AjBool seqReadFastqIllumina(AjPSeq thys, AjPSeqin seqin)
     
     cp = ajStrGetPtr(seqQualStr);
     i=0;
+
     if(seqlen > thys->Qualsize)
-    {
-        AJCRESIZE(thys->Accuracy, seqlen);
-        thys->Qualsize = seqlen;
-    }
+	AJCRESIZE(thys->Accuracy, seqlen);
+
+    thys->Qualsize = seqlen;
 
     /*
     ** Illumina uses Phred quality calculated from error probability p
@@ -3685,11 +3682,11 @@ static AjBool seqReadFastqSolexa(AjPSeq thys, AjPSeqin seqin)
     
     cp = ajStrGetPtr(seqQualStr);
     i=0;
+
     if(seqlen > thys->Qualsize)
-    {
         AJCRESIZE(thys->Accuracy, seqlen);
-        thys->Qualsize = seqlen;
-    }
+
+    thys->Qualsize = seqlen;
 
     /*
     ** Sanger uses Phred quality calculated from error probability p
@@ -9438,17 +9435,14 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
     
     cp = MAJSTRGETPTR(token);
     i=0;
+
     if(seqlen > thys->Qualsize)
-    {
         AJCRESIZE(thys->Accuracy, seqlen);
-        thys->Qualsize = seqlen;
-    }
+
+    thys->Qualsize = seqlen;
 
     if(MAJSTRGETLEN(token) > thys->Qualsize)
-    {
         AJCRESIZE(thys->Accuracy, MAJSTRGETLEN(seqQualStr));
-        thys->Qualsize = seqlen;
-    }
 
     while (*cp)
     {
