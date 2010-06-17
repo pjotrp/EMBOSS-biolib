@@ -35,6 +35,15 @@
 /* ========================== include files =========================== */
 /* ==================================================================== */
 
+#include <math.h>
+#include "ajax.h"
+#include <stdarg.h>
+#include <errno.h>
+#include <ctype.h>
+#include <limits.h>
+#include <float.h>
+#include <string.h>
+
 #ifndef HAVE_MEMMOVE
 #include <sys/types.h>
 
@@ -50,16 +59,6 @@ static void* memmove(void *dst, const void* src, size_t len)
     return (void *)bcopy(src, dst, len);
 }
 #endif
-
-
-#include <math.h>
-#include "ajax.h"
-#include <stdarg.h>
-#include <errno.h>
-#include <ctype.h>
-#include <limits.h>
-#include <float.h>
-#include <string.h>
 
 
 
@@ -9002,12 +9001,13 @@ __deprecated void  ajStrFixI(AjPStr* pthis, ajint ilen)
 **
 ** @nam3rule  To            Convert string value to a different datatype.
 ** @nam4rule  ToBool        Convert to boolean
-** @nam4rule  ToDouble        Convert to double
-** @nam4rule  ToFloat        Convert to float
-** @nam4rule  ToHex        Convert to hexadecimal
-** @nam4rule  ToInt        Convert to integer
+** @nam4rule  ToDouble      Convert to double
+** @nam4rule  ToFloat       Convert to float
+** @nam4rule  ToHex         Convert to hexadecimal
+** @nam4rule  ToInt         Convert to integer
 ** @nam4rule  ToLong        Convert to long
 ** @nam4rule  ToUint        Convert to unsigned integer
+** @nam4rule  ToUlong       Convert to unsigned long integer
 **
 ** @argrule * str [const AjPStr] String
 ** @argrule ToBool Pval [AjBool*] Boolean return value
@@ -9017,6 +9017,7 @@ __deprecated void  ajStrFixI(AjPStr* pthis, ajint ilen)
 ** @argrule ToInt Pval [ajint*] Integer return value
 ** @argrule ToLong Pval [ajlong*] Long integer return value
 ** @argrule ToUint Pval [ajuint*] Unsigned integer return value
+** @argrule ToUlong Pval [ajulong*] Unsigned long integer return value
 **
 ** @valrule * [AjBool] True on success
 **
@@ -9394,6 +9395,52 @@ AjBool ajStrToUint(const AjPStr str, ajuint* Pval)
 	l = AJMAX(0, l);
 	l = AJMIN(INT_MAX, l);
 	*Pval =(ajuint) l;
+	ret = ajTrue;
+    }
+
+    return ret;
+}
+
+
+
+
+/* @func ajStrToUlong **********************************************************
+**
+** Converts a string into an unsigned long integer value.
+**
+** Uses the strtoul call in the C RTL.
+**
+** @param [r] str [const AjPStr] String
+** @param [w] Pval [ajulong*] String represented as an integer.
+** @return [AjBool] ajTrue if the string had a valid integer value.
+** @cre an empty string returns ajFalse.
+** @see ajStrIsInt
+** @@
+******************************************************************************/
+
+AjBool ajStrToUlong(const AjPStr str, ajulong* Pval)
+{
+    AjBool ret = ajFalse;
+    const char* cp;
+    ajulong l;
+    char* ptr;
+
+    *Pval = 0;
+
+    if(!str)
+	return ret;
+
+    if(!str->Len)
+	return ret;
+
+    cp = str->Ptr;
+
+    errno = 0;
+    l = strtoul(cp, &ptr, 10);
+
+    if(!*ptr && errno != ERANGE)
+    {
+	*Pval = l;
 	ret = ajTrue;
     }
 

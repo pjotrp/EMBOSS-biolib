@@ -402,7 +402,8 @@ AjBool     ajStrToHex (const AjPStr str, ajint* Pval);
 AjBool     ajStrToInt (const AjPStr str, ajint* Pval);
 AjBool     ajStrToLong (const AjPStr thys, ajlong* result);
 AjBool     ajStrToUint (const AjPStr str, ajuint* Pval);
-
+AjBool     ajStrToUlong(const AjPStr str, ajulong* Pval);
+    
 /* datatype to string conversion functions */
 
 AjBool     ajStrFromBool (AjPStr* Pstr, AjBool val);
