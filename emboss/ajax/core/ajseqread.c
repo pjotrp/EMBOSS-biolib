@@ -9349,7 +9349,7 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
     
     ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
-    if(ajStrGetCharFirst(seqReadLine) != '@')
+    if(ajStrGetCharFirst(seqReadLine) != '@' && seqin->Count < 2)
         return ajFalse;
 
     while(ok && ajStrGetCharFirst(seqReadLine) == '@')
