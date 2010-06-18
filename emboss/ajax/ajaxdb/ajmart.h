@@ -275,6 +275,8 @@ typedef struct AjSMartquery
 ** @attr Absolute [AjPStr] Absolute path
 ** @attr Relative [AjPStr] Relative path
 ** @attr Fragment [AjPStr] Fragment/section
+** @attr Username [AjPStr] Username
+** @attr Password [AjPStr] Password
 ** @@
 ******************************************************************************/
 
@@ -286,6 +288,8 @@ typedef struct AjSUrl
     AjPStr Absolute;
     AjPStr Relative;
     AjPStr Fragment;
+    AjPStr Username;
+    AjPStr Password;
 } AjOUrl;
 
 #define AjPUrl AjOUrl*
@@ -301,6 +305,8 @@ AjPUrl ajStrUrlNew(void);
 void   ajStrUrlDel(AjPUrl *thys);
 void   ajStrUrlParseC(AjPUrl *parts, const char *url);
 void   ajStrUrlSplitPort(AjPUrl urli);
+void ajStrUrlSplitUsername(AjPUrl urli);
+
 AjBool ajMartHttpUrl(const AjPSeqQuery qry, ajint* iport, AjPStr* host,
                      AjPStr* urlget);
     
