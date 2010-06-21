@@ -131,8 +131,10 @@ AjBool  embWordGetTable (AjPTable *table, const AjPSeq seq);
 void    embWordLength (ajint wordlen);
 AjBool  embWordMatchIter (AjIList iter, ajint* start1, ajint* start2,
 			  ajint* len, const AjPSeq* seq);
-EmbPWordMatch embWordMatchListAppend(AjPList hitlist, const AjPSeq seq,
-        const ajuint seq1start, ajuint seq2start, ajint length);
+
+EmbPWordMatch embWordMatchNew(const AjPSeq seq, ajuint seq1start,
+	                      ajuint seq2start, ajint length);
+
 void    embWordMatchListDelete (AjPList* plist);
 void    embWordMatchListPrint (AjPFile file, const AjPList list);
 void    embWordPrintTable  (const AjPTable table);
@@ -159,6 +161,9 @@ ajuint embWordRabinKarpInit(const AjPTable table,
 	                    EmbPWordRK**, ajuint wordlen,
 	                    const AjPSeqset seqset);
 
+
+__deprecated EmbPWordMatch embWordMatchListAppend(AjPList hitlist,
+	const AjPSeq seq,const ajuint seq1start,ajuint seq2start,ajint length);
 
 /*
 ** End of prototype definitions
