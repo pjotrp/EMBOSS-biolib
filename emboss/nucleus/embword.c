@@ -1077,7 +1077,8 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
                             match2->seq1start, match2->seq2start,
                             match2->length);*/
                     /* add to hitlist */
-                    newmatch = embWordMatchListAppend(hitlist, seq2, knew, i, wordLength);
+                    newmatch = embWordMatchNew(seq2, knew, i, wordLength);
+                    ajListPushAppend(hitlist, newmatch);
 
                     if(curiter)
                     {			/* add to wordCurList */
@@ -1121,8 +1122,14 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
 }
 
 
+
+
+/* @obsolete wordMatchListAppend
+** @remove use embWordMatchNew followed by a list append call
+*/
 EmbPWordMatch embWordMatchListAppend(AjPList hitlist, const AjPSeq seq,
-        const ajuint seq1start, ajuint seq2start, ajint length)
+	                             const ajuint seq1start,
+	                             ajuint seq2start, ajint length)
 {
     EmbPWordMatch match;
     AJNEW0(match);
@@ -1137,6 +1144,35 @@ EmbPWordMatch embWordMatchListAppend(AjPList hitlist, const AjPSeq seq,
     return match;
 }
 
+
+
+
+/* @func embWordMatchNew ******************************************************
+**
+** Creates and initialises a word match object
+**
+** @param [r] seq[const AjPSeq] Query sequence, match has been found
+** @param [r] seq1start [ajuint] Start position in target sequence
+** @param [r] seq2start [ajuint] Start position in query sequence
+** @param [r] length [ajint] length of the word match
+** @return [EmbPWordMatch] New word match object.
+** @@
+******************************************************************************/
+
+EmbPWordMatch embWordMatchNew(const AjPSeq seq, ajuint seq1start,
+	                      ajuint seq2start, ajint length)
+{
+    EmbPWordMatch match;
+    AJNEW0(match);
+    match->sequence  = seq;
+    match->seq1start = seq1start;
+    match->seq2start = seq2start;
+    match->length = length;
+    ajDebug("new word match start1: %d start2: %d len: %d\n",
+            match->seq1start, match->seq2start,
+            match->length);
+    return match;
+}
 
 
 
@@ -1819,6 +1855,10 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                             matchlen++;
                         }
 
+                        /* if the match was a false positive skip it */
+                        if(matchlen<plen)
+                            continue;
+
                         /* this is where we extend matches */
                         ii = seq2start+plen;
 
@@ -1833,8 +1873,9 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                         nMatches ++;
 
                         if(!checkmode)
-                        embWordMatchListAppend(matchlist[seqsetindx],
-                                seq, pos, seq2start, matchlen);
+                            ajListPushAppend(matchlist[seqsetindx],
+                                             embWordMatchNew(seq,pos,seq2start,
+                                                             matchlen));
 
                         if(ii > maxloc)
                             maxloc = ii;
