@@ -20,7 +20,7 @@ LLINCLUDES = -I../../../ajax/expat -I../../../ajax/zlib
 NLINCLUDES = -I${embprefix}/include/ezlib -I${embprefix}/include/eexpat
 LLAIXLIBS  = -L../../../ajax/expat/.libs -L../../../ajax/zlib/.libs
 NLAIXLIBS  = -leexpat -lezlib
-LLADD = ../../../ajax/pcre/libeexpat.la ../../../ajax/zlib/libezlib.la
+LLADD = ../../../ajax/expat/libeexpat.la ../../../ajax/zlib/libezlib.la
 NLADD = -leexpat -lezlib
 endif
 
