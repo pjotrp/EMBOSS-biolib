@@ -51,8 +51,8 @@ Version 6.3.0 15-Jul-2010
 	When reading ABI trace files the quality scores can now be
 	read. They are undefined in ABI files, but assumed to be phred
 	scores. ABI files can have two sequences and sets of quality
-	scores. The first is from the instrument basecaloling. The second
-	is from a seond basecaller. Where two sets are found, EMBOSS now
+	scores. The first is from the instrument basecalling. The second
+	is from a second basecaller. Where two sets are found, EMBOSS now
 	reads the second set.
 
 	Application nospace has a new  -menu option to trim all, trailing, or
