@@ -1,5 +1,5 @@
 Phylogenies from distance matrix by N-J or UPGMA method
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-infile]            infile     Phylip neighbor program input file

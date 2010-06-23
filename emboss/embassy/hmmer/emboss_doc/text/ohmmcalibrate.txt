@@ -36,7 +36,7 @@ Usage
 Command line arguments
 
 Calibrate a hidden Markov model
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            infile     HMMER hidden markov model file

@@ -37,7 +37,7 @@ Output file [eda_human.eprop]:
 Command line arguments
 
 Reports propeptide cleavage sites in proteins
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     (Aligned) sequence set filename and optional

@@ -1,5 +1,5 @@
 Search a sequence database with a profile HMM
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-hmmfile]           infile     File of HMMs.

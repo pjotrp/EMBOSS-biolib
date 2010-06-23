@@ -37,7 +37,7 @@ Usage
 Command line arguments
 
 Search sequence database with an HMM
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Sequence(s) filename and optional format, or

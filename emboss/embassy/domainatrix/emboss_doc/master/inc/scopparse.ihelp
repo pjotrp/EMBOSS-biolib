@@ -1,5 +1,5 @@
 Generate DCF file from raw SCOP files.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-classfile]         infile     This option specifies the name of raw SCOP

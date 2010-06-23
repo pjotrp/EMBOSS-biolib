@@ -1,5 +1,5 @@
 Generate residue-ligand CON files from CCF files.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-protpath]          dirlist    [./] This option specifies the location of

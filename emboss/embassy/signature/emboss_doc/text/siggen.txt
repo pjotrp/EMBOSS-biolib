@@ -304,7 +304,7 @@ GA   1 ; 2
   6.1 COMMAND LINE ARGUMENTS
 
 Generates a sparse protein signature from an alignment
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-algpath]           dirlist    [./] This option specifies the location of

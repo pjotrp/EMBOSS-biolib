@@ -127,7 +127,7 @@ Tree written to file "move.treefile"
 Command line arguments
 
 Interactive mixed method parsimony
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing data set

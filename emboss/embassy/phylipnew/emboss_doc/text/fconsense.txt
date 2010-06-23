@@ -94,7 +94,7 @@ Done.
 Command line arguments
 
 Majority-rule and strict consensus tree
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-intreefile]        tree       Phylip tree file

@@ -243,7 +243,7 @@ ALQGEQGVVECAYVEGDGQYARFFSQPLLLGKNGVEERKSIGTLSAFEQNALEGMLDTLKKDIALGEEFVNK
 6.0 USAGE
 
 Generates DHF files from keyword search of UniProt.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-keyfile]           infile     This option specifies the name of keywords

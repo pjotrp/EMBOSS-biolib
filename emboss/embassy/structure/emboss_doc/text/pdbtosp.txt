@@ -164,7 +164,7 @@ XX
 6.0 USAGE
 
 Convert swissprot:PDB codes file to EMBL-like format.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            infile     This option specifies the name of raw

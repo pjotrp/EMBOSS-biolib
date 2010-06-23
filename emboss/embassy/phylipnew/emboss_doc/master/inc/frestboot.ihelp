@@ -1,5 +1,5 @@
 Bootstrapped restriction sites algorithm
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing one or more sets of

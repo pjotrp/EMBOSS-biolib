@@ -1,5 +1,5 @@
 Reorder DCF file to identify representative structures.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-dcfinfile]         infile     This option specifies the name of DCF file

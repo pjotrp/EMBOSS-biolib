@@ -235,7 +235,7 @@ C  -4  -4   2  -7
   6.1 COMMAND LINE ARGUMENTS
 
 Search a DCF file for secondary structure matches.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-ssinfile]          infile     This option specifies the name of the file

@@ -1,5 +1,5 @@
 Generates domain CCF files from protein CCF files.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-scopfile]          infile     This option specifies the DCF file (domain

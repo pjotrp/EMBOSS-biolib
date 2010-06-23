@@ -301,7 +301,7 @@ Trees also written onto file "dolpenny.treefile"
 Command line arguments
 
 Penny algorithm Dollo or polymorphism
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing one or more data sets

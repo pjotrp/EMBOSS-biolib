@@ -46,7 +46,7 @@ Vienna RNAeval output file [red.vrnaevalpair]:
 Command line arguments
 
 RNA eval with cofold
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional

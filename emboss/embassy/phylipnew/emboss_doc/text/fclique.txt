@@ -106,7 +106,7 @@ Done.
 Command line arguments
 
 Largest clique program
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates Phylip discrete states file

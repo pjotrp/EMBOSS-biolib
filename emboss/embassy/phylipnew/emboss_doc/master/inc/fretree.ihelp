@@ -1,5 +1,5 @@
 Interactive tree rearrangement
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-spp]               integer    [0] Number of species (Any integer value)

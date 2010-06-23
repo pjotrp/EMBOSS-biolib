@@ -472,7 +472,7 @@ TRUE         Q9YBD5    95    135
 6.0 USAGE
 
 Generates a hits file from comparing two DHF files
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-hitsinfile]        infile     This option specifies the location of the

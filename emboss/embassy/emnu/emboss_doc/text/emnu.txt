@@ -474,7 +474,7 @@ Usage
 Command line arguments
 
 Simple menu of EMBOSS applications
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers: (none)
    Additional (Optional) qualifiers:

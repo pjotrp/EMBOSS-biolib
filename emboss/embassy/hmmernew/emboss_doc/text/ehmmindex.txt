@@ -76,7 +76,7 @@ Command line arguments
    them).
 
 Create a binary SSI index for an HMM database.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-database]          infile     HMM database.

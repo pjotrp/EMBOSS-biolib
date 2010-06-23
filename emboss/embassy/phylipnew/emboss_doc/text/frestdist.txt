@@ -193,7 +193,7 @@ Done.
 Command line arguments
 
 Distance matrix from restriction sites or fragments
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-data]              discretestates File containing one or more sets of

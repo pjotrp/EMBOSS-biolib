@@ -761,7 +761,7 @@ SIGNATURE -      .
 6.0 USAGE
 
 Generates hits (DHF file) from a signature search
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-siginfile]         infile     This option specifies the name of the

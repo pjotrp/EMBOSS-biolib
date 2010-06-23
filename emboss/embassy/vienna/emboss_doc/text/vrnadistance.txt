@@ -39,7 +39,7 @@ Vienna RNAfold output file [rna4.vrnadistance]:
 Command line arguments
 
 RNA distances
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-structuresfile]    infile     Vienna RNA structures file

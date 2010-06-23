@@ -81,7 +81,7 @@ Command line arguments
    them).
 
 Generate sequences from a profile HMM.
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-hmmfile]           infile     File containing one or more HMMs.

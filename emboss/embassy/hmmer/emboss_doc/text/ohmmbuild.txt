@@ -69,7 +69,7 @@ Saving annotated alignment               ... done. [globins50.out2]
 Command line arguments
 
 Build HMM
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     (Aligned) sequence set filename and optional

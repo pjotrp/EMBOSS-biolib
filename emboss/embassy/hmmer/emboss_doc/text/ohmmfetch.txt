@@ -39,7 +39,7 @@ HMMER hidden markov model output file [outfile.ohmmfetch]:
 Command line arguments
 
 Extract HMM from a database
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-database]          string     Database name (Any string)

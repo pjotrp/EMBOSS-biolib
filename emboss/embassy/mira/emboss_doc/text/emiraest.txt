@@ -123816,7 +123816,7 @@ End of assembly process, thank you for using miraEST.
 Command line arguments
 
 MIRAest fragment assembly program
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
    -project            string     [mira] Default is mira. Defines the project
