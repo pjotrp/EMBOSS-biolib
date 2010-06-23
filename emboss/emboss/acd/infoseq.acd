@@ -143,6 +143,12 @@ section: output [
     relations: "/edam/data/0002135 Toggle"                                     
   ]
 
+  boolean: organism [
+    default: "@(!$(only))"
+    information: "Display 'organism' column"
+    relations: "/edam/data/0002135 Toggle"                                     
+  ]
+
   boolean: description [
     default: "@(!$(only))"
     information: "Display 'description' column"
