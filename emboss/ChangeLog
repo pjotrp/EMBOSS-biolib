@@ -1,13 +1,35 @@
 Version 6.3.0 15-Jul-2010
+	SRSWWW database access, for example from the EBI's srs.ebi.ac.uk
+	server, had a problem processing queries returnoing more than 30
+	entries. This is now corrected by first asking the server for the
+	number of enries and then accessing the data in chunks. This will
+	unfortunately slow down SRSWWW access for single entries but was
+	the only solution available after checking with EBI's SRS support
+	team.
+
+	Infoseq has a new colum "organism" which shows the species line
+	from and EMBL or UniProt entry. In a future release this may be
+	changed to show the standard name for the NCBI taxon identifier
+	from an entry as the species definitions for these databases can
+	be long with alternative names and possibly additional species.
+
+	Amino acid 280nm extinction coefficients in file Eamino.dat have
+	been adjusted to match those of the Expasy 'protparam' tool.
+	Pepstats now reports values with cysteine residues reduced and as
+	cysteine bridges.
+
 	Database types, originally defined as simply "N" for nucleotide
 	and "P" for protein, should now be named in full. The names are
 	expanded automatically when reading the definitions in the
 	emboss.default and .embossrc files. Expanding the types allows for
 	new database types to be added in the near future.
 
-	EMBOSS can now read BAM (binary SAM) sequence files to extract all
-	sequences and quality scores, for example to write them out in
-	FASTQ format.
+	EMBOSS can now read and write BAM (binary SAM) sequence files to
+	extract all sequences and quality scores, for example to write
+	them out in FASTQ format. Although BAM data can also be read
+	through a pipe as standard input, in this case the format must be
+	specified on the command line as it is not currently possible for
+	EMBOSS to read a buffered text file as binary data.
 
 	The acdvalid application now reads the EDAM (EMBRACE Data and
 	Methods) ontology to validate EDAM references in relations
