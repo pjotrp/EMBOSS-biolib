@@ -288,11 +288,12 @@ typedef struct AjSSeqXref {
 ** @attr DbFields [AjPStr] Query fields (plus id and acc)
 ** @attr DbFilter [AjPStr] Additional query filter(s) to restrict results
 ** @attr DbProxy [AjPStr] Proxy host
-** @attr DbHttpVer [AjPStr] HTTP Version
+** @attr DbHttpVer [AjPStr] HTTP version
 ** @attr DbIdentifier [AjPStr] Field name of unique identifier
 ** @attr DbAccession [AjPStr] Field name of secondary identifier
 ** @attr DbSequence [AjPStr] Field name of sequence string
 ** @attr DbReturn [AjPStr] Comma separated field named to be returned
+** @attr ServerVer [AjPStr] Server version
 ** @attr Field [AjPStr] Query field
 ** @attr QryString [AjPStr] Query term
 ** @attr Application [AjPStr] External application command
@@ -302,6 +303,8 @@ typedef struct AjSSeqXref {
 ** @attr Access [AjSSeqAccess*] Access function : see ajseqdb.h
 ** @attr QryData [void*] Private data for access function
 ** @attr Wild [AjBool] True if query contains '*' or '?'
+** @attr CountEntries [ajuint] Number of entries processed
+** @attr TotalEntries [ajuint] Number of entries found
 ** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajSeqQueryNew Default constructor
@@ -342,6 +345,7 @@ typedef struct AjSSeqQuery {
   AjPStr DbAccession;
   AjPStr DbSequence;
   AjPStr DbReturn;
+  AjPStr ServerVer;
   AjPStr Field;
   AjPStr QryString;
   AjPStr Application;
@@ -351,6 +355,8 @@ typedef struct AjSSeqQuery {
   AjSSeqAccess* Access;
   void* QryData;
   AjBool Wild;
+  ajuint CountEntries;
+  ajuint TotalEntries;
   char Padding[4];
 } AjOSeqQuery;
 
@@ -415,6 +421,8 @@ typedef struct AjSSeqQuery {
 ** @attr Lower [AjBool] true: convert to lower case -slower
 ** @attr Upper [AjBool] true: convert to upper case -supper
 ** @attr Text [AjBool] true: save full text of entry
+** @attr ChunkEntries [AjBool] true: access method returns entries in chunks
+**                             and should be called again when input is empty
 ** @attr Count [ajint] count of entries so far. Used when ACD reads first
 **                     sequence and we need to reuse it in a Next loop
 ** @attr Filecount [ajint] Number of files read - used by seqsetall input
@@ -462,6 +470,7 @@ typedef struct AjSSeqin {
   AjBool Lower;
   AjBool Upper;
   AjBool Text;
+  AjBool ChunkEntries;
   ajint Count;
   ajint Filecount;
   ajint Fileseqs;
@@ -499,25 +508,27 @@ typedef struct AjSSeqin {
 ** @other AjPSeqin Sequence input
 **
 ** @attr Name [const char*] Access method name used in emboss.default
+** @attr Access [(AjBool*)] Access function
+** @attr AccessFree [(AjBool*)] Access cleanup function
+** @attr Desc [const char*] Description
 ** @attr Alias [AjBool] Alias for another name
 ** @attr Entry [AjBool] Supports retrieval of single entries
 ** @attr Query [AjBool] Supports retrieval of selected entries
 ** @attr All [AjBool] Supports retrieval of all entries
-** @attr Access [(AjBool*)] Access function
-** @attr AccessFree [(AjBool*)] Access cleanup function
-** @attr Desc [const char*] Description
+** @attr Chunked [AjBool] Supports retrieval of entries in chunks
 ** @@
 ******************************************************************************/
 
 typedef struct AjSSeqAccess {
   const char *Name;
+  AjBool (*Access) (AjPSeqin seqin);
+  AjBool (*AccessFree) (void* qry);
+  const char* Desc;
   AjBool Alias;
   AjBool Entry;
   AjBool Query;
   AjBool All;
-  AjBool (*Access) (AjPSeqin seqin);
-  AjBool (*AccessFree) (void* qry);
-  const char* Desc;
+  AjBool Chunked;
 } AjOSeqAccess;
 
 #define AjPSeqAccess AjOSeqAccess*

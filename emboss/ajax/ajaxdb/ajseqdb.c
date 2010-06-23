@@ -540,73 +540,94 @@ static void       seqSocketTimeout(int sig);
 
 static AjOSeqAccess seqAccess[] =
 {
-    /*Name        Alias    Entry    Query    All
-         AccessFunction   FreeFunction
-	 Description*/
-    {"dbfetch",    AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
-	 seqAccessDbfetch, NULL,
-	 "retrieve in text format from EBI dbfetch REST services"},
-    {"emboss",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessEmboss, seqAccessFreeEmboss,
-	 "dbx program indexed"},
-    {"emblcd",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessEmblcd, seqAccessFreeEmblcd,
-	 "use EMBL-CD index from dbi programs or Staden"},
-    {"entrez",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessEntrez, NULL,
-	 "use NCBI Entrez services"},
-    {"seqhound",  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessSeqhound, NULL,
-	 "use BluePrint seqhound services"},
-    {"mrs",       AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
-	 seqAccessMrs, NULL,
-	 "retrieve in text format from CMBI MRS server (MRS2 syntax)"},
-    {"mrs3",       AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
-	 seqAccessMrs3, NULL,
-	 "retrieve in text format from CMBI MRS3 server"},
-    {"srs",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessSrs, NULL,
-	 "retrieve in text format from a local SRS installation"},
-    {"srsfasta",  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessSrsfasta, NULL,
-	 "retrieve in FASTA format from a local SRS installation"},
-    {"srswww",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessSrswww, NULL,
-	 "retrieve in text format from an SRS webserver"},
-    {"url",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessUrl, NULL,
-	 "retrieve a URL from a remote webserver"},
-    {"app",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessApp, NULL,
-	 "call an external application"},
-    {"external",  AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessApp, NULL,
-	 "call an external application"},
-    /* {"asis",      AJFALSE, AJTRUE, AJFALSE, AJFALSE,  
-	 ajSeqAccessAsis, NULL,
-	 ""}, */        /* called by seqUsaProcess */
-    /* {"file",      AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 ajSeqAccessFile, NULL,
-	 ""}, */        /* called by seqUsaProcess */
-    /* {"offset",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 ajSeqAccessOffset, NULL,
-	 ""}, */    /* called by seqUsaProcess */
-    {"direct",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessDirect, NULL,
-	 "reading the original files unindexed"},
-    {"gcg",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessGcg, NULL,
-	 "emboss dbigcg indexed"},
-    {"embossgcg", AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessEmbossGcg, NULL,
-	 "emboss dbxgcg indexed"},
-    {"blast",     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
-	 seqAccessBlast, NULL,
-	 "blast database format version 2 or 3"},
-    {"biomart",   AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
-	 seqAccessMart, NULL,
-	 "retrieve a single entry from a BioMart server"},
-    {NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL},
+  /* Name      AccessFunction   FreeFunction
+     Description
+     Alias    Entry    Query    All      Chunk */
+    {"dbfetch", seqAccessDbfetch, NULL,
+     "retrieve in text format from EBI dbfetch REST services",
+     AJFALSE, AJTRUE,  AJFALSE, AJFALSE, AJFALSE
+    },
+    {"emboss",  seqAccessEmboss, seqAccessFreeEmboss,
+     "dbx program indexed",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"emblcd", 	 seqAccessEmblcd, seqAccessFreeEmblcd,
+     "use EMBL-CD index from dbi programs or Staden",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"entrez",	 seqAccessEntrez, NULL,
+     "use NCBI Entrez services",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"seqhound",  seqAccessSeqhound, NULL,
+     "use BluePrint seqhound services",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"mrs",	 seqAccessMrs, NULL,
+     "retrieve in text format from CMBI MRS server (MRS2 syntax)",
+     AJFALSE, AJTRUE,  AJFALSE,  AJFALSE, AJFALSE
+    },
+    {"mrs3",	 seqAccessMrs3, NULL,
+     "retrieve in text format from CMBI MRS3 server",
+     AJFALSE, AJTRUE,  AJFALSE, AJFALSE, AJFALSE
+    },
+    {"srs",	 seqAccessSrs, NULL,
+     "retrieve in text format from a local SRS installation",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"srsfasta",	 seqAccessSrsfasta, NULL,
+     "retrieve in FASTA format from a local SRS installation",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"srswww",	 seqAccessSrswww, NULL,
+     "retrieve in text format from an SRS webserver",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"url",	 seqAccessUrl, NULL,
+     "retrieve a URL from a remote webserver",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"app",	 seqAccessApp, NULL,
+     "call an external application",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"external",	 seqAccessApp, NULL,
+     "call an external application",
+     AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    /* {"asis",	 ajSeqAccessAsis, NULL,
+       "",
+       AJFALSE, AJTRUE, AJFALSE, AJFALSE, AJFALSE
+       }, */        /* called by seqUsaProcess */
+    /* {"file",	 ajSeqAccessFile, NULL,
+       "",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE, AJFALSE 
+       }, */        /* called by seqUsaProcess */
+    /* {"offset",	 ajSeqAccessOffset, NULL,
+       "",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE, AJFALSE
+       }, */    /* called by seqUsaProcess */
+    {"direct",	 seqAccessDirect, NULL,
+     "reading the original files unindexed",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"gcg",	 seqAccessGcg, NULL,
+     "emboss dbigcg indexed",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"embossgcg",	 seqAccessEmbossGcg, NULL,
+     "emboss dbxgcg indexed",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"blast",	 seqAccessBlast, NULL,
+     "blast database format version 2 or 3",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  AJFALSE
+    },
+    {"biomart",	 seqAccessMart, NULL,
+     "retrieve a single entry from a BioMart server",
+     AJFALSE, AJTRUE,  AJFALSE,  AJFALSE, AJFALSE
+    },
+    {NULL, NULL, NULL, NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJFALSE},
 
 /* after the NULL access method, and so unreachable.
 ** seqhound requires a username and password which it prompts for
@@ -2726,16 +2747,41 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     FILE *fp;
     AjPSeqQuery qry;
     struct AJTIMEOUT timo;
-    
+    AjPStr qrycount = NULL;
+    AjPStr qryfield = NULL;
+    const char* qrycount5 = "-newId+-fun+PageEntries+-bv+1+-lv+1+-bl+1+-ll+1+-ascii";
+    const char* qrycount6 = "-page+qResult+-bv+1+-lv+1+"
+        "-view+%2a%20Names%20only%20%2a+-ascii";
+    AjBool doproxy = ajFalse;
+    AjPFile countfile = NULL;
+    AjPStr countline = NULL;
+    AjPStr countstr = NULL;
+    ajint foundpos;
+    ajint istart;
+    ajint entrypos;
+    const char* cp;
+    ajuint chunkentries = 3;
+    ajuint firstentry;
+    ajuint lastentry;
+
+    seqin->ChunkEntries = ajTrue;
     qry = seqin->Query;
 
     iport     = 80;
     proxyPort = 0;			/* port for proxy access */
 
+    doproxy = ajSeqHttpProxy(qry, &proxyPort, &proxyName);
+
+    if(ajStrGetCharFirst(qry->ServerVer) == '5')
+        ajStrAssignC(&qrycount, qrycount5);
+    else
+        ajStrAssignC(&qrycount, qrycount6);
+
     if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
 	ajStrAssignS(&qry->DbAlias, qry->DbName);
 
-    ajDebug("seqAccessSrswww %S:%S\n", qry->DbAlias, qry->Id);
+    ajDebug("seqAccessSrswww %S:%S %u/%u\n",
+           qry->DbAlias, qry->Id, qry->CountEntries, qry->TotalEntries);
 
     if(!seqHttpUrl(qry, &iport, &host, &urlget))
     {
@@ -2745,56 +2791,133 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 	return ajFalse;
     }
 
-    if(ajSeqHttpProxy(qry, &proxyPort, &proxyName))
-	ajFmtPrintS(&get, "GET http://%S:%d%S?-e+-ascii",
-		    host, iport, urlget);
+    if(ajStrGetLen(qry->Id))
+    {
+        ajFmtPrintS(&qryfield, "+[%S-id:%S]",
+                    qry->DbAlias, qry->Id);
+        if(qry->HasAcc && ajStrMatchS(qry->Id, qry->Acc))
+            ajFmtPrintAppS(&qryfield, "|[%S-acc:%S]",
+                           qry->DbAlias, qry->Id);
+    }
+    else if(qry->HasAcc && ajStrGetLen(qry->Acc))
+        ajFmtPrintS(&qryfield, "+[%S-acc:%S]",
+                    qry->DbAlias, qry->Acc);
+    else if(ajStrGetLen(qry->Gi))
+        ajFmtPrintS(&qryfield,"+[%S-gid:%S]",
+                    qry->DbAlias, qry->Gi);
+    else if(ajStrGetLen(qry->Sv))
+            ajFmtPrintAppS(&qryfield,"+[%S-sv:%S]",
+                           qry->DbAlias, qry->Sv);
+    else if(ajStrGetLen(qry->Des))
+	ajFmtPrintAppS(&qryfield, "+[%S-des:%S]",
+		       qry->DbAlias, qry->Des);
+    else if(ajStrGetLen(qry->Org))
+	ajFmtPrintAppS(&qryfield, "+[%S-org:%S]",
+		       qry->DbAlias, qry->Org);
+    else if(ajStrGetLen(qry->Key))
+	ajFmtPrintAppS(&qryfield, "+[%S-key:%S]",
+		       qry->DbAlias, qry->Key);
     else
-	ajFmtPrintS(&get, "GET %S?-e+-ascii", urlget);
+	ajFmtPrintAppS(&qryfield, "+%S",
+		       qry->DbAlias);
+
+    ajDebug("searching with SRS url '%S'\n", qryfield);
+
+    ajSeqHttpVersion(qry, &httpver);
+
+    if(!qry->TotalEntries)
+    {
+            /*
+    ** Can count the entries first with:
+    **
+    ** query string above for 5.x or any higher version
+    ** and looking for [Ff]ound...[0-9]+...entries
+    */
+
+        if(doproxy)
+            ajFmtPrintS(&get, "GET http://%S:%d%S?%S",
+                        host, iport, urlget, qrycount);
+        else        
+            ajFmtPrintS(&get, "GET %S?%S", urlget, qrycount);
+
+        ajStrAppendS(&get, qryfield);
+
+        ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+
+        ajDebug("count with: proxy:%B '%S' %d %S\n",
+                doproxy, host, iport, get); 
+
+        if(doproxy)
+            fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+        else
+            fp = ajSeqHttpGet(qry, host, iport, get);
+
+        countfile = ajFileNewFromCfile(fp);
+        while(ajReadline(countfile, &countline))
+        {
+            foundpos = ajStrFindC(countline, "ound");
+            ajDebug("countline:%S", countline);
+            if(foundpos < 1)
+                continue;
+            istart = foundpos + 4;
+            entrypos = ajStrFindC(countline, "entries");
+            if(entrypos < istart)
+                continue;
+
+            ajStrAssignSubS(&countstr, countline, istart, entrypos);
+            ajDebug("countstr: '%S'\n", countstr);
+            cp = ajStrGetPtr(countstr);
+            qry->TotalEntries = 0;
+            while (*cp)
+            {
+                if(isdigit((int)*cp))
+                    qry->TotalEntries = 10*qry->TotalEntries +
+                        (int) (*cp - '0');
+                cp++;
+            }
+            ajDebug("nentries: %d\n", qry->TotalEntries);
+            break;
+        }
+
+        ajFileClose(&countfile);
+        ajStrDel(&countline);
+        ajStrDel(&countstr);
+        if(!qry->TotalEntries)
+        {
+            ajDebug("No entries found\n");
+            return ajFalse;
+        }
+    }
+    
+    /* now fetch the entries in chunks */
+
+    firstentry = qry->CountEntries+1;
+    lastentry = qry->CountEntries+chunkentries;
+    if(lastentry > qry->TotalEntries)
+        chunkentries = qry->TotalEntries - qry->CountEntries;
+
+    qry->CountEntries += chunkentries;
+
+    if(doproxy)
+	ajFmtPrintS(&get, "GET http://%S:%d%S?-e+-ascii+-bv+%u+-lv+%u",
+		    host, iport, urlget, firstentry, chunkentries);
+    else
+	ajFmtPrintS(&get, "GET %S?-e+-ascii+-bv+%u+-lv+%u",
+                    urlget, firstentry, chunkentries);
+    ajStrAppendS(&get, qryfield);
 
     ajStrDel(&urlget);
 
-    if(ajStrGetLen(qry->Id))
-    {
-	ajFmtPrintAppS(&get, "+[%S-id:%S]",
-		       qry->DbAlias, qry->Id);
-	if(qry->HasAcc && ajStrMatchS(qry->Id, qry->Acc))
-	    ajFmtPrintAppS(&get, "|[%S-acc:%S]",
-			   qry->DbAlias, qry->Id);
-    }
-    else if(qry->HasAcc && ajStrGetLen(qry->Acc))
-	ajFmtPrintAppS(&get, "+[%S-acc:%S]",
-		       qry->DbAlias, qry->Acc);
-    else if(ajStrGetLen(qry->Gi))
-	ajFmtPrintAppS(&get,"+[%S-gid:%S]",
-		       qry->DbAlias, qry->Gi);
-    else if(ajStrGetLen(qry->Sv))
-	ajFmtPrintAppS(&get,"+[%S-sv:%S]",
-		       qry->DbAlias, qry->Sv);
-    else if(ajStrGetLen(qry->Des))
-	ajFmtPrintAppS(&get, "+[%S-des:%S]",
-		       qry->DbAlias, qry->Des);
-    else if(ajStrGetLen(qry->Org))
-	ajFmtPrintAppS(&get, "+[%S-org:%S]",
-		       qry->DbAlias, qry->Org);
-    else if(ajStrGetLen(qry->Key))
-	ajFmtPrintAppS(&get, "+[%S-key:%S]",
-		       qry->DbAlias, qry->Key);
-    else
-	ajFmtPrintAppS(&get, "+%S",
-		       qry->DbAlias);
-
-    ajDebug("searching with SRS url '%S'\n", get);
-
-    ajSeqHttpVersion(qry, &httpver);
     ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
     ajStrDel(&httpver);
 
     ajStrAssignS(&seqin->Db, qry->DbName);
 
     /* finally we have set the GET command */
+
     ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
-    if(ajStrGetLen(proxyName))
+    if(doproxy)
 	fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
     else
 	fp = ajSeqHttpGet(qry, host, iport, get);
