@@ -1,4 +1,14 @@
 Version 6.3.0 15-Jul-2010
+	Biomart is a new access method for sequence databases, The
+	database definition must include definitions of new attributes
+	sequence (the biomart sequence attribute) and identifier (the
+	Biomart identifier atribute). Additional attributes may be
+	returned as description text if they are listed in the results
+	attribute of the DB definition.
+
+	Database definitions have a new attribute serverversion which is
+	used by SRSWWW access to choose the best way to retrieve data.
+
 	SRSWWW database access, for example from the EBI's srs.ebi.ac.uk
 	server, had a problem processing queries returnoing more than 30
 	entries. This is now corrected by first asking the server for the
