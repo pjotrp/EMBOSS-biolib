@@ -1031,7 +1031,7 @@ Finds programs by keywords in their short description
 Command line arguments
 
 Finds programs by keywords in their short description
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-search]            string     Enter a word or words here and a
@@ -1269,7 +1269,7 @@ UTILS MISC
 Command line arguments
 
 Displays full documentation for an application
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-program]           string     Enter the name of an EMBOSS program (Any

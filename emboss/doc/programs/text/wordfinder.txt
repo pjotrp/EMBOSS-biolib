@@ -42,7 +42,7 @@ Output alignment [j01636.wordfinder]:
 Command line arguments
 
 Match large sequences against one or more other sequences
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-asequence]         seqset     Sequence set filename and optional format,

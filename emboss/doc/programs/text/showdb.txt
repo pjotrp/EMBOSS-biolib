@@ -611,7 +611,7 @@ tgenbank         Nucleotide OK  OK  OK  emblcd    sv,des,org,key    special 01
 Command line arguments
 
 Displays information on configured databases
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers: (none)
    Additional (Optional) qualifiers:

@@ -36,7 +36,7 @@ Output alignment [globins.aligncopypair]:
 Command line arguments
 
 Reads and writes pairs from alignments
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     File containing a sequence alignment.

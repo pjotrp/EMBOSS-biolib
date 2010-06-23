@@ -163,7 +163,7 @@ Display basic information about sequences
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
 Display basic information about sequences
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
@@ -211,6 +211,7 @@ Version: EMBOSS:6.2.0
    -length             boolean    [@(!$(only))] Display 'length' column
    -pgc                boolean    [@(!$(only))] Display 'percent GC content'
                                   column
+   -organism           boolean    [@(!$(only))] Display 'organism' column
    -description        boolean    [@(!$(only))] Display 'description' column
 
    Associated qualifiers:
@@ -403,6 +404,14 @@ to get only the length output, you can specify
 <td>-pgc</td>
 <td>boolean</td>
 <td>Display 'percent GC content' column</td>
+<td>Boolean value Yes/No</td>
+<td>@(!$(only))</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-organism</td>
+<td>boolean</td>
+<td>Display 'organism' column</td>
 <td>Boolean value Yes/No</td>
 <td>@(!$(only))</td>
 </tr>

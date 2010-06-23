@@ -37,7 +37,7 @@ Full text of a sequence database entry output file [x65923.entret]:
 Command line arguments
 
 Retrieves sequence entries from flatfile databases and files
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or

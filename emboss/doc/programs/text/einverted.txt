@@ -56,7 +56,7 @@ File for sequence of regions of inverted repeats. [d00596.fasta]:
 Command line arguments
 
 Finds inverted repeats in nucleotide sequences
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional

@@ -46,7 +46,7 @@ Pepstats program output file [laci_ecoli.pepstats]:
 Command line arguments
 
 Calculates statistics of protein properties
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
@@ -277,6 +277,14 @@ Data files
    The Dayhoff statistic is read from the EMBOSS data file
    'Edayhoff.freq'. You can inspect and modify this file by copying it
    into your current directory with the command: 'embossdata -fetch'.
+
+   Absorption coefficients use values read from the EMBOSS data file
+   'Eamino.dat'. Values in this file assume cysteines are reduced. If
+   cysteines are in disulphide bridges the value should be adjusted as
+   documented at the top of the file, and a local copy used to override
+   the default values.
+
+   Molecular weights are read from a local data file Emolwt.dat.
 
    EMBOSS data files are distributed with the application and stored in
    the standard EMBOSS data directory, which is defined by the EMBOSS

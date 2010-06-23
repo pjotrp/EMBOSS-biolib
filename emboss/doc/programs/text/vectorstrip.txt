@@ -47,7 +47,7 @@ output sequence(s) [pbluescript.fasta]: vector.fasta
 Command line arguments
 
 Removes vectors from the ends of nucleotide sequence(s)
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional

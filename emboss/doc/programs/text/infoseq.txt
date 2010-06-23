@@ -110,7 +110,7 @@ d amiR gene for aliphatic amidase regulation
 Command line arguments
 
 Display basic information about sequences
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
@@ -158,6 +158,7 @@ Version: EMBOSS:6.2.0
    -length             boolean    [@(!$(only))] Display 'length' column
    -pgc                boolean    [@(!$(only))] Display 'percent GC content'
                                   column
+   -organism           boolean    [@(!$(only))] Display 'organism' column
    -description        boolean    [@(!$(only))] Display 'description' column
 
    Associated qualifiers:

@@ -115,7 +115,7 @@ Output file [vtest.edialign]:
 Command line arguments
 
 Local multiple alignment of sequences
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     Sequence set filename and optional format,

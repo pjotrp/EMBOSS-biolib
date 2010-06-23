@@ -50,7 +50,7 @@ General log output file [outfile.dbxgcg]:
 Command line arguments
 
 Index a GCG formatted database using b+tree indices
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-dbname]            string     Basename for index files (Any string from 2

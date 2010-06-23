@@ -47,7 +47,7 @@ Output file [x13776.chips]:
 Command line arguments
 
 Calculates Nc codon usage statistic
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Nucleotide sequence(s) filename and optional

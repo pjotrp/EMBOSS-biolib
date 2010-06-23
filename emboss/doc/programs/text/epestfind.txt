@@ -133,7 +133,7 @@ Created epestfind.ps
 Command line arguments
 
 Finds PEST motifs as potential proteolytic cleavage sites
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Protein sequence USA to be analysed.

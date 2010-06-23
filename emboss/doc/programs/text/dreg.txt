@@ -36,7 +36,7 @@ Output report [x13776.dreg]:
 Command line arguments
 
 Regular expression search of nucleotide sequence(s)
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional

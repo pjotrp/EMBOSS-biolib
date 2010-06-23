@@ -57,7 +57,7 @@ Output report [l46634.qtan]:
 Command line arguments
 
 Finds tandem repeats in nucleotide sequences
-Version: EMBOSS:6.2.0
+Version: EMBOSS:6.3.0
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
