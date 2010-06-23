@@ -222,6 +222,7 @@ NamOAttr namDbAttrs[] =
     {"return", "", "names fields to be returned"},
     {"sequence", "", "sequence field to be returned"},
     {"url", "", "URL skeleton for entry level access (URL, SRSWWW)"},
+    {"serverversion", "", "Version of database server"},
     {NULL, NULL, NULL}
 };
 
@@ -2618,6 +2619,7 @@ AjBool ajNamDbData(AjPSeqQuery qry)
     namDbSetAttrStr(dbattr, "filter", &qry->DbFilter);
     namDbSetAttrBool(dbattr, "caseidmatch", &qry->CaseId);
     namDbSetAttrBool(dbattr, "hasaccession", &qry->HasAcc);
+    namDbSetAttrStr(dbattr, "serverversion", &qry->ServerVer);
     /*
        ajDebug("ajNamDbQuery DbName '%S'\n", qry->DbName);
        ajDebug("    Id '%S' Acc '%S' Des '%S'\n",
