@@ -1613,6 +1613,7 @@ void ajSeqinClear(AjPSeqin thys)
 
     thys->Search = ajTrue;
     thys->Single = ajFalse;
+    thys->ChunkEntries = ajFalse;
 
     /* keep thys->Features */
     /* thys->Features = ajFalse;*/
@@ -2495,11 +2496,19 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     ajDebug("seqRead failed - try again with format %d '%s' code %d\n",
 	    seqin->Format, seqInFormatDef[seqin->Format].Name, istat);
 
-    ajDebug("Search:%B Data:%x ajFileBuffEmpty:%B\n",
-	    seqin->Search, seqin->Data, ajFilebuffIsEmpty(buff));
+    ajDebug("Search:%B Chunk:%B Data:%x ajFileBuffEmpty:%B\n",
+	    seqin->Search, seqin->ChunkEntries,
+            seqin->Data, ajFilebuffIsEmpty(buff));
+
+    if(ajFilebuffIsEmpty(buff) && seqin->ChunkEntries)
+    {
+	if(!seqin->Query->Access->Access(seqin))
+            return ajFalse;
+    }
+
 
     /* need to check end-of-file to avoid repeats */
-    while(seqin->Search && (seqin->Data ||!ajFilebuffIsEmpty(buff)))
+    while(seqin->Search && (seqin->Data || !ajFilebuffIsEmpty(buff)))
     {
 	jstat = seqReadFmt(thys, seqin, seqin->Format);
 
@@ -9136,7 +9145,7 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
             if(bigendian)
                 ajByteRevUint(&targetlen[i]);
 
-            ajDebug("bam target[%u] %u '%s'\b", i, targetlen[i], targetname[i]);
+            ajDebug("bam target[%u] %u '%s'\n", i, targetlen[i], targetname[i]);
         }
 
         bamdata->bam = (AjPSeqBam)calloc(1, sizeof(AjOSeqBam));
@@ -9175,9 +9184,10 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
     dpos = 0;
     ajStrAssignC(&namestr, (const char*) &d[dpos]);
     ajSeqSetName(thys, namestr);
-    ajDebug("read name: '%s'\n", &d[dpos]);
+    ajDebug("read name: %p '%s'\n", dpos, &d[dpos]);
     dpos += (c->l_qname); /* l_qname includes trailing null */
     ajStrAssignC(&cigarstr, "");
+    ajDebug("start of cigar %p\n", dpos);
 
     for(i=0; i < c->n_cigar; i++)
     {
@@ -9190,7 +9200,7 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
         dpos += 4;
     }
 
-    ajDebug("cigar: %S\n", cigarstr);
+    ajDebug("cigar: %p %S\n", dpos, cigarstr);
 
     ajStrAssignC(&seqstr, "");
     for(i=0; i < (ajuint) c->l_qseq; i++)
@@ -9198,8 +9208,8 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
         ajStrAppendK(&seqstr,
                      bam_nt16_rev_table[MAJSEQBAMSEQI(&d[dpos], i)]);
     }
-    ajDebug("seq: '%S'\n", seqstr);
     dpos += (c->l_qseq+1)/2;
+    ajDebug("seq: %p '%S'\n", dpos, seqstr);
 
     ajStrAssignS(&thys->Seq, seqstr);
 
@@ -9226,7 +9236,7 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
             thys->Accuracy[i] = (float) (33 + d[dpos++]);
         }
 
-        ajDebug("qual: %S\n", qualstr);
+        ajDebug("qual: %p %S\n", dpos, qualstr);
     }
 
     ajStrAssignC(&tagstr, "");
@@ -9297,12 +9307,12 @@ static AjBool seqReadBam(AjPSeq thys, AjPSeqin seqin)
             dpos += 4;
         }
         else {
-            ajWarn("Unknown BAM aux type '%c'", dp);
+            ajWarn("Unknown BAM aux type char(%d) '%c'", (ajint) dp, dp);
             ajFmtPrintAppS(&tagstr,"???");
         }
     }
 
-    ajDebug("tags: '%S'\n", tagstr);
+    ajDebug("tags: %p '%S'\n", dpos, tagstr);
 
     seqin->Records++;
 
@@ -9349,8 +9359,6 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
     
     ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
-    if(ajStrGetCharFirst(seqReadLine) != '@' && seqin->Count < 2)
-        return ajFalse;
 
     while(ok && ajStrGetCharFirst(seqReadLine) == '@')
     {
@@ -9394,35 +9402,63 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
     if(!ok)
         return ajFalse;
 
+    if(ajStrParseCountC(seqReadLine, "\t") < 11)
+        return ajFalse;
+
     seqin->Records++;
 
     ajStrTokenAssignC(&handle, seqReadLine, "\t\n");
+
     ajStrTokenNextParseNoskip(&handle,&token); /* QNAME */
     ajDebug("QNAME '%S'\n", token);
     seqSetNameNospace(&thys->Name, token);
 
     ajStrTokenNextParseNoskip(&handle,&token); /* FLAG */
     ajDebug("FLAG  '%S'\n", token);
-    ajStrToUint(token, &flags);
+    if(ajStrGetLen(token)){
+        if(!ajStrToUint(token, &flags))
+            return ajFalse;
+    }
     ajDebug("flags %x\n", flags);
+    
     ajStrTokenNextParseNoskip(&handle,&token); /* RNAME */
     ajDebug("RNAME '%S'\n", token);
+    
     ajStrTokenNextParseNoskip(&handle,&token); /* POS */
     ajDebug("POS   '%S'\n", token);
+    if(ajStrGetLen(token)){
+        if(!ajStrToUint(token, &flags))
+            return ajFalse;
+    }
+
     ajStrTokenNextParseNoskip(&handle,&token); /* MAPQ */
     ajDebug("MAPQ  '%S'\n", token);
+
     ajStrTokenNextParseNoskip(&handle,&token); /* CIGAR */
     ajDebug("CIGAR '%S'\n", token);
+
     ajStrTokenNextParseNoskip(&handle,&token); /* MRNM */
     ajDebug("MRNM  '%S'\n", token);
+
     ajStrTokenNextParseNoskip(&handle,&token); /* MPOS */
     ajDebug("MPOS  '%S'\n", token);
+    if(ajStrGetLen(token)){
+        if(!ajStrToUint(token, &flags))
+            return ajFalse;
+    }
+
     ajStrTokenNextParseNoskip(&handle,&token); /* ISIZE */
     ajDebug("ISIZE '%S'\n", token);
+    if(ajStrGetLen(token)){
+        if(!ajStrToUint(token, &flags))
+            return ajFalse;
+    }
+
     ajStrTokenNextParseNoskip(&handle,&token); /* SEQ */
     ajDebug("SEQ   '%S'\n", token);
     seqAppend(&thys->Seq, token);
     seqlen = MAJSTRGETLEN(token);
+
     ajStrTokenNextParseNoskip(&handle,&token); /* QUAL */
     ajDebug("QUAL  '%S'", token);
     if(MAJSTRGETLEN(token) != seqlen)
@@ -9431,6 +9467,7 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
                "expected: %u found: %u '%S' '%S'",
 	       infile, thys->Name,
 	       seqlen, ajStrGetLen(seqQualStr), thys->Seq, token);
+        return ajFalse;
     }
     
     cp = MAJSTRGETPTR(token);
