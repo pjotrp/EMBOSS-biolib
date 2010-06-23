@@ -10687,7 +10687,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 261
+FZ = 304
 FP /^tembl-id:X13776\s+tembl\s+X13776\s+X13776\s+N\s+2167\s+66\.54\s+Pseudomonas/
 //
 
@@ -10701,7 +10701,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 211
+FZ = 254
 FP /^tembl\s+X13776\s+X13776\s+N\s+2167\s+66\.54\s+Pseudomonas/
 //
 
@@ -10757,7 +10757,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 384
+FZ = 432
 FP /^<tr><td>tembl-id:X13776</td><td>tembl</td><td>X13776</td><td>X13776</td><td>N</td><td>2167</td><td>66\.54</td><td>Pseudomonas .* regulation</td></tr>\n/
 //
 
@@ -11826,12 +11826,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.pepstats
-FZ = 1502
+FZ = 1568
 FP /^Molecular weight = 38590\.16/
 FP /^Average Residue Weight  = 107\.195\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
-FP /^A280 Molar Extinction Coefficient  = 21620\s+\n/
-FP /^A280 Extinction Coefficient 1mg/ml = 0\.56\s+\n/
+FP /^A280 Molar Extinction .*  = 22920 .* 23045 /
+FP /^A280 Extinction .* = 0\.594 .* 0\.597 /
 FP /^Improbability of expression in inclusion bodies = 0\.660\n/
 FP /^A = Ala\s+44\s+12\.222\s+1\.421\s+\n/
 FP /^Tiny\s+\(A\+C\+G\+S\+T\)\s+120\s+33\.333\n/
