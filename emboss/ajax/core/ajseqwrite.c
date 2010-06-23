@@ -25,6 +25,7 @@
 #include <math.h>
 #include <float.h>
 
+#include "ajseqbam.h"
 
 static AjPRegexp seqoutRegFmt = NULL;
 static AjPRegexp seqoutRegId  = NULL;
@@ -193,8 +194,9 @@ static AjBool     seqoutUsaProcess(AjPSeqout thys);
 static void       seqsetClone(AjPSeqout outseq, const AjPSeqset seq, ajint i);
 static AjBool     seqoutFindOutFormat(const AjPStr format, ajint* iformat);
 
-static void       seqCleanDasdna(AjPFile file);
-static void       seqCleanDasseq(AjPFile file);
+static void       seqCleanBam(AjPSeqout outseq);
+static void       seqCleanDasdna(AjPSeqout outseq);
+static void       seqCleanDasseq(AjPSeqout outseq);
 static void       seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf);
 static void       seqWriteAcedb(AjPSeqout outseq);
 static void       seqWriteAsn1(AjPSeqout outseq);
@@ -822,7 +824,7 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
         ajFeattabOutDel(&seqout->Ftquery);
 
     if(seqout->Cleanup)
-        seqout->Cleanup(seqout->File);
+        seqout->Cleanup(seqout);
 
     seqout->Cleanup = NULL;
 
@@ -6771,7 +6773,163 @@ static void seqWriteGff3(AjPSeqout outseq)
 
 static void seqWriteBam(AjPSeqout outseq)
 {
-    (void) outseq;
+    struct bamdata
+    {
+        ajuint Count;
+        ajuint Nref;
+        AjPSeqBamBgzf gzfile;
+        AjPSeqBam bam;
+    } *bamdata = NULL;
+
+    AjPSeqBamHeader header;
+    AjPSeqBam bam;
+    AjPSeqBamCore core;
+    unsigned char *dpos;
+    AjPStr qualstr = NULL;
+    const char *s;
+    ajuint ilen;
+    ajuint slen;
+    ajuint i;
+
+    unsigned char bam_nt16_table[256] =
+        {
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	 1, 2, 4, 8, 15,15,15,15, 15,15,15,15, 15, 0 /*=*/,15,15,
+	15, 1,14, 2, 13,15,15, 4, 11,15,15,12, 15, 3,15,15,
+	15,15, 5, 6,  8,15, 7, 9, 15,10,15,15, 15,15,15,15,
+	15, 1,14, 2, 13,15,15, 4, 11,15,15,12, 15, 3,15,15,
+	15,15, 5, 6,  8,15, 7, 9, 15,10,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15,
+	15,15,15,15, 15,15,15,15, 15,15,15,15, 15,15,15,15
+};
+
+
+    if(!outseq->Count)
+    {
+        outseq->Cleanup = seqCleanBam;
+        AJNEW0(bamdata);
+        AJNEW0(header);
+        AJNEW0(bam);
+
+        bamdata->bam = bam;
+        
+        bamdata->gzfile = ajSeqBamBgzfOpenfd(
+            fileno(ajFileGetFileptr(outseq->File)), "wb");
+
+        /* header text is simply copied from SAM */
+
+        header = ajSeqBamHeaderNewTextC(
+            "@HD\tVN:1.0\tSO:unsorted\tGO:none\n");
+
+        ajSeqBamHeaderWrite(bamdata->gzfile, header);
+        outseq->Data = bamdata;
+    }
+
+    /* bam_write1 for each sequence */
+
+    /* get data for name, flag 0x0004, seq, quality */
+    bamdata = outseq->Data;
+    bam = bamdata->bam;
+    core = &bam->core;
+
+    ilen = ajStrGetLen(outseq->Seq);
+
+    core->tid = -1;
+    core->pos = 0;
+    core->bin = 0;
+    core->qual = '\0';
+    core->l_qname = 1 + ajStrGetLen(outseq->Name);
+    core->flag = 0x0004;
+    core->n_cigar = 0;
+    core->l_qseq = ilen;
+    core->mtid = 0;
+    core->mpos = 0;
+    core->isize = 0;
+
+    qualstr = ajStrNewRes(ilen+1);
+
+    if(outseq->Accuracy)
+    {
+        for(i=0;i<ilen;i++)
+	{
+	    ajStrAppendK(&qualstr, (int) outseq->Accuracy[i]);
+	}
+    }
+
+    else 
+    {
+        ajStrAppendCountK(&qualstr,'\"' - 33, ilen);
+    }
+    
+
+    bam->data_len = core->n_cigar*4 + core->l_qname +
+        (ilen + 1)/2 + ilen;
+    if(bam->data_len > bam->m_data)
+    {
+        AJCRESIZE0(bam->data,bam->m_data, bam->data_len);
+        bam->m_data = bam->data_len;
+    }
+
+    dpos = bam->data;
+    memcpy(dpos, ajStrGetPtr(outseq->Name), core->l_qname);
+    dpos += core->l_qname;
+
+    for(i = 0; i < core->n_cigar; i++)
+    {
+        dpos += 4;
+    }
+
+    s = ajStrGetPtr(outseq->Seq);
+    slen = (ilen+1)/2;
+    for (i = 0; i < slen; ++i)
+        dpos[i] = 0;
+    for (i = 0; i < ilen; ++i)
+        dpos[i/2] |= bam_nt16_table[(ajuint)s[i]] << 4*(1-i%2);
+
+    dpos += slen;
+    memcpy(dpos, ajStrGetPtr(qualstr), ilen);
+
+    ajSeqBamWrite(bamdata->gzfile, bam);
+
+    return;
+}
+
+
+
+
+/* @funcstatic seqCleanBam ****************************************************
+**
+** Writes the remaining lines to complete and close a BAM file
+**
+** @param [u] outseq [AjPSeqout] Sequence output object
+** @return [void]
+** @@
+******************************************************************************/
+
+
+static void seqCleanBam(AjPSeqout outseq)
+{
+    struct bamdata
+    {
+        ajuint Count;
+        ajuint Nref;
+        AjPSeqBamBgzf gzfile;
+        AjPSeqBam bam;
+    } *bamdata = NULL;
+
+    bamdata = outseq->Data;
+
+    ajUser("CleanBam");
+    ajSeqBamBgzfClose(bamdata->gzfile);
+
     return;
 }
 
@@ -6792,7 +6950,7 @@ static void seqWriteBam(AjPSeqout outseq)
 static void seqWriteSam(AjPSeqout outseq)
 {
     AjPStr argstr = NULL;
-    AjPStr seq = NULL;
+    AjPStr qualstr = NULL;
     ajint flag = 0;
     ajuint ilen;
     ajuint i;
@@ -6830,28 +6988,28 @@ static void seqWriteSam(AjPSeqout outseq)
 
     ilen = ajStrGetLen(outseq->Seq);
 
-    seq = ajStrNewRes(ilen+1);
+    qualstr = ajStrNewRes(ilen+1);
 
     if(outseq->Accuracy)
     {
         for(i=0;i<ilen;i++)
 	{
-	    ajStrAppendK(&seq, 33 + (int) outseq->Accuracy[i]);
+	    ajStrAppendK(&qualstr, 33 + (int) outseq->Accuracy[i]);
 	}
     }
 
     else 
     {
-        ajStrAppendCountK(&seq,'\"', ilen);
+        ajStrAppendCountK(&qualstr,'\"', ilen);
     }
     
 
     ajFmtPrintF(outseq->File, "%S\t%d\t*\t0\t0\t*\t*\t0\t0\t%S\t%S\n",
-                outseq->Name, flag, outseq->Seq, seq);
+                outseq->Name, flag, outseq->Seq, qualstr);
 
     /* could add tag:vtype:value fields at end of record */
 
-    ajStrDel(&seq);
+    ajStrDel(&qualstr);
 
     return;
 }
@@ -7336,14 +7494,15 @@ static void seqWriteDasdna(AjPSeqout outseq)
 **
 ** Writes the remaining lines to complete and close a DASDNA XML file
 **
-** @param [u] file [AjPFile] Output file
+** @param [u] outseq [AjPSeqout] Sequence output object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 
-static void seqCleanDasdna(AjPFile file)
+static void seqCleanDasdna(AjPSeqout outseq)
 {
+    AjPFile file = outseq->File;
     ajFmtPrintF(file,
                 "</DASDNA>\n");
 
@@ -7428,14 +7587,15 @@ static void seqWriteDasseq(AjPSeqout outseq)
 **
 ** Writes the remaining lines to complete and close a DASDNA XML file
 **
-** @param [u] file [AjPFile] Output file
+** @param [u] outseq [AjPSeqout] Sequence output object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 
-static void seqCleanDasseq(AjPFile file)
+static void seqCleanDasseq(AjPSeqout outseq)
 {
+    AjPFile file = outseq->File;
     ajFmtPrintF(file,
                 "</DASSEQUENCE>\n");
 
@@ -8167,7 +8327,7 @@ void ajSeqoutClear(AjPSeqout seqout)
     if(seqout->File)
     {
         if(seqout->Cleanup)
-            seqout->Cleanup(seqout->File);
+            seqout->Cleanup(seqout);
 
 	if(seqout->Knownfile)
 	    seqout->File = NULL;
@@ -8272,7 +8432,9 @@ void ajSeqoutClose(AjPSeqout seqout)
     }
 
     if(seqout->Cleanup)
-        seqout->Cleanup(seqout->File);
+        seqout->Cleanup(seqout);
+    seqout->Cleanup = NULL;
+
     if(seqout->Knownfile)
 	seqout->File = NULL;
     else
@@ -8321,7 +8483,7 @@ void ajSeqoutFlush(AjPSeqout seqout)
     seqWriteListClear(seqout);
 
     if(seqout->Cleanup)
-        seqout->Cleanup(seqout->File);
+        seqout->Cleanup(seqout);
 
     return;
 }
@@ -8482,7 +8644,7 @@ void ajSeqoutReset(AjPSeqout seqout)
     if(seqout->File)
     {
         if(seqout->Cleanup)
-            seqout->Cleanup(seqout->File);
+            seqout->Cleanup(seqout);
 
 	if(seqout->Knownfile)
 	    seqout->File = NULL;

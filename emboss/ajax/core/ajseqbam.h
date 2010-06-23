@@ -256,7 +256,7 @@ extern const char* bam_nt16_rev_table;
 ** @attr  flag    [ajushort]  bitwise flag
 ** @attr  n_cigar [ajushort]  number of CIGAR operations
 ** @attr  l_qseq  [ajint]  length of the query sequence (read)
-** @attr  mtid  [ajint]  paired reead (mate) ID
+** @attr  mtid  [ajint]  paired read (mate) ID
 ** @attr  mpos  [ajint]  paire read (mate) position
 ** @attr  isize  [ajint]  insert size for paired reads
 *******************************************************************************/
@@ -409,6 +409,7 @@ int ajSeqBamBgzfRead(AjPSeqBamBgzf fp, void* data, int length);
 int ajSeqBamBgzfWrite(AjPSeqBamBgzf fp, const void* data, int length);
 
 AjPSeqBamHeader ajSeqBamHeaderNew(void);
+AjPSeqBamHeader ajSeqBamHeaderNewTextC(const char* txt);
 
 void ajSeqBamHeaderDestroy(AjPSeqBamHeader *Pheader);
 

@@ -66,6 +66,7 @@ extern "C"
 ** @attr Savelist [AjPList] Previous sequences saved for later output
 **                          (e.g. MSF format)
 ** @attr Accuracy [float*] Accuracy values (one per base) from base calling
+** @attr Data [void*] Format data for reuse, e.g. multiple sequence output
 ** @attr Cleanup [(void*)] Function to write remaining lines on closing
 ** @attr Rev [AjBool] true: to be reverse-complemented
 ** @attr Circular [AjBool] true: circular nucleotide molecule
@@ -137,7 +138,8 @@ typedef struct AjSSeqout {
   AjPStr Extension;
   AjPList Savelist;
   float* Accuracy;
-  void (*Cleanup) (AjPFile filethys);
+  void *Data;
+  void (*Cleanup) (struct AjSSeqout * outseq);
   AjBool Rev;
   AjBool Circular;
   AjBool Single;
