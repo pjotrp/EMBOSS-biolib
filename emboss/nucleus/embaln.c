@@ -157,7 +157,7 @@ float embAlignPathCalc(const char *a, const char *b,
             {
                 mscore = maxa[ypos];
                 path[ypos*lenb+xpos] = (float) mscore;
-                compass[ypos*lenb+xpos] = 1; /* Score comes from left */
+                compass[ypos*lenb+xpos] = LEFT; /* Score comes from left */
             }
 
 	    /* And then bimble down Y axis */
@@ -172,7 +172,7 @@ float embAlignPathCalc(const char *a, const char *b,
             {
                 mscore = maxb;
                 path[ypos*lenb+xpos] = (float) mscore;
-                compass[ypos*lenb+xpos] = 2; /* Score comes from bottom */
+                compass[ypos*lenb+xpos] = DOWN; /* Score comes from bottom */
             }
 
             /*ajDebug("\n");*/
@@ -199,9 +199,9 @@ float embAlignPathCalc(const char *a, const char *b,
 
 	    for(j=0;j<lenb;++j)
             {
-                if(compass[i*lenb+j] == 1)
+                if(compass[i*lenb+j] == LEFT)
                     compasschar = '<';
-                else if(compass[i*lenb+j] == 2)
+                else if(compass[i*lenb+j] == DOWN)
                     compasschar = 'v';
                 else
                     compasschar = ' ';
@@ -626,7 +626,7 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
             {
                 mscore = maxa[ypos];
                 path[ypos*lenb+xpos] = (float) mscore;
-                compass[ypos*lenb+xpos] = 1; /* Score comes from left */
+                compass[ypos*lenb+xpos] = LEFT; /* Score comes from left */
                 ajDebug("Xused: fnew:%.2f maxa[%d] %.2f mscore:%.2f\n",
                         fnew, ypos, maxa[ypos],mscore);
             }
@@ -644,7 +644,7 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
             {
                 mscore = bx;
                 path[ypos*lenb+xpos] = (float) mscore;
-                compass[ypos*lenb+xpos] = 2; /* Score comes from bottom */
+                compass[ypos*lenb+xpos] = DOWN; /* Score comes from bottom */
             }
 
             if(mscore > ret)
@@ -668,9 +668,9 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
 
 	    for(j=0;j<lenb;++j)
             {
-                if(compass[i*lenb+j] == 1)
+                if(compass[i*lenb+j] == LEFT)
                     compasschar = '<';
-                else if(compass[i*lenb+j] == 2)
+                else if(compass[i*lenb+j] == DOWN)
                     compasschar = 'v';
                 else
                     compasschar = ' ';
@@ -784,7 +784,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 
 	    continue;
 	}
-	else if(compass[ypos*lenb+xpos]==1) /* Left, gap(s) in vertical */
+	else if(compass[ypos*lenb+xpos]==LEFT) /* Left, gap(s) in vertical */
 	{
 	    score  = path[ypos*lenb+xpos];
 	    gapcnt = 0;
@@ -812,7 +812,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 
 	    continue;
 	}
-	else if(compass[ypos*lenb+xpos]==2) /* Down, gap(s) in horizontal */
+	else if(compass[ypos*lenb+xpos]==DOWN) /* Down, gap(s) in horizontal */
 	{
 	    score  = path[ypos*lenb+xpos];
 	    gapcnt = 0;
@@ -945,7 +945,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	    ajStrAppendK(n,q[xpos--]);
 	    continue;
 	}
-	else if(compass[ypos*lenb+xpos]==1) /* Left, gap(s) in vertical */
+	else if(compass[ypos*lenb+xpos]==LEFT) /* Left, gap(s) in vertical */
 	{
 	    score  = path[ypos*lenb+xpos];
 	    gapcnt = 0;
@@ -969,7 +969,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 	    }
 	    continue;
 	}
-	else if(compass[ypos*lenb+xpos]==2) /* Down, gap(s) in horizontal */
+	else if(compass[ypos*lenb+xpos]==DOWN) /* Down, gap(s) in horizontal */
 	{
 	    score  = path[ypos*lenb+xpos];
 	    gapcnt = 0;
@@ -1069,13 +1069,13 @@ void embAlignWalkNWMatrixUsingCompass(const char* p, const char* q,
             ajStrAppendK(n, q[xpos--]);
             continue;
         }
-        else if(compass[cursor] == 1) /* Left, gap(s) in vertical */
+        else if(compass[cursor] == LEFT) /* Left, gap(s) in vertical */
         {
             ajStrAppendK(m, '.');
             ajStrAppendK(n, q[xpos--]);
             continue;
         }
-        else if(compass[cursor] == 2) /* Down, gap(s) in horizontal */
+        else if(compass[cursor] == DOWN) /* Down, gap(s) in horizontal */
         {
             ajStrAppendK(m, p[ypos--]);
             ajStrAppendK(n, '.');
@@ -1718,6 +1718,7 @@ void embAlignUnused(void)
 ** @param [r] gapextend [float] gap extension penalty
 ** @param [w] path [float *] path matrix of size
 **                (minlength*pathwidth + (pathwidth/2)*pathwidth)
+**                current value: (pathwidth*(lena+1)), lena==lenb
 ** @param [r] sub [float * const *] substitution matrix from AjPMatrixf
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] compass [ajint *] Path direction pointer array or
@@ -2020,7 +2021,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
 ** @param [r] offset [ajint] Diagonal offset. Zero is start of a and b.
 **                           Negative is position in a.
 **                           Positive is position in b.
-** @param [r] pathwidth [ajint] width of path matrix
+** @param [r] width [ajint] width of path matrix
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
 **
@@ -2031,7 +2032,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 			      float gapopen, float gapextend,
 			      const AjPSeq a, const AjPSeq b, AjPStr *m,
 			      AjPStr *n, ajint lena, ajint lenb,
-			      ajint offset, ajint pathwidth,
+			      ajint offset, ajint width,
                               ajint *start1, ajint *start2)
 {
     ajint i;
@@ -2054,7 +2055,6 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 
     ajint ic;
 
-    ajint width;
     ajint leftwidth;
     ajint rightwidth;
 
@@ -2063,8 +2063,6 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
     ajint ymax;
 
     ajDebug("embAlignWalkSWMatrixFast\n");
-
-    width = pathwidth;
 
     if(lena < width)
 	width = lena;
