@@ -145,7 +145,10 @@ typedef struct AlignSFormat
 
 
 
-
+static ajint      alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
+	                     ajint qstart, ajint qend,
+                             ajint rstart,
+                             AjPStr *mseq, AjPStr* cigar);
 static void       alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 				 ajint* retident, ajint* retsim, ajint* retgap,
 				 ajint* retlen);
@@ -1580,8 +1583,6 @@ static void alignWriteScore(AjPAlign thys)
 **
 ** Writes an alignment in sequence alignment/map (SAM) format
 **
-** specification: http://samtools.sourceforge.net/SAM1.pdf
-**
 ** @param [u] thys [AjPAlign] Alignment object
 ** @return [void]
 ** @@
@@ -1591,96 +1592,124 @@ static void alignWriteSam(AjPAlign thys)
 {
     AjPFile outf;
     ajint nali;
-    ajint iali, iseq;
-    ajint nseq = 2; /* pairwise alignment ??? should we throw an error
-                       for multiple alignments? */
+    ajint iali;
+    ajint iseq;
+    ajint j;
+    ajint qrystart;
+    ajint qryend;
+    ajint refstart;
+
+    ajint nmismatches;
     AlignPData* pdata = NULL;
     AlignPData data = NULL;
-    const AjPSeq seq;
-    ajint j;
-    char qchar;
 
-    ajint* ipos   = NULL;
-    ajint* incs = NULL;
+    ajint refpos = 0; /* 1-based leftmost position on the reference sequence */
 
-    const AjPSeq seq1;
-    const AjPSeq seq2;
+    const AjPSeq refseq;
+    const AjPSeq qryseq;
     AjPStr seqacc = NULL;
 
     ajuint flag = 0;     /* bitwise flag, section 2.2.2 in SAM specification */
-    ajuint mapq = 0;     /* mapping quality */
+    ajuint mapq = 255;   /* mapping quality, 255 means not available */
     AjPStr cigar = NULL; /* extended CIGAR string */
     AjPStr mrnm = NULL;  /* mate reference sequence name */
     ajuint mpos = 0;     /* leftmost mate position of the clipped sequence */
     ajuint isize = 0;    /* inferred insert size */
-    const AjPStr qseq;   /* query sequence */
+
+    AjPStr argstr;
     AjPStr mseq = NULL;  /* match region of the query sequence */
 
-    AJCNEW0(ipos, 2);
-    AJCNEW0(incs, 2);
-    cigar = ajStrNewC("CIGAR"); /* TODO: CIGAR function not yet written */
-    mrnm = ajStrNewC("*");      /* TODO: mate sequences not supported yet ? */
+    mseq = ajStrNew();
+    mrnm = ajStrNewC("*");/* TODO: mate sequences not yet supported */
 
     outf = thys->File;
     nali = ajListToarray(thys->Data, (void***) &pdata);
 
+    if(!thys->Count++)
+    {
+        ajFmtPrintF(outf, "@HD\tVN:1.0\n");
+
+        /* Program record */
+        argstr = ajStrNewS(ajUtilGetCmdline());
+        ajStrExchangeKK(&argstr, '\n', ' ');
+        ajFmtPrintF(outf, "@PG\tID:%S\tVN:%S\tCL:%S\n",
+                    ajUtilGetProgram(), ajNamValueVersion(), argstr);
+        ajStrDel(&argstr);
+    }
+
     for(iali=0; iali<nali; iali++)
     {
 	data = pdata[iali];
-	seq1 = data->Seq[0];
-	seq2 = data->Seq[1];
+	refseq = data->Seq[thys->RefSeq];
 
-	for(iseq=0; iseq < nseq; iseq++)
+	refpos = alignSeqBegin(data, thys->RefSeq) + 1
+			- alignSeqIncrement(data, thys->RefSeq);
+
+	for(iseq=0; iseq < data->Nseqs; iseq++)
 	{
-	    incs[iseq] = alignSeqIncrement(data, iseq);
-	    ipos[iseq] = alignSeqBegin(data, iseq)-incs[iseq];
-	}
-	iseq=1;
-	seq = seq1; /* query sequence */
+	    if (iseq==thys->RefSeq)
+		continue;
 
-	if(ajSeqIsReversed(seq))
-	    flag |= 0x0010;
+	    qryseq = data->Seq[iseq];
 
-	if(seq->Accuracy) /* TODO: accuracy values are not copied
-	into the sequence objects used in alignments */
-	{
-	    ajStrAssignClear(&seqacc);
+	    if(ajSeqIsReversed(qryseq))
+		flag |= 0x0010;
 
-	    for(j=data->Start[iseq]-1;j< data->End[iseq];j++)
+	    if(thys->Global||thys->SeqExternal)
 	    {
-		qchar = 64 + (int) (0.5 + seq->Accuracy[j]);
-		if(qchar > 126)
-		    qchar = 126;
-		else if(qchar < 33)
-		    qchar = 33;
-		ajStrAppendK(&seqacc, (char) qchar);
+		qrystart = alignSeqBegin(data,iseq) -
+		alignSeqIncrement(data,iseq);
+		qryend = alignSeqEnd(data,iseq);
+		refstart = refpos-1;
 	    }
+	    else
+	    {
+		qrystart = 0;
+		qryend = data->LenAli;
+		refstart = 0;
+	    }
+
+	    if(qryseq->Accuracy)
+	    {
+		ajStrAssignClear(&seqacc);
+
+		/* ASCII-33 gives the Phred base quality */
+		for(j=qrystart;j< qryend;j++)
+		    ajStrAppendK(&seqacc, (char) (33 + qryseq->Accuracy[j]));
+
+	    }
+	    else
+		seqacc = ajStrNewC("*");
+
+	    ajStrAssignClear(&mseq);
+	    ajStrAssignClear(&cigar);
+
+	    /* get CIGAR, match region of the query sequence and #mismatches */
+	    nmismatches = alignCIGAR(qryseq, refseq,
+	                             qrystart,
+	                             qryend,
+	                             refstart,
+	                             &mseq, &cigar);
+
+	    ajFmtPrintF(outf, "%S\t%u\t%S\t%d\t%d\t%S\t%S\t%u\t%u\t%S\t%S\t"
+		    "AS:i:%S\tNM:i:%d\n",
+		    alignSeqName(thys, qryseq),
+		    flag,
+		    alignSeqName(thys, refseq),
+		    refpos,
+		    mapq,
+		    cigar,
+		    mrnm,
+		    mpos,
+		    isize,
+		    mseq,
+		    seqacc,
+		    data->Score,
+		    nmismatches);
 	}
-	else
-	    seqacc = ajStrNewC("*");
-
-	qseq = ajSeqGetSeqS(seq);
-	ajStrAssignSubS(&mseq, qseq, data->Start[iseq]-1, data->End[iseq]);
-
-	ajFmtPrintF(outf, "%S\t%u\t%S\t%d\t%d\t%S\t%S\t%u\t%u\t%S\t%S\t"
-                    "AS:i:%S\n",
-		alignSeqName(thys, seq1),
-		flag,
-		alignSeqName(thys, seq2),
-		ipos[iseq]+incs[iseq],
-		mapq,
-		cigar,
-		mrnm,
-		mpos,
-		isize,
-		qseq,
-		seqacc,
-		data->Score);
     }
 
     AJFREE(pdata);
-    AJFREE(ipos);
-    AJFREE(incs);
     ajStrDel(&cigar);
     ajStrDel(&mrnm);
     ajStrDel(&seqacc);
@@ -2581,6 +2610,7 @@ AjPAlign ajAlignNew(void)
     pthis->Format    = 0;
     pthis->File      = NULL;
     pthis->Data      = ajListNew();
+    pthis->RefSeq    = 0;
 
     return pthis;
 }
@@ -3744,13 +3774,13 @@ static ajint alignSeqGapBegin(const AlignPData data, ajint iseq)
 
 /* @funcstatic alignSeqGapEnd *************************************************
 **
-** Counts the gaps at the start of the nth sequence for an alignment.
+** Counts the gaps at the end of the nth sequence for an alignment.
 **
 ** Reverse direction is tested and the reverse complement numbering is used.
 **
 ** @param [r] data [const AlignPData] Alignment data object
 ** @param [r] iseq [ajint] Sequence number
-** @return [ajint] Start position
+** @return [ajint] End position
 ******************************************************************************/
 
 static ajint alignSeqGapEnd(const AlignPData data, ajint iseq)
@@ -3917,6 +3947,27 @@ void ajAlignSetExternal(AjPAlign thys, AjBool external)
 	    thys->SeqExternal, external);
 
     thys->SeqExternal = external;
+
+    return;
+}
+
+
+
+
+/* @func ajAlignSetRefSeqIndx ***************************************************
+**
+** Sets the index of the reference sequence.
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @param [r] refseq [ajint] index of the reference sequence
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAlignSetRefSeqIndx(AjPAlign thys, ajint refseq)
+{
+
+    thys->RefSeq = refseq;
 
     return;
 }
@@ -5765,6 +5816,113 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     ajMatrixDel(&imatrix);
 
     return ajTrue;    
+}
+
+
+
+
+/* @funcstatic alignCIGAR *****************************************************
+**
+** Return CIGAR string for a pairwise alignment, as well as match region
+** of the query sequence and the number of mismatches
+**
+** TODO: hard/soft clipping support
+**
+** @param [r] qryseq [const AjPSeq] query sequence
+** @param [r] refseq [const AjPSeq] reference sequence
+** @param [r] qstart [ajint] query sequence start point
+** @param [r] qend [ajint] query sequence end point
+** @param [r] rstart [ajint] reference sequence start point
+** @param [w] qseq [AjPStr*] query sequence
+** @param [w] cigar [AjPStr*] CIGAR string
+** @return [ajint] number of mismatches
+******************************************************************************/
+
+static ajint alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
+	                ajint qstart, ajint qend,
+	                ajint rstart,
+	                AjPStr *qseq, AjPStr* cigar)
+{
+    const char* qryseqc;
+    const char* refseqc;
+
+    static char gapchars[] = "-~.? "; /* all known gap characters */
+
+    ajint m=0;
+    ajint i=0;
+    ajint d=0;
+    ajint nmismatches=0;
+
+    qryseqc = ajSeqGetSeqC(qryseq);
+    refseqc = ajSeqGetSeqC(refseq);
+
+    for(; qstart<qend; qstart++, rstart++)
+    {
+	if(strchr(gapchars,qryseqc[qstart]))
+	{
+	    i++;
+
+	    if(m>0)
+	    {
+		ajFmtPrintAppS(cigar, "%uM",m);
+		m=0;
+	    }
+
+	    if(d>0)
+	    {
+		ajFmtPrintAppS(cigar, "%uD",d);
+		d=0;
+	    }
+	}
+	else if(strchr(gapchars,refseqc[rstart]))
+	{
+	    d++;
+
+	    if(m>0)
+	    {
+		ajFmtPrintAppS(cigar, "%uM",m);
+		m=0;
+	    }
+
+	    if(i>0)
+	    {
+		ajFmtPrintAppS(cigar, "%uI",i);
+		i=0;
+	    }
+	}
+	else /* match */
+	{
+	    m++;
+	    ajStrAppendK(qseq,qryseqc[qstart]);
+
+	    if(toupper(qryseqc[qstart])!=toupper(refseqc[rstart]))
+		nmismatches ++;
+
+	    if(d>0)
+	    {
+		ajFmtPrintAppS(cigar, "%uD",d);
+		d=0;
+
+	    }
+
+	    if(i>0)
+	    {
+		ajFmtPrintAppS(cigar, "%uI",i);
+		i=0;
+	    }
+	}
+    }
+
+    if(m>0)
+	ajFmtPrintAppS(cigar, "%uM",m);
+
+    if(d>0)
+	ajFmtPrintAppS(cigar, "%uD",d);
+
+    if(i>0)
+	ajFmtPrintAppS(cigar, "%uI",i);
+
+    return nmismatches;
 }
 
 
