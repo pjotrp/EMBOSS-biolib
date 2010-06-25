@@ -20270,6 +20270,40 @@ FI wordmatch.log
 FP /^HGKK.*5.0/
 //
 
+ID align-wordmatch-sam1
+AP wordmatch
+CL tsw:hba_human tsw:hbb_human -aformat sam -nodumpfeat -auto
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.wordmatch
+FZ > 300
+FP /^HBB_HUMAN\t0\tHBA_HUMAN\t59\t.*\t5M\t.*HGKKV.*AS:i:5\tNM:i:0/
+FI wordmatch.log
+FP /^HGKK.*5.0/
+FI HBA_HUMAN.gff
+FZ = 0
+FI HBB_HUMAN.gff
+FZ = 0
+//
+
+ID align-supermatcher-sam
+AP supermatcher
+CL tsw:hba_human tsw:hbb_human -aformat sam -wordlen 3 -auto
+FI stderr
+FC = 0
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hba_human.supermatcher
+FZ > 300
+FP /^HBA_HUMAN\t0\tHBB_HUMAN\t6.*14M2D27M1I3M5I91M.*[A-Z]{62}.*AS:i:288.5\tNM:i:73/
+FI supermatcher.error
+FZ = 0
+//
+
 ID align-merger-fasta
 AP merger
 CL -aformat fasta
@@ -21162,6 +21196,40 @@ FP 0 /Died: /
 FI stdout
 FP /^asis asis 156 \(63.5\)\n/
 FC = 4
+//
+
+ID align-wordfinder-sam
+AP wordfinder
+CL -lowmatch 7 -stdout -auto -aformat sam -sformat2 fastq-sanger
+CL ../../data/illumina_adapter_primer.fa
+CL ../../data/test1_illumina.fastq
+FI stderr
+FI wordfinder.error
+FP /Target 7 FC12044_91407_8_200_10_437 matches 4/
+FC = 70
+FI stdout
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FC = 23
+FP /FC12044_91407_8_200_303_427.*Illumina_DpnII_Gex_Adapters1_2\t8.*11M.*NM:i:2/
+//
+
+ID align-wordmatch-sam2
+AP wordmatch
+CL -wordsize 7 -stdout -auto -aformat sam -sformat2 fastq-sanger
+CL ../../data/illumina_adapter_primer.fa -nodumpfeat 
+CL ../../data/test1_illumina.fastq
+FI stderr
+FI wordmatch.log
+FP /Average match length: 7.38/
+FC = 32
+FI stdout
+FP /^FC12044_91407_8_200_10_437.*CTGCTTG	SXSXXXX	AS:i:7	NM:i:0/
+FI Illumina_Genomici_DNA_Adapters1_1.gff
+FC = 0
+FI FC12044_91407_8_200_406_24.gff
+FC = 0
 //
 
 ID align-water-full
