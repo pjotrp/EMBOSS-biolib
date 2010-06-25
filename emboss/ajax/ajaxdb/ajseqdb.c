@@ -446,6 +446,7 @@ static AjBool     seqAccessMrs(AjPSeqin seqin);
 static AjBool     seqAccessMrs3(AjPSeqin seqin);
 /* static AjBool     seqAccessNbrf(AjPSeqin seqin); */ /* obsolete */
 static AjBool     seqAccessSeqhound(AjPSeqin seqin);
+static AjBool     seqAccessSql(AjPSeqin seqin);
 static AjBool     seqAccessSrs(AjPSeqin seqin);
 static AjBool     seqAccessSrsfasta(AjPSeqin seqin);
 static AjBool     seqAccessSrswww(AjPSeqin seqin);
@@ -625,6 +626,10 @@ static AjOSeqAccess seqAccess[] =
     },
     {"biomart",	 seqAccessMart, NULL,
      "retrieve a single entry from a BioMart server",
+     AJFALSE, AJTRUE,  AJFALSE,  AJFALSE, AJFALSE
+    },
+    {"sql",	 seqAccessSql, NULL,
+     "retrieve a single entry from a SQL server",
      AJFALSE, AJTRUE,  AJFALSE,  AJFALSE, AJFALSE
     },
     {NULL, NULL, NULL, NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJFALSE},
@@ -7257,6 +7262,167 @@ static AjBool seqAccessMrs3(AjPSeqin seqin)
     if(!qry->CaseId)
 	qry->QryDone = ajTrue;
 
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqAccessSql ***************************************************
+**
+** Reads sequence(s) from user-designed SQL databases
+**
+** SQL is accessed as a URL containing the username/password/host/port
+** /databasename
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessSql(AjPSeqin seqin)
+{
+    AjPStr password   = NULL;
+    AjPStr socketfile = NULL;
+    
+    ajint iport;
+    AjPSeqQuery qry;
+    AjPStr searchtab = NULL;
+
+    AjPStr url = NULL;
+    AjPUrl uo  = NULL;
+    AjPStr sql = NULL;
+
+    AjESqlconnectionClient client;
+    AjPSqlconnection connection = NULL;
+    AjPSqlstatement statement   = NULL;
+
+    AjISqlrow iter = NULL;
+    AjPSqlrow row  = NULL;
+
+    AjPStr tabstr = NULL;
+    AjPStr str    = NULL;
+    
+#if !defined(HAVE_MYSQL) && !defined(HAVE_POSTGRESQL)
+    ajWarn("Cannot use access method SQL without mysql or postgresql");
+    return ajFalse;
+#endif
+    
+    iport = 3306;
+
+    qry = seqin->Query;
+
+    if(!ajNamDbGetDbalias(qry->DbName, &searchtab))
+	ajStrAssignS(&searchtab, qry->DbName);
+
+    ajDebug("seqAccessSql %S:%S\n", qry->DbAlias, qry->Id);
+
+    url = ajStrNew();
+
+    if(!ajNamDbGetUrl(qry->DbName, &url))
+    {
+	ajErr("no URL defined for database %S", qry->DbName);
+
+	return ajFalse;
+    }
+
+    uo = ajStrUrlNew();
+    
+    ajStrUrlParseC(&uo, ajStrGetPtr(url));
+    ajStrUrlSplitPort(uo);
+    ajStrUrlSplitUsername(uo);
+
+    if(ajStrMatchCaseC(uo->Method,"mysql"))
+        client = ajESqlconnectionClientMySQL;
+    else if(ajStrMatchCaseC(uo->Method,"postgresql"))
+        client = ajESqlconnectionClientPostgreSQL;
+    else
+        client = ajESqlconnectionClientNULL;
+
+    if(!ajStrGetLen(uo->Port))
+        ajFmtPrintS(&uo->Port,"%d",iport);
+    
+    if(ajStrGetLen(uo->Password))
+    {
+        password = ajStrNew();
+        ajStrAssignS(&password,uo->Password);
+    }
+    
+    ajSqlInit();
+    
+    connection = ajSqlconnectionNewData(client,uo->Username,password,
+                                        uo->Host,uo->Port,socketfile,
+                                        uo->Absolute);
+
+    ajStrDel(&password);
+    
+    if(!connection)
+        ajErr("Could not connect to SQL database server");
+
+
+    sql = ajStrNew();
+
+    ajFmtPrintS(&sql,"SELECT %S,%S",qry->DbSequence,qry->DbIdentifier);
+
+    if(ajStrGetLen(qry->DbReturn))
+        ajFmtPrintAppS(&sql, ",%S", qry->DbReturn);
+
+    ajFmtPrintAppS(&sql, " FROM %S", searchtab);
+    ajFmtPrintAppS(&sql, " WHERE %S='%S'", qry->DbIdentifier,qry->Id);
+
+    if(ajStrGetLen(qry->DbFilter))
+        ajFmtPrintAppS(&sql, " %S", qry->DbFilter);
+
+    ajFmtPrintAppS(&sql, ";");
+
+    ajDebug("SQL = %S\n",sql);
+
+    statement = ajSqlstatementNewRun(connection,sql);
+    if(!statement)
+        ajErr("Could not execute SQLstatement [%S]");
+    
+    iter = ajSqlrowiterNew(statement);
+
+    tabstr = ajStrNew();
+    
+    ajFilebuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFilebuffNewNofile();
+
+
+    while(!ajSqlrowiterDone(iter))
+    {
+        row = ajSqlrowiterGet(iter);
+
+        /* Sequence */
+        ajSqlcolumnToStr(row,&tabstr);
+
+        /* Identifier */
+        ajSqlcolumnToStr(row,&str);
+        ajFmtPrintAppS(&tabstr, "\t%S",str);
+
+        /* Remaining fields */
+        while(ajSqlcolumnToStr(row,&str))
+            ajFmtPrintAppS(&tabstr, "\t%S",str);
+
+        ajFilebuffLoadS(seqin->Filebuff,tabstr);
+    }
+    
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
+    
+    ajSqlExit();
+
+    ajSqlrowiterDel(&iter);
+    ajSqlstatementDel(&statement);
+    ajSqlconnectionDel(&connection);
+
+    ajStrDel(&url);
+    ajStrUrlDel(&uo);
+    ajStrDel(&searchtab);
+    ajStrDel(&tabstr);
+    ajStrDel(&str);
+    ajStrDel(&sql);
+    
     return ajTrue;
 }
 
