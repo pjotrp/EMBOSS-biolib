@@ -1,8 +1,9 @@
 Version 6.3.0 15-Jul-2010
+
 	Biomart is a new access method for sequence databases, The
 	database definition must include definitions of new attributes
 	sequence (the biomart sequence attribute) and identifier (the
-	Biomart identifier atribute). Additional attributes may be
+	Biomart identifier attribute). Additional attributes may be
 	returned as description text if they are listed in the results
 	attribute of the DB definition.
 
@@ -10,15 +11,15 @@ Version 6.3.0 15-Jul-2010
 	used by SRSWWW access to choose the best way to retrieve data.
 
 	SRSWWW database access, for example from the EBI's srs.ebi.ac.uk
-	server, had a problem processing queries returnoing more than 30
+	server, had a problem processing queries returning more than 30
 	entries. This is now corrected by first asking the server for the
-	number of enries and then accessing the data in chunks. This will
+	number of entries and then accessing the data in chunks. This will
 	unfortunately slow down SRSWWW access for single entries but was
 	the only solution available after checking with EBI's SRS support
 	team.
 
-	Infoseq has a new colum "organism" which shows the species line
-	from and EMBL or UniProt entry. In a future release this may be
+	Infoseq has a new column "organism" which shows the species line
+	from an EMBL or UniProt entry. In a future release this may be
 	changed to show the standard name for the NCBI taxon identifier
 	from an entry as the species definitions for these databases can
 	be long with alternative names and possibly additional species.
@@ -40,6 +41,21 @@ Version 6.3.0 15-Jul-2010
 	through a pipe as standard input, in this case the format must be
 	specified on the command line as it is not currently possible for
 	EMBOSS to read a buffered text file as binary data.
+
+    Needle dynamic programming algorithm updated to allow adjacent gaps
+    in opposite strands.
+    
+    Rabin-Karp multi pattern search algorithm moved into the nucleus
+    library. supermatcher application seed finding step updated
+    to use Rabin-Karp multi-pattern search.
+    
+    Banded Smith-Waterman algorithm used by supermatcher and wordfinder
+    applications has been revised, fixing a problem with occasional
+    inconsistent alignments. Basic SAM format support for these two
+    applications as well as for the wordmatch application. supermatcher
+    assumes the second sequence as the reference sequence while
+    wordfinder and wordmatch considers the first sequence as the
+    reference sequence.
 
 	The acdvalid application now reads the EDAM (EMBRACE Data and
 	Methods) ontology to validate EDAM references in relations
@@ -101,7 +117,7 @@ Version 6.3.0 15-Jul-2010
 
 	The file extension for directory, dirlist and outdir ACD datatypes
 	is now a qualifier. This allows it to be defined as a default in
-	the ACD file but also substituted by the user. An empty srtring
+	the ACD file but also substituted by the user. An empty string
 	means 'ignore the extension'. To specify 'no extension' a single
 	space can be used as the value.
 
@@ -130,7 +146,7 @@ Version 6.3.0 15-Jul-2010
 	undefined text file produced in previous releases.
 
 	Where a new string is created by ajStrAssignS (the standard string
-	copy functrions) the reserved space for the string is enough to
+	copy functions) the reserved space for the string is enough to
 	hold the current string value. In past releases the reserved
 	memory was the same size as the reserved memory of the string
 	being copied. This wasted memory where a large string had a short
@@ -155,7 +171,7 @@ Version 6.3.0 15-Jul-2010
 	files without crashing.
 
 	PNG graphics output had an unwanted blank margin that did not
-	appear in other pouptut formats. This is now turned off through
+	appear in other output formats. This is now turned off through
 	plplot.
 
 	Prettyplot formatting is corrected to improve the centring of
@@ -176,17 +192,17 @@ Version 6.3.0 15-Jul-2010
 	Any numeric ACD type (integer, float, range or array) with
 	calculated values for the minimum or maximum attributes can
 	potentially have an impossible range (maximum less than minimum)
-	at run time. ACD processing now discovers these calculated vaules,
+	at run time. ACD processing now discovers these calculated values,
 	and requires a definition for a new attribute 'failrange' If this
 	is defined true, a 'failmessage' attribute must also be defined to
-	explain why the values are invalid (e.g. input sequece too short
+	explain why the values are invalid (e.g. input sequence too short
 	for the algorithm). If 'failrange' is false, a value for another
 	new attribute 'trueminimum' must be set to define which of the
 	minimum or maximum values if to be used as the only accepted
 	value.
 
 	PNG graphics output had a plplot-defined margin limiting the
-	available plot space. This is now removed, allowing applicatins
+	available plot space. This is now removed, allowing applications
 	such as prettyplot more space to display results.
 
 	Resource attribute identifier: is obsoleted. No code used it. It
