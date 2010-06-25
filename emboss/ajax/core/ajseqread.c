@@ -9359,7 +9359,7 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
     
     ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
-
+    if(seqin->Count == 1)
     while(ok && ajStrGetCharFirst(seqReadLine) == '@')
     {
         ajStrTokenAssignC(&handle, seqReadLine, "\t");
@@ -9461,6 +9461,9 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
 
     ajStrTokenNextParseNoskip(&handle,&token); /* QUAL */
     ajDebug("QUAL  '%S'", token);
+
+    if(ajStrCmpC(token,"*")!=0)
+    {
     if(MAJSTRGETLEN(token) != seqlen)
     {
       	ajWarn("SAM quality length mismatch '%F' '%S' "
@@ -9501,6 +9504,7 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
 	    iqual = qmax;
         }
         thys->Accuracy[i++] = seqQualPhred[iqual];
+    }
     }
 
 
