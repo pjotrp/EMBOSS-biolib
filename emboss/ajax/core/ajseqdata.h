@@ -428,6 +428,7 @@ typedef struct AjSSeqQuery {
 ** @attr Filecount [ajint] Number of files read - used by seqsetall input
 ** @attr Fileseqs [ajint] Number of seqs in file - used by seqsetall input
 ** @attr Rev [AjBool] Reverse/complement if true
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @attr Fpos [ajlong] File position (fseek) for building USA
 ** @attr Query [AjPSeqQuery] Query data - see AjPSeqQuery
 ** @attr Data [void*] Format data for reuse, e.g. multiple sequence input
@@ -475,6 +476,7 @@ typedef struct AjSSeqin {
   ajint Filecount;
   ajint Fileseqs;
   AjBool Rev;
+  char Padding[4];
   ajlong Fpos;
   AjPSeqQuery Query;
   void *Data;
@@ -516,6 +518,7 @@ typedef struct AjSSeqin {
 ** @attr Query [AjBool] Supports retrieval of selected entries
 ** @attr All [AjBool] Supports retrieval of all entries
 ** @attr Chunked [AjBool] Supports retrieval of entries in chunks
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -529,6 +532,7 @@ typedef struct AjSSeqAccess {
   AjBool Query;
   AjBool All;
   AjBool Chunked;
+  char   Padding[4];
 } AjOSeqAccess;
 
 #define AjPSeqAccess AjOSeqAccess*
