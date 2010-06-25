@@ -58,7 +58,8 @@ extern "C"
 ** @attr SeqOnly [AjBool] Sequence output only, no head or tail
 ** @attr SeqExternal [AjBool] Sequence is non-local, do not delete
 ** @attr Count [ajint] Use count
-** @attr Padding [char[4]] Padding to alignment boundary
+** @attr RefSeq [ajint] Index of the reference sequences in AlignOData objects
+**                      of the Data list
 ** @@
 ******************************************************************************/
 
@@ -89,7 +90,7 @@ typedef struct AjSAlign {
   AjBool SeqOnly;
   AjBool SeqExternal;
   ajint Count;
-  char Padding[4];
+  ajint RefSeq;
 } AjOAlign;
 
 #define AjPAlign AjOAlign*
@@ -144,6 +145,7 @@ AjBool       ajAlignSetRange (AjPAlign thys,
 			      ajint len1, ajint off1,
 			      ajint start2, ajint end2,
 			      ajint len2, ajint off2);
+void         ajAlignSetRefSeqIndx(AjPAlign thys, ajint refseq);
 void         ajAlignSetScoreI (AjPAlign thys, ajint score);
 void         ajAlignSetScoreL (AjPAlign thys, ajlong score);
 void         ajAlignSetScoreR (AjPAlign thys, float score);
