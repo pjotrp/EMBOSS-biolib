@@ -51,10 +51,10 @@ static void supermatcher_findendpoints(const EmbPWordMatch max,
 
 /* @prog supermatcher *********************************************************
 **
-** Finds a match of a large sequence against one or more sequences
+** Finds matches of a set of sequences against one or more sequences
 **
-** Create a word table for the first sequence.
-** Then go down second sequence checking to see if the word matches.
+** Create a word table for the second sequence.
+** Then go down first sequence checking to see if the word matches.
 ** If word matches then check to see if the position lines up with the last
 ** position if it does continue else stop.
 ** This gives us the start (offset) for the smith-waterman match by finding
@@ -135,6 +135,9 @@ int main(int argc, char **argv)
 
     embWordLength(wordlen);
 
+    /* seqset sequence is the reference sequence for SAM format */
+    ajAlignSetRefSeqIndx(align, 1);
+
     ajSeqsetTrim(targetseqs);
 
     ntargetseqs = ajSeqsetGetSize(targetseqs);
@@ -193,8 +196,9 @@ int main(int argc, char **argv)
 
 
 	    /* only the maximum match is used as seed
-	     * if there is more than one location with the maximum match
-	     * only the first one is used
+	     * (if there is more than one location with the maximum match
+	     * only the first one is used)
+	     * TODO: we should add a new option to make above limit optional
 	     */
 	    maxmatch = embWordMatchFirstMax(matchlist[k]);
 
