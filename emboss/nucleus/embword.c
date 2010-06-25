@@ -1691,8 +1691,11 @@ ajuint embWordRabinKarpInit(const AjPTable table, EmbPWordRK** newwords,
 
         patternHash = 0;
 
+        /* TODO: we can continuously calculate the hash value
+         *       as we do in the search function */
         for(j=0; j<wordlen; j++)
-            patternHash = (RK_RADIX * patternHash + word[j])% RK_MODULUS;
+            patternHash = (RK_RADIX * patternHash +
+        	    toupper(word[j]))% RK_MODULUS;
 
         nseqlocs = ajTableToarrayValues(embword->seqlocs, (void***)&seqlocs);
         newword->nseqs = nseqlocs;
@@ -1805,7 +1808,8 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
     tlen  = ajStrGetLen(sseq);
 
     for(i=0; i<plen; i++)
-        textHash = (ajulong)(RK_RADIX * textHash   + text[i]) % RK_MODULUS;
+        textHash = (ajulong)(RK_RADIX * textHash   +
+        	toupper(text[i])) % RK_MODULUS;
 
     /* Scan the input sequence sseq for all patterns */
     for (i=plen; i<=tlen; i++)
@@ -1832,6 +1836,7 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                         pos = (*bsres)->locs[k][indxloc];
                         seq_ = ajSeqGetSeqC(seq);
                         matchlen=0;
+                        ii = seq2start;
 
                         /* following loop is to make sure we never have
                          * false positives, after we are confident that
@@ -1839,13 +1844,14 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                          */
                         while(matchlen<plen)
                         {
-                            if(seq_[pos+matchlen] != text[i+matchlen-plen])
+                            if(toupper(seq_[pos+matchlen]) !=
+                        	    toupper(text[ii++]))
                             {
                                 AJCNEW0(tmp,plen+1);
                                 tmp[plen] = '\0';
                                 memcpy(tmp, text+i-plen, plen);
-                                ajWarn("unexpected match:   pat:%s  pat-pos:%u"
-                                        ", txt-pos:%u text:%s hash:%u\n",
+                                ajDebug("unexpected match:   pat:%s  pat-pos:"
+                                        "%u, txt-pos:%u text:%s hash:%u\n",
                                         (*bsres)->word->fword, pos,
                                         i+matchlen-plen, tmp, textHash);
                                 AJFREE(tmp);
@@ -1860,11 +1866,10 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
                             continue;
 
                         /* this is where we extend matches */
-                        ii = seq2start+plen;
-
                         while(ii<tlen  && pos+matchlen<ajSeqGetLen(seq))
                         {
-                            if(seq_[pos+matchlen] != text[ii++])
+                            if(toupper(seq_[pos+matchlen]) !=
+                        	    toupper(text[ii++]))
                                 break;
                             else
                                 ++matchlen;
@@ -1894,8 +1899,8 @@ ajuint embWordRabinKarpSearch(const AjPStr sseq,
             }
         }
 
-        textHash = ((textHash +text[i-plen] *(RK_MODULUS-rm))
-        	*RK_RADIX+ text[i]) % RK_MODULUS;
+        textHash = ((textHash + toupper(text[i-plen]) * (RK_MODULUS-rm))
+        	* RK_RADIX + toupper(text[i])) % RK_MODULUS;
     }
 
     AJFREE(cursor);
