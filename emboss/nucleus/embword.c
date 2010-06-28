@@ -703,12 +703,10 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
 	    j++;
     }
 
-
+    j = wordLength - 1;
 
     while(i <= ilast)
     {
-	j = wordLength - 1;
-
 	if((char)toupper((ajint)startptr[j]) == skipchar)
 	{
 	    ajDebug("Skip '%c' from %d", skipchar, j);
@@ -747,16 +745,19 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
 	AJNEW0(k);
 	*k = i;
 	seqname = ajSeqGetNameS(seq);
-    seqlocs = (EmbPWordSeqLocs) ajTableFetch(rec->seqlocs, seqname);
-    if (seqlocs == NULL){
-        AJNEW0(seqlocs);
-        seqlocs->seq = seq;
-        seqlocs->locs = ajListNew();
-        ajTablePut(rec->seqlocs, ajStrNewS(seqname), seqlocs);
-    }
-    ajListPushAppend(seqlocs->locs, k);
+	seqlocs = (EmbPWordSeqLocs) ajTableFetch(rec->seqlocs, seqname);
 
-	startptr ++;
+	if (seqlocs == NULL)
+	{
+	    AJNEW0(seqlocs);
+	    seqlocs->seq = seq;
+	    seqlocs->locs = ajListNew();
+	    ajTablePut(rec->seqlocs, ajStrNewS(seqname), seqlocs);
+	}
+
+	ajListPushAppend(seqlocs->locs, k);
+
+	startptr++;
 	i++;
 
     }
@@ -1163,14 +1164,18 @@ EmbPWordMatch embWordMatchNew(const AjPSeq seq, ajuint seq1start,
 	                      ajuint seq2start, ajint length)
 {
     EmbPWordMatch match;
+
     AJNEW0(match);
+
     match->sequence  = seq;
     match->seq1start = seq1start;
     match->seq2start = seq2start;
     match->length = length;
+
     ajDebug("new word match start1: %d start2: %d len: %d\n",
             match->seq1start, match->seq2start,
             match->length);
+
     return match;
 }
 
