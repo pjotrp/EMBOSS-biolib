@@ -5849,32 +5849,28 @@ static ajint alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
     static char gapchars[] = "-~.? "; /* all known gap characters */
 
     ajint m=0;
-    ajint i=0;
-    ajint d=0;
+    ajint i=0; /* insertions to the reference sequence */
+    ajint d=0; /* deletions from the reference sequence */
+    ajint qoffset=0;
+    ajint qoffend=0;
     ajint nmismatches=0;
 
     qryseqc = ajSeqGetSeqC(qryseq);
     refseqc = ajSeqGetSeqC(refseq);
 
+    qoffset = ajSeqGetOffset(qryseq);
+    qoffend = ajSeqGetOffend(qryseq);
+
+    if(ajSeqIsReversed(qryseq)&&qoffend>0)
+	ajFmtPrintAppS(cigar, "%dH",qoffend);
+    else
+	if(qoffset>0)
+	    ajFmtPrintAppS(cigar, "%dH",qoffset);
+
+
     for(; qstart<qend; qstart++, rstart++)
     {
 	if(strchr(gapchars,qryseqc[qstart]))
-	{
-	    i++;
-
-	    if(m>0)
-	    {
-		ajFmtPrintAppS(cigar, "%uM",m);
-		m=0;
-	    }
-
-	    if(d>0)
-	    {
-		ajFmtPrintAppS(cigar, "%uD",d);
-		d=0;
-	    }
-	}
-	else if(strchr(gapchars,refseqc[rstart]))
 	{
 	    d++;
 
@@ -5886,9 +5882,28 @@ static ajint alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
 
 	    if(i>0)
 	    {
-		ajFmtPrintAppS(cigar, "%uI",i);
+		ajFmtPrintAppS(cigar, "%uI",d);
 		i=0;
 	    }
+	}
+	else if(strchr(gapchars,refseqc[rstart]))
+	{
+	    i++;
+
+	    if(m>0)
+	    {
+		ajFmtPrintAppS(cigar, "%uM",m);
+		m=0;
+	    }
+
+	    if(d>0)
+	    {
+		ajFmtPrintAppS(cigar, "%uD",i);
+		d=0;
+	    }
+
+	    ajStrAppendK(qseq,qryseqc[qstart]);
+
 	}
 	else /* match */
 	{
