@@ -20299,7 +20299,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI hba_human.supermatcher
 FZ > 300
-FP /^HBA_HUMAN\t0\tHBB_HUMAN\t6.*14M2D27M1I3M5I91M.*[A-Z]{62}.*AS:i:288.5\tNM:i:73/
+FP /HBA_HUMAN\t0\tHBB_HUMAN\t6.*14M2I27M1D3M5D91M.*[A-Z]{62}.*AS:i:288.5\tNM:i:73/
 FI supermatcher.error
 FZ = 0
 //
@@ -21230,6 +21230,35 @@ FI Illumina_Genomici_DNA_Adapters1_1.gff
 FC = 0
 FI FC12044_91407_8_200_406_24.gff
 FC = 0
+//
+
+ID align-water-sam1
+UC example from SAM paper, Bioinformatics 2009 August
+AP water
+CL -auto -aformat sam -dataf ../../data/EDNAMATSIMPLE -outf stdout -gapo 2
+CL asis:AGCATGTTAGATAAGATAGCTGTGCTAGTAGGCAGTCAGCGCCAT
+CL asis:TTAGATAAAGGATACTG
+FI stdout
+FP /.*7.*8M2I4M1D3M.*TTAGATAAAGGATACTG.*NM:i:0/
+//
+
+ID align-water-sam2
+UC example from SAM paper, Bioinformatics 2009 August
+AP water
+CL -auto -aformat sam -datafile ../../data/EDNAMATSIMPLE -outfile stdout
+CL asis:AGCATGTTAGATAA**GATAGCTGTGCTAGTAGGCAGTCAGCGCCAT
+CL asis:gcctaAGCTAA
+FI stdout
+FP /.*9.*5H6M.*AGCTAA.*NM:i:1/
+//
+
+ID align-water-sam3
+AP water
+CL -auto -srev2 -aformat sam -datafile ../../data/EDNAMATSIMPLE -outfile stdout
+CL asis:AGCATGTTAGATAANNGANAGCTGTGCTAGTAGGCAGTCAGCGCCAT
+CL asis:gcctaAGCTAA
+FI stdout
+FP /.*31.*6H5M.*taggc.*NM:i:0/
 //
 
 ID align-water-full
