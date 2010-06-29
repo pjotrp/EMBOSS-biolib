@@ -629,8 +629,8 @@ static AjOSeqAccess seqAccess[] =
      AJFALSE, AJTRUE,  AJFALSE,  AJFALSE, AJFALSE
     },
     {"sql",	 seqAccessSql, NULL,
-     "retrieve a single entry from a SQL server",
-     AJFALSE, AJTRUE,  AJFALSE,  AJFALSE, AJFALSE
+     "retrieve from a SQL server",
+     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE, AJFALSE
     },
     {NULL, NULL, NULL, NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJFALSE},
 
@@ -7302,6 +7302,7 @@ static AjBool seqAccessSql(AjPSeqin seqin)
 
     AjPStr tabstr = NULL;
     AjPStr str    = NULL;
+    AjPStr comp   = NULL;
     
 #if !defined(HAVE_MYSQL) && !defined(HAVE_POSTGRESQL)
     ajWarn("Cannot use access method SQL without mysql or postgresql");
@@ -7360,15 +7361,27 @@ static AjBool seqAccessSql(AjPSeqin seqin)
         ajErr("Could not connect to SQL database server");
 
 
-    sql = ajStrNew();
-
+    sql  = ajStrNew();
+    comp = ajStrNew();
+    
+    if(qry->Type == QRY_ENTRY)
+        ajFmtPrintS(&comp,"='%S'",qry->Id);
+    else if(qry->Type == QRY_QUERY)
+    {
+        ajFmtPrintS(&comp," LIKE '%S'",qry->Id);
+        ajStrExchangeKK(&comp,'*','%');
+        ajStrExchangeKK(&comp,'?','_');
+    }
+    else if(qry->Type == QRY_ALL)
+        comp = ajStrNewC(" LIKE '%%'");
+    
     ajFmtPrintS(&sql,"SELECT %S,%S",qry->DbSequence,qry->DbIdentifier);
 
     if(ajStrGetLen(qry->DbReturn))
         ajFmtPrintAppS(&sql, ",%S", qry->DbReturn);
 
     ajFmtPrintAppS(&sql, " FROM %S", searchtab);
-    ajFmtPrintAppS(&sql, " WHERE %S='%S'", qry->DbIdentifier,qry->Id);
+    ajFmtPrintAppS(&sql, " WHERE %S%S", qry->DbIdentifier,comp);
 
     if(ajStrGetLen(qry->DbFilter))
         ajFmtPrintAppS(&sql, " %S", qry->DbFilter);
@@ -7376,7 +7389,8 @@ static AjBool seqAccessSql(AjPSeqin seqin)
     ajFmtPrintAppS(&sql, ";");
 
     ajDebug("SQL = %S\n",sql);
-
+    ajStrDel(&comp);
+    
     statement = ajSqlstatementNewRun(connection,sql);
     if(!statement)
         ajErr("Could not execute SQLstatement [%S]");
