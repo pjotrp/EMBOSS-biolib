@@ -1421,9 +1421,10 @@ AjBool ajListPeekLast(const AjPList list, void** x)
     if(!list->Count)
 	return ajFalse;
 
-    for(rest = list->First; rest->Next; rest = rest->Next)
-	if(!rest->Next->Next)
-	    break;
+    if(list->Last)
+	rest = list->Last->Prev;
+    else
+	rest = list->First;
 
     if(x)
 	*x = listNodeItem(rest);
