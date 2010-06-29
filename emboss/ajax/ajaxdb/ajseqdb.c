@@ -7373,7 +7373,7 @@ static AjBool seqAccessSql(AjPSeqin seqin)
         ajStrExchangeKK(&comp,'?','_');
     }
     else if(qry->Type == QRY_ALL)
-        comp = ajStrNewC(" LIKE '%%'");
+        comp = ajStrNewC(" LIKE '%'");
     
     ajFmtPrintS(&sql,"SELECT %S,%S",qry->DbSequence,qry->DbIdentifier);
 
