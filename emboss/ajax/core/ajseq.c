@@ -1537,6 +1537,31 @@ __deprecated void  ajSeqAssNameC(AjPSeq thys, const char* str)
 
 
 
+/* @func ajSeqAssignQualLen ***************************************************
+**
+** Assigns base quality scores to an existing sequence.
+**
+** @param [u] seq [AjPSeq] Sequence object.
+** @param [r] qual [const float*] Base quality scores.
+** @param [r] len [ajint] Number of quality scores to use
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqAssignQualLen(AjPSeq seq, const float* qual, ajint len)
+{
+    seq->Qualsize = len;
+
+    AJCRESIZE(seq->Accuracy,seq->Qualsize);
+
+    memmove(seq->Accuracy, qual, seq->Qualsize*sizeof(float));
+
+    return;
+}
+
+
+
+
 /* @func ajSeqAssignSeqC ******************************************************
 **
 ** Assigns a modified sequence to an existing AjPSeq sequence.
@@ -3810,6 +3835,28 @@ const char* ajSeqGetSeqC(const AjPSeq seq)
 	return "";
 
     return MAJSTRGETPTR(seq->Seq);
+}
+
+
+
+
+/* @func ajSeqGetQual *********************************************************
+**
+** Returns the base quality scores as an array.
+** Because this is a pointer to the real internal array
+** the caller must take care not to change the array in any way.
+**
+** @param [r] seq [const AjPSeq] Sequence.
+** @return [const float*] Base quality scores.
+** @@
+******************************************************************************/
+
+const float* ajSeqGetQual(const AjPSeq seq)
+{
+    if(!seq)
+	return NULL;
+
+    return seq->Accuracy;
 }
 
 
