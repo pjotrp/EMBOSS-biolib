@@ -1,4 +1,16 @@
 Version 6.3.0 15-Jul-2010
+	Three automatic EMBOSS environment variables are
+	added. EMBOSS_INSTALLDIRECTORY is the installation directory
+	reported by embossversion -full, EMBOSS_BASEDIRECTORY is the base
+	directory reported by embossversion -full, and
+	EMBOSS_ROOTDIRECTORY is the root directory reported by
+	embossversion-full. These are needed to allow the QA test
+	database definitions to point to the test data for the current
+	installation, and appear in the test/.embossrc file.
+
+	Validation of EMBL/GenBank feature tables has been updated by
+	reading EMBL release 104 (June 2010) and allowing many feature
+	qualifier non-standard values that appear in that release.
 
 	Biomart is a new access method for sequence databases, The
 	database definition must include definitions of new attributes
@@ -42,20 +54,20 @@ Version 6.3.0 15-Jul-2010
 	specified on the command line as it is not currently possible for
 	EMBOSS to read a buffered text file as binary data.
 
-    Needle dynamic programming algorithm updated to allow adjacent gaps
-    in opposite strands.
-    
-    Rabin-Karp multi pattern search algorithm moved into the nucleus
-    library. supermatcher application seed finding step updated
-    to use Rabin-Karp multi-pattern search.
-    
-    Banded Smith-Waterman algorithm used by supermatcher and wordfinder
-    applications has been revised, fixing a problem with occasional
-    inconsistent alignments. Basic SAM format support for these two
-    applications as well as for the wordmatch application. supermatcher
-    assumes the second sequence as the reference sequence while
-    wordfinder and wordmatch considers the first sequence as the
-    reference sequence.
+	Needle dynamic programming algorithm updated to allow adjacent
+	gaps in opposite strands.
+
+	Rabin-Karp multi pattern search algorithm moved into the nucleus
+	library. supermatcher application seed finding step updated to use
+	Rabin-Karp multi-pattern search.
+
+	Banded Smith-Waterman algorithm used by supermatcher and
+	wordfinder applications has been revised, fixing a problem with
+	occasional inconsistent alignments. Basic SAM format support for
+	these two applications as well as for the wordmatch
+	application. supermatcher assumes the second sequence as the
+	reference sequence while wordfinder and wordmatch considers the
+	first sequence as the reference sequence.
 
 	The acdvalid application now reads the EDAM (EMBRACE Data and
 	Methods) ontology to validate EDAM references in relations
