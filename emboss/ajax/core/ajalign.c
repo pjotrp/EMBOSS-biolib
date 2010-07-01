@@ -148,7 +148,7 @@ typedef struct AlignSFormat
 static ajint      alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
 	                     ajint qstart, ajint qend,
                              ajint rstart,
-                             AjPStr *mseq, AjPStr* cigar);
+                             AjPStr *mseq, AjPStr* cigar, AjBool seqExternal);
 static void       alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 				 ajint* retident, ajint* retsim, ajint* retgap,
 				 ajint* retlen);
@@ -1655,10 +1655,10 @@ static void alignWriteSam(AjPAlign thys)
 	    if(ajSeqIsReversed(qryseq))
 		flag |= 0x0010;
 
-	    if(thys->Global||thys->SeqExternal)
+	    if(thys->Global ||thys->SeqExternal)
 	    {
 		qrystart = alignSeqBegin(data,iseq) -
-		alignSeqIncrement(data,iseq);
+			alignSeqIncrement(data,iseq);
 		qryend = alignSeqEnd(data,iseq);
 		refstart = refpos-1;
 	    }
@@ -1689,7 +1689,7 @@ static void alignWriteSam(AjPAlign thys)
 	                             qrystart,
 	                             qryend,
 	                             refstart,
-	                             &mseq, &cigar);
+	                             &mseq, &cigar, thys->SeqExternal);
 
 	    ajFmtPrintF(outf, "%S\t%u\t%S\t%d\t%d\t%S\t%S\t%u\t%u\t%S\t%S\t"
 		    "AS:i:%S\tNM:i:%d\n",
@@ -4237,7 +4237,16 @@ static AlignPData alignDataNew(ajint nseqs, AjBool external)
 
 /* @funcstatic alignDataSetSequence *******************************************
 **
-** Sets specified sequence in the alignment data object 
+** Sets specified sequence in the alignment data object
+**
+** Note: In pre EMBOSS-6.3 the external option is set only by wordmatch
+** and seqmatchall, both producing exact multiple matches and calling
+** ajAlignSetSubRange after calling ajAlignDefineSS which repeats the settings
+** made in this function when called via ajAlignDefineSS.
+** Since ajSeqCountGaps function is time consuming for long sequences,
+** function was modified to return quickly when the external option is true.
+** After release 6.3 this function call hierarchy should be revised.
+**
 **
 ** @param [u] thys [AlignPData] Alignment data object
 ** @param [r] seq [const AjPSeq] Input sequence, either a new copy is made
@@ -4252,6 +4261,12 @@ static AlignPData alignDataNew(ajint nseqs, AjBool external)
 static void alignDataSetSequence(AlignPData thys, const AjPSeq seq, ajint iseq, 
         AjBool external)
 {
+    if(external)
+    {
+        thys->Seq[iseq] = seq;
+        return;
+    }
+
     thys->Start[iseq] = ajSeqGetBegin(seq);
     thys->End[iseq]   = ajSeqGetEnd(seq);
     thys->Len[iseq]   = ajSeqGetLen(seq) + ajSeqGetOffset(seq)
@@ -4261,16 +4276,9 @@ static void alignDataSetSequence(AlignPData thys, const AjPSeq seq, ajint iseq,
     thys->SubOffset[iseq] = 0;
     thys->Rev[iseq]    = ajSeqIsReversed(seq);
 
-    if(external)
-    {
-        thys->Seq[iseq] = seq;
-    }
-    else
-    {
-        thys->RealSeq[iseq] = ajSeqNewSeq(seq);
-        ajSeqGapStandard(thys->RealSeq[iseq], '-');
-        thys->Seq[iseq] = thys->RealSeq[iseq];
-    }
+    thys->RealSeq[iseq] = ajSeqNewSeq(seq);
+    ajSeqGapStandard(thys->RealSeq[iseq], '-');
+    thys->Seq[iseq] = thys->RealSeq[iseq];
     
     return;
 }
@@ -5826,8 +5834,6 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 ** Return CIGAR string for a pairwise alignment, as well as match region
 ** of the query sequence and the number of mismatches
 **
-** TODO: hard/soft clipping support
-**
 ** @param [r] qryseq [const AjPSeq] query sequence
 ** @param [r] refseq [const AjPSeq] reference sequence
 ** @param [r] qstart [ajint] query sequence start point
@@ -5841,7 +5847,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 static ajint alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
 	                ajint qstart, ajint qend,
 	                ajint rstart,
-	                AjPStr *qseq, AjPStr* cigar)
+	                AjPStr *qseq, AjPStr* cigar, AjBool seqexternal)
 {
     const char* qryseqc;
     const char* refseqc;
@@ -5851,15 +5857,25 @@ static ajint alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
     ajint m=0;
     ajint i=0; /* insertions to the reference sequence */
     ajint d=0; /* deletions from the reference sequence */
-    ajint qoffset=0;
-    ajint qoffend=0;
+    ajuint qoffset=0;
+    ajuint qoffend=0;
     ajint nmismatches=0;
+    ajint qseqlen;
 
+    qseqlen = ajSeqGetLen(qryseq);
     qryseqc = ajSeqGetSeqC(qryseq);
     refseqc = ajSeqGetSeqC(refseq);
 
-    qoffset = ajSeqGetOffset(qryseq);
-    qoffend = ajSeqGetOffend(qryseq);
+    if(seqexternal)
+    {
+	qoffset = qstart;
+	qoffend = qend;
+    }
+    else
+    {
+	qoffset = ajSeqGetOffset(qryseq);
+	qoffend = ajSeqGetOffend(qryseq);
+    }
 
     if(ajSeqIsReversed(qryseq)&&qoffend>0)
 	ajFmtPrintAppS(cigar, "%dH",qoffend);
@@ -5930,12 +5946,15 @@ static ajint alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
 
     if(m>0)
 	ajFmtPrintAppS(cigar, "%uM",m);
-
-    if(d>0)
+    else if(d>0)
 	ajFmtPrintAppS(cigar, "%uD",d);
-
-    if(i>0)
+    else if(i>0)
 	ajFmtPrintAppS(cigar, "%uI",i);
+
+    if(ajSeqIsReversed(qryseq)&&qend>qseqlen)
+	ajFmtPrintAppS(cigar, "%dH",qseqlen-qend);
+    else if(qend<qseqlen)
+	    ajFmtPrintAppS(cigar, "%dH",qseqlen-qend);
 
     return nmismatches;
 }
