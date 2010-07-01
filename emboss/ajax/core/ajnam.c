@@ -1746,7 +1746,7 @@ AjBool ajNamGetValueC(const char* name, AjPStr* value)
     AjBool hadPrefix     = ajFalse;
     AjBool ret           = ajFalse;
     
-    if(ajCharPrefixS(name, namPrefixStr)) /* may already have the prefix */
+    if(ajCharPrefixCaseS(name, namPrefixStr)) /* may already have the prefix */
     {
 	ajStrAssignC(&namValNameTmp, name);
 	hadPrefix = ajTrue;
@@ -1791,7 +1791,28 @@ AjBool ajNamGetValueC(const char* name, AjPStr* value)
 	    return ajTrue;
 	}
     }
+
+    if(ajStrMatchC(namValNameTmp, "EMBOSS_INSTALLDIRECTORY"))
+    {
+        ajStrAssignS(value, ajNamValueInstalldir());
+        return ajTrue;
+    }
     
+    if(ajStrMatchC(namValNameTmp, "EMBOSS_ROOTDIRECTORY"))
+    {
+        ajStrAssignS(value, ajNamValueRootdir());
+        return ajTrue;
+    }
+    
+    if(ajStrMatchC(namValNameTmp, "EMBOSS_BASEDIRECTORY"))
+    {
+        ajStrAssignS(value, ajNamValueBasedir());
+        return ajTrue;
+    }
+
+    ajDebug("failed to find '%S' hadprefix:%B '%S'\n",
+           namValNameTmp, hadPrefix, namPrefixStr);
+
     return ajFalse;
 }
 
