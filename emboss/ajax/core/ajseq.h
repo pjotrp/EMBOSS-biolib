@@ -101,9 +101,9 @@ void         ajSeqAssignGiS(AjPSeq
                            seq, const AjPStr str);
 void         ajSeqAssignNameC(AjPSeq seq, const char* txt);
 void         ajSeqAssignNameS(AjPSeq seq, const AjPStr str);
-void         ajSeqAssignQualLen(AjPSeq seq, const float* qual, ajint len);
+void         ajSeqAssignQualLen(AjPSeq seq, const float* qual, ajuint len);
 void         ajSeqAssignSeqC(AjPSeq seq, const char* text);
-void         ajSeqAssignSeqLenC(AjPSeq seq, const char* txt, ajint len);
+void         ajSeqAssignSeqLenC(AjPSeq seq, const char* txt, ajuint len);
 void         ajSeqAssignSeqS(AjPSeq seq, const AjPStr str);
 void         ajSeqAssignSvC(AjPSeq seq, const char* text);
 void         ajSeqAssignSvS(AjPSeq seq, const AjPStr str);

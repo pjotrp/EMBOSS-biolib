@@ -60,6 +60,8 @@ static AjPTable seqTableClsEmbl = NULL;
 static AjPTable seqTableClsDdbj = NULL;
 static AjPTable seqTableClsGb = NULL;
 
+/*static AjPTable seqTableXref = NULL;*/
+
 
 
 
@@ -894,6 +896,7 @@ void ajSeqDelarray(AjPSeq **PPseq)
 ** @nam4rule AssignFull Assign full name
 ** @nam4rule AssignGi Assign GI number
 ** @nam4rule AssignName Assign sequence name
+** @nam4rule AssignQual Assign quality scores
 ** @nam4rule AssignSeq Assign sequence
 ** @nam4rule AssignSv Assign sequence version number
 ** @nam4rule AssignUfo Assign feature address
@@ -925,8 +928,9 @@ void ajSeqDelarray(AjPSeq **PPseq)
 ** @suffix S [const AjPStr] String
 ** 
 ** @argrule * seq [AjPSeq] Sequence object
+** @argrule Qual qual [const float*] Array of quality scores
 ** @argrule C txt [const char*] Character string to assign
-** @argrule Len len [ajint] Character string length
+** @argrule Len len [ajuint] Character string length
 ** @argrule S str [const AjPStr] String to assign
 ** @argrule Offsets offset [ajint] Offset at start
 ** @argrule Offsets origlen [ajint] Length of original sequence
@@ -1052,6 +1056,14 @@ void ajSeqAddXref(AjPSeq seq, AjPSeqXref xref)
 {
     if(!seq->Xreflist)
         seq->Xreflist = ajListNew();
+
+/*
+    if(!seqTableXref)
+      seqTableXref = ajTablestrNewLen(500);
+
+    if(!ajTableFetch(seqTableXref, xref->Db))
+        ajTablePut(seqTableXref, ajStrNewS(xref->Db), ajSeqxrefNewRef(xref));
+*/
 
     ajListPushAppend(seq->Xreflist, xref);
 
@@ -1543,12 +1555,12 @@ __deprecated void  ajSeqAssNameC(AjPSeq thys, const char* str)
 **
 ** @param [u] seq [AjPSeq] Sequence object.
 ** @param [r] qual [const float*] Base quality scores.
-** @param [r] len [ajint] Number of quality scores to use
+** @param [r] len [ajuint] Number of quality scores to use
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqAssignQualLen(AjPSeq seq, const float* qual, ajint len)
+void ajSeqAssignQualLen(AjPSeq seq, const float* qual, ajuint len)
 {
     seq->Qualsize = len;
 
@@ -1589,12 +1601,12 @@ void ajSeqAssignSeqC(AjPSeq seq, const char* txt)
 **
 ** @param [u] seq [AjPSeq] Sequence object.
 ** @param [r] txt [const char*] New sequence as a C character string.
-** @param [r] len [ajint] Number of characters to use
+** @param [r] len [ajuint] Number of characters to use
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqAssignSeqLenC(AjPSeq seq, const char* txt, ajint len)
+void ajSeqAssignSeqLenC(AjPSeq seq, const char* txt, ajuint len)
 {
     ajStrAssignLenC(&seq->Seq, txt, len);
 
@@ -2975,6 +2987,7 @@ void ajSeqTrim(AjPSeq seq)
 ** @nam4rule GetName Return sequence name
 ** @nam4rule GetOffend Return sequence end offset
 ** @nam4rule GetOffset Return sequence start offset
+** @nam4rule GetQual Return quality scores
 ** @nam4rule GetRange Return sequence begin and end
 ** @nam4rule GetRev Return sequence reverse attribute (not yet reversed)
 ** @nam4rule GetSeq Return sequence
@@ -3001,6 +3014,7 @@ void ajSeqTrim(AjPSeq seq)
 ** @valrule Len [ajuint] Sequence length
 ** @valrule Offend [ajuint] Sequence end offset
 ** @valrule Offset [ajuint] Sequence start offset
+** @valrule Qual [const float *] Sequence phred quality scores
 ** @valrule Range [ajuint] Sequence length
 ** @valrule Rev [AjBool] Reverse attribute
 ** @valrule Revtext [AjPStr] Reverse text
@@ -3732,6 +3746,28 @@ __deprecated ajint  ajSeqOffset(const AjPSeq seq)
 
 
 
+/* @func ajSeqGetQual *********************************************************
+**
+** Returns the base quality scores as an array.
+** Because this is a pointer to the real internal array
+** the caller must take care not to change the array in any way.
+**
+** @param [r] seq [const AjPSeq] Sequence.
+** @return [const float*] Base quality scores.
+** @@
+******************************************************************************/
+
+const float* ajSeqGetQual(const AjPSeq seq)
+{
+    if(!seq)
+	return NULL;
+
+    return seq->Accuracy;
+}
+
+
+
+
 /* @func ajSeqGetRange ********************************************************
 **
 ** Returns the sequence range for a sequence.
@@ -3835,28 +3871,6 @@ const char* ajSeqGetSeqC(const AjPSeq seq)
 	return "";
 
     return MAJSTRGETPTR(seq->Seq);
-}
-
-
-
-
-/* @func ajSeqGetQual *********************************************************
-**
-** Returns the base quality scores as an array.
-** Because this is a pointer to the real internal array
-** the caller must take care not to change the array in any way.
-**
-** @param [r] seq [const AjPSeq] Sequence.
-** @return [const float*] Base quality scores.
-** @@
-******************************************************************************/
-
-const float* ajSeqGetQual(const AjPSeq seq)
-{
-    if(!seq)
-	return NULL;
-
-    return seq->Accuracy;
 }
 
 
@@ -4920,6 +4934,17 @@ __deprecated ajint  ajSeqGapCount(const AjPSeq seq)
 
 void ajSeqExit(void)
 {
+/*
+    const char* xreftypes[] = {"undefined", "DR line", "/db_xref",
+                               "DE with EC=",
+                               "DE with Allergen= and CD_Antigen=",
+                               "NCBI TaxID", "RX line", "none found"
+    };
+    AjPStr* xdbs = NULL;
+    AjPSeqXref* xrefs = NULL;
+    ajuint i;
+    ajuint n;
+*/
     ajSeqReadExit();
     ajSeqoutExit();
     ajSeqTypeExit();
@@ -4946,6 +4971,20 @@ void ajSeqExit(void)
     ajTablestrFreeKey(&seqTableClsDdbj);
     ajTablestrFreeKey(&seqTableClsGb);
 
+/*
+    n = ajTableToarrayKeysValues(seqTableXref, (void***)&xdbs, (void***)&xrefs);
+    if(n)
+    {
+        for(i = 0;xdbs[i]; i++)
+        {
+            ajUser("%3u '%S' : '%S' '%S' '%S' '%S' ('%s' %d..%d)",
+                   (i+1), xdbs[i],
+                   xrefs[i]->Id, xrefs[i]->Secid,
+                   xrefs[i]->Terid, xrefs[i]->Quatid,
+                   xreftypes[xrefs[i]->Type], xrefs[i]->Start, xrefs[i]->End);
+        }
+    }
+*/
     return;
 }
 
