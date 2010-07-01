@@ -1810,9 +1810,6 @@ AjBool ajNamGetValueC(const char* name, AjPStr* value)
         return ajTrue;
     }
 
-    ajDebug("failed to find '%S' hadprefix:%B '%S'\n",
-           namValNameTmp, hadPrefix, namPrefixStr);
-
     return ajFalse;
 }
 
