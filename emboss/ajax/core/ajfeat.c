@@ -402,7 +402,7 @@ static AjBool       featTagSpecialAllMobile(const AjPStr pval);
 static AjBool       featTagSpecialAllPcrprimers(const AjPStr pval);
 static AjBool       featTagSpecialAllRptunit(const AjPStr val);
 static AjBool       featTagSpecialAllRange(const AjPStr val);
-static AjBool       featTagSpecialAllRptunitseq(const AjPStr val);
+static AjBool       featTagSpecialAllRptunitseq(AjPStr *Pval);
 static AjBool       featTagSpecialAllTranslexcept(const AjPStr val);
 static AjBool       featTagSpecialAllDbxref(const AjPStr val);
 static AjBool       featTagSpecialAllProteinid(const AjPStr val);
@@ -760,6 +760,7 @@ static AjPRegexp featRegSpecialRptRange = NULL;
 static AjPRegexp featRegSpecialRptRangeLab = NULL;
 static AjPRegexp featRegSpecialRptRangeComp = NULL;
 static AjPRegexp featRegSpecialRptunitSeq = NULL;
+static AjPRegexp featRegSpecialRptunitSeqPos = NULL;
 static AjPRegexp featRegSpecialTrans = NULL;
 static AjPRegexp featRegSpecialTransBad = NULL;
 static AjPRegexp featRegSpecialTransComp = NULL;
@@ -4918,6 +4919,8 @@ static AjBool featEmblTvRest(AjPStr* tags, AjPStr* skip)
 
 		return ajTrue;
 	    }
+
+	    ajStrAppendK(skip, *cp);
 	}
 	else
 	{
@@ -12828,8 +12831,8 @@ static AjBool featTagSpecialAllCollectiondate(const AjPStr val)
 
     if(!featRegSpecialColdate)
 	featRegSpecialColdate =
-	    ajRegCompC("^((\\d\\d)[-])?(([ADFJMNOS][a-z][a-z])[-])?([12]"
-                       "[90]\\d\\d)$");
+	    ajRegCompC("^((\\d\\d)[-])?(([ADFJMNOS][A-Za-z][A-Za-z])[-])?([12]"
+                       "[7890]\\d\\d)$");
 
     if(ajRegExec(featRegSpecialColdate, val))
     {
@@ -12853,7 +12856,7 @@ static AjBool featTagSpecialAllCollectiondate(const AjPStr val)
 	    ok = ajFalse;
 
 	    for(i=0;i<12;i++)
-		if(ajStrMatchC(monstr, months[i]))
+		if(ajStrMatchCaseC(monstr, months[i]))
 		{
 		    ok = ajTrue;
 		    break;
@@ -13034,9 +13037,11 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
 	"non-experimental evidence, no additional details recorded",
 	"similar to sequence",
 	"similar to AA sequence",
+	"similar to AA sequence sequence", /* found in EMBL 104 */
 	"similar to DNA sequence",
 	"similar to RNA sequence",
 	"similar to RNA sequence, mRNA",
+	"similar to RNA sequence,mRNA", /* nonstandard, found in EMBL 104 */
 	"similar to RNA sequence, EST",
 	"similar to RNA sequence, other RNA",
 	"profile",
@@ -13048,7 +13053,7 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
     };
 
     if(!featRegSpecialInference)
-	featRegSpecialInference = ajRegCompC("^([^:]+)(:([^:]+):([^:]+))?$");
+	featRegSpecialInference = ajRegCompC("^([^:]+)(:([^:]+)?)*$");
 
     if(ajRegExec(featRegSpecialInference, val))
     {
@@ -13074,6 +13079,24 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
 			break;
 		    }
 		}
+
+		else if(ajStrSuffixC(typstr, "(same species)"))
+		{       /* found in EMBL 104 without expected space */
+		    if(ajStrGetLen(typstr) == strlen(types[i]) + 14)
+		    {
+			ok = ajTrue;
+			break;
+		    }
+		}
+
+                else if(ajStrSuffixC(typstr, " (same species) "))
+		{       /* found in EMBL 104 with extra trailing space */
+		    if(ajStrGetLen(typstr) == strlen(types[i]) + 16)
+		    {
+			ok = ajTrue;
+			break;
+		    }
+		}
 	    }
 	}
 
@@ -13082,7 +13105,7 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
     }
 
     if(!ret)
-	featWarn("bad /inference value '%S'", val);
+	featWarn("bad /inference value '%S' type: '%S'", val, typstr);
 
     ajStrDel(&typstr);
     return ret;
@@ -13094,10 +13117,6 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
 /* @funcstatic featTagSpecialAllLatlon ************************************
 **
 ** Tests a string as a valid internal (EMBL) feature /lat_lon tag
-**
-** examples from GenBank include /rpt_unit_seq=TCCTCACGTAG(T/C)
-** others are /rpt_unit_seq=gaa;taa /rpt_unit_seq=(CA)2(TG)6(CA)2
-** /rpt_unit_seq=attatatgata(n)6-7gttt(n)3gtagactagtt(n)3ttatgttt
 **
 ** @param  [r] val [const AjPStr] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
@@ -13137,7 +13156,7 @@ static AjBool featTagSpecialAllLatlon(const AjPStr val)
 ** Tests a string as a valid internal (EMBL) feature /PCR_primers tag
 **
 ** @param  [r] val [const AjPStr] parameter value
-** @return [AjBool] ajTrue for a valid value, possibly corrected
+** @return [AjBool] ajTrue for a valid value
 **                  ajFalse if invalid, to be converted to default (note) type
 ** @@
 ******************************************************************************/
@@ -13147,10 +13166,10 @@ static AjBool featTagSpecialAllPcrprimers(const AjPStr val)
     AjBool ret = ajFalse;
 
     if(!featRegSpecialPrimer)
-      featRegSpecialPrimer = ajRegCompC("^(fwd_name: \\S+, )?"
-					"fwd_seq: [acgtubdhkmnrsvwxy]+, "
-					"(rev_name: \\S+, )?"
-					"rev_seq: [acgtubdhkmnrsvwxy]+$");
+      featRegSpecialPrimer = ajRegCompC("^((fwd|rev)_name: [^,]+, )?"
+					"(fwd|rev)_seq: [acgtubdhkmnrsvwxy<>i]+"
+					"(, ((fwd|rev)_name: [^,]+, )?"
+					"(fwd|rev)_seq: [acgtubdhkmnrsvwxy<>i]+)*");
 
     if(ajRegExec(featRegSpecialPrimer, val))
     {
@@ -13214,8 +13233,8 @@ static AjBool featTagSpecialAllRptunit(const AjPStr val)
 	    ajRegCompC("^(complement[(]([a-zA-Z0-9_]+:)?[0-9]+)"
 		       "[.][.]([0-9]+)[)]$");
     if(!featRegSpecialRptunitSeq)
-      featRegSpecialRptunitSeq =
-	  ajRegCompC("^([abcdghkmnrstuvwxyABCDGHKMNRSTUVWXY0-9/();-]+)$");
+        featRegSpecialRptunitSeq =
+            ajRegCompC("^([abcdghkmnrstuvwxyABCDGHKMNRSTUVWXY0-9/();-]+)$");
 
     if(ajRegExec(featRegSpecialRptRange, val))
     {
@@ -13387,36 +13406,109 @@ static AjBool featTagSpecialAllRange(const AjPStr val)
 ** others are /rpt_unit_seq=gaa;taa /rpt_unit_seq=(CA)2(TG)6(CA)2
 ** /rpt_unit_seq=attatatgata(n)6-7gttt(n)3gtagactagtt(n)3ttatgttt
 **
-** @param  [r] val [const AjPStr] parameter value
+** Corrects extra spaces from long sequence values
+**
+** @param  [u] pval [AjPStr*] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
 **                  ajFalse if invalid, to be converted to default (note) type
 ** @@
 ******************************************************************************/
 
-static AjBool featTagSpecialAllRptunitseq(const AjPStr val)
+static AjBool featTagSpecialAllRptunitseq(AjPStr *pval)
 {
     AjBool ret = ajFalse;
+    ajuint i;
+    const char* specials[] =
+    {
+        "a-rich",               /* found in EMBL 104 */
+        "at-rich",              /* found in EMBL 104 */
+        "c-rich",               /* found in EMBL 104 */
+        "ct-rich",              /* found in EMBL 104 */
+        "CT-rich",              /* found in EMBL 104 */
+        "g-rich",               /* found in EMBL 104 */
+        "ga-rich",              /* found in EMBL 104 */
+        "GA-rich",              /* found in EMBL 104 */
+        "gc-rich",              /* found in EMBL 104 */
+        "t-rich",               /* found in EMBL 104 */
+        "CT_AT",                /* found in EMBL 104 */
+        "TA_CA",                /* found in EMBL 104 */
+        "AGAT_AGAC",            /* found in EMBL 104 */
+        "GAA-repeat",           /* found in EMBL 104 */
+        "GGA-repeat",           /* found in EMBL 104 */
+        "tgtc (imperfect)",     /* found in EMBL 104 */
+        "score",                /* found in EMBL 104 */
+        "direct",               /* found in EMBL 104 */
+        "dispersed",            /* found in EMBL 104 */
+        "inverted",             /* found in EMBL 104 */
+        "ca repeat",            /* found in EMBL 104 */
+        "cac/caa/cag compound repeat", /* found in EMBL 104 */
+        "cata interrupted repeat",     /* found in EMBL 104 */
+        "CA dinucleotide microsatellite",          /* found in EMBL 104 */
+        "gaa/gac compound repeat",     /* found in EMBL 104 */
+        "dodecanucleotide",          /* found in EMBL 104 */
+        "heptamer",             /* found in EMBL 104 */
+        "gttt..gt",             /* found in EMBL 104 */
+        "telunit",              /* found in EMBL 104 */
+        "af(12)",               /* found in EMBL 104 */
+        "alu",                  /* found in EMBL 104 */
+        "Alu",                  /* found in EMBL 104 */
+        "AluJo",                /* found in EMBL 104 */
+        "AluSg",                /* found in EMBL 104 */
+        "AluY",                 /* found in EMBL 104 */
+        "hif2DR",               /* found in EMBL 104 */
+        "B1element",            /* found in EMBL 104 */
+        "L1MC/D",               /* found in EMBL 104 */
+        "L1MC3",                /* found in EMBL 104 */
+        "L1MD3",                /* found in EMBL 104 */
+        "L1ME",                 /* found in EMBL 104 */
+        "RMER17B",              /* found in EMBL 104 */
+        "RLTR11A",              /* found in EMBL 104 */
+        "poly A",               /* found in EMBL 104 */
+        NULL
+    };
+
     /*
     AjBool saveit = ajFalse;
     AjPStr labstr = NULL;
     */
 
     if(!featRegSpecialRptunitSeq)
-      featRegSpecialRptunitSeq =
-	  ajRegCompC("^([abcdghkmnrstuvwxyABCDGHKMNRSTUVWXY0-9/();-]+)$");
+        featRegSpecialRptunitSeq =
+            ajRegCompC("^([ abcdghkmnrstuvwxyABCDGHKMNRSTUVWXY0-9_/\\[\\]\\(\\):;.,+-]+)$");
 
-    if(ajRegExec(featRegSpecialRptunitSeq, val))
+    if(!featRegSpecialRptunitSeqPos)
+        featRegSpecialRptunitSeqPos =
+            ajRegCompC("^((complement[\\(])?[<]?\\d+[.][.]?[>]?\\d+[\\)]?)$");
+
+    if(ajRegExec(featRegSpecialRptunitSeq, *pval))
     {
+        ajStrRemoveWhite(pval);   /* remove wrapping spaces in long seq. */
+
 	ret = ajTrue;
 	/*
 	if(saveit)
 	    ajRegSubI(featRegSpecialRptunitSeq, 1, &labstr);
         */
     }
-
+    else if(ajRegExec(featRegSpecialRptunitSeqPos, *pval))
+    {
+	ret = ajTrue;
+    }
+    else
+    {
+	for(i=0; specials[i]; i++)
+	{
+            if(ajStrMatchC(*pval, specials[i]))
+            {
+                ret = ajTrue;
+                break;
+            }
+        }
+    }
+    
     if(!ret)
     {
-	featWarn("bad /rpt_unit_seq value '%S'",   val);
+	featWarn("bad /rpt_unit_seq value '%S'",   *pval);
     }
 
     return ret;
@@ -13790,8 +13882,8 @@ static AjBool featTagSpecialAllTranslation(AjPStr* pval)
 	if(!isupper(icp))
 	    break;
 
-	if(strchr("JO",icp))
-	    break;
+/*	if(strchr("JO",icp))
+        break; */
 
 	if(saveit)
 	    ajStrAppendK(&seqstr, *cp);
@@ -13860,7 +13952,7 @@ static AjBool featTagSpecialAllEstimatedlength(AjPStr* pval)
 **
 ** Tests a string as a valid internal (EMBL) feature /compare tag
 **
-** The format is a positive integer, or unknown (unquoted)
+** The format is a sequence versin
 **
 ** @param  [r] val [const AjPStr] parameter value
 ** @return [AjBool] ajTrue for a valid value, possibly corrected
@@ -13876,7 +13968,7 @@ static AjBool featTagSpecialAllCompare(const AjPStr val)
 
 /* value is a sequence version accnumber.number */
     if(!featRegSpecialCompare)
-	featRegSpecialCompare = ajRegCompC("^([A-Z]+[0-9]+[.][1-9][0-9]*)$");
+	featRegSpecialCompare = ajRegCompC("^([A-Z]+[0-9]+([.][1-9][0-9]*)?)$");
 
     if(ajRegExec(featRegSpecialCompare, val))
     {
@@ -13983,7 +14075,8 @@ static AjBool featTagSpecialAllNcrnaclass(const AjPStr val)
     const char* classes[] =
     {
 	"antisense_RNA", "autocatalytically_spliced_intron",
-        "hammerhead_ribozyme", "RNase_P_RNA",
+        "ribozyme", "hammerhead_ribozyme",
+        "RNase_P_RNA",
 	"RNase_MRP_RNA", "telomerase_RNA", "guide_RNA", "rasiRNA",
 	"scRNA", "siRNA", "miRNA", "piRNA",
 	"snoRNA", "snRNA", "SRP_RNA", "vault_RNA", "Y_RNA",
@@ -14660,7 +14753,7 @@ static AjBool featTagSpecial(AjPStr* pval, const AjPStr tag)
 	return featTagSpecialAllRange(*pval);
 
     else if(ajStrMatchC(tag, "rpt_unit_seq"))
-	return featTagSpecialAllRptunitseq(*pval);
+	return featTagSpecialAllRptunitseq(pval);
 
     else if(ajStrMatchC(tag, "transl_except"))
 	return featTagSpecialAllTranslexcept(*pval);
@@ -14749,7 +14842,7 @@ static AjBool featTagGffSpecial(AjPStr* pval, const AjPStr tag)
 	return featTagSpecialAllRange(*pval);
 
     else if(ajStrMatchC(tag, "rpt_unit_seq"))
-	return featTagSpecialAllRptunitseq(*pval);
+	return featTagSpecialAllRptunitseq(pval);
 
     else if(ajStrMatchC(tag, "transl_except"))
 	return featTagSpecialAllTranslexcept(*pval);
@@ -14841,7 +14934,7 @@ static AjBool featTagGff3Special(AjPStr* pval, const AjPStr tag)
 	return featTagSpecialAllRange(*pval);
 
     else if(ajStrMatchC(tag, "rpt_unit_seq"))
-	return featTagSpecialAllRptunitseq(*pval);
+	return featTagSpecialAllRptunitseq(pval);
 
     else if(ajStrMatchC(tag, "transl_except"))
 	return featTagSpecialAllTranslexcept(*pval);
@@ -16320,6 +16413,7 @@ void ajFeatExit(void)
     ajRegFree(&featRegSpecialRptRangeLab);
     ajRegFree(&featRegSpecialRptRangeComp);
     ajRegFree(&featRegSpecialRptunitSeq);
+    ajRegFree(&featRegSpecialRptunitSeqPos);
     ajRegFree(&featRegSpecialTrans);
     ajRegFree(&featRegSpecialTransBad);
     ajRegFree(&featRegSpecialTransComp);
