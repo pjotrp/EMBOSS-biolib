@@ -1088,68 +1088,6 @@ AjBool ajSqlconnectionEscapeS(const AjPSqlconnection sqlc,
 
 
 
-/* @func ajSqlconnectionClientFromStr *****************************************
-**
-** Convert an AJAX String into an AJAX SQL Connection client element.
-**
-** @param [r] client [const AjPStr] Client string
-**
-** @return [AjESqlconnectionClient] AJAX SQL Connection client or
-**                                  ajESqlconnectionClientNULL
-** @@
-******************************************************************************/
-
-AjESqlconnectionClient ajSqlconnectionClientFromStr(const AjPStr client)
-{
-    register AjESqlconnectionClient i = ajESqlconnectionClientNULL;
-
-    AjESqlconnectionClient eclient = ajESqlconnectionClientNULL;
-
-    for(i = ajESqlconnectionClientMySQL; sqlconnectionClient[i]; i++)
-        if(ajStrMatchC(client, sqlconnectionClient[i]))
-            eclient = i;
-
-    if(!eclient)
-        ajDebug("ajSqlconnectionClientFromStr encountered "
-                "unexpected string '%S'.\n", client);
-
-    return eclient;
-}
-
-
-
-
-/* @func ajSqlconnectionClientToChar ******************************************
-**
-** Convert an AJAX SQL Connection client element into a C-type (char*) string.
-**
-** @param [u] client [AjESqlconnectionClient] SQL Connection client
-**
-** @return [const char*] SQL Connection client C-type (char*) string
-** @@
-******************************************************************************/
-
-const char* ajSqlconnectionClientToChar(AjESqlconnectionClient client)
-{
-    register AjESqlconnectionClient i = ajESqlconnectionClientNULL;
-
-    if(!client)
-        return NULL;
-
-    for(i = ajESqlconnectionClientMySQL;
-        sqlconnectionClient[i] && (i < client);
-        i++);
-
-    if(!sqlconnectionClient[i])
-        ajDebug("ajSqlconnectionClientToChar encountered an "
-                "out of boundary error on client %d.\n", client);
-
-    return sqlconnectionClient[i];
-}
-
-
-
-
 /* @func ajSqlconnectionGetClient *********************************************
 **
 ** Get the client element of an AJAX SQL Connection.
@@ -1245,6 +1183,120 @@ AjBool ajSqlconnectionTrace(const AjPSqlconnection sqlc, ajuint level)
     ajStrDel(&indent);
 
     return ajTrue;
+}
+
+
+
+
+/* @datasection [AjESqlconnectionClient] SQL Connection Client ****************
+**
+** Functions for manipulating AJAX SQL Connection clients.
+**
+** @nam3rule SqlconnectionClient Functions for manipulating AJAX SQL Connection
+** clients.
+**
+******************************************************************************/
+
+
+
+
+/* @section Misc *********************************************************
+**
+** Functions for returning a AJAX SQL Connection Client enumeration
+**
+** @fdata [AjESqlconnectionClient]
+**
+** @nam4rule From  AJAX SQL Connection Client qery
+** @nam5rule Str   String object query
+**
+** @argrule  Str   client  [const AjPStr] Client name
+**
+** @valrule * [AjESqlconnectionClient] AJAX SQL Connection Client enumration
+**
+** @fcategory misc
+******************************************************************************/
+
+
+
+
+/* @func ajSqlconnectionClientFromStr *****************************************
+**
+** Convert an AJAX String into an AJAX SQL Connection client element.
+**
+** @param [r] client [const AjPStr] Client string
+**
+** @return [AjESqlconnectionClient] AJAX SQL Connection client or
+**                                  ajESqlconnectionClientNULL
+** @@
+******************************************************************************/
+
+AjESqlconnectionClient ajSqlconnectionClientFromStr(const AjPStr client)
+{
+    register AjESqlconnectionClient i = ajESqlconnectionClientNULL;
+
+    AjESqlconnectionClient eclient = ajESqlconnectionClientNULL;
+
+    for(i = ajESqlconnectionClientMySQL; sqlconnectionClient[i]; i++)
+        if(ajStrMatchC(client, sqlconnectionClient[i]))
+            eclient = i;
+
+    if(!eclient)
+        ajDebug("ajSqlconnectionClientFromStr encountered "
+                "unexpected string '%S'.\n", client);
+
+    return eclient;
+}
+
+
+
+
+/* @section Cast **************************************************************
+**
+** Functions for returning attributes of an AJAX SQL Connection client
+** enumeration
+**
+** @fdata [AjESqlconnectionClient]
+**
+** @nam4rule To Return AJAX SQL Connection Client enumeration
+** @nam5rule Char Return C character string value
+**
+** @argrule To client [AjESqlconnectionClient] AJAX SQL Connection
+**
+** @valrule * [const char*] Client name
+** @valrule *Char [const char*] Client name
+**
+** @fcategory cast
+******************************************************************************/
+
+
+
+
+/* @func ajSqlconnectionClientToChar ******************************************
+**
+** Convert an AJAX SQL Connection client element into a C-type (char*) string.
+**
+** @param [u] client [AjESqlconnectionClient] SQL Connection client
+**
+** @return [const char*] SQL Connection client C-type (char*) string
+** @@
+******************************************************************************/
+
+const char* ajSqlconnectionClientToChar(AjESqlconnectionClient client)
+{
+    register AjESqlconnectionClient i = ajESqlconnectionClientNULL;
+
+    if(!client)
+        return NULL;
+
+    for(i = ajESqlconnectionClientMySQL;
+        sqlconnectionClient[i] && (i < client);
+        i++);
+
+    if(!sqlconnectionClient[i])
+        ajDebug("ajSqlconnectionClientToChar encountered an "
+                "out of boundary error on client %d.\n", client);
+
+    return sqlconnectionClient[i];
 }
 
 
