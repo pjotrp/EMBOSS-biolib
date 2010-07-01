@@ -43,8 +43,8 @@ int main(int argc, char **argv)
 {
     AjPSeqset seqset;
     AjPSeqall seqall;
-    AjPSeq seqofseqall;
-    const AjPSeq seqofseqset;
+    AjPSeq queryseq;
+    const AjPSeq targetseq;
     ajint wordlen;
     AjPTable wordsTable = NULL;
     AjPList* matchlist = NULL;
@@ -55,8 +55,8 @@ int main(int argc, char **argv)
     AjPFeattabOut ftoutforseqallseq = NULL;
     AjPAlign align = NULL;
     AjIList iter = NULL;
-    ajint start1;
-    ajint start2;
+    ajint targetstart;
+    ajint querystart;
     ajint len;
     ajuint i, j;
     ajulong nAllMatches = 0;
@@ -120,8 +120,8 @@ int main(int argc, char **argv)
 
     for(i=0;i<seqsetsize;i++)
     {
-        seqofseqset = ajSeqsetGetseqSeq(seqset, i);
-        embWordGetTable(&wordsTable, seqofseqset);
+        targetseq = ajSeqsetGetseqSeq(seqset, i);
+        embWordGetTable(&wordsTable, targetseq);
     }
 
     AJCNEW0(lastlocation, seqsetsize);
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
                                        &wordsw, wordlen, seqset);
         ajFmtPrintF(logfile, "Number of patterns/words found: %u\n", npatterns);
 
-        while(ajSeqallNext(seqall,&seqofseqall))
+        while(ajSeqallNext(seqall,&queryseq))
         {
             for(i=0;i<seqsetsize;i++)
             {
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
             }
 
             nmatches = embWordRabinKarpSearch(
-                    ajSeqGetSeqS(seqofseqall), seqset,
+                    ajSeqGetSeqS(queryseq), seqset,
                     (const EmbPWordRK*)wordsw, wordlen, npatterns,
                     matchlist, lastlocation, checkmode);
             nAllMatches += nmatches;
@@ -157,22 +157,22 @@ int main(int argc, char **argv)
                 {
                     iter = ajListIterNewread(matchlist[i]) ;
 
-                    while(embWordMatchIter(iter, &start1, &start2, &len,
-                            &seqofseqset))
+                    while(embWordMatchIter(iter, &targetstart, &querystart, &len,
+                            &targetseq))
                     {
                         if(dumpAlign)
                         {
-                            ajAlignDefineSS(align, seqofseqset, seqofseqall);
+                            ajAlignDefineSS(align, targetseq, queryseq);
                             ajAlignSetScoreI(align, len);
                             /* ungapped alignment means same length
                              *  for both sequences
                             */
-                            ajAlignSetSubRange(align, start1, 1, len,
-                                    ajSeqIsReversed(seqofseqset),
-                                    ajSeqGetLen(seqofseqset),
-                                    start2, 1, len,
-                                    ajSeqIsReversed(seqofseqall),
-                                    ajSeqGetLen(seqofseqall));
+                            ajAlignSetSubRange(align, targetstart, 1, len,
+                                    ajSeqIsReversed(targetseq),
+                                    ajSeqGetLen(targetseq),
+                                    querystart, 1, len,
+                                    ajSeqIsReversed(queryseq),
+                                    ajSeqGetLen(queryseq));
                         }
                     }
 
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
                         embWordMatchListConvToFeat(matchlist[i],
                                                    &seqsetftables[i],
                                                    &seqallseqftable,
-                                                   seqofseqset, seqofseqall);
+                                                   targetseq, queryseq);
                         ajFeattableWrite(ftoutforseqallseq, seqallseqftable);
                         ajFeattableDel(&seqallseqftable);
                     }
@@ -289,7 +289,7 @@ int main(int argc, char **argv)
 
     ajSeqallDel(&seqall);
     ajSeqsetDel(&seqset);
-    ajSeqDel(&seqofseqall);
+    ajSeqDel(&queryseq);
     ajStrDel(&padding);
     AJFREE(paddedheader);
 
