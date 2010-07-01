@@ -3254,7 +3254,7 @@ void embAlignReportLocal(AjPAlign align,
 
     if(qual!=NULL)
 	ajSeqAssignQualLen(res1,qual+start1+ajSeqGetOffset(seqa),
-	                   ajSeqGetLenUngapped(res1));
+                           ajSeqGetLenUngapped(res1));
 
     res2   = ajSeqNewRangeC(ajStrGetPtr(n), start2+ajSeqGetOffset(seqb),
 			     offend2+ajSeqGetOffend(seqb),
@@ -3267,7 +3267,7 @@ void embAlignReportLocal(AjPAlign align,
 
     if(qual!=NULL)
 	ajSeqAssignQualLen(res2,qual+start2+ajSeqGetOffset(seqb),
-	                   ajSeqGetLenUngapped(res2));
+                           ajSeqGetLenUngapped(res2));
 
     ajSeqGapStandard(res1, '-');
     ajSeqGapStandard(res2, '-');
