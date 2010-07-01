@@ -2047,7 +2047,8 @@ static void fileClose(AjPFile thys)
 	    else
 	    {
                 if(fclose(thys->fp))
-		    ajFatal("File close problem in fileClose");
+		    ajFatal("File close problem in fileClose error:%d '%s'",
+                            errno, strerror(errno));
             }
 	}
 
