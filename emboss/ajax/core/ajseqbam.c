@@ -222,15 +222,11 @@ AjPSeqBamHeader ajSeqBamHeaderNew(void)
 
 
 
-/* @func ajSeqBamHeaderNewData *************************************************
+/* @func ajSeqBamHeaderNewTextC ***********************************************
 **
 ** Create an empty BAM header object
 **
-** @param [r] ntargets [ajuint] Number of targets
-** @param [r] targets [AjPStr*] Target names, NULL terminated
-**                              can be NULL if ntargets is zero
-** @param [r] sortorder [AjBool] File is indexed
-** @param [r] grouporder [AjBool] File has GO references
+** @param [r]  txt [const char*] BAM/SAM header text string
 ** @return [AjPSeqBamHeader] BAM header object
 **
 ******************************************************************************/
@@ -259,7 +255,7 @@ AjPSeqBamHeader ajSeqBamHeaderNewTextC(const char* txt)
 **
 ******************************************************************************/
 
-void ajSeqBamHeaderDestroy(AjPSeqBamHeader *Pheader)
+void ajSeqBamHeaderDel(AjPSeqBamHeader *Pheader)
 {
     ajint i;
     AjPSeqBamHeader header = NULL;

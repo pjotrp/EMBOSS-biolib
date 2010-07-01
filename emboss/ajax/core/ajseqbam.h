@@ -411,7 +411,7 @@ int ajSeqBamBgzfWrite(AjPSeqBamBgzf fp, const void* data, int length);
 AjPSeqBamHeader ajSeqBamHeaderNew(void);
 AjPSeqBamHeader ajSeqBamHeaderNewTextC(const char* txt);
 
-void ajSeqBamHeaderDestroy(AjPSeqBamHeader *Pheader);
+void ajSeqBamHeaderDel(AjPSeqBamHeader *Pheader);
 
 int ajSeqBamHeaderWrite(AjPSeqBamBgzf fp, const AjPSeqBamHeader header);
 
