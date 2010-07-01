@@ -1246,7 +1246,7 @@ JEMBOSS=$EMBOSS_INSTALL/share/EMBOSS/jemboss
 # create resources.jar archive of the scoring matrix
 #
 cd $EMBOSS_INSTALL/share/EMBOSS/data
-$JAVA_HOME/bin/jar cvf $JEMBOSS/resources/resources.jar EPAM* EBLOSUM* ENUC*
+$JAVA_HOME/bin/jar cvf $JEMBOSS/resources/resources.jar EPAM* EBLOSUM* EDNA*
 
 
 if [ "$MACOSX" = "y" ]; then
@@ -1411,6 +1411,8 @@ if [ "$SSL" != "y" ]; then
   echo "Tomcat XML deployment descriptors have been created for"
   echo "the Jemboss Server. Would you like an automatic deployment"
   echo "of the Jemboss web services to be tried (y/n) [y]?"
+  echo "(Please make sure your Tomcat server not running currently,"
+  echo " install script will start it.)"
   read DEPLOYSERVICE
 
   if (test "$DEPLOYSERVICE" = "y") || (test "$DEPLOYSERVICE" = ""); then
@@ -1468,6 +1470,9 @@ else
   echo
   echo "Tomcat XML deployment descriptors have been created for the Jemboss Server."
   echo "Would you like an automatic deployment of these to be tried (y/n) [y]?"
+  echo "(Please make sure your Tomcat server not running currently,"
+  echo " install script will start it.)"
+  
   read DEPLOYSERVICE
 
   if (test "$DEPLOYSERVICE" = "y") || (test "$DEPLOYSERVICE" = ""); then
