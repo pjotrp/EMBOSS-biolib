@@ -639,10 +639,18 @@ public class BuildProgramMenu
 	  return s;
   }
 
+  
+  
+  
   public static void setMatrices(JembossParams mysettings){
 	  final Set s = matrixIndicies(mysettings.getEmbossData()+File.separator+"Matrices.protein");
 	  s.addAll(matrixIndicies(mysettings.getEmbossData()+File.separator+"Matrices.nucleotide"));
 	  s.addAll(matrixIndicies(mysettings.getEmbossData()+File.separator+"Matrices.proteinstructure"));
+	  
+	  if (s.size()==0)
+	      System.err.println("No matrix file found, in EMBOSS data directory "+
+	              mysettings.getEmbossData());
+
 	  String[] dataFile = (new File(mysettings.getEmbossData())).list(new FilenameFilter()
 	  {
 		  public boolean accept(File dir, String name)
@@ -654,13 +662,16 @@ public class BuildProgramMenu
 			  return false;
 		  };
 	  });
-	  if (s.size()>0)
-		  System.err.println("matrices not resolved to any file: "+s.size());
+
 	  matrices = new Vector();
 	  Arrays.sort(dataFile);
 	  for(int i=0;i<dataFile.length;i++)
 		  matrices.add(dataFile[i]);
   }
+  
+  
+  
+  
   /**
   *
   * Contains all codon usage tables
