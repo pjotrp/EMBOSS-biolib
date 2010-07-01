@@ -8790,7 +8790,8 @@ FP /Exists\n/
 
 ID embossdata-ex2
 UC Display the names of data files in all of the possible data directories:
-UC This is run on a small test system and so the results will probably be different when you run this.
+UC This is run on a small test system and so the results will probably
+UC be different when you run this.
 AP embossdata
 CL -showall
 IN
@@ -18462,7 +18463,7 @@ FP /^# Identity: +63/145 \(43\.4%\)\n/
 FP /^# Similarity: +88/145 \(60\.7%\)\n/
 //
 
-ID water-gapafterfirstresidues
+ID water-gapafterfirstresidue
 CC this test known to fail
 AP water
 CL asis:catt asis:cgatt stdout -auto -gapopen 1 -gapextend 1
@@ -18492,7 +18493,9 @@ FP /^tembl:x65921\n/
 //
 
 ID wobble-ex
-UC Here is a sample session with wobble. The example sequence is from Pseudomonas aeruginosa, which has a high G+C content and a very biased third codon position (if it can be G or C, it usually is).
+UC Here is a sample session with wobble. The example sequence is from
+UC Pseudomonas aeruginosa, which has a high G+C content and a very biased
+UC third codon position (if it can be G or C, it usually is).
 AP wobble
 IN tembl:x13776
 IN cps
@@ -20280,7 +20283,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI hba_human.wordmatch
 FZ > 300
-FP /^HBB_HUMAN\t0\tHBA_HUMAN\t59\t.*\t5M\t.*HGKKV.*AS:i:5\tNM:i:0/
+FP /^HBB_HUMAN\t0\tHBA_HUMAN\t59\t.*\t63H5M79H\t.*HGKKV.*AS:i:5\tNM:i:0/
 FI wordmatch.log
 FP /^HGKK.*5.0/
 FI HBA_HUMAN.gff
@@ -21212,7 +21215,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FC = 23
-FP /FC12044_91407_8_200_303_427.*Illumina_DpnII_Gex_Adapters1_2\t8.*11M.*NM:i:2/
+FP /_8_200_303_427.*_DpnII_Gex_Adapters1_2\t8.*6H11M.*XXXIXFQXXXO.*NM:i:2/
 //
 
 ID align-wordmatch-sam2
@@ -21232,10 +21235,24 @@ FI FC12044_91407_8_200_406_24.gff
 FC = 0
 //
 
+ID align-supermatcher-sam2
+AP supermatcher
+CL -word 7 -stdout -auto -aformat sam -sformat1 fastq-sanger
+CL ../../data/test1_illumina.fastq
+CL ../../data/illumina_adapter_primer.fa 
+FI stderr
+FI supermatcher.error
+FP /No.*start points for.*_8_200_285_136 vs .*_Small_RNA_sequencing_primer/
+FC = 754
+FI stdout
+FP /_427.*DpnII_Gex_A.*1_2.*6H7M3I9M.*CAGAGTTTTGCTCTTGTCC.*XXXIXFQXXXOIQSSXUFF/
+FP /_437.*Small_RNA_3p_Adapter\t15.*1H7M.*CTGCTTG	SXSXXXX	AS:i:35.0	NM:i:0/
+//
+
 ID align-water-sam1
-UC example from SAM paper, Bioinformatics 2009 August
+UC example from SAM paper(Bioinformatics 2009 August)
 AP water
-CL -auto -aformat sam -dataf ../../data/EDNAMATSIMPLE -outf stdout -gapo 2
+CL -auto -aformat sam -dataf EDNASIMPLE -outf stdout -gapo 2
 CL asis:AGCATGTTAGATAAGATAGCTGTGCTAGTAGGCAGTCAGCGCCAT
 CL asis:TTAGATAAAGGATACTG
 FI stdout
@@ -21243,9 +21260,8 @@ FP /.*7.*8M2I4M1D3M.*TTAGATAAAGGATACTG.*NM:i:0/
 //
 
 ID align-water-sam2
-UC example from SAM paper, Bioinformatics 2009 August
 AP water
-CL -auto -aformat sam -datafile ../../data/EDNAMATSIMPLE -outfile stdout
+CL -auto -aformat sam -datafile EDNASIMPLE -outfile stdout
 CL asis:AGCATGTTAGATAA**GATAGCTGTGCTAGTAGGCAGTCAGCGCCAT
 CL asis:gcctaAGCTAA
 FI stdout
@@ -21254,7 +21270,7 @@ FP /.*9.*5H6M.*AGCTAA.*NM:i:1/
 
 ID align-water-sam3
 AP water
-CL -auto -srev2 -aformat sam -datafile ../../data/EDNAMATSIMPLE -outfile stdout
+CL -auto -srev2 -aformat sam -datafile EDNASIMPLE -outfile stdout
 CL asis:AGCATGTTAGATAANNGANAGCTGTGCTAGTAGGCAGTCAGCGCCAT
 CL asis:gcctaAGCTAA
 FI stdout
