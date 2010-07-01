@@ -115,7 +115,7 @@ ID   LACI_ECOLI              Reviewed;         360 AA.
 AC   P03023; O09196; P71309; Q2MC79; Q47338;
 DT   21-JUL-1986, integrated into UniProtKB/Swiss-Prot.
 DT   19-JUL-2003, sequence version 3.
-DT   16-JUN-2009, entry version 105.
+DT   15-JUN-2010, entry version 117.
 DE   RecName: Full=Lactose operon repressor;
 GN   Name=lacI; OrderedLocusNames=b0345, JW0336;
 OS   Escherichia coli (strain K12).
@@ -228,8 +228,8 @@ PEPSTATS of LACI_ECOLI from 1 to 360
 Molecular weight = 38590.16             Residues = 360
 Average Residue Weight  = 107.195       Charge   = 1.5
 Isoelectric Point = 6.8820
-A280 Molar Extinction Coefficient  = 21620
-A280 Extinction Coefficient 1mg/ml = 0.56
+A280 Molar Extinction Coefficients  = 22920 (reduced)   23045 (cystine bridges)
+A280 Extinction Coefficients 1mg/ml = 0.594 (reduced)   0.597 (cystine bridges)
 Improbability of expression in inclusion bodies = 0.660
 
 Residue         Number          Mole%           DayhoffStat

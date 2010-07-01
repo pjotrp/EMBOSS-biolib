@@ -16,7 +16,7 @@ MAP   yes
 COM   /shared/software/bin/hmmbuild -n pkinase --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/pkinase.sto
 COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms
 NSEQ  67
-DATE  Fri Jan 15 12:00:00 2010
+DATE  Thu Jul 15 12:00:00 2010
 CKSUM 4536
 GA    -57.9 -57.9
 TC    -57.7 -57.7

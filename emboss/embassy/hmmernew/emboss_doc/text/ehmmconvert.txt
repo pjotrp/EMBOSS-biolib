@@ -145,7 +145,7 @@ hmm ../../data/hmmnew/globins50.msf
 COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.00
 0000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Fri Jan 15 12:00:00 2010
+DATE  Thu Jul 15 12:00:00 2010
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455

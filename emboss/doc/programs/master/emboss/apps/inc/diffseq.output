@@ -32,7 +32,7 @@
 
 
 X65923 284-284 Length: 1
-Feature: CDS 57-458 gene='fau' db_xref='GDB:135476' db_xref='GOA:P62861' db_xref='HGNC:3597' db_xref='HSSP:1GJZ' db_xref='InterPro:IPR006846' db_xref='UniProtKB/Swiss-Prot:P35544' protein_id='CAA46716.1'
+Feature: CDS 57-458 gene='fau' db_xref='GDB:135476' db_xref='GOA:P35544' db_xref='GOA:P62861' db_xref='HGNC:3597' db_xref='InterPro:IPR000626' db_xref='InterPro:IPR006846' db_xref='InterPro:IPR019954' db_xref='InterPro:IPR019955' db_xref='InterPro:IPR019956' db_xref='UniProtKB/Swiss-Prot:P35544' db_xref='UniProtKB/Swiss-Prot:P62861' protein_id='CAA46716.1'
 Feature: misc_feature 279-458 note='S30 part'
 Sequence: t
 Sequence: c

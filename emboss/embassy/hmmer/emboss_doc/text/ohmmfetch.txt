@@ -92,7 +92,7 @@ MAP   yes
 COM   ohmmbuild ../../data/hmm/fn3.slx -sf selex fn3.hmm
 COM   ohmmcalibrate myhmms -seed 1079460101
 NSEQ  109
-DATE  Fri Jan 15 12:00:00 2010
+DATE  Thu Jul 15 12:00:00 2010
 CKSUM 4633
 XT      -8455     -4      0      *  -8455     -4      0      *
 NULT      -4  -8455
@@ -262,7 +262,7 @@ MAP   yes
 COM   ohmmbuild ../../data/hmm/fn3.slx -sf selex fn3.hmm
 COM   ohmmcalibrate myhmms -seed 1079460101
 NSEQ  109
-DATE  Fri Jan 15 12:00:00 2010
+DATE  Thu Jul 15 12:00:00 2010
 CKSUM 4633
 XT      -8455     -4      0      *  -8455     -4      0      *
 NULT      -4  -8455

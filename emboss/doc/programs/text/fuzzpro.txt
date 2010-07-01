@@ -217,7 +217,7 @@ Output file format
 
 #=======================================
 #
-# Sequence: ACTB1_FUGRU     from: 1   to: 375
+# Sequence: ACTB1_TAKRU     from: 1   to: 375
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -232,7 +232,7 @@ Output file format
 #---------------------------------------
 #=======================================
 #
-# Sequence: ACTB2_FUGRU     from: 1   to: 375
+# Sequence: ACTB2_TAKRU     from: 1   to: 375
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -247,7 +247,7 @@ Output file format
 #---------------------------------------
 #=======================================
 #
-# Sequence: ACTB3_FUGRU     from: 1   to: 375
+# Sequence: ACTB3_TAKRU     from: 1   to: 375
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -260,7 +260,7 @@ Output file format
   [Part of this file has been deleted for brevity]
 
 #
-# Sequence: ACTSA_FUGRU     from: 1   to: 377
+# Sequence: ACTSA_TAKRU     from: 1   to: 377
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -275,7 +275,7 @@ Output file format
 #---------------------------------------
 #=======================================
 #
-# Sequence: ACTSB_FUGRU     from: 1   to: 377
+# Sequence: ACTSB_TAKRU     from: 1   to: 377
 # HitCount: 1
 #
 # Pattern_name Mismatch Pattern
@@ -306,7 +306,7 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 100
-# Total_length: 35263
+# Total_length: 35357
 # Reported_sequences: 8
 # Reported_hitcount: 8
 #---------------------------------------

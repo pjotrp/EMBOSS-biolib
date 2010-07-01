@@ -21,13 +21,13 @@ Stride program log output file [stride.log]: <b></b>
 Naccess program log output file [naccess.log]: <b></b>
 
 Processing /homes/user/test/qa/pdbparse-keep/1cs4.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1277141197.25929
+/shared/software/bin/stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1277988338.25929
 /shared/software/bin/naccess /homes/user/test/data/structure/1cs4.ent
 Processing /homes/user/test/qa/pdbparse-keep/1ii7.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1277141197.25929
+/shared/software/bin/stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1277988338.25929
 /shared/software/bin/naccess /homes/user/test/data/structure/1ii7.ent
 Processing /homes/user/test/qa/pdbparse-keep/2hhb.ccf
-/shared/software/bin/stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1277141197.25929
+/shared/software/bin/stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1277988338.25929
 /shared/software/bin/naccess /homes/user/test/data/structure/2hhb.ent
 STRIDE  failures: 0
 NACCESS failures: 0

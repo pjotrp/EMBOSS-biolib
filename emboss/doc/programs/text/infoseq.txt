@@ -33,10 +33,10 @@ Usage
 Display basic information about sequences
 
 USA                      Database  Name           Accession      Type Length %GC
-    Description
+    Organism            Description
 tembl-id:X13776          tembl          X13776         X13776         N    2167
-  66.54  Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulat
-ion
+  66.54  Pseudomonas aeruginosa Pseudomonas aeruginosa amiC and amiR gene for al
+iphatic amidase regulation
 
 
    Go to the input files for this example
@@ -49,9 +49,11 @@ ion
 % infoseq tembl:x13776 -nousa
 Display basic information about sequences
 
-Database  Name           Accession      Type Length %GC    Description
+Database  Name           Accession      Type Length %GC    Organism            D
+escription
 tembl          X13776         X13776         N    2167   66.54  Pseudomonas aeru
-ginosa amiC and amiR gene for aliphatic amidase regulation
+ginosa Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulatio
+n
 
 
    Example 3
@@ -99,10 +101,10 @@ N
 Display basic information about sequences
 
 
- USA Database Name Accession Type Length %GC Description
+ USA Database Name Accession Type Length %GC Organism Description
 
- tembl-id:X13776 tembl X13776 X13776 N 2167 66.54 Pseudomonas aeruginosa amiC an
-d amiR gene for aliphatic amidase regulation
+ tembl-id:X13776 tembl X13776 X13776 N 2167 66.54 Pseudomonas aeruginosa Pseudom
+onas aeruginosa amiC and amiR gene for aliphatic amidase regulation
 
 
 
