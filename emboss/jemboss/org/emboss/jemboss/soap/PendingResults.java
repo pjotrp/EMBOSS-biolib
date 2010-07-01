@@ -380,7 +380,7 @@ public class PendingResults
     ClassLoader cl = this.getClass().getClassLoader();
     ImageIcon jobIcon = new ImageIcon(cl.getResource("images/Job_manager_button.gif"));
 
-    jobButton = new JButton("(No Current Jobs)", jobIcon);
+    jobButton = new JButton("(No background jobs)", jobIcon);
     jobButton.setIconTextGap(50);
     jobButton.setHorizontalTextPosition(SwingConstants.RIGHT);
     jobButton.setToolTipText("Batch Job Manager");
