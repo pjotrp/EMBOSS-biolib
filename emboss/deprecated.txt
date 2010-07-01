@@ -1036,7 +1036,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #embshow
 #embsig
 #embword
-wordMatchListAppend -
+embWordMatchListAppend -
 #aaindexextract
 #abiview
 #acdc
