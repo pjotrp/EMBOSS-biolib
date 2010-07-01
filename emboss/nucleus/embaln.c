@@ -1900,16 +1900,15 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
 
 		fnew  = path[ip-width+1];
 		fnew -= gapopen;
+
 		if (i==width-2)
-		{
 		    maxa[icol] = fnew;
-		}
 		else
 		{
 		    maxa[icol] -= gapextend;
-		    if(fnew > maxa[icol]){
+
+		    if(fnew > maxa[icol])
 			maxa[icol] = fnew;
-		    }
 		}
 
 		if( maxa[icol] > mscore)
@@ -1923,9 +1922,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
             if(irow > 0 && i!=0)
             {
         	if(i == 1 || icol==1)
-        	{
         	    bx = path[ip-1]-gapopen;
-        	}
         	else
         	{
         	    bx -= gapextend;
@@ -3208,6 +3205,7 @@ void embAlignReportLocal(AjPAlign align,
 {
     AjPSeq res1 = NULL;
     AjPSeq res2 = NULL;
+    const float* qual = NULL;
     ajint offend1;
     ajint offend2;
 
@@ -3252,6 +3250,11 @@ void embAlignReportLocal(AjPAlign align,
     ajSeqAssignUsaS(res1, ajSeqGetUsaS(seqa));
     ajSeqAssignAccS(res1, ajSeqGetAccS(seqa));
     ajSeqAssignDescS(res1, ajSeqGetDescS(seqa));
+    qual = ajSeqGetQual(seqa);
+
+    if(qual!=NULL)
+	ajSeqAssignQualLen(res1,qual+start1+ajSeqGetOffset(seqa),
+	                   ajSeqGetLenUngapped(res1));
 
     res2   = ajSeqNewRangeC(ajStrGetPtr(n), start2+ajSeqGetOffset(seqb),
 			     offend2+ajSeqGetOffend(seqb),
@@ -3260,6 +3263,11 @@ void embAlignReportLocal(AjPAlign align,
     ajSeqAssignUsaS(res2, ajSeqGetUsaS(seqb));
     ajSeqAssignAccS(res2, ajSeqGetAccS(seqb));
     ajSeqAssignDescS(res2, ajSeqGetDescS(seqb));
+    qual = ajSeqGetQual(seqb);
+
+    if(qual!=NULL)
+	ajSeqAssignQualLen(res2,qual+start2+ajSeqGetOffset(seqb),
+	                   ajSeqGetLenUngapped(res2));
 
     ajSeqGapStandard(res1, '-');
     ajSeqGapStandard(res2, '-');
