@@ -145,7 +145,7 @@ typedef struct AlignSFormat
 
 
 
-static ajint      alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
+static ajint      alignCigar(const AjPSeq qryseq, const AjPSeq refseq,
 	                     ajint qstart, ajint qend,
                              ajint rstart,
                              AjPStr *mseq, AjPStr* cigar, AjBool seqExternal);
@@ -1679,13 +1679,13 @@ static void alignWriteSam(AjPAlign thys)
 
 	    }
 	    else
-		seqacc = ajStrNewC("*");
+		ajStrAssignC(&seqacc,"*");
 
 	    ajStrAssignClear(&mseq);
 	    ajStrAssignClear(&cigar);
 
 	    /* get CIGAR, match region of the query sequence and #mismatches */
-	    nmismatches = alignCIGAR(qryseq, refseq,
+	    nmismatches = alignCigar(qryseq, refseq,
 	                             qrystart,
 	                             qryend,
 	                             refstart,
@@ -5829,7 +5829,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 
 
 
-/* @funcstatic alignCIGAR *****************************************************
+/* @funcstatic alignCigar *****************************************************
 **
 ** Return CIGAR string for a pairwise alignment, as well as match region
 ** of the query sequence and the number of mismatches
@@ -5841,10 +5841,12 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 ** @param [r] rstart [ajint] reference sequence start point
 ** @param [w] qseq [AjPStr*] query sequence
 ** @param [w] cigar [AjPStr*] CIGAR string
+** @param [r] seqexternal [AjBool] Sequences are external references,
+**              ignore their offsets and use qstart and qend
 ** @return [ajint] number of mismatches
 ******************************************************************************/
 
-static ajint alignCIGAR(const AjPSeq qryseq, const AjPSeq refseq,
+static ajint alignCigar(const AjPSeq qryseq, const AjPSeq refseq,
 	                ajint qstart, ajint qend,
 	                ajint rstart,
 	                AjPStr *qseq, AjPStr* cigar, AjBool seqexternal)
