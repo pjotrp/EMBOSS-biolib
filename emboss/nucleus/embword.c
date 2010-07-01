@@ -1125,12 +1125,14 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
 
 
 
-/* @obsolete wordMatchListAppend
+/* @obsolete embWordMatchListAppend
 ** @remove use embWordMatchNew followed by a list append call
 */
-EmbPWordMatch embWordMatchListAppend(AjPList hitlist, const AjPSeq seq,
-	                             const ajuint seq1start,
-	                             ajuint seq2start, ajint length)
+__deprecated EmbPWordMatch embWordMatchListAppend(AjPList hitlist,
+                                                  const AjPSeq seq,
+                                                  const ajuint seq1start,
+                                                  ajuint seq2start,
+                                                  ajint length)
 {
     EmbPWordMatch match;
     AJNEW0(match);
