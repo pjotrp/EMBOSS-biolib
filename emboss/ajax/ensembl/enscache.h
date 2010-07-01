@@ -47,12 +47,12 @@ typedef enum EnsOCacheType
 ** @attr Synchron [AjBool] ajTrue: Immediately write-back value data
 **                         ajFalse: Write-back value data later
 ** @cc Cache limits
+** @attr Bytes [ajulong] Current number of cached bytes
 ** @attr MaxBytes [ajulong] Maximum number of allowed bytes
-** @attr MaxCount [ajuint] Maximum number of allowed entries
 ** @attr MaxSize [ajulong] Maximum memory size of an object
 ** @cc Cache size
-** @attr Bytes [ajulong] Current number of cached bytes
 ** @attr Count [ajuint] Current number of cached entry
+** @attr MaxCount [ajuint] Maximum number of allowed entries
 ** @cc Cache performance statistics
 ** @attr Dropped [ajuint] Number of entries dropped by the LRU algorithm
 ** @attr Removed [ajuint] Number of entries explicitly removed
