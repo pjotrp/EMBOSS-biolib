@@ -66,6 +66,7 @@ const char* resourceTags[] = {
     "Link",
     "LinkNB",
     "Query",
+    "Example",
     "Contact",
     "Email",
     "Note",
@@ -209,6 +210,14 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
                 res->Queries = ajListNew();
             tmpstr = ajStrNewS(rest);
             ajListPushAppend(res->Queries, tmpstr);
+            tmpstr = NULL;
+        }   
+        else  if(ajStrMatchC(token, "Example"))
+        {
+            if(!res->Examples)
+                res->Examples = ajListNew();
+            tmpstr = ajStrNewS(rest);
+            ajListPushAppend(res->Examples, tmpstr);
             tmpstr = NULL;
         }   
         else  if(ajStrMatchC(token, "Contact"))

@@ -30,6 +30,7 @@ extern "C"
 ** @attr Links [AjPList] Database cross-reference link details
 ** @attr Linknote [AjPStr] Notes on the database cross-reference links
 ** @attr Queries [AjPList] Formatted query definitions
+** @attr Examples [AjPList] Formatted query examples
 ** @attr Contact [AjPStr] Resource contact name
 ** @attr Email [AjPStr] Resource contact email address
 ** @attr Notes [AjPStr] Notes on resource entry
@@ -49,6 +50,7 @@ typedef struct AjSResource
     AjPList Links;
     AjPStr Linknote;
     AjPList Queries;
+    AjPList Examples;
     AjPStr Contact;
     AjPStr Email;
     AjPStr Notes;
