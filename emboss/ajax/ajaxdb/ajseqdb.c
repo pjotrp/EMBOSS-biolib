@@ -2777,11 +2777,6 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 
     doproxy = ajSeqHttpProxy(qry, &proxyPort, &proxyName);
 
-    if(ajStrGetCharFirst(qry->ServerVer) == '5')
-        ajStrAssignC(&qrycount, qrycount5);
-    else
-        ajStrAssignC(&qrycount, qrycount6);
-
     if(!ajNamDbGetDbalias(qry->DbName, &qry->DbAlias))
 	ajStrAssignS(&qry->DbAlias, qry->DbName);
 
@@ -2839,11 +2834,18 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     ** and looking for [Ff]ound...[0-9]+...entries
     */
 
+        if(ajStrGetCharFirst(qry->ServerVer) == '5')
+            ajStrAssignC(&qrycount, qrycount5);
+        else
+            ajStrAssignC(&qrycount, qrycount6);
+
         if(doproxy)
             ajFmtPrintS(&get, "GET http://%S:%d%S?%S",
                         host, iport, urlget, qrycount);
         else        
             ajFmtPrintS(&get, "GET %S?%S", urlget, qrycount);
+
+        ajStrDel(&qrycount);
 
         ajStrAppendS(&get, qryfield);
 
@@ -2856,6 +2858,8 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
             fp = ajSeqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
         else
             fp = ajSeqHttpGet(qry, host, iport, get);
+
+        ajStrDel(&get);
 
         countfile = ajFileNewFromCfile(fp);
         while(ajReadline(countfile, &countline))
@@ -2889,6 +2893,10 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
         ajStrDel(&countstr);
         if(!qry->TotalEntries)
         {
+            ajStrDel(&host);
+            ajStrDel(&urlget);
+            ajStrDel(&httpver);
+            ajStrDel(&qryfield);
             ajDebug("No entries found\n");
             return ajFalse;
         }
@@ -2912,6 +2920,7 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     ajStrAppendS(&get, qryfield);
 
     ajStrDel(&urlget);
+    ajStrDel(&qryfield);
 
     ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
     ajStrDel(&httpver);
