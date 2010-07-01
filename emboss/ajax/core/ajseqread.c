@@ -2348,6 +2348,7 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 
 	    return ajFalse;
 	}
+        buff = seqin->Filebuff;
     }
 
     ajDebug("seqRead: seqin format %d '%S'\n", seqin->Format,
@@ -2504,6 +2505,7 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     {
 	if(!seqin->Query->Access->Access(seqin))
             return ajFalse;
+        buff = seqin->Filebuff;
     }
 
 
@@ -9360,43 +9362,45 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
     ok = ajBuffreadLineStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
     if(seqin->Count == 1)
-    while(ok && ajStrGetCharFirst(seqReadLine) == '@')
     {
-        ajStrTokenAssignC(&handle, seqReadLine, "\t");
-        ajStrTokenNextParse(&handle,&token);
-        switch(ajStrGetCharPos(token, 1))
+        while(ok && ajStrGetCharFirst(seqReadLine) == '@')
         {
-            case 'H':
-                if(!ajStrMatchC(token, "@HD"))
+            ajStrTokenAssignC(&handle, seqReadLine, "\t");
+            ajStrTokenNextParse(&handle,&token);
+            switch(ajStrGetCharPos(token, 1))
+            {
+                case 'H':
+                    if(!ajStrMatchC(token, "@HD"))
+                        badformat = ajTrue;
+                    break;
+                case 'S':
+                    if(!ajStrMatchC(token, "@SQ"))
+                        badformat = ajTrue;
+                    break;
+                case 'R':
+                    if(!ajStrMatchC(token, "@RG"))
+                        badformat = ajTrue;
+                    break;
+                case 'P':
+                    if(!ajStrMatchC(token, "@PG"))
+                        badformat = ajTrue;
+                    break;
+                case 'C':
+                    if(!ajStrMatchC(token, "@CO"))
+                        badformat = ajTrue;
+                    break;
+                default:
                     badformat = ajTrue;
-                break;
-            case 'S':
-                if(!ajStrMatchC(token, "@SQ"))
-                    badformat = ajTrue;
-                break;
-            case 'R':
-                if(!ajStrMatchC(token, "@RG"))
-                    badformat = ajTrue;
-                break;
-            case 'P':
-                if(!ajStrMatchC(token, "@PG"))
-                    badformat = ajTrue;
-                break;
-            case 'C':
-                if(!ajStrMatchC(token, "@CO"))
-                    badformat = ajTrue;
-                break;
-            default:
-                badformat = ajTrue;
-                break;
+                    break;
+            }
+            if(badformat) 
+            {
+                ajErr("bad sam format header record '%S'", seqReadLine);
+                return ajFalse;
+            }
+            ok = ajBuffreadLineStore(buff, &seqReadLine,
+                                     seqin->Text, &thys->TextPtr);
         }
-        if(badformat) 
-        {
-            ajErr("bad sam format header record '%S'", seqReadLine);
-            return ajFalse;
-        }
-        ok = ajBuffreadLineStore(buff, &seqReadLine,
-                                 seqin->Text, &thys->TextPtr);
     }
 
     if(!ok)
@@ -9423,6 +9427,8 @@ static AjBool seqReadSam(AjPSeq thys, AjPSeqin seqin)
     
     ajStrTokenNextParseNoskip(&handle,&token); /* RNAME */
     ajDebug("RNAME '%S'\n", token);
+    if(ajStrGetLen(token))
+        seqAccSave(thys, token);
     
     ajStrTokenNextParseNoskip(&handle,&token); /* POS */
     ajDebug("POS   '%S'\n", token);
