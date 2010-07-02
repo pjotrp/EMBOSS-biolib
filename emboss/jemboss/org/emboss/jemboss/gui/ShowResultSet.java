@@ -318,6 +318,7 @@ public class ShowResultSet extends JFrame
             }
             
             JTextArea ta = new JTextArea((String)h.get(thiskey));
+            ta.setEditable(false);
             r1 = new JScrollPane(ta);
 
             box.add(r1);
