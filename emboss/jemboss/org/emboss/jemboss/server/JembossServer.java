@@ -77,6 +77,8 @@ public class JembossServer
   /** results directory */
   private File tmprootDir = new File(tmproot);
 
+  String projectName = null;
+  
   /** emboss run environment */
   private String[] envp_emboss = 
   {
@@ -497,13 +499,13 @@ public class JembossServer
         System.out.println("Failed to create directory "+tmproot);
     }
 
-    Random rnd = new Random();
     String dat = new Date().toString();
     dat = dat.replace(':','_');
 
+    assignProjectName(appl);
+    
 //get a unique project name 
-    String project = new String(tmproot + appl + "_" +
-         dat.replace(' ','_') + "_" + rnd.nextInt(99999));
+    String project = new String(tmproot + projectName);
 
     File projectDir = new File(project);
     ok = projectDir.mkdirs();
@@ -613,6 +615,35 @@ public class JembossServer
     return result;
   }
 
+
+  
+  
+  public String assignProjectName(String appl)
+  {
+      if (projectName==null)
+      {
+          Random rnd = new Random();
+          String dat = new Date().toString();
+          dat = dat.replace(':','_');
+
+          //get a unique project name 
+          projectName = new String(appl + "_" +
+                  dat.replace(' ','_') + "_" + rnd.nextInt(99999));
+      }
+      return projectName;
+  }
+  
+  
+  
+  
+  public String getProjectName()
+  {
+      return projectName;
+  }  
+  
+  
+  
+  
   /**
   *
   * Creates a file named "finished" in the project directory,
