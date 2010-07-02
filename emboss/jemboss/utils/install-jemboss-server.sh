@@ -393,7 +393,7 @@ make_jemboss_properties()
    echo "service.private=JembossServer" >> $JEMBOSS_PROPERTIES
   fi
 
-  echo "plplot=$EMBOSS_INSTALL/share/EMBOSS/" >> $JEMBOSS_PROPERTIES
+#  echo "plplot=$EMBOSS_INSTALL/share/EMBOSS/" >> $JEMBOSS_PROPERTIES
   echo "embossData=$EMBOSS_INSTALL/share/EMBOSS/data/" >> $JEMBOSS_PROPERTIES
   echo "embossBin=$EMBOSS_INSTALL/bin/" >> $JEMBOSS_PROPERTIES
   echo "embossPath=$EMBOSSPATH" >> $JEMBOSS_PROPERTIES
