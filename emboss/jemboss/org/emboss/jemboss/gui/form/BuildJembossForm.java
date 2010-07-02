@@ -520,7 +520,8 @@ public class BuildJembossForm implements ActionListener
                       mysettings.getCurrentMode(), filesToMovev, "");
               Hashtable r = convert(result,false);
               try {
-                  resultSetFrame = new ShowResultSet(r,filesToMove,mysettings);
+                  resultSetFrame = new ShowResultSet(r,filesToMove,
+                          js.getProjectName(),mysettings);
               } catch (OutOfMemoryError e) {
                   result.clear();
                   filesToMove.clear();

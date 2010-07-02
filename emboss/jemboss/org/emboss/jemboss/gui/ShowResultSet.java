@@ -26,6 +26,9 @@ import java.awt.*;
 //import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -55,6 +58,8 @@ public class ShowResultSet extends JFrame
 //  private GroutPanel grout = null;
   /** toolbar */
   private JToolBar toolbar = null;
+
+  static boolean java6 = System.getProperty("java.version").startsWith("1.6");
 
   /**
   * 
@@ -115,16 +120,18 @@ public class ShowResultSet extends JFrame
   public ShowResultSet(Hashtable reslist, Hashtable inputFiles, 
                        String project, JembossParams mysettings)
   {
-    super("Saved Results");
+    super("Saved Results - "+(project==null?"":project));
     rtp = new JTabbedPane();
 
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
     JScrollPane r1;
+    
+    String prjdir = mysettings.getResultsHome()+project;
 
-    String stabs[] = addHashContentsToTab(reslist,rtp);
+    String stabs[] = addHashContentsToTab(reslist,rtp,prjdir);
     if(inputFiles != null)
-      addHashContentsToTab(inputFiles,rtp);
+      addHashContentsToTab(inputFiles,rtp, prjdir);
 
 // now load png files into pane
     for(int i=0; i<stabs.length;i++)
@@ -252,7 +259,8 @@ public class ShowResultSet extends JFrame
   * @return	array of names of PNG tabs
   *
   */
-  private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp)
+  private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp,
+          final String prjdir)
   {
     JScrollPane r1;
 
@@ -263,7 +271,7 @@ public class ShowResultSet extends JFrame
 
     while (enumer.hasMoreElements())
     {
-      String thiskey = (String)enumer.nextElement().toString();
+      final String thiskey = (String)enumer.nextElement().toString();
       if(!thiskey.equals(cmd))
       {
         if( thiskey.endsWith("png") || thiskey.endsWith("html") ||
@@ -284,34 +292,35 @@ public class ShowResultSet extends JFrame
             rtp.add(thiskey,r1);
           }
         }
-//        else if (thiskey.endsWith("x3d")) // grout
-//        {
-//          GroutPanel panel = new GroutPanel()
-//          {
-//            protected void addDisposeOfGroutPanelMenuItem(JMenu menu)
-//            {
-//              JMenuItem menuItem = new JMenuItem("Close");
-//              menuItem.setAccelerator(KeyStroke.getKeyStroke(
-//                        KeyEvent.VK_E, ActionEvent.CTRL_MASK));
-//
-//              menuItem.addActionListener(new ActionListener()
-//              {
-//                public void actionPerformed(ActionEvent e)
-//                {
-//                  dispose();
-//                }
-//              });
-//              menu.add(menuItem);                         
-//            }
-//          };
-//
-//          if(h.get(thiskey) instanceof String)
-//            panel.setX3DFile((String)h.get(thiskey));
-//          else
-//            panel.setX3DFile(new String((byte[])h.get(thiskey)));
-//          rtp.add(thiskey,panel);
-//          setJMenuBar(panel.getMenuBar());
-//        }
+
+        if( thiskey.endsWith(".pdf") || thiskey.endsWith(".svg"))
+        {
+            Box box = new Box(BoxLayout.Y_AXIS);
+            JButton bt = new JButton("Open using default desktop viewer");
+            bt.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    if (java6 && Desktop.isDesktopSupported()){
+                        try {
+                            Desktop.getDesktop().open(
+                                    new File(prjdir+File.separator+thiskey));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+            );
+
+            JTextArea ta = new JTextArea((String)h.get(thiskey));
+            r1 = new JScrollPane(ta);
+
+            box.add(bt);
+
+            box.add(r1);
+            rtp.add(thiskey,box);
+        }
         else
         {
           FileEditorDisplay fed = new FileEditorDisplay(thiskey,
