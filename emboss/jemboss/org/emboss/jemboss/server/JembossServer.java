@@ -352,10 +352,14 @@ public class JembossServer
     {
       public boolean accept(File dir, String name)
       {
-        File fileName = new File(dir, name);
-        return !fileName.isDirectory();
+          if (name.startsWith("EPAM") || name.startsWith("EBLOSUM") ||
+                  name.startsWith("EDNA"))
+              return true;
+          
+          return false;
       };
     });
+    
     String matrices ="";
     for(int i=0;i<dataFile.length;i++)
       matrices=matrices.concat(dataFile[i]+"\n");
