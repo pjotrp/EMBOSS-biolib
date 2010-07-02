@@ -2,7 +2,7 @@
 ## Process this file with automake to produce Makefile.in in all directories.
 AUTOMAKE_OPTIONS = gnits
 
-SUBDIRS = api images lib org resources utils
+SUBDIRS = images lib resources utils
 
 # files with nonstandard names in this directory
 EXTRA_DIST = LICENSE
