@@ -296,27 +296,29 @@ public class ShowResultSet extends JFrame
         if( thiskey.endsWith(".pdf") || thiskey.endsWith(".svg"))
         {
             Box box = new Box(BoxLayout.Y_AXIS);
-            JButton bt = new JButton("Open using default desktop viewer");
-            bt.addActionListener(new ActionListener()
+            if (java6)
             {
-                public void actionPerformed(ActionEvent e)
+                JButton bt = new JButton("Open using default desktop viewer");
+                bt.addActionListener(new ActionListener()
                 {
-                    if (java6 && Desktop.isDesktopSupported()){
-                        try {
-                            Desktop.getDesktop().open(
-                                    new File(prjdir+File.separator+thiskey));
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        if (Desktop.isDesktopSupported()){
+                            try {
+                                Desktop.getDesktop().open(
+                                        new File(prjdir+File.separator+thiskey));
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
                         }
                     }
                 }
+                );
+                box.add(bt);
             }
-            );
-
+            
             JTextArea ta = new JTextArea((String)h.get(thiskey));
             r1 = new JScrollPane(ta);
-
-            box.add(bt);
 
             box.add(r1);
             rtp.add(thiskey,box);
