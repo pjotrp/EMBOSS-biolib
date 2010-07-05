@@ -375,18 +375,20 @@ public class BuildJembossForm implements ActionListener
     outSection = null;
     inpSection = null;
 
-//  if(withSoap)
-//  {
       if(parseAcd.isBatchable() && 
          !parseAcd.getExpectedCPU().equalsIgnoreCase("low"))
         Jemboss.resultsManager.updateMode("batch");
       else
         Jemboss.resultsManager.updateMode("interactive");
-//  }
 
 
-    graphics = new JComboBox( new String[]{ "PNG","PDF","SVG",
-            "Jemboss Graphics"} );
+      if (mysettings.getEmbossHavePDF())
+          graphics = new JComboBox( new String[]{ "PNG","PDF","SVG",
+          "Jemboss Graphics"} );
+      else
+          graphics = new JComboBox( new String[]{ "PNG","SVG",
+          "Jemboss Graphics"} );
+
 
     for(int j=0;j<nsection;j++)
     {
