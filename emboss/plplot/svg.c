@@ -399,7 +399,7 @@ void poly_line(PLStream *pls, short *xa, short *ya, PLINT npts, short fill)
 
 void proc_str (PLStream *pls, EscText *args)
 {
-   char plplot_esc;
+   unsigned char plplot_esc;
    short i;
    short upDown = 0;
    short totalTags = 1;
