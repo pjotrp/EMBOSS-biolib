@@ -104,8 +104,6 @@ public class DragTree extends JTree implements DragGestureListener,
   /** used by AutoScroll method */
   private Insets autoscrollInsets = new Insets( 0, 0, 0, 0 );
   
-  static boolean java6 = System.getProperty("java.version").startsWith("1.6");
-
   JMenuItem openMenu;
   JMenuItem renameMenuItem;
   JMenuItem deleteMenuItem;
@@ -159,7 +157,7 @@ public class DragTree extends JTree implements DragGestureListener,
     menuItem.addActionListener(this);
     openMenu.add(menuItem);
 
-    if(java6)
+    if(mysettings.getDesktopSupportsOPENAction())
     {
         menuItem = new JMenuItem("Desktop default viewer");
         menuItem.addActionListener(this);
@@ -270,13 +268,10 @@ public class DragTree extends JTree implements DragGestureListener,
     }
     else if(source.getText().startsWith("Desktop "))
     {
-        if (java6 && Desktop.isDesktopSupported()){
-            try {
-                Desktop.getDesktop().open(f);
-            } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
+        try {
+            Desktop.getDesktop().open(f);
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
     else if(source.getText().equals("Text Editor"))

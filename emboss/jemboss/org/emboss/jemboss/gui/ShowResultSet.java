@@ -59,8 +59,6 @@ public class ShowResultSet extends JFrame
   /** toolbar */
   private JToolBar toolbar = null;
 
-  static boolean java6 = System.getProperty("java.version").startsWith("1.6");
-
   /**
   * 
   * @param reslist 	result list
@@ -129,9 +127,9 @@ public class ShowResultSet extends JFrame
     
     String prjdir = mysettings.getResultsHome()+project;
 
-    String stabs[] = addHashContentsToTab(reslist,rtp,prjdir);
+    String stabs[] = addHashContentsToTab(reslist,rtp,prjdir,mysettings);
     if(inputFiles != null)
-      addHashContentsToTab(inputFiles,rtp, prjdir);
+      addHashContentsToTab(inputFiles,rtp, prjdir,mysettings);
 
 // now load png files into pane
     for(int i=0; i<stabs.length;i++)
@@ -260,7 +258,7 @@ public class ShowResultSet extends JFrame
   *
   */
   private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp,
-          final String prjdir)
+          final String prjdir, JembossParams settings)
   {
     JScrollPane r1;
 
@@ -293,24 +291,22 @@ public class ShowResultSet extends JFrame
           }
         }
 
-        if( thiskey.endsWith(".pdf") || thiskey.endsWith(".svg"))
+        if( thiskey.endsWith(".pdf") || thiskey.endsWith(".svg") )
         {
             Box box = new Box(BoxLayout.Y_AXIS);
-            if (java6)
+            if (settings.getDesktopSupportsOPENAction())
             {
                 JButton bt = new JButton("Open using default desktop viewer");
                 bt.addActionListener(new ActionListener()
                 {
                     public void actionPerformed(ActionEvent e)
                     {
-                        if (Desktop.isDesktopSupported()){
                             try {
                                 Desktop.getDesktop().open(
                                         new File(prjdir+File.separator+thiskey));
                             } catch (IOException e1) {
                                 e1.printStackTrace();
                             }
-                        }
                     }
                 }
                 );
