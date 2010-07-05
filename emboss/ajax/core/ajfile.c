@@ -3987,6 +3987,8 @@ void ajFilebuffResetPos(AjPFilebuff buff)
     if(!buff->File->End && (buff->File->fp != stdin))
 	ajFileSeek(buff->File, buff->File->Filepos, SEEK_SET);
 
+    buff->File->Filepos = buff->Fpos;
+
     /*ajFilebuffTraceFull(buff,10,10);*/
 
     return;
