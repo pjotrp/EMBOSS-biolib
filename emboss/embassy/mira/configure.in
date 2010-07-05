@@ -17,6 +17,7 @@ LT_INIT
 AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
+AC_C_INLINE
 
 
 dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)

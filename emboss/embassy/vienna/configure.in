@@ -17,6 +17,7 @@ LT_INIT
 AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
+AC_C_INLINE
 
 dnl Vienna only ... too many of these in the original code
 if test "$GCC" = yes; then
