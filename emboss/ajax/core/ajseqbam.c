@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <errno.h>
-#include <assert.h>
 
 #ifndef WIN32
 #include <sys/file.h>
@@ -1550,7 +1549,6 @@ int ajSeqBamBgzfWrite(AjPSeqBamBgzf fp, const void* data, int length)
 
 int ajSeqBamBgzfClose(AjPSeqBamBgzf fp)
 {
-    int count;
     int block_length;
 
     if(fp->open_mode == 'w')
@@ -1559,7 +1557,7 @@ int ajSeqBamBgzfClose(AjPSeqBamBgzf fp)
             return -1;
 
         block_length = bamDeflateBlock(fp, 0);
-        count = fwrite(fp->compressed_block, 1, block_length, fp->file);
+        fwrite(fp->compressed_block, 1, block_length, fp->file);
 
         if(fflush(fp->file) != 0)
         {
