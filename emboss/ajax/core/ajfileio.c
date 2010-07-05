@@ -169,9 +169,11 @@ AjBool ajReadlinePos(AjPFile file, AjPStr* Pdest, ajlong* Ppos)
     ajint jlen;
     ajint ipos;
     ajuint buffsize;
-    size_t iread;
     const char* pnewline = NULL;
- 
+#ifndef __ppc__
+    size_t iread;
+#endif
+    
     MAJSTRDEL(Pdest);
 
     if(file->Buffsize)
