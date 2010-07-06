@@ -21,6 +21,14 @@ void ensInit(void);
 
 void ensExit(void);
 
+AjBool ensSeqinTrace(const AjPSeqin seqin, ajuint level);
+
+AjBool ensSeqQueryTrace(const AjPSeqQuery seqquery, ajuint level);
+
+AjBool ensSeqDescTrace(const AjPSeqDesc seqdesc, ajuint level);
+
+AjBool ensSeqTrace(const AjPSeq seq, ajuint level);
+
 /*
 ** End of prototype definitions
 */
