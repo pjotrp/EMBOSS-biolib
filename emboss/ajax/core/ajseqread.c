@@ -628,6 +628,7 @@ static AjBool     seqReadClustal(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadCodata(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadDbId(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadEmbl(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadEnsembl(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadExperiment(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadFasta(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadFastq(AjPSeq thys, AjPSeqin seqin);
@@ -963,6 +964,9 @@ static SeqOInFormat seqInFormatDef[] =
   {"bam",         "Binary Sequence Alignment/Map (BAM) format",
        AJFALSE, AJTRUE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, seqReadBam, AJFALSE, AJTRUE},
+  {"ensembl",     "Ensembl SQL format",
+       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+       AJTRUE, AJTRUE, seqReadEnsembl, AJFALSE, AJFALSE},
   {NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, 0, 0}
 };
 
@@ -13791,6 +13795,64 @@ static AjBool seqReadAbi(AjPSeq thys, AjPSeqin seqin)
     ajStrDel(&sample);
 
     return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqReadEnsembl *************************************************
+**
+** Given data in a sequence structure, tries to read everything needed
+** using Ensembl SQL access.
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadEnsembl(AjPSeq thys, AjPSeqin seqin)
+{
+    AjPSeq seq = NULL;
+
+    ajDebug("seqReadEnsembl\n"
+            "  thys %p\n"
+            "  seqin %p\n",
+            thys,
+            seqin);
+
+    /* If the AJAX Sequence Input data member is empty, try one more. */
+
+    if(!seqin->Data)
+        seqin->Query->Access->Access(seqin);
+
+    if(seqin->Data)
+    {
+        seq = (AjPSeq) seqin->Data;
+
+        ajDebug("seqReadEnsembl got sequence %p\n", seq);
+
+        /*
+        ** TODO: It would be good to have an ajSeqAssignSeq function in the
+        ** AJAX core library to assign members of a AjPSeq structure to
+        ** another one.
+        */
+
+        /* For the moment only the name and the sequence need assigning. */
+
+        ajStrAssignS(&thys->Name, seq->Name);
+        ajStrAssignS(&thys->Seq, seq->Seq);
+
+        seqin->Records++;
+
+        ajSeqDel(&seq);
+
+        seqin->Data = NULL;
+
+        return ajTrue;
+    }
+
+    return ajFalse;
 }
 
 
