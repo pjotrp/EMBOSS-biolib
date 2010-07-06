@@ -383,6 +383,8 @@ public class JembossServer
       matrices=matrices.concat(dataFile[i]+"\n");
     showdbOut.add("codons");
     showdbOut.add(matrices);
+    showdbOut.add("doesJembossServerSupportPDFoutput");
+    showdbOut.add(Boolean.toString(jp.getEmbossHavePDF()));
 
     return showdbOut;
   }
