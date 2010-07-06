@@ -27,6 +27,10 @@
 
 #include "ajseqbam.h"
 
+#ifdef WIN32
+#define fileno _fileno
+#endif
+
 static AjPRegexp seqoutRegFmt = NULL;
 static AjPRegexp seqoutRegId  = NULL;
 
