@@ -177,21 +177,11 @@ int main(int argc, char **argv)
 
     large = ajAcdGetBoolean("large");
 
-    /* AJAX SQL test. */
-
-    /*
-    ** TODO: The next two statements need moving into embInit and ensInit,
-    ** respectively.
-    */
-
-    if(!ajSqlInit())
-        ajFatal("main Library initialisation failed.");
-
     ensInit();
 
-    /* Ensembl Registry test. */
+    /* Ensembl Registry Test */
 
-    /* Ensembl */
+    /* Ensembl Vertebrates */
 
     ajStrAssignC(&user, "anonymous");
     ajStrAssignC(&host, "ensembldb.ensembl.org");
@@ -459,12 +449,6 @@ int main(int argc, char **argv)
 
     /* Clean up and exit. */
 
-    /* TODO: The next two statements need moving into the libraries. */
-
-    ensExit();
-
-    ajSqlExit();
-
     ajListFree(&list);
 
     ajFileClose(&outfile);
@@ -535,8 +519,6 @@ int main(int argc, char **argv)
     sleep(30);
 
 #endif
-
-    embExit();
 
     return 0;
 }
