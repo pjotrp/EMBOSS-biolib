@@ -170,7 +170,13 @@ public class JembossParams
   private Vector publicServers;
   private Vector privateServers;
 
-  /** Jemboss java server                   */
+
+  /** Jemboss started using the local option */
+  private static boolean standalone = true;
+  
+  /** Jemboss jemboss.server option was true that makes
+   * jemboss running in client mode unless it was not started
+   * using the local option as the first argument to the program */
   private static boolean jembossServer = false;
   /** property name for Jemboss java server */
   private String jembossServerName = "jemboss.server";
@@ -739,11 +745,16 @@ public class JembossParams
 /**
 *
 *  @return   	true if using a Jemboss server
+*  
+*  startup option 'local' overwrites jemboss.server settings
 *
 */
   public static boolean isJembossServer()
   {
-    return jembossServer;
+      if(standalone)
+          return false;
+      
+      return jembossServer;
   }
 
 /**
@@ -1048,6 +1059,19 @@ public class JembossParams
     serverStatusHash.put(server, new Integer(i));
   }
 
+  
+  /**
+   *
+   * Records whether jemboss was started using the 'local' option
+   * that forces standalone mode.
+   *
+   */
+  static public void setStandaloneMode(boolean local) 
+  {
+      standalone = local;
+  }
+    
+    
 /**
 *
 * Return the username needed for the remote service
