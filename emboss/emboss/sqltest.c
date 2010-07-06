@@ -1,10 +1,9 @@
 /******************************************************************************
 ** @source sqltest application
-** Alphabetically minimises tandem repeat sequences.
-** @author Copyright (C) Michael K. Schuster
-** Department of Medical Biochemistry University Vienna
-** @author Copyright (C) Martin Grabner
-** (martin.grabner@univie.ac.at) EMBnet Austria
+** Test AJAX SQL library routines by connecting to a particular SQL instance
+** and running a "SHOW PROCESSLIST" statement.
+** @author Copyright (C) 2006 Michael K. Schuster
+** EMBL-European Bioinformatics Institute
 ** @version 1.0
 ** @@
 **
@@ -69,9 +68,6 @@ int main(int argc, char **argv)
     statement = ajStrNewC("SHOW PROCESSLIST");
     result = ajStrNew();
     outf = ajAcdGetOutfile("outfile");
-    
-    if(!ajSqlInit())
-	ajFatal("Library initialisation failed.");
     
     sqlc =
 	ajSqlconnectionNewData(client, user, password, host, port, socketf,
