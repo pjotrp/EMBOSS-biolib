@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1009,6 +1009,8 @@ AjBool ensPredictionexonFetchSequenceSeq(EnsPPredictionexon pe,
     name = ajFmtStr("%u", pe->Identifier);
 
     *Psequence = ajSeqNewNameS(sequence, name);
+
+    ajSeqSetNuc(*Psequence);
 
     ajStrDel(&name);
     ajStrDel(&sequence);
@@ -2824,6 +2826,8 @@ AjBool ensPredictiontranscriptFetchSequenceSeq(
 
     *Psequence = ajSeqNewNameS(sequence, pt->DisplayLabel);
 
+    ajSeqSetNuc(*Psequence);
+
     ajStrDel(&sequence);
 
     return ajTrue;
@@ -2952,6 +2956,8 @@ AjBool ensPredictiontranscriptFetchTranslationSequenceSeq(
     ensPredictiontranscriptFetchTranslationSequenceStr(pt, &sequence);
 
     *Psequence = ajSeqNewNameS(sequence, pt->DisplayLabel);
+
+    ajSeqSetProt(*Psequence);
 
     ajStrDel(&sequence);
 

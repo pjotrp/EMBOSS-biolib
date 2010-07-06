@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.16 $
+** @version $Revision: 1.17 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -1942,6 +1942,8 @@ AjBool ensExonFetchSequenceSeq(EnsPExon exon, AjPSeq* Psequence)
     ensExonFetchDisplayIdentifier(exon, &name);
 
     *Psequence = ajSeqNewNameS(sequence, name);
+
+    ajSeqSetNuc(*Psequence);
 
     ajStrDel(&name);
     ajStrDel(&sequence);
