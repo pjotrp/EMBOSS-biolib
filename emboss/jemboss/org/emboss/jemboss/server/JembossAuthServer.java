@@ -453,8 +453,11 @@ public class JembossAuthServer
     {
       public boolean accept(File dir, String name)
       {
-        File fileName = new File(dir, name);
-        return !fileName.isDirectory();
+          if (name.startsWith("EPAM") || name.startsWith("EBLOSUM") ||
+                  name.startsWith("EDNA"))
+              return true;
+          
+          return false;
       };
     });
     StringBuffer matrices = new StringBuffer();
@@ -478,6 +481,9 @@ public class JembossAuthServer
       matrices.append(dataFile[i]+"\n");
     showdbOut.add("codons");
     showdbOut.add(matrices.toString());
+    
+    showdbOut.add("doesJembossServerSupportPDFoutput");
+    showdbOut.add(Boolean.toString(jp.getEmbossHavePDF()));
 
     return showdbOut;
   }
