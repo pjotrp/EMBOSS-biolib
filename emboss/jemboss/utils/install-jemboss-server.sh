@@ -393,7 +393,6 @@ make_jemboss_properties()
    echo "service.private=JembossServer" >> $JEMBOSS_PROPERTIES
   fi
 
-#  echo "plplot=$EMBOSS_INSTALL/share/EMBOSS/" >> $JEMBOSS_PROPERTIES
   echo "embossData=$EMBOSS_INSTALL/share/EMBOSS/data/" >> $JEMBOSS_PROPERTIES
   echo "embossBin=$EMBOSS_INSTALL/bin/" >> $JEMBOSS_PROPERTIES
   echo "embossPath=$EMBOSSPATH" >> $JEMBOSS_PROPERTIES
@@ -404,6 +403,9 @@ make_jemboss_properties()
 #                                                    >> $JEMBOSS_PROPERTIES
   echo "acdDirToParse=$EMBOSS_INSTALL/share/EMBOSS/acd/" >> $JEMBOSS_PROPERTIES
   echo "embossURL=$EMBOSS_URL" >> $JEMBOSS_PROPERTIES
+  
+  grep embossHavePDF $JEMBOSS_PROPERTIES.orig >> $JEMBOSS_PROPERTIES
+
   cp $JEMBOSS_PROPERTIES $JEMBOSS_PROPERTIES.bak
 
   echo
