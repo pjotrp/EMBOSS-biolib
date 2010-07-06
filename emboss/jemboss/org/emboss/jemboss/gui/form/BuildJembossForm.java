@@ -381,8 +381,8 @@ public class BuildJembossForm implements ActionListener
       else
         Jemboss.resultsManager.updateMode("interactive");
 
-
-      if (mysettings.getEmbossHavePDF())
+      if((withSoap && BuildProgramMenu.serverSupportsPDF) ||
+              (!withSoap && mysettings.getEmbossHavePDF()))
           graphics = new JComboBox( new String[]{ "PNG","PDF","SVG",
           "Jemboss Graphics"} );
       else

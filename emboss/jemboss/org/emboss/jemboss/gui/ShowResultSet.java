@@ -27,6 +27,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -125,7 +126,10 @@ public class ShowResultSet extends JFrame
 
     JScrollPane r1;
     
-    String prjdir = mysettings.getResultsHome()+project;
+    String prjdir = null;
+    
+    if(project!=null)
+        prjdir = mysettings.getResultsHome()+project;
 
     String stabs[] = addHashContentsToTab(reslist,rtp,prjdir,mysettings);
     if(inputFiles != null)
@@ -257,7 +261,7 @@ public class ShowResultSet extends JFrame
   * @return	array of names of PNG tabs
   *
   */
-  private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp,
+  private String[] addHashContentsToTab(final Hashtable h,JTabbedPane rtp,
           final String prjdir, JembossParams settings)
   {
     JScrollPane r1;
@@ -301,19 +305,59 @@ public class ShowResultSet extends JFrame
                 {
                     public void actionPerformed(ActionEvent e)
                     {
-                            try {
-                                Desktop.getDesktop().open(
-                                        new File(prjdir+File.separator+thiskey));
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
+                        String fname;
+
+                        if (prjdir!=null)
+                            fname =  prjdir+File.separator+thiskey;
+                        else
+                        {
+                            fname =  thiskey;
+                            if (JembossParams.isJembossServer())
+                            {
+                                File tmpf;
+                                FileOutputStream out;
+                                byte[] a;
+
+                                try {
+                                    tmpf = File.createTempFile("jemboss_",
+                                            fname);
+                                    out = new FileOutputStream(tmpf);
+
+                                    if(h.get(thiskey) instanceof byte[])
+                                        a = (byte[])h.get(thiskey);
+                                    else
+                                        a = ((String)h.get(thiskey)).getBytes();
+
+                                    out.write(a);
+                                    out.close();
+                                    tmpf.deleteOnExit();
+                                    fname = tmpf.getAbsolutePath();
+                                } catch (IOException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                }
+
                             }
+                        }
+
+                        try {
+                            Desktop.getDesktop().open(new File(fname));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                 }
                 );
                 box.add(bt);
             }
             
-            JTextArea ta = new JTextArea((String)h.get(thiskey));
+            JTextArea ta;
+            
+            if(h.get(thiskey) instanceof byte[])
+                ta = new JTextArea(new String((byte[])h.get(thiskey)));
+            else
+                ta = new JTextArea((String)h.get(thiskey));
+            
             ta.setEditable(false);
             r1 = new JScrollPane(ta);
 

@@ -60,6 +60,8 @@ public class BuildProgramMenu
   private int currentApp = -1;
   /** favorite menu */
   private Favorites favorites;
+  /** indicates whether connected jemboss server (if any) have PDF support */
+  static public boolean serverSupportsPDF;
 
   /**
   *
@@ -226,6 +228,7 @@ public class BuildProgramMenu
 
         				  matrices = showdb.getMatrices();
         				  codons = showdb.getCodonUsage();
+        				  serverSupportsPDF = showdb.serverSupportsPDF();
         			  } catch (JembossSoapException ex) {
         				  updateConnectionSettings(ex);
         				  continue;
