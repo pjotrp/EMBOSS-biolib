@@ -73,6 +73,9 @@ AjBool ensRegistryAddDatabaseadaptor(EnsPDatabaseadaptor dba);
 AjBool ensRegistryAddReferenceadaptor(EnsPDatabaseadaptor dba,
                                       EnsPDatabaseadaptor rsa);
 
+AjBool ensRegistryAddStableidentifierprefix(EnsPDatabaseadaptor dba,
+                                            const AjPStr prefix);
+
 EnsPDatabaseadaptor ensRegistryNewDatabaseadaptor(
     EnsPDatabaseconnection dbc,
     AjPStr database,
@@ -95,6 +98,8 @@ AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba);
 AjBool ensRegistryGetAllDatabaseadaptors(EnsEDatabaseadaptorGroup group,
                                          const AjPStr alias,
                                          AjPList dbas);
+
+AjPStr ensRegistryGetStableidentifierprefix(EnsPDatabaseadaptor dba);
 
 AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc);
 
