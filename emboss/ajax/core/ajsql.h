@@ -286,6 +286,8 @@ AjBool ajSqlcolumnToUint(AjPSqlrow sqlr, ajuint *Pvalue);
 
 AjBool ajSqlcolumnToLong(AjPSqlrow sqlr, ajlong *Pvalue);
 
+AjBool ajSqlcolumnToUlong(AjPSqlrow sqlr, ajulong *Pvalue);
+
 AjBool ajSqlcolumnToFloat(AjPSqlrow sqlr, float *Pvalue);
 
 AjBool ajSqlcolumnToDouble( AjPSqlrow sqlr, double *Pvalue);
@@ -324,6 +326,9 @@ AjBool ajSqlcolumnNumberToBool(const AjPSqlrow sqlr, ajuint column,
 
 AjBool ajSqlcolumnNumberToTime(const AjPSqlrow sqlr, ajuint column,
                                AjPTime *Pvalue);
+
+AjBool ajSqlcolumnNumberToUlong(const AjPSqlrow sqlr, ajuint column,
+                                ajulong *Pvalue);
 
 AjBool ajSqlcolumnNumberIsDefined(const AjPSqlrow sqlr, ajuint column);
 
