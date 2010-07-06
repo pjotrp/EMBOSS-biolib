@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.19 $
+** @version $Revision: 1.20 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision: 1.165
@@ -1123,6 +1123,9 @@ void ensRegistryClear(void)
     void **valarray = NULL;
 
     register ajuint i = 0;
+    
+    if(!registryEntries)
+        return;
 
     ajTableToarrayKeysValues(registryEntries, &keyarray, &valarray);
 
@@ -1158,20 +1161,27 @@ void ensRegistryExit(void)
 
     /* Free the AJAX Table of aliases. */
 
+    if(registryAliases)
     ajTablestrFree(&registryAliases);
 
     /* Clear and free the AJAX Table of Registry Entries. */
 
-    ensRegistryClear();
+    if(registryEntries)
+    {
+        ensRegistryClear();
 
-    ajTableFree(&registryEntries);
+        ajTableFree(&registryEntries);
+    }
 
     /* Clear and free the AJAX List of Registry Identifiers. */
 
-    while(ajListPop(registryIdentifiers, (void **) &ri))
-        registryIdentifierDel(&ri);
+    if(registryIdentifiers)
+    {
+        while(ajListPop(registryIdentifiers, (void **) &ri))
+            registryIdentifierDel(&ri);
 
-    ajListFree(&registryIdentifiers);
+        ajListFree(&registryIdentifiers);
+    }
 
     return;
 }
