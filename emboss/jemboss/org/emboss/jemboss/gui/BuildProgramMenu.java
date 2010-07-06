@@ -404,7 +404,8 @@ public class BuildProgramMenu
         alphaTextPane.add(Box.createRigidArea(new Dimension(5,0)));
 
         final JTextField alphaTextPaneEntry = new JTextField(12);
-        alphaTextPaneEntry.setMaximumSize(new Dimension(100,20));
+        alphaTextPaneEntry.setMaximumSize(new Dimension(100,30));
+        
         //scroll program list on typing 
         alphaTextPaneEntry.getDocument().addDocumentListener(new DocumentListener()
         {
@@ -472,7 +473,10 @@ public class BuildProgramMenu
           }
         };
         progList.addMouseListener(mouseListener);
-        progList.addKeyListener(new ProgListSelectionListener());        
+        progList.addKeyListener(new ProgListSelectionListener());
+        
+        alphaTextPane.requestFocusInWindow();
+
         return progList;
       }
 
