@@ -29,6 +29,7 @@
 #include "ajax.h"
 #include "ajseqdb.h"
 #include "ajmart.h"
+#include "ensembl.h"
 
 #include <limits.h>
 #include <stdarg.h>
@@ -437,6 +438,7 @@ static AjBool     seqAccessDirect(AjPSeqin seqin);
 static AjBool     seqAccessEmblcd(AjPSeqin seqin);
 static AjBool     seqAccessEmboss(AjPSeqin seqin);
 static AjBool     seqAccessEmbossGcg(AjPSeqin seqin);
+static AjBool     seqAccessEnsembl(AjPSeqin seqin);
 static AjBool     seqAccessEntrez(AjPSeqin seqin);
 static AjBool     seqAccessFreeEmblcd(void* qry);
 static AjBool     seqAccessFreeEmboss(void* qry);
@@ -631,6 +633,10 @@ static AjOSeqAccess seqAccess[] =
     {"sql",	 seqAccessSql, NULL,
      "retrieve from a SQL server",
      AJFALSE, AJTRUE,  AJTRUE,  AJTRUE, AJFALSE
+    },
+    {"ensembl",  seqAccessEnsembl, NULL,
+     "retrieve a single entry from an Ensembl Database server",
+     AJFALSE, AJTRUE, AJFALSE, AJFALSE, AJFALSE
     },
     {NULL, NULL, NULL, NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJFALSE},
 
@@ -7358,8 +7364,6 @@ static AjBool seqAccessSql(AjPSeqin seqin)
         ajStrAssignS(&password,uo->Password);
     }
     
-    ajSqlInit();
-    
     connection = ajSqlconnectionNewData(client,uo->Username,password,
                                         uo->Host,uo->Port,socketfile,
                                         uo->Absolute);
@@ -7433,8 +7437,6 @@ static AjBool seqAccessSql(AjPSeqin seqin)
     if(!qry->CaseId)
 	qry->QryDone = ajTrue;
     
-    ajSqlExit();
-
     ajSqlrowiterDel(&iter);
     ajSqlstatementDel(&statement);
     ajSqlconnectionDel(&connection);
@@ -8004,6 +8006,635 @@ static FILE* seqHttpSend(const AjPSeqQuery qry,
     }
 
     return fp;
+}
+
+
+
+
+/* @section SQL Database Access ***********************************************
+**
+** These functions manage the SQL database access methods.
+**
+******************************************************************************/
+
+
+
+
+/* @datastatic SeqPEnsembl ****************************************************
+**
+** Ensembl record structure
+**
+** @alias SeqSEnsembl
+** @alias SeqOEnsembl
+**
+** @attr StableIdentifiers [AjPList] AJAX List of stable identifier
+**                                   AJAX Strings
+** @attr Database [AjPStr] The database name parsed from the USA
+** @attr Alias [AjPStr] Species alias parsed from the USA
+** @attr Identifier [AjPStr] Ensembl stable identifier
+** @attr Species [const AjPStr] Species resolved from an alias
+** @attr ObjectType [AjPStr] The Ensembl object type as encoded by stable
+**                           the stable identifier schema:
+**                             E: Exon
+**                             G: Gene
+**                             P: Translation
+**                             T: Transcript
+** @attr Sequence [AjPSeq] AJAX Sequence object to pass into seqReadEnsembl
+** @@
+******************************************************************************/
+
+typedef struct SeqSEnsembl
+{
+    AjPList StableIdentifiers;
+    AjPStr Database;
+    AjPStr Alias;
+    AjPStr Identifier;
+    const AjPStr Species;
+    AjPStr ObjectType;
+    AjPSeq Sequence;
+    EnsPDatabaseadaptor DatabaseAdaptor;
+} SeqOEnsembl;
+
+#define SeqPEnsembl SeqOEnsembl*
+
+
+
+
+/* @funcstatic seqAccessEnsembl ***********************************************
+**
+** Reads sequence(s) using an Ensembl SQL database.
+**
+** Ensembl is accessed via SQL client server code.
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessEnsembl(AjPSeqin seqin)
+{
+    AjBool failure = AJFALSE;
+
+    AjPList dbas        = NULL;
+    AjPList identifiers = NULL;
+
+    AjPRegexp rp = NULL;
+
+    AjPSeq seq = NULL;
+
+    AjPSeqQuery qry = NULL;
+
+    AjPStr urlstr     = NULL;
+    AjPStr prefix     = NULL;
+    AjPStr expression = NULL;
+    AjPStr identifier = NULL;
+
+    AjPStrTok token = NULL;
+
+    EnsPDatabaseconnection dbc = NULL;
+
+    EnsPDatabaseadaptor dba = NULL;
+
+    EnsPExon exon      = NULL;
+    EnsPExonadaptor ea = NULL;
+
+    EnsPTranscript transcript = NULL;
+    EnsPTranscriptadaptor tca = NULL;
+
+    EnsPTranslation translation = NULL;
+    EnsPTranslationadaptor tla  = NULL;
+
+    SeqPEnsembl se = NULL;
+
+    if(!seqin)
+        return ajFalse;
+
+    ajDebug("seqAccessEnsembl\n"
+            "  seqin %p\n",
+            seqin);
+
+    ensSeqinTrace(seqin, 1);
+
+    /* The seqRead function seems to insist on a file buffer. */
+
+    ajFilebuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFilebuffNewNofile();
+
+    qry = seqin->Query;
+
+    /*
+    ** If an Ensembl-specific set has not been set, this is the first query.
+    ** This information would also be available from the QryDone member of
+    ** the AJAX Sequence Input structure.
+    */
+
+    if(!qry->QryData)
+    {
+        ensInit();
+
+        AJNEW0(se);
+
+        se->StableIdentifiers = ajListstrNew();
+
+        se->Database   = ajStrNew();
+        se->Alias      = ajStrNew();
+        se->Identifier = ajStrNew();
+        se->Species    = (AjPStr) NULL;
+        se->ObjectType = ajStrNew();
+
+        se->DatabaseAdaptor = (EnsPDatabaseadaptor) NULL;
+
+        qry->QryData = (void *) se;
+
+        /*
+        ** Establish an Ensembl Database Connection from the URL associated
+        ** with the EMBOSS Sequence Database definition.
+        */
+
+        urlstr = ajStrNew();
+
+        if(!ajNamDbGetUrl(qry->DbName, &urlstr))
+        {
+            ajErr("seqAccessEnsembl could not get a URL for "
+                  "Ensembl database '%S'.", qry->DbName);
+
+            ajStrDel(&urlstr);
+
+            return ajFalse;
+        }
+
+        ajDebug("seqAccessEnsembl got URL '%S'.\n", urlstr);
+
+        dbc = ensDatabaseconnectionNewUrl(urlstr);
+
+        ajStrDel(&urlstr);
+
+        /* Load the Ensembl Registry from the Ensembl Database Connection. */
+
+        ensRegistryLoadFromServer(dbc);
+
+        ensDatabaseconnectionDel(&dbc);
+
+        /* Parse the USA into database:alias:identifier tokens. */
+
+        token = ajStrTokenNewC(seqin->Usa, ":");
+
+        if(ajStrTokenNextParseNoskip(&token, &se->Database) &&
+           ajStrTokenNextParseNoskip(&token, &se->Alias) &&
+           ajStrTokenNextParseNoskip(&token, &se->Identifier))
+        {
+            ajDebug("seqAccessEnsembl parsed the USA '%S' into:\n"
+                    "  database '%S'\n"
+                    "  alias '%S'\n"
+                    "  identifier '%S'\n",
+                    seqin->Usa,
+                    se->Database,
+                    se->Alias,
+                    se->Identifier);
+
+            /* Check that both database strings do match. */
+
+            if(!ajStrMatchS(se->Database, qry->DbName))
+            {
+                ajWarn("seqAccessEnsembl parsed database string '%S', which "
+                       "does not match the AJAX Sequence Query database name "
+                       "'%S'.", se->Database, qry->DbName);
+
+                failure = ajTrue;
+            }
+
+            /* Resolve the alias into a valid species name. */
+
+            se->Species = ensRegistryGetSpecies(se->Alias);
+
+            if(!se->Species)
+            {
+                ajWarn("seqAccessEnsembl could not resolve alias string '%S' "
+                       "into a valid species name.", se->Alias);
+
+                failure = ajTrue;
+            }
+
+            /*
+            ** Override the Identifier and Accession number of the
+            ** AJAX Sequence Query object to remove the species alias.
+            ** The AJAX seqread module checks the returned sequences based on
+            ** Identifier and Accession members.
+            */
+
+            ajStrAssignS(&qry->Id,  se->Identifier);
+            ajStrAssignS(&qry->Acc, se->Identifier);
+        }
+        else
+        {
+            ajWarn("seqAccessEnsembl could not parse USA '%S' into "
+                   "database:alias:identifier tokens.",
+                   seqin->Usa);
+
+            failure = ajTrue;
+        }
+
+        ajStrTokenDel(&token);
+
+        if(failure)
+            return ajFalse;
+
+        /* Find out which Ensembl Database Adaptor group to use. */
+
+        dbas = ajListNew();
+
+        ensRegistryGetAllDatabaseadaptors(ensEDatabaseadaptorGroupNULL,
+                                          se->Species,
+                                          dbas);
+
+        while(ajListPop(dbas, (void **) &dba))
+        {
+            /* Only match the identifier against Core-style databases. */
+
+            /*
+              ajDebug("seqAccessEnsembl got Ensembl Database Adaptor "
+              "of group %d.\n",
+              ensDatabaseadaptorGetGroup(dba));
+            */
+
+            switch(ensDatabaseadaptorGetGroup(dba))
+            {
+                case ensEDatabaseadaptorGroupCore:
+
+                    prefix = ensRegistryGetStableidentifierprefix(dba);
+
+                    /* "^%S([EGTP])[0-9]{11,11}" */
+
+                    expression = ajFmtStr("^%S([EGTP])", prefix);
+
+                    break;
+
+                case ensEDatabaseadaptorGroupVega:
+
+                    prefix = ensRegistryGetStableidentifierprefix(dba);
+
+                    /* "^OTT...([EGTP])[0-9]{11,11}" */
+
+                    expression = ajStrNewC("^OTT...([EGTP])");
+
+                    break;
+
+                case ensEDatabaseadaptorGroupOtherFeatures:
+
+                    prefix = ensRegistryGetStableidentifierprefix(dba);
+
+                    /* "^%SEST([EGTP])[0-9]{11,11}" */
+
+                    expression = ajFmtStr("^%SEST([EGTP])", prefix);
+
+                    break;
+
+                case ensEDatabaseadaptorGroupCopyDNA:
+
+                    break;
+
+                default:
+
+                    continue;
+            }
+
+            if(!expression)
+                continue;
+
+            ajDebug("seqAccessEnsembl will test expression '%S' against "
+                    "identifier '%S'.\n", expression, se->Identifier);
+
+            rp = ajRegCompC(ajStrGetPtr(expression));
+
+            if(ajRegExec(rp, se->Identifier))
+            {
+                ajRegSubI(rp, 1, &se->ObjectType);
+
+                ajDebug("seqAccessEnsembl concluded object type '%S' from "
+                        "identifier '%S'.\n", se->ObjectType, se->Identifier);
+
+                se->DatabaseAdaptor = dba;
+            }
+
+            ajRegFree(&rp);
+
+            ajStrDel(&expression);
+        }
+
+        ajListFree(&dbas);
+
+        /* Query the Ensembl database based on the Ensembl Object type. */
+
+        if(ajStrMatchC(se->ObjectType, "E"))
+        {
+            /* This is a stable Ensembl Exon identifier. */
+
+            ea = ensRegistryGetExonadaptor(se->DatabaseAdaptor);
+
+            switch(qry->Type)
+            {
+                case QRY_ENTRY:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'entry'.\n");
+
+                    ajListPushAppend(se->StableIdentifiers,
+                                     ajStrNewS(se->Identifier));
+
+                    break;
+
+                case QRY_QUERY:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'query'.\n");
+
+                    identifiers = ajListNew();
+
+                    ensExonadaptorFetchAllStableIdentifiers(ea,
+                                                            identifiers);
+
+                    while(ajListPop(identifiers, (void **) &identifier))
+                    {
+                        if(ajStrMatchWildS(identifier, se->Identifier))
+                            ajListPushAppend(se->StableIdentifiers,
+                                             (void *) identifier);
+                        else
+                            ajStrDel(&identifier);
+                    }
+
+                    ajListFree(&identifiers);
+
+                    break;
+
+                case QRY_ALL:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'all'.\n");
+
+                    ensExonadaptorFetchAllStableIdentifiers(
+                        ea,
+                        se->StableIdentifiers);
+
+                    break;
+
+                default:
+
+                    ajDebug("seqAccessEnsembl got an unexpected "
+                            "AJAX Sequence Query type %d.\n",
+                            qry->Type);
+            }
+        }
+
+        if(ajStrMatchC(se->ObjectType, "G"))
+        {
+            /* This is a gene identifier. */
+
+        }
+
+        if(ajStrMatchC(se->ObjectType, "T"))
+        {
+            /* This is a stable Ensembl Transcript identifier. */
+
+            tca = ensRegistryGetTranscriptadaptor(se->DatabaseAdaptor);
+
+            switch(qry->Type)
+            {
+                case QRY_ENTRY:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'entry'.\n");
+
+                    ajListPushAppend(se->StableIdentifiers,
+                                     ajStrNewS(se->Identifier));
+
+                    break;
+
+                case QRY_QUERY:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'query'.\n");
+
+                    identifiers = ajListNew();
+
+                    ensTranscriptadaptorFetchAllStableIdentifiers(tca,
+                                                                  identifiers);
+
+                    while(ajListPop(identifiers, (void **) &identifier))
+                    {
+                        if(ajStrMatchWildS(identifier, se->Identifier))
+                            ajListPushAppend(se->StableIdentifiers,
+                                             (void *) identifier);
+                        else
+                            ajStrDel(&identifier);
+                    }
+
+                    ajListFree(&identifiers);
+
+                    break;
+
+                case QRY_ALL:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'all'.\n");
+
+                    ensTranscriptadaptorFetchAllStableIdentifiers(
+                        tca,
+                        se->StableIdentifiers);
+
+                    break;
+
+                default:
+
+                    ajDebug("seqAccessEnsembl got an unexpected "
+                            "AJAX Sequence Query type %d.\n",
+                            qry->Type);
+            }
+        }
+
+        if(ajStrMatchC(se->ObjectType, "P"))
+        {
+            /* This is a translation identifier. */
+
+            tla = ensRegistryGetTranslationadaptor(se->DatabaseAdaptor);
+
+            switch(qry->Type)
+            {
+                case QRY_ENTRY:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'entry'.\n");
+
+                    ajListPushAppend(se->StableIdentifiers,
+                                     ajStrNewS(se->Identifier));
+
+                    break;
+
+                case QRY_QUERY:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'query'.\n");
+
+                    identifiers = ajListNew();
+
+                    ensTranslationadaptorFetchAllStableIdentifiers(tla,
+                                                                   identifiers);
+
+                    while(ajListPop(identifiers, (void **) &identifier))
+                    {
+                        if(ajStrMatchWildS(identifier, se->Identifier))
+                            ajListPushAppend(se->StableIdentifiers,
+                                             (void *) identifier);
+                        else
+                            ajStrDel(&identifier);
+                    }
+
+                    ajListFree(&identifiers);
+
+                    break;
+
+                case QRY_ALL:
+
+                    ajDebug("seqAccessEnsembl got Sequence Query type "
+                            "'all'.\n");
+
+                    ensTranslationadaptorFetchAllStableIdentifiers(
+                        tla,
+                        se->StableIdentifiers);
+
+                    break;
+
+                default:
+
+                    ajDebug("seqAccessEnsembl got an unexpected "
+                            "AJAX Sequence Query type %d.\n",
+                            qry->Type);
+            }
+        }
+
+        /* The query has finished at this stage. */
+
+        qry->TotalEntries = ajListGetLength(se->StableIdentifiers);
+
+        qry->QryDone = ajTrue;
+
+        ajDebug("seqAccessEnsembl finished the query stage with %u %s.\n",
+                qry->TotalEntries,
+                (qry->TotalEntries == 1) ? "entry" : "entries");
+    }
+
+    se = (SeqPEnsembl) qry->QryData;
+
+    /* Finish if no more stable identifiers are on the AJAX List. */
+
+    if(!ajListGetLength(se->StableIdentifiers))
+    {
+        ajListFree(&se->StableIdentifiers);
+
+        ajStrDel(&se->Database);
+        ajStrDel(&se->Alias);
+        ajStrDel(&se->Identifier);
+        ajStrDel(&se->ObjectType);
+
+        AJFREE(se);
+
+        qry->QryData = NULL;
+
+        return ajFalse;
+    }
+
+    /*
+    ** Retrieve individual sequences from the AJAX List of
+    ** stable Ensembl identifiers.
+    */
+
+    ajDebug("seqAccessEnsembl retrieval stage for object type '%S'.\n",
+            se->ObjectType);
+
+    if(ajStrMatchC(se->ObjectType, "E"))
+    {
+        /* This is a stable Ensembl Exon identifier. */
+
+        ea = ensRegistryGetExonadaptor(se->DatabaseAdaptor);
+
+        ajListPop(se->StableIdentifiers, (void **) &identifier);
+
+        if(identifier)
+            ensExonadaptorFetchByStableIdentifier(
+                ea,
+                identifier,
+                0,
+                &exon);
+
+        if(exon)
+        {
+            ensExonFetchSequenceSeq(exon, &seq);
+
+            ensExonDel(&exon);
+        }
+    }
+
+    if(ajStrMatchC(se->ObjectType, "P"))
+    {
+        /* This is a stable Ensembl Translation identifier. */
+
+        tla = ensRegistryGetTranslationadaptor(se->DatabaseAdaptor);
+
+        ajListPop(se->StableIdentifiers, (void **) &identifier);
+
+        if(identifier)
+            ensTranslationadaptorFetchByStableIdentifier(
+                tla,
+                identifier,
+                0,
+                &translation);
+
+        if(translation)
+        {
+            ensTranslationFetchSequenceSeq(translation, &seq);
+
+            ensTranslationDel(&translation);
+        }
+    }
+
+    if(ajStrMatchC(se->ObjectType, "T"))
+    {
+        /* This is a stable Ensembl Transcript identifier. */
+
+        tca = ensRegistryGetTranscriptadaptor(se->DatabaseAdaptor);
+
+        ajListPop(se->StableIdentifiers, (void **) &identifier);
+
+        if(identifier)
+            ensTranscriptadaptorFetchByStableIdentifier(
+                tca,
+                identifier,
+                0,
+                &transcript);
+
+        if(transcript)
+        {
+            ensTranscriptFetchSequenceSeq(transcript, &seq);
+
+            ensTranscriptDel(&transcript);
+        }
+    }
+
+    if(seq)
+    {
+        /*
+        ** Use the Data member of the AJAX Sequence Input structure
+        ** to pass the AJAX Sequence object into the AJAX
+        ** Sequence Reading module.
+        */
+
+        if(seqin->Data)
+            ajSeqDel((AjPSeq *) &seqin->Data);
+
+        seqin->Data = (void *) seq;
+        seqin->Count++;
+    }
+
+    return ajTrue;
 }
 
 
@@ -9070,6 +9701,8 @@ void ajSeqDbExit(void)
 
     table = ajSeqtableGetDb();
     ajCallTableDel(&table);
+
+    ensExit();
 
     return;
 }
