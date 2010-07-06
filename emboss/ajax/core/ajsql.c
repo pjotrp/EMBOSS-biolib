@@ -960,9 +960,12 @@ AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
             */
 
             /*
-            ** FIXME: Type mismatch, since MySQL uses unsigned long.
-            ** It is necessary to test, whether the maximum unsigned integer
-            ** value (UINT_MAX) has been exceeded.
+            ** FIXME: Type mismatch between ajuint and ajulong.
+            ** Since MySQL mysql_real_escape_string function uses the
+            ** unsigned long data type, it is necessary to test, whether the
+            ** maximum unsigned integer value (UINT_MAX) has been exceeded.
+            ** This can only be resolved by changing ajStr functions to
+            ** use ajulong.
             */
 
             length = ajStrGetLen(str);
@@ -996,9 +999,12 @@ AjBool ajSqlconnectionEscapeC(const AjPSqlconnection sqlc,
             */
 
             /*
-            ** FIXME: Type mismatch, since PostgeSQL uses size_t.
-            ** It is necessary to test, whether the maximum unsigned integer
+            ** FIXME: Type mismatch between ajuint and size_t.
+            ** Since the PostgeSQL PQescapeStringConn function uses size_t,
+            ** it is necessary to test, whether the maximum unsigned integer
             ** value (UINT_MAX) has been exceeded.
+            ** This can only be resolved by changing ajStr functions to
+            ** use ajulong.
             */
 
             length = ajStrGetLen(str);
@@ -1554,9 +1560,7 @@ static AjPSqlstatement sqlstatementPostgresqlNewRun(AjPSqlconnection sqlc,
 
                 sqls->Presult = (void *) Ppgresult;
 
-                /* FIXME: An ajStrToUlong function is missing from AJAX. */
-
-                if(!ajStrToLong(affected, (ajlong *) &sqls->AffectedRows))
+                if(!ajStrToUlong(affected, &sqls->AffectedRows))
                     ajWarn("sqlstatementPostgresqlNewRun could not parse "
                            "'%S' into an AJAX unsigned long integer.",
                            affected);
@@ -2838,26 +2842,26 @@ AjBool ajSqlcolumnGetValue( AjPSqlrow sqlr,
 ** @fnote None
 **
 ** @nam3rule To Convert to another type
-** @nam4rule ToStr Convert to AJAX String
-** @nam4rule ToInt Convert to AJAX Signed Integer
-** @nam4rule ToUint Convert ot AJAX Unsigned Integer
-** @nam4rule ToLong Convert to AJAX Signed Long Integer
-** @nam4rule ToUlong Convert to AJAX Unsigned Long Integer
-** @nam4rule ToFloat Convert to C-type float
-** @nam4rule ToDouble Convert to C-type double
 ** @nam4rule ToBool Convert to AJAX Boolean
+** @nam4rule ToDouble Convert to C-type double
+** @nam4rule ToFloat Convert to C-type float
+** @nam4rule ToInt Convert to AJAX Signed Integer
+** @nam4rule ToLong Convert to AJAX Signed Long Integer
+** @nam4rule ToStr Convert to AJAX String
 ** @nam4rule ToTime Conver to AJAX Time
+** @nam4rule ToUint Convert ot AJAX Unsigned Integer
+** @nam4rule ToUlong Convert to AJAX Unsigned Long Integer
 **
 ** @argrule * sqlr [AjPSqlrow] SQL Row
-** @argrule ToStr Pvalue [AjPStr*] AJAX String address
-** @argrule ToInt Pvalue [ajint*] AJAX Signed Integer address
-** @argrule ToUint Pvalue [ajuint*] AJAX Unsigned Integer address
-** @argrule ToLong Pvalue [ajlong*] AJAX Signed Long Integer address
-** @argrule ToUlong Pvalue [ajulong*] AJAX Unsigned Long Integer address
-** @argrule ToFloat Pvalue [float*] C-type float address
-** @argrule ToDouble Pvalue [double*] C-type double address
 ** @argrule ToBool Pvalue [AjBool*] AJAX Bool address
+** @argrule ToDouble Pvalue [double*] C-type double address
+** @argrule ToFloat Pvalue [float*] C-type float address
+** @argrule ToInt Pvalue [ajint*] AJAX Signed Integer address
+** @argrule ToLong Pvalue [ajlong*] AJAX Signed Long Integer address
+** @argrule ToStr Pvalue [AjPStr*] AJAX String address
 ** @argrule ToTime Pvalue [AjPTime*] AJAX Time address
+** @argrule ToUint Pvalue [ajuint*] AJAX Unsigned Integer address
+** @argrule ToUlong Pvalue [ajulong*] AJAX Unsigned Long Integer address
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -3083,14 +3087,6 @@ AjBool ajSqlcolumnToLong(AjPSqlrow sqlr, ajlong *Pvalue)
 
 
 
-/*
-** TODO: ajSqlcolumnToUlong is missing but there is also no ajStrToUlong
-** function in the AJAX library.
-*/
-
-
-
-
 /* @func ajSqlcolumnToStr *****************************************************
 **
 ** Converts the value of the next column of an AJAX SQL Row into an
@@ -3226,6 +3222,48 @@ AjBool ajSqlcolumnToUint(AjPSqlrow sqlr, ajuint *Pvalue)
 
 
 
+/* @func ajSqlcolumnToUlong ***************************************************
+**
+** Converts the value in the next column of an AJAX SQL Row into an
+** AJAX Unsigned Long Integer value.
+**
+** @param [u] sqlr [AjPSqlrow] AJAX SQL Row
+** @param [w] Pvalue [ajulong*] AJAX Unsigned Long Integer address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnToUlong(AjPSqlrow sqlr, ajulong *Pvalue)
+{
+    AjBool bool = ajFalse;
+
+    AjPStr str = NULL;
+
+    if(!sqlr)
+        return ajFalse;
+
+    if(!Pvalue)
+        return ajFalse;
+
+    if(sqlr->Current >= sqlr->Columns)
+        return ajFalse;
+
+    str = ajStrNew();
+
+    bool = ajSqlcolumnToStr(sqlr, &str);
+
+    if(bool)
+        ajStrToUlong(str, Pvalue);
+
+    ajStrDel(&str);
+
+    return bool;
+}
+
+
+
+
 /* @section column retrieval **************************************************
 **
 ** @fdata [AjPSqlrow]
@@ -3297,27 +3335,27 @@ AjBool ajSqlcolumnNumberGetValue(const AjPSqlrow sqlr,
 **
 ** @nam3rule Number Convert a particular column to a differnt datatype
 ** @nam4rule To Convert to another type
-** @nam5rule ToStr Convert to AJAX String
-** @nam5rule ToInt Convert to AJAX Signed Integer
-** @nam5rule ToUint Convert ot AJAX Unsigned Integer
-** @nam5rule ToLong Convert to AJAX Signed Long Integer
-** @nam5rule ToUlong Convert to AJAX Unsigned Long Integer
-** @nam5rule ToFloat Convert to C-type float
-** @nam5rule ToDouble Convert to C-type double
 ** @nam5rule ToBool Convert to AJAX Boolean
+** @nam5rule ToDouble Convert to C-type double
+** @nam5rule ToFloat Convert to C-type float
+** @nam5rule ToInt Convert to AJAX Signed Integer
+** @nam5rule ToLong Convert to AJAX Signed Long Integer
+** @nam5rule ToStr Convert to AJAX String
 ** @nam5rule ToTime Conver to AJAX Time
+** @nam5rule ToUint Convert ot AJAX Unsigned Integer
+** @nam5rule ToUlong Convert to AJAX Unsigned Long Integer
 **
 ** @argrule * sqlr [const AjPSqlrow] SQL Row
 ** @argrule * column [ajuint] Column number
-** @argrule ToStr     Pvalue [AjPStr*] AJAX String address
-** @argrule ToInt     Pvalue [ajint*] AJAX Signed Integer address
-** @argrule ToUint    Pvalue [ajuint*] AJAX Unsigned Integer address
-** @argrule ToLong    Pvalue [ajlong*] AJAX Signed Long Integer address
-** @argrule ToUlong   Pvalue [ajulong*] AJAX Unsigned Long Integer address
-** @argrule ToFloat   Pvalue [float*] C-type float address
-** @argrule ToDouble  Pvalue [double*] C-type double address
 ** @argrule ToBool    Pvalue [AjBool*] AJAX Bool address
+** @argrule ToDouble  Pvalue [double*] C-type double address
+** @argrule ToFloat   Pvalue [float*] C-type float address
+** @argrule ToInt     Pvalue [ajint*] AJAX Signed Integer address
+** @argrule ToLong    Pvalue [ajlong*] AJAX Signed Long Integer address
 ** @argrule ToTime    Pvalue [AjPTime*] AJAX Time address
+** @argrule ToStr     Pvalue [AjPStr*] AJAX String address
+** @argrule ToUint    Pvalue [ajuint*] AJAX Unsigned Integer address
+** @argrule ToUlong   Pvalue [ajulong*] AJAX Unsigned Long Integer address
 **
 ** @valrule * [AjBool] ajTrue upon success, ajFalse otherwise
 **
@@ -3695,10 +3733,46 @@ AjBool ajSqlcolumnNumberToUint(const AjPSqlrow sqlr, ajuint column,
 
 
 
-/*
-** TODO: ajSqlcolumnNumberToUlong is missing but there is also no ajStrToUlong
-** function in the AJAX library.
-*/
+/* @func ajSqlcolumnNumberToUlong *********************************************
+**
+** Converts the value in a particular column of an AJAX SQL Row into an
+** AJAX Unsigned Long Integer value.
+**
+** @param [r] sqlr [const AjPSqlrow] AJAX SQL Row
+** @param [r] column [ajuint] Column number
+** @param [w] Pvalue [ajulong*] AJAX Unsigned Long Integer address
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ajSqlcolumnNumberToUlong(const AjPSqlrow sqlr, ajuint column,
+                                ajulong *Pvalue)
+{
+    AjBool bool = ajFalse;
+
+    AjPStr str = NULL;
+
+    if(!sqlr)
+        return ajFalse;
+
+    if(!Pvalue)
+        return ajFalse;
+
+    if(column >= sqlr->Columns)
+        return ajFalse;
+
+    str = ajStrNew();
+
+    bool = ajSqlcolumnNumberToStr(sqlr, column, &str);
+
+    if(bool)
+        ajStrToUlong(str, Pvalue);
+
+    ajStrDel(&str);
+
+    return bool;
+}
 
 
 
