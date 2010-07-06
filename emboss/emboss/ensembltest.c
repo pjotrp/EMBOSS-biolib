@@ -520,6 +520,8 @@ int main(int argc, char **argv)
 
 #endif
 
+    embExit();
+
     return 0;
 }
 
