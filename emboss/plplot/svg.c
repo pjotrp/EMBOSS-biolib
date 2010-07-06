@@ -59,7 +59,6 @@ static int canvasYSize = 0;
 static int svgIndent = 0;
 static FILE *svgFile;
 
-static char curColor[7];
 
 /* font stuff */
 
@@ -320,7 +319,6 @@ void plD_state_svg(PLStream *pls, PLINT op)
 
 void plD_esc_svg(PLStream *pls, PLINT op, void *ptr)
 {
-   int     i;
    switch (op)
    {
       case PLESC_FILL:      // fill polygon

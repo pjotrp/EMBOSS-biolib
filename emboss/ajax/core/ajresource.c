@@ -31,7 +31,6 @@
 
 #include <limits.h>
 
-static AjBool     resourceInitDone = AJFALSE;
 static ajuint     resourceErrorCount = 0;
 
 
@@ -261,8 +260,6 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
                 res->Status = ajStrNewS(rest);
         }   
     }
-
-    resourceInitDone = ajTrue;
 
     return;
 }

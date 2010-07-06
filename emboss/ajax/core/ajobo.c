@@ -535,7 +535,6 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
     AjPOboTerm uterm;
     ajuint jsave;
     ajuint jj;
-    ajuint jjsave;
     AjPStr idprefix       = NULL;
     AjPStr tmpstr         = NULL;
     AjPStr tmppref        = NULL;
@@ -1176,7 +1175,6 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
         j = 0;
         jj = 0;
         jsave = 0;
-        jjsave = 0;
 
         while(!ajListIterDone(iter))
         {
@@ -1198,9 +1196,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
                       !ajStrMatchS(obotag->Name, typeids[jj]))
                     jj++;
 
-                if(typeids[jj])
-                    jjsave = jj;
-                else
+                if(!typeids[jj])
                     oboWarn(obofile, obotag->Linenumber,
                             "term tag not found '%S' for id '%S'",
                             obotag->Name, id);

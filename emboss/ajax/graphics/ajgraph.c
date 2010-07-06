@@ -367,7 +367,9 @@ static PLFLT  currentcharsize   = 4.0; /* ajGraphicsSetCharSize to change */
 static PLFLT  currentcharscale  = 1.0; /* ajGraphicsSetCharscale to change */
 
 /* AJB: This variable is set quite a lot, but never used */
+#if 0
 static PLFLT  currentcharht  = 4.0;    /* ajGraphicsSetCharscale to change */
+#endif
 
 static PLINT  currentlinestyle = 1;    /* ajGraphicsSetLinestyle to change*/
 static PLINT  currentfillpattern = 1;  /* ajGraphicsSetFillpat to change*/
@@ -857,7 +859,9 @@ float ajGraphicsSetCharsize(float size)
     if(size)
     {
 	currentcharsize = size;
+#if 0
 	currentcharht = size;
+#endif
         currentcharscale = 1.0;
 	plschr(currentcharsize, currentcharscale);
     }
@@ -1032,7 +1036,9 @@ static void GraphDefCharSize(float size)
 {
     currentcharscale = 1.0;
     currentcharsize = size;
+#if 0
     currentcharht = size;
+#endif
     plschr(currentcharsize, currentcharscale);
 
     return;
@@ -1539,8 +1545,10 @@ static void GraphCharScale(float scale)
 {
     ajDebug("=g= plschr(0.0, %.2f) [0.0 charscale]\n", scale);
     plschr(0.0,(PLFLT)scale);		/* use current size */
+#if 0
     if(scale)
         currentcharht = currentcharsize*scale;
+#endif
 
     return;
 }
