@@ -430,6 +430,46 @@ typedef struct SeqSEmbossQry
 
 
 
+/* @datastatic SeqPEnsembl ****************************************************
+**
+** Ensembl record structure
+**
+** @alias SeqSEnsembl
+** @alias SeqOEnsembl
+**
+** @attr StableIdentifiers [AjPList] AJAX List of stable identifier
+**                                   AJAX Strings
+** @attr Database [AjPStr] The database name parsed from the USA
+** @attr Alias [AjPStr] Species alias parsed from the USA
+** @attr Identifier [AjPStr] Ensembl stable identifier
+** @attr Species [const AjPStr] Species resolved from an alias
+** @attr ObjectType [AjPStr] The Ensembl object type as encoded by stable
+**                           the stable identifier schema:
+**                             E: Exon
+**                             G: Gene
+**                             P: Translation
+**                             T: Transcript
+** @attr Sequence [AjPSeq] AJAX Sequence object to pass into seqReadEnsembl
+** @@
+******************************************************************************/
+
+typedef struct SeqSEnsembl
+{
+    AjPList StableIdentifiers;
+    AjPStr Database;
+    AjPStr Alias;
+    AjPStr Identifier;
+    const AjPStr Species;
+    AjPStr ObjectType;
+    AjPSeq Sequence;
+    EnsPDatabaseadaptor DatabaseAdaptor;
+} SeqOEnsembl;
+
+#define SeqPEnsembl SeqOEnsembl*
+
+
+
+
 static AjBool     seqAccessApp(AjPSeqin seqin);
 static AjBool     seqAccessBlast(AjPSeqin seqin);
 /* static AjBool     seqAccessCmd(AjPSeqin seqin);*/ /* not implemented */
@@ -8020,46 +8060,6 @@ static FILE* seqHttpSend(const AjPSeqQuery qry,
 
 
 
-/* @datastatic SeqPEnsembl ****************************************************
-**
-** Ensembl record structure
-**
-** @alias SeqSEnsembl
-** @alias SeqOEnsembl
-**
-** @attr StableIdentifiers [AjPList] AJAX List of stable identifier
-**                                   AJAX Strings
-** @attr Database [AjPStr] The database name parsed from the USA
-** @attr Alias [AjPStr] Species alias parsed from the USA
-** @attr Identifier [AjPStr] Ensembl stable identifier
-** @attr Species [const AjPStr] Species resolved from an alias
-** @attr ObjectType [AjPStr] The Ensembl object type as encoded by stable
-**                           the stable identifier schema:
-**                             E: Exon
-**                             G: Gene
-**                             P: Translation
-**                             T: Transcript
-** @attr Sequence [AjPSeq] AJAX Sequence object to pass into seqReadEnsembl
-** @@
-******************************************************************************/
-
-typedef struct SeqSEnsembl
-{
-    AjPList StableIdentifiers;
-    AjPStr Database;
-    AjPStr Alias;
-    AjPStr Identifier;
-    const AjPStr Species;
-    AjPStr ObjectType;
-    AjPSeq Sequence;
-    EnsPDatabaseadaptor DatabaseAdaptor;
-} SeqOEnsembl;
-
-#define SeqPEnsembl SeqOEnsembl*
-
-
-
-
 /* @funcstatic seqAccessEnsembl ***********************************************
 **
 ** Reads sequence(s) using an Ensembl SQL database.
@@ -8559,11 +8559,15 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
         ajListPop(se->StableIdentifiers, (void **) &identifier);
 
         if(identifier)
+        {
             ensExonadaptorFetchByStableIdentifier(
                 ea,
                 identifier,
                 0,
                 &exon);
+
+            ajStrDel(&identifier);
+        }
 
         if(exon)
         {
@@ -8582,11 +8586,15 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
         ajListPop(se->StableIdentifiers, (void **) &identifier);
 
         if(identifier)
+        {
             ensTranslationadaptorFetchByStableIdentifier(
                 tla,
                 identifier,
                 0,
                 &translation);
+
+            ajStrDel(&identifier);
+        }
 
         if(translation)
         {
@@ -8605,11 +8613,15 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
         ajListPop(se->StableIdentifiers, (void **) &identifier);
 
         if(identifier)
+        {
             ensTranscriptadaptorFetchByStableIdentifier(
                 tca,
                 identifier,
                 0,
                 &transcript);
+
+            ajStrDel(&identifier);
+        }
 
         if(transcript)
         {
