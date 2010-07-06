@@ -22,7 +22,7 @@ extern "C"
 **
 ******************************************************************************/
 
-#define EnsMDatabaseadaptorGroups 16
+#define EnsMDatabaseadaptorGroups 17
 
 
 
@@ -50,7 +50,8 @@ typedef enum EnsODatabaseadaptorGroup
     ensEDatabaseadaptorGroupCoreExpressionEST,
     ensEDatabaseadaptorGroupCoreExpressionGNF,
     ensEDatabaseadaptorGroupAncestral,
-    ensEDatabaseadaptorGroupWebsite
+    ensEDatabaseadaptorGroupWebsite,
+    ensEDatabaseadaptorGroupProduction
 } EnsEDatabaseadaptorGroup;
 
 
