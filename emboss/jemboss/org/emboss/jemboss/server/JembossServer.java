@@ -229,7 +229,7 @@ public class JembossServer
   public Vector getWossname()
   {
     Vector wossOut = new Vector();
-    String embossCommand = new String(embossBin + "wossname -colon -auto");
+    String embossCommand = new String(embossBin + "wossname -colon -gui -auto");
     RunEmbossApplication2 rea = new RunEmbossApplication2(embossCommand,
                                                            envp,null);
     wossOut.add("status");
