@@ -8,7 +8,7 @@ install-exec-hook:
 	(if test -d $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources ; then \
 		echo "resources folder exists"; \
 	else \
-		mkdir $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources; \
+		mkdir -p $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources; \
 	fi);
 	echo "Preparing $(DESTDIR)$(prefix)/share/$(PACKAGE)/jemboss/resources/jemboss.properties"; \
 	sed "s|user.auth=true|user.auth=false|" jemboss.properties | sed "s|jemboss.server=true|jemboss.server=false|" | sed "s|/packages/emboss/STABLE|$(prefix)|" > jemboss.properties.new;
