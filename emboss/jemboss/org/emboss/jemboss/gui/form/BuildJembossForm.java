@@ -135,7 +135,9 @@ public class BuildJembossForm implements ActionListener
     attach(p2, fieldPane, appDescription);
 
     p2.add(fieldPane,BorderLayout.CENTER);
-    p2.setBackground(outSection.getBackground());
+
+    if(outSection!=null)
+        p2.setBackground(outSection.getBackground());
     
 // Help button
     ClassLoader cl = this.getClass().getClassLoader();
