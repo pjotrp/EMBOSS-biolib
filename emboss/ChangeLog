@@ -1,4 +1,16 @@
 Version 6.3.0 15-Jul-2010
+	'sql' is a new access method for networked SQL servers
+	(mysql or postgresql). The server and database is described
+	using the 'url' field. As for biomart (described below) the
+	database definition must include definitions of new attributes
+	'sequence' (the sequence column) and 'identifier' (the
+	column used in the squery). Additional columns may be
+	returned as description text if they are listed in the 'returns'
+	attribute of the DB definition.
+
+	tfextract has been updated to deal with multiple pattern lines
+	and empty sequence lines.
+
 	Three automatic EMBOSS environment variables are
 	added. EMBOSS_INSTALLDIRECTORY is the installation directory
 	reported by embossversion -full, EMBOSS_BASEDIRECTORY is the base
@@ -14,9 +26,9 @@ Version 6.3.0 15-Jul-2010
 
 	Biomart is a new access method for sequence databases, The
 	database definition must include definitions of new attributes
-	sequence (the biomart sequence attribute) and identifier (the
+	'sequence' (the biomart sequence attribute) and 'identifier' (the
 	Biomart identifier attribute). Additional attributes may be
-	returned as description text if they are listed in the results
+	returned as description text if they are listed in the returns'
 	attribute of the DB definition.
 
 	Database definitions have a new attribute serverversion which is
