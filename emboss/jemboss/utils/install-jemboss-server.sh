@@ -632,13 +632,14 @@ $DIR/lib
 $DIR/lib32
 $DIR/lib64
 /usr/lib
-/usr/local/lib"
+/usr/local/lib
+/usr/lib64"
 
   WARN="true"
   for lib_dir in `echo  "$lib_dirs"` ;
   do
     echo "checking $lib_dir"
-    if (test -f $lib_dir/libz.a) || (test -f $lib_dir/libz.dylib); then
+    if (test -f $lib_dir/libz.a) || (test -f $lib_dir/libz.so) || (test -f $lib_dir/libz.dylib); then
        WARN="false"
        echo "...found zlib in $lib_dir"
        break
