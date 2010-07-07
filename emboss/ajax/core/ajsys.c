@@ -34,6 +34,7 @@
 #include <unistd.h>
 #include <locale.h>
 #include <pwd.h>
+#include <fcntl.h>
 #else
 #include "win32.h"
 #include <direct.h>

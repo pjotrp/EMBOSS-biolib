@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <errno.h>
+#include <fcntl.h>
 
 #ifndef WIN32
 #include <sys/file.h>
