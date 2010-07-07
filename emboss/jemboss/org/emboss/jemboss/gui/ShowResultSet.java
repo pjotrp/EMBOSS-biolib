@@ -294,8 +294,7 @@ public class ShowResultSet extends JFrame
             rtp.add(thiskey,r1);
           }
         }
-
-        if( thiskey.endsWith(".pdf") || thiskey.endsWith(".svg") )
+        else if( thiskey.endsWith(".pdf") || thiskey.endsWith(".svg") )
         {
             Box box = new Box(BoxLayout.Y_AXIS);
             if (settings.getDesktopSupportsOPENAction())
@@ -350,14 +349,14 @@ public class ShowResultSet extends JFrame
                 );
                 box.add(bt);
             }
-            
+
             JTextArea ta;
-            
+
             if(h.get(thiskey) instanceof byte[])
                 ta = new JTextArea(new String((byte[])h.get(thiskey)));
             else
                 ta = new JTextArea((String)h.get(thiskey));
-            
+
             ta.setEditable(false);
             r1 = new JScrollPane(ta);
 
