@@ -63,7 +63,7 @@ getClustalWPath()
     fi
   else
     echo "Enter the path to clustalw or press return to set"
-    echo "this later in jemboss.properties"
+    echo "this later (in jemboss.properties)"
     read CLUSTALW
   fi
 }
@@ -90,7 +90,7 @@ getPrimerPath()
     fi
   else
     echo "Enter the path to primer3_core or press return to set"
-    echo "this later in jemboss.properties"
+    echo "this later in (jemboss.properties)"
     read PRIMER3
   fi
 }
@@ -143,8 +143,8 @@ embassy_install()
     echo
     echo "Install all packages that are downloaded in"
     echo "$EMBOSS_DOWNLOAD/embassy "
-    echo "(if no prompts will be given for each package to install)"
-    echo "(y,n) [y]?"
+    echo "(if 'no' then prompts will be given for each package to "
+    echo "install) (y,n) [y]?"
     
     read ALL
     if [ "$ALL" = "" ]; then
@@ -650,7 +650,7 @@ $DIR/lib64
     echo
     echo "------------------------- WARNING ----------------------------"
     echo
-    echo "The script has detected that zlib is not installed in /usr"
+    echo "The script cannot find zlib installed under /usr"
     if( (test $PLATFORM = "macos") || (test $PLATFORM = "linux") ); then
       echo "or /usr/local"
     fi
@@ -746,8 +746,8 @@ esac
 
 
 echo 
-echo "Select the platform that your Jemboss server will be"
-echo "run on from 1-8 [$PLATTMP]:"
+echo "Select the platform (1-8) that your Jemboss server will be"
+echo "run on [$PLATTMP]:"
 echo "(1)  linux"
 echo "(2)  aix"
 echo "(3)  irix"
@@ -809,11 +809,12 @@ if [ $INSTALL_TYPE = "1" ]; then
   echo
   echo "The IP address or fully qualified domain name (e.g. emboss.company.com)"
   echo "is needed by Jemboss to access the Tomcat web server."
-  echo "Enter IP address or fully qualified domain name of the server machine [localhost]:"
+  echo "Enter the IP address or the fully qualified domain name of the"
+  echo "server machine [`hostname`]:"
   read LOCALHOST
 
   if [ "$LOCALHOST" = "" ]; then
-    LOCALHOST=localhost
+    LOCALHOST=`hostname`
   fi
 
   echo "$LOCALHOST" >> $RECORD
@@ -1108,7 +1109,7 @@ if [ $INSTALL_TYPE = "1" ]; then
     echo "It looks like an installation has already been carried out in: "
     echo "$TOMCAT_ROOT/webapps/axis/WEB-INF/classes/ "
     echo "It is recommended that tomcat is removed and a fresh copy of tomcat used."
-    echo "This is likely to fail if you continue."
+    echo "This installation is likely to fail if you continue."
     read BLANK
   fi
 
@@ -1117,7 +1118,7 @@ if [ $INSTALL_TYPE = "1" ]; then
     echo "It looks like an installation has already been carried out in: "
     echo "$TOMCAT_ROOT/webapps/axis/WEB-INF/classes/ "
     echo "It is recommended that tomcat is removed and a fresh copy of tomcat used."
-    echo "This is likely to fail if you continue."
+    echo "This installation is likely to fail if you continue."
     read BLANK
   fi
 
@@ -1473,8 +1474,8 @@ else
   echo
   echo "Tomcat XML deployment descriptors have been created for the Jemboss Server."
   echo "Would you like an automatic deployment of these to be tried (y/n) [y]?"
-  echo "(Please make sure your Tomcat server not running currently,"
-  echo " install script will start it.)"
+  echo "(Please make sure your Tomcat server is not currently running as"
+  echo "the install script will start it.)"
   
   read DEPLOYSERVICE
 
