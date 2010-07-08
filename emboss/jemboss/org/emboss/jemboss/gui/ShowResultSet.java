@@ -261,8 +261,8 @@ public class ShowResultSet extends JFrame
   * @return	array of names of PNG tabs
   *
   */
-  private String[] addHashContentsToTab(final Hashtable h,JTabbedPane rtp,
-          final String prjdir, JembossParams settings)
+  private String[] addHashContentsToTab(final Hashtable h,
+          final JTabbedPane rtp, final String prjdir, JembossParams settings)
   {
     JScrollPane r1;
 
@@ -297,65 +297,82 @@ public class ShowResultSet extends JFrame
         else if( thiskey.endsWith(".pdf") || thiskey.endsWith(".svg") )
         {
             Box box = new Box(BoxLayout.Y_AXIS);
+            Object obj = h.get(thiskey);
             if (settings.getDesktopSupportsOPENAction())
             {
-                JButton bt = new JButton("Open using default desktop viewer");
-                bt.addActionListener(new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        String fname;
+                String fname;
+                JButton bt = new JButton("Open using default desktop viewer");               
 
-                        if (prjdir!=null)
-                            fname =  prjdir+File.separator+thiskey;
+                if (prjdir!=null)
+                    fname =  prjdir+File.separator+thiskey;
+                else
+                {
+                    fname =  thiskey;
+                }
+
+                if (JembossParams.isJembossServer()|| !new File(fname).exists())
+                {
+                    File tmpf;
+                    FileOutputStream out;
+
+                    try {
+                        tmpf = File.createTempFile("jemboss_",
+                                thiskey.substring(thiskey.lastIndexOf('.')));
+                        out = new FileOutputStream(tmpf);
+
+                        if(obj instanceof byte[])
+                            out.write((byte[])obj);
                         else
                         {
-                            fname =  thiskey;
-                            if (JembossParams.isJembossServer())
-                            {
-                                File tmpf;
-                                FileOutputStream out;
-                                byte[] a;
+                            String s = (String)obj;
 
-                                try {
-                                    tmpf = File.createTempFile("jemboss_",
-                                            fname);
-                                    out = new FileOutputStream(tmpf);
-
-                                    if(h.get(thiskey) instanceof byte[])
-                                        a = (byte[])h.get(thiskey);
-                                    else
-                                        a = ((String)h.get(thiskey)).getBytes();
-
-                                    out.write(a);
-                                    out.close();
-                                    tmpf.deleteOnExit();
-                                    fname = tmpf.getAbsolutePath();
-                                } catch (IOException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                }
-
+                            for(int i=0;i<s.length();i++){
+                                out.write(s.charAt(i));
                             }
                         }
 
-                        try {
-                            Desktop.getDesktop().open(new File(fname));
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
+                        out.close();
+                        tmpf.deleteOnExit();
+                        fname = tmpf.getAbsolutePath();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        fname=null;
                     }
                 }
-                );
-                box.add(bt);
+
+                if(fname!=null)
+                {
+                    final String fname_ = fname;
+
+                    bt.addActionListener(new ActionListener()
+                    {
+                        public void actionPerformed(ActionEvent e)
+                        {
+
+                            try
+                            {
+                                Desktop.getDesktop().open(new File(fname_));
+                            }
+                            catch (IOException ex)
+                            {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(rtp,
+                                        "Error while opening file '" + fname_
+                                        + "': "+ex.getMessage());
+                            }
+                        }
+                    }
+                    );
+                    box.add(bt);
+                }
             }
 
             JTextArea ta;
 
-            if(h.get(thiskey) instanceof byte[])
-                ta = new JTextArea(new String((byte[])h.get(thiskey)));
+            if(obj instanceof byte[])
+                ta = new JTextArea(new String((byte[])obj));
             else
-                ta = new JTextArea((String)h.get(thiskey));
+                ta = new JTextArea((String)obj);
 
             ta.setEditable(false);
             r1 = new JScrollPane(ta);
