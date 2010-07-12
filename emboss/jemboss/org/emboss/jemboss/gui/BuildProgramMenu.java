@@ -475,7 +475,8 @@ public class BuildProgramMenu
         progList.addMouseListener(mouseListener);
         progList.addKeyListener(new ProgListSelectionListener());
         
-        alphaTextPane.requestFocusInWindow();
+        if (!withSoap || !mysettings.getUseAuth())
+            alphaTextPaneEntry.requestFocus();
 
         return progList;
       }
