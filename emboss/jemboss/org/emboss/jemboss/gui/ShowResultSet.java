@@ -357,8 +357,8 @@ public class ShowResultSet extends JFrame
                             {
                                 ex.printStackTrace();
                                 JOptionPane.showMessageDialog(rtp,
-                                        "Error while opening file '" + fname_
-                                        + "': "+ex.getMessage());
+                                        ex.getMessage(),"Error",
+                                        JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }
