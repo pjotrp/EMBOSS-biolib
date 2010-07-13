@@ -21,7 +21,7 @@ section: input
       default: ""
       additional: "Y"
       information: "Name(s) of one or more databases or database categories to display information on"
-      help: "Standard names of databases are given in the EMBOSS datafile 'dbref.dat'.
+      help: "Standard names of databases are given in the EMBOSS datafile 'dbref.dat'."
       knowntype: "emboss database name"
     relations:  "/edam/data/0001056 Database name"                          
   ]
