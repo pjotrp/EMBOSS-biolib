@@ -22,7 +22,7 @@ section: input [
     information: "Program newcoils data file"
     default: "Enewcoils.mat"
     knowntype: "newcoils datafile"
-    relations:                                                 
+    relations: ""
   ]
 
 endsection: input
@@ -94,7 +94,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "newcoils output"
-    relations:  "/edam/data/0000876 Protein secondary structure"                  
+    relations:  "/edam/data/0000876 Protein secondary structure"
   ]
 
 endsection: output
