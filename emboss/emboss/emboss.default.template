@@ -32,7 +32,7 @@ SET CACHESIZE 200
 
 ##################################################################
 # Test Databases
-# Used by the qatest.pl scriupt to test an EMBOSS installation.
+# Used by the qatest.pl script to test an EMBOSS installation.
 # Comment them out if you do not want your users to use them.
 # Examples in the EMBOSS documentation should all run by using
 # TEMBL: in place of EMBL:, TSW: in place of SW:, and so on.
@@ -583,6 +583,35 @@ DB tgenbank [ type: N dir: $emboss_tempdata/genbank
 # Columns you want to add to the description
 #    return: "version,description"
 #]
+
+
+
+##################################################################
+# Ensembl datatabase access example via public MySQL instances.
+#
+# Please note that these public MySQL instances are only provided
+# for small-scale access. For extended analyses and if in doubt,
+# please copy the relevant databases to a private MySQL instance
+# and configure access accordingly. Please see the following
+# instructions on how to setup your own MySQL server.
+# http://www.ensembl.org/info/docs/webcode/install/build.html
+##################################################################
+
+# DB ensembl [
+#   type:        "Nucleotide"
+#   format:      "ensembl"
+#   method:      "ensembl"
+#   url:         "mysql://anonymous:@ensembldb.ensembl.org:5306/"
+#   comment:     "Ensembl test database"
+# ]
+#
+# DB ensemblgenomes [
+#   type:        "Nucleotide"
+#   format:      "ensembl"
+#   method:      "ensembl"
+#   url:         "mysql://anonymous:@mysql.ebi.ac.uk:4157/"
+#   comment:     "Ensembl test database"
+# ]
 
 
 
