@@ -1,4 +1,15 @@
 Version 6.3.0 15-Jul-2010
+	'ensembl' is a new access method for accessing Ensembl
+	from MySQL. Queries take the form:
+	   seqret ensembl:human:ENST00000262160
+	   seqret ensembl:human:ENST0000026216?
+	   seqret ensembl:human:ENSE00001533831
+	showing that transcripts, translations and exons are retrievable
+	and that partial queries are allowed. Example database
+	definitions are given in the emboss.default.template file. Please
+	read the note above those definitions regarding fair use of
+	the public Ensembl servers.
+
 	'sql' is a new access method for networked SQL servers
 	(mysql or postgresql). The server and database is described
 	using the 'url' field. As for biomart (described below) the
@@ -6,7 +17,8 @@ Version 6.3.0 15-Jul-2010
 	'sequence' (the sequence column) and 'identifier' (the
 	column used in the squery). Additional columns may be
 	returned as description text if they are listed in the 'returns'
-	attribute of the DB definition.
+	attribute of the DB definition. An example definition is
+	given in emboss.default.template.
 
 	tfextract has been updated to deal with multiple pattern lines
 	and empty sequence lines.
@@ -29,7 +41,8 @@ Version 6.3.0 15-Jul-2010
 	'sequence' (the biomart sequence attribute) and 'identifier' (the
 	Biomart identifier attribute). Additional attributes may be
 	returned as description text if they are listed in the returns'
-	attribute of the DB definition.
+	attribute of the DB definition. An example definition is
+	given in emboss.default.template.
 
 	Database definitions have a new attribute serverversion which is
 	used by SRSWWW access to choose the best way to retrieve data.
