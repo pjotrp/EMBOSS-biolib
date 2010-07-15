@@ -1984,7 +1984,7 @@ AjBool ajMartGetAttributes(AjPSeqin seqin, const AjPStr dataset)
     vschema = martGetVirtualSchema(dataset);
     
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
-        ajFmtPrintS(&get, "GET http://%S:%S%S?type=attributes&dataset=%S"
+        ajFmtPrintS(&get, "GET http://%S:%u%S?type=attributes&dataset=%S"
                     "&virtualSchema=%s"
                     " HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, dataset,
@@ -2582,7 +2582,7 @@ AjBool ajMartGetFilters(AjPSeqin seqin, const AjPStr dataset)
     vschema = martGetVirtualSchema(dataset);
     
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
-        ajFmtPrintS(&get, "GET http://%S:%S%S?type=filters&dataset=%S"
+        ajFmtPrintS(&get, "GET http://%S:%u%S?type=filters&dataset=%S"
                     "&virtualSchema=%s"
                     " HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, dataset,
@@ -2708,7 +2708,7 @@ AjBool ajMartGetFiltersSchema(AjPSeqin seqin, const AjPStr dataset,
     vschema = ajStrGetPtr(schema);
     
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
-        ajFmtPrintS(&get, "GET http://%S:%S%S?type=filters&dataset=%S"
+        ajFmtPrintS(&get, "GET http://%S:%u%S?type=filters&dataset=%S"
                     "&virtualSchema=%s"
                     " HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, dataset,
@@ -3358,7 +3358,7 @@ AjBool ajMartSendQuery(AjPSeqin seqin)
 
 
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
-        ajFmtPrintS(&get, "GET http://%S:%S%S?query=%S "
+        ajFmtPrintS(&get, "GET http://%S:%u%S?query=%S "
                     "HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, mq->Query,
                     httpver);
@@ -4683,7 +4683,7 @@ AjBool ajMartGetConfiguration(AjPSeqin seqin, const AjPStr dataset)
     vschema = martGetVirtualSchema(dataset);
     
     if(ajSeqHttpProxy(qry, &proxyport, &proxyname))
-        ajFmtPrintS(&get, "GET http://%S:%S%S?type=configuration&dataset=%S"
+        ajFmtPrintS(&get, "GET http://%S:%u%S?type=configuration&dataset=%S"
                     "&virtualSchema=%s"
                     " HTTP/%S\r\n",
                     mq->Marthost, mq->Martport, mq->Martpath, dataset,
