@@ -328,13 +328,13 @@ static GraphOType graphType[] =
 #endif
 
 #ifdef PLD_pdf          /* if png/gd/zlib libraries available for png driver */
-    {"pdf",        "pdf",     ".pdf",   800,  600,
+    {"pdf",        "pdf",     ".pdf",   1683,  1190,
      AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJFALSE,  AJFALSE,
      GraphxyDisplayToFile, GraphOpenFile,
      "PDF graphics files"},
 #endif
 
-    {"svg",        "svg",     ".svg",   800,  600,
+    {"svg",        "svg",     ".svg",   720,  540,
      AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJFALSE,  AJFALSE,
      GraphxyDisplayToFile, GraphOpenFile,
      "SVG graphics files"},
