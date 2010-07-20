@@ -65,7 +65,7 @@ static AjPFeature showseq_FeatCopy(const AjPFeature orig);
 
 
 #define ENZDATA "REBASE/embossre.enz"
-#define EQUDATA "embossre.equ"
+#define EQUDATA "REBASE/embossre.equ"
 #define EQUGUESS 3500     /* Estimate of number of equivalent names */
 
 
