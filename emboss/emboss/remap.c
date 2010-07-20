@@ -25,7 +25,7 @@
 
 
 #define ENZDATA "REBASE/embossre.enz"
-#define EQUDATA "embossre.equ"
+#define EQUDATA "REBASE/embossre.equ"
 #define EQUGUESS 3500     /* Estimate of number of equivalent names */
 
 #define TABLEGUESS 200
@@ -1006,7 +1006,7 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
         ajFmtPrintF(outfile, "<H2>");
     ajFmtPrintF(outfile,
 		"\n\n# No. of cutting enzymes which do not match the\n"
-		"# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS citeria\n\n");
+		"# SITELEN, BLUNT, STICKY, COMMERCIAL, AMBIGUOUS criteria\n\n");
     if(html)
 	ajFmtPrintF(outfile, "</H2>\n");
     ajFmtPrintF(outfile, "%d\n", rejected_count);
