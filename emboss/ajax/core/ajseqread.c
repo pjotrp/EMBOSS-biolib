@@ -826,7 +826,7 @@ static SeqOInFormat seqInFormatDef[] =
 **       AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 **       AJFALSE, AJFALSE, seqReadFastqInt, AJFALSE, AJFALSE},
 */
-  {"sam",         "Sequence Alignment/Map (SAM) format",
+  {"sam",         "Sequence Alignment/Map (SAM) format", /* biomart also tsv */
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE, seqReadSam, AJFALSE, AJFALSE},
   {"genbank",     "Genbank entry format",
@@ -943,8 +943,8 @@ static SeqOInFormat seqInFormatDef[] =
   {"fitch",       "Fitch program format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadFitch, AJFALSE, AJFALSE},
-  {"biomart",       "Biomart tab-delimited results",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+  {"biomart",       "Biomart tab-delimited results", /* may clash with SAM */
+       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadBiomart, AJFALSE, AJFALSE},
   {"mase",        "Mase program format",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
