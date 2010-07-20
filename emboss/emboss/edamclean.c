@@ -520,6 +520,7 @@ int main(ajint argc, char **argv)
     AjPFile    ouf_edam        = NULL;    /* Name of EDAM (output) file     */
     AjPFile    ouf_log         = NULL;    /* Name of report (output) file   */
     AjPStr     mode            = NULL;    /* Mode of operation              */
+    AjPDir     taxdir          = NULL;
     AjPList    list_tmp        = NULL;    /* Temporary list                 */
     AjPStr    *fields          = NULL;    /* Array of valid tokens for first
                                              word in line */
@@ -588,8 +589,13 @@ int main(ajint argc, char **argv)
     ouf_edam  = ajAcdGetOutfile("edamout");
     ouf_log   = ajAcdGetOutfile("log");
     mode      = ajAcdGetSelectSingle("mode");
+    taxdir    = ajAcdGetDirectory("taxdirectory");
 
     ajFmtPrint("MODE : %S\n", mode);
+    ajTaxLoad(taxdir);
+    ajOboParseObofile(inf_edam, "noidorder,nounkid");
+    ajFileSeek(inf_edam, 0, 0);    /* Rewind file */
+    embExit();
 
     /* Memory allocation */
     line       = ajStrNew();

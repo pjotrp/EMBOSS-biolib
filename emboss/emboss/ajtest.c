@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     ajDirDel(&taxdir);
 
     if(obofile)
-        ajOboParseObo(obofile, "");
+        ajOboParseObofile(obofile, "");
     ajFileClose(&obofile);
 
     if(resfile)
