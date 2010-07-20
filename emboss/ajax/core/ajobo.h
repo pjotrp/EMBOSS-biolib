@@ -132,7 +132,8 @@ AjPObo           ajOboNew(void);
 
 AjPOboTerm       ajOboTermNew(void);
 void             ajOboTermDel(AjPOboTerm *Pterm);
-AjPObo           ajOboParseObo (AjPFile infile, const char* validations);
+AjPObo           ajOboParseObofile (AjPFile infile, const char* validations);
+AjPOboTerm       ajOboParseOboterm (AjPFilebuff inbuff);
 AjPOboTag        ajOboTagNew(const AjPStr name, const AjPStr value,
                              const AjPStr modifier, const AjPStr comment,
                              ajuint linenum);

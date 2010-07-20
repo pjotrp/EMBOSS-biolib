@@ -3859,7 +3859,7 @@ static void acdParse(AjPList listwords, AjPList listcount)
         {
             acdEdamFile = ajFileNewInNameS(acdEdamPath);
             if(acdEdamFile)
-                acdEdam = ajOboParseObo(acdEdamFile, "none");
+                acdEdam = ajOboParseObofile(acdEdamFile, "none");
         }
     }
 

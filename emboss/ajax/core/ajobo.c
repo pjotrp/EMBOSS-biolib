@@ -479,7 +479,311 @@ static AjBool oboInit(void)
 
 
 
-/* @func ajOboParseObo ********************************************************
+/* @func ajOboParseOboterm *****************************************************
+**
+** Parse an OBO format file
+**
+** @param [u] obobuff [AjPFilebuff] OBO format input buffered file
+** @param [r] validations [const char*] Validations to turn on or off
+** @return [AjPOboTerm] Ontology term object
+******************************************************************************/
+
+AjPOboTerm ajOboParseOboterm(AjPFilebuff obobuff)
+{
+    AjPOboTerm ret;
+    AjPList idprefixlist = NULL;
+    ajuint linecnt = 0;
+    AjPStr line     = NULL;
+    AjPStr saveline = NULL;
+    AjBool isstanza   = ajFalse;
+    AjBool incomplete = ajFalse;
+    AjPStr token = NULL;
+    AjPStr rest  = NULL;
+    AjPStr stanzatype     = NULL;
+    AjPStr id     = NULL;
+    AjPStr name   = NULL;
+    AjPStr modifier = NULL;
+    AjPStr comment  = NULL;
+    AjBool ok = ajFalse;
+    ajuint i;
+    ajint icolon;
+    AjBool found;
+    AjBool isterm = AJFALSE;
+    AjPList stanzalist = NULL;
+    AjPOboTag obotag   = NULL;
+    AjIList iterpref   = NULL;
+    AjPStr idprefix       = NULL;
+    AjPStr tmpstr         = NULL;
+    AjPStr tmppref        = NULL;
+
+    ret = ajOboTermNew();
+
+    oboInit();
+
+    while(ajBuffreadLineTrim(obobuff, &line))
+    {
+        linecnt++;
+
+        oboCutComment(&line, &comment);
+        oboEscape(&line);
+
+        if(ajStrGetLen(line) && isspace((int) ajStrGetCharLast(line)))
+            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                   "trailing whitespace on line");
+
+        if((ajStrGetCharLast(line) == '\\') &&
+           (ajStrGetCharPos(line, -2) != '\\'))
+        {
+            incomplete = ajTrue;
+            ajStrAppendS(&saveline, line);
+            continue;
+        }
+        
+        if(incomplete)          /* continued line */
+        {
+            ajStrAppendS(&saveline, line);
+            ajStrAssignS(&line, saveline);
+            ajStrAssignC(&saveline, "");
+            incomplete = ajFalse;
+        }
+
+        if (!ajStrGetLen(line)) /* empty line */
+        {
+            continue;
+        }
+        else if(ajStrGetCharFirst(line) == '[')
+        {
+            if(!isstanza) 
+            {
+                /* new stanza: validate header */
+                isstanza = ajTrue;
+            }
+            else
+            {
+                /*
+                ** start of next stanza - if we have a  term, then
+                ** finish and exit with this line in buffer
+                */
+
+                if(stanzalist)
+                {
+                    if(isterm)
+                    {
+                        ajListPushlist(ret->Taglist, &stanzalist);
+                    }
+                }                
+            }
+
+            id = NULL;
+            stanzalist = ajListNew();
+            
+            ajStrExtractWord(line, &rest, &token);
+            if(ajStrGetLen(rest))
+                oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                        "unexpected characters in stanza line: '%S'",
+                        rest);
+            if(ajStrGetCharLast(token) != ']')
+                oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                        "unexpected characters in stanza type: '%S'",
+                        token);
+
+            ajStrAssignS(&stanzatype, token);
+            ajStrCutEnd(&stanzatype,1);
+            ajStrCutStart(&stanzatype,1);
+
+            if(ajStrMatchC(stanzatype, "Term"))
+            {
+                isterm = ajTrue;
+                ret = ajOboTermNew();
+            }
+            else
+                isterm = ajFalse;
+
+        }
+        else 
+        {
+            if(oboCutModifier(&line, &modifier))
+                oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                        "modifier found '%S'",
+                        modifier);
+
+            /* parse name: value ! comment */
+            ajStrExtractWord(line, &rest, &token);
+
+            if(!ajStrGetLen(rest))
+                oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                        "missing value for tag '%S' in %S '%S'",
+                        token, stanzatype, id);
+            ajStrAssignS(&name, token);
+
+            if(ajStrGetCharLast(name) != ':')
+                oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                        "bad name '%S'",
+                        token);
+            ajStrCutEnd(&name, 1);
+
+            if(ajStrMatchC(name, "id"))
+            {
+                ajStrAssignS(&id, rest);
+                icolon = ajStrFindAnyK(id, ':');
+                if(icolon > 0)
+                {
+                    ajStrAssignSubS(&tmpstr, id, 0, icolon);
+
+                    if(!ajStrMatchS(idprefix, tmpstr))
+                    {
+                        iterpref = ajListIterNew(idprefixlist);
+                        found = ajFalse;
+
+                        while(!ajListIterDone(iterpref))
+                        {
+                            tmppref = ajListstrIterGet(iterpref);
+
+                            if(ajStrMatchS(tmppref, tmpstr))
+                            {
+                                found = ajTrue;
+                                break;
+                            }
+                        }
+
+                        ajListIterDel(&iterpref);
+
+                        if(!found)
+                        {
+                            ajStrAssignS(&idprefix, tmpstr);
+                            ajListstrPush(idprefixlist, tmpstr);
+                            tmpstr = NULL;
+                        }
+                    }
+                }
+            }
+
+            if(isstanza)
+            {
+                obotag = ajOboTagNew(name, rest, modifier, comment, linecnt);
+                ajListPushAppend(stanzalist, obotag);
+                obotag = NULL;
+
+                if(isterm)
+                {
+                    if(ajStrMatchC(name, "id"))
+                    {
+                        if(ret->Id)
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Multiple '%S' tags for ID '%S'",
+                                    name, id);
+                        ajStrAssignS(&ret->Id, rest);
+                    }
+                    else if(ajStrMatchC(name, "name"))
+                    {
+                        if(ret->Name)
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Multiple '%S' tags for ID '%S'",
+                                    name, id);
+                        ajStrAssignS(&ret->Name, rest);
+                    }
+                    else if(ajStrMatchC(name, "namespace"))
+                    {
+                        if(ret->Namespace)
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Multiple '%S' tags for ID '%S'",
+                                    name, id);
+                        ajStrAssignS(&ret->Namespace, rest);
+                    }
+                    else if(ajStrMatchC(name, "def"))
+                    {
+                        if(ret->Def)
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Multiple '%S' tags for ID '%S'",
+                                    name, id);
+                        ajStrAssignS(&ret->Def, rest);
+                    }
+                    else if(ajStrMatchC(name, "comment"))
+                    {
+                        if(ret->Comment)
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Multiple '%S' tags for ID '%S'",
+                                    name, id);
+                        ajStrAssignS(&ret->Comment, rest);
+                    }
+                    else if(ajStrMatchC(name, "obsolete"))
+                    {
+                        if(ret->Obsolete)
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Multiple '%S' tags for ID '%S'",
+                                    name, id);
+                        if(ajStrPrefixC(rest, "true"))
+                            ret->Obsolete = ajTrue;
+                        else if(ajStrPrefixC(rest, "false"))
+                            ret->Obsolete = ajFalse;
+                        else
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Bad value '%S' boolean tag for ID '%S'",
+                                    name, id);
+                    }
+                    else if(ajStrMatchC(name, "builtin"))
+                    {
+                        if(ret->Obsolete)
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Multiple '%S' tags for ID '%S'",
+                                    name, id);
+                        if(ajStrPrefixC(rest, "true"))
+                            ret->Builtin = ajTrue;
+                        else if(ajStrPrefixC(rest, "false"))
+                            ret->Builtin = ajFalse;
+                        else
+                            oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                                    "Bad value '%S' boolean tag for ID '%S'",
+                                    name, id);
+                    }
+                    else if(ajStrMatchC(name, "alt_id"))
+                    {
+                    }
+                }
+            }
+            else                /* processing header tags */
+            {
+                ok =  ajFalse;
+
+                for(i=0;oboHeaderTags[i];i++)
+                {
+                    if(ajStrMatchC(name, oboHeaderTags[i]))
+                    {
+                        ok = ajTrue;
+                        break;
+                    }
+                }
+
+                if(!ok)
+                    oboWarn(ajFilebuffGetFile(obobuff), linecnt,
+                            "unknown header name '%S'",
+                            token);
+            }
+
+            ajStrTrimWhite(&rest);
+        }
+    }
+
+    if(stanzalist)
+    {
+        if(isterm)
+        {
+            if(!ret->Obsolete)
+            {
+                ajListPushlist(ret->Taglist, &stanzalist);
+            }
+        }
+    }
+
+    id = NULL;
+
+    return ret; 
+}
+
+
+
+
+/* @func ajOboParseObofile *****************************************************
 **
 ** Parse an OBO format file
 **
@@ -488,7 +792,7 @@ static AjBool oboInit(void)
 ** @return [AjPObo] Ontology object
 ******************************************************************************/
 
-AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
+AjPObo ajOboParseObofile(AjPFile obofile, const char* validations)
 {
     AjPObo ret;
     AjPList idprefixlist = NULL;
@@ -569,7 +873,7 @@ AjPObo ajOboParseObo(AjPFile obofile, const char* validations)
             else if(ajStrMatchC(tmpstr, "nounkid"))
                 obovalididunk = ajFalse;
             else
-                ajWarn("ajOboParseObo called with unknown validation '%S'",
+                ajWarn("ajOboParseObofile called with unknown validation '%S'",
                        tmpstr);
         }
         
