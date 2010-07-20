@@ -23,6 +23,11 @@ section: input
     default: "/homes/jison/edam/EDAM.obo"
   ]
 
+  directory: taxdirectory
+[
+	information: "Taxonomy directory"
+        default: "/data1/users/pmr/taxonomy"
+]
 endsection: input
 
 
