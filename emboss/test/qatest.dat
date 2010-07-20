@@ -12552,7 +12552,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI j01636.remap 
-FZ = 1227
+FZ = 1228
 FP /^# Enzymes that cut.*\n(\s+\S+\s+1\s+\S*\n){4}\n/
 FP /^# Enzymes that do not cut.*\n\n/
 FP /^\s+AciI\s+1\s+\n/
@@ -12580,7 +12580,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI j01636.remap
-FZ = 1849
+FZ = 1850
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
 //
 
@@ -12604,7 +12604,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI j01636.remap
-FZ = 2411
+FZ = 2412
 FP /^\s+TaqI\s+1\s+\n/
 //
 
@@ -12626,7 +12626,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI j01636.remap
-FZ = 2243
+FZ = 2244
 FP /^\s+Hin6I\s+2\s+HinP1I,HspAI\n/
 //
 
