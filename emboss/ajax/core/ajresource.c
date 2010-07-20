@@ -41,6 +41,7 @@ const char* resourceStatus[] = {
     "Supported",
     "Referenced",
     "Unavailable",
+    "None",
     NULL
 };
 
