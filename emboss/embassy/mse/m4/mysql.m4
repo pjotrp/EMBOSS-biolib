@@ -96,8 +96,8 @@ dnl not be installed
 
     	    EMBCFLAGS=$CFLAGS
 	    EMBLDFLAGS=$LDFLAGS
-	    CFLAGS=$MYSQL_CFLAGS
-	    LDFLAGS=$MYSQL_LDFLAGS
+	    CFLAGS="$MYSQL_CFLAGS $EMBCFLAGS"
+	    LDFLAGS="$MYSQL_LDFLAGS $EMBLDFLAGS"
 
             AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>
                                               #include "mysql.h"]],
