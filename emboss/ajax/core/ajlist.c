@@ -2400,7 +2400,7 @@ __deprecated AjIList ajListIterBack(AjPList list)
 
 /* @func ajListIterNewread *****************************************************
 **
-** Creates an iterator to operate from start to end of list.
+** Creates an iterator to operate from start to end of read-only list.
 **
 ** @param [r] list [const AjPList] List
 **                 Not const in practice - the iterator can insert
