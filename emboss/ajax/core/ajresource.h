@@ -20,41 +20,55 @@ extern "C"
 ** @alias AjSResource
 ** @alias AjOResource
 **
-** @attr Id [AjPStr] Standard identifier of resource
-** @attr Otherids [AjPList] Alternative identifiers for this resource
-** @attr Name [AjPStr] Name, usually the ID in full
-** @attr Desc [AjPStr] Description
-** @attr Server [AjPStr] Resource web server
-** @attr Category [AjPStr] Database category
-** @attr Edamrefs [AjPList] EDAM ontology references for the data resource
-** @attr Links [AjPList] Database cross-reference link details
-** @attr Linknote [AjPStr] Notes on the database cross-reference links
-** @attr Queries [AjPList] Formatted query definitions
-** @attr Examples [AjPList] Formatted query examples
-** @attr Contact [AjPStr] Resource contact name
-** @attr Email [AjPStr] Resource contact email address
-** @attr Notes [AjPStr] Notes on resource entry
-** @attr Status [AjPStr] Status of resource (controlled vocabulary)
+** @attr Id [AjPStr]       Standard identifier of resource
+** @attr Idalt [AjPList]   Alternative identifiers for this resource
+** @attr Acc [AjPStr]      Accession number for this resource
+** @attr Name [AjPStr]     Name, usually the ID in full
+** @attr Desc [AjPStr]     Description
+** @attr Url [AjPStr]      Resource web server
+** @attr Cat [AjPStr]      Database category (from dbxref.txt)
+** @attr Edamres [AjPList] EDAM ontology references for the data resource
+** @attr Edamdat [AjPList] EDAM ontology references (retrievable data)
+** @attr Edamid [AjPList]  EDAM ontology references (query fields)
+** @attr Edamfmt [AjPList] EDAM ontology references (format of retrievable data)
+** @attr Xref [AjPList]    Database cross-reference link details
+** @attr Query [AjPList]   Formatted query definitions
+** @attr Example [AjPList] Formatted query examples
+** @attr Contact [AjPStr]  Resource contact name
+** @attr Email [AjPStr]    Resource contact email address
+** @attr CCxref [AjPStr]   Notes on "Xref" field.
+** @attr CCmisc [AjPStr]   Miscellaneous comments.
+** @attr CClink [AjPStr]   URL / comments on linking instructions.
+** @attr CCrest [AjPStr]   Comment on RESTful interface.
+** @attr CCsoap [AjPStr]   Comments on SOAP-based interface.
+** @attr Status [AjPStr]   Status of resource (controlled vocabulary)
 ** @@
 ******************************************************************************/
-
+    
 typedef struct AjSResource
 {
-    AjPStr Id;
-    AjPList Otherids;
-    AjPStr Name;
-    AjPStr Desc;
-    AjPStr Server;
-    AjPStr Category;
-    AjPList Edamrefs;
-    AjPList Links;
-    AjPStr Linknote;
-    AjPList Queries;
-    AjPList Examples;
-    AjPStr Contact;
-    AjPStr Email;
-    AjPStr Notes;
-    AjPStr Status;
+    AjPStr  Id;
+    AjPList Idalt;
+    AjPStr  Acc;
+    AjPStr  Name;
+    AjPStr  Desc;
+    AjPStr  Url;
+    AjPStr  Cat;
+    AjPList Edamres;
+    AjPList Edamdat;
+    AjPList Edamid;
+    AjPList Edamfmt;
+    AjPList Xref;
+    AjPList Query;
+    AjPList Example;
+    AjPStr  Contact;
+    AjPStr  Email;
+    AjPStr  CCxref;
+    AjPStr  CCmisc;
+    AjPStr  CClink;
+    AjPStr  CCrest;
+    AjPStr  CCsoap;
+    AjPStr  Status;
 } AjOResource;
 
 #define AjPResource AjOResource*
@@ -65,9 +79,11 @@ typedef struct AjSResource
 ** Prototype definitions
 */
 
-void         ajResourceParse(AjPFile dbfile, const char* validations);
-
-/*
+    void         ajResourceParse(AjPFile resfile, const char* validations);
+    AjPResource  ajResourceNew(void);
+    void         ajResourceDel(AjPResource *resource);
+    void         ajResourceWrite(AjPResource resource, const AjPFile resfile);
+    /*
 ** End of prototype definitions
 */
 

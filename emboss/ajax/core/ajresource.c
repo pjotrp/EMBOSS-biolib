@@ -4,6 +4,8 @@
 ** @author Copyright (C) 2010 Peter Rice
 ** @version 1.0
 ** @modified Jun 10 pmr First version
+** @modified July 27 Jon Second version (Added ajResourceNew, ajResourceDel,
+** ajResourceWrite.  Changed calls of ajListNew to ajListstrNew.)
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -34,7 +36,8 @@
 static ajuint     resourceErrorCount = 0;
 
 
-static AjPTable resourceIdTable = NULL;
+static AjPTable resourceIdTable   = NULL;
+static AjPTable resourceAccTable  = NULL;
 static AjPTable resourceNameTable = NULL;
 
 const char* resourceStatus[] = {
@@ -57,24 +60,31 @@ const char* resourceDataFormat[] = {
     
 const char* resourceTags[] = {
     "ID",
-    "IDOther",
+    "IDalt",
+    "Acc",
     "Name",
     "Desc",
-    "Server",
+    "URL",
     "Cat",
-    "EDAM",
-    "Link",
-    "LinkNB",
+    "EDAMres",
+    "EDAMdat",
+    "EDAMid",
+    "EDAMfmt",
+    "Xref",
     "Query",
     "Example",
     "Contact",
     "Email",
-    "Note",
+    "CCxref",
+    "CCmisc",
+    "CClink",
+    "CCrest",
+    "CCsoap", 
     "Status",
     NULL
 };
 
-static void resourceWarn(const AjPFile obofile, ajuint linecnt,
+static void resourceWarn(const AjPFile resfile, ajuint linecnt,
                          const char* fmt, ...);
 
 
@@ -84,12 +94,12 @@ static void resourceWarn(const AjPFile obofile, ajuint linecnt,
 **
 ** Parse the standard list of public data resources
 **
-** @param [u] dbfile [AjPFile] Open database list file
+** @param [u] resfile [AjPFile] Open resource file
 ** @param [r] validations [const char*] Validations to be turned on or off
 **
 ******************************************************************************/
 
-void ajResourceParse(AjPFile dbfile, const char* validations)
+void ajResourceParse(AjPFile resfile, const char* validations)
 {
     AjPStr line = NULL;
     ajuint linecnt = 0;
@@ -98,12 +108,13 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
     AjPStr rest = NULL;
     AjPStr tmpstr = NULL;
     AjPStr idkey = NULL;
+    AjPStr acckey = NULL;
     AjPStr namekey = NULL;
     ajuint j;
 
     (void) validations;
 
-    while (ajReadlineTrim(dbfile, &line))
+    while (ajReadlineTrim(resfile, &line))
     {
         linecnt++;
 
@@ -121,7 +132,7 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
                 j++;
         if(!resourceTags[j])
         {
-            resourceWarn(dbfile, linecnt,
+            resourceWarn(resfile, linecnt,
                          "unknown tag name '%S'",
                          token);
             continue;
@@ -134,22 +145,30 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
             idkey = ajStrNewS(rest);
             ajTablePut(resourceIdTable, idkey, res);
         }
-        else  if(ajStrMatchC(token, "IDOther"))
+        else  if(ajStrMatchC(token, "IDalt"))
         {
             if(ajStrMatchC(rest, "None"))
                 continue;
-            if(!res->Otherids)
-                res->Otherids = ajListNew();
+            if(!res->Idalt)
+                res->Idalt = ajListstrNew();
             tmpstr = ajStrNewS(rest);
-            ajListPushAppend(res->Otherids, tmpstr);
+            ajListPushAppend(res->Idalt, tmpstr);
             tmpstr = NULL;
             idkey = ajStrNewS(rest);
             ajTablePut(resourceIdTable, idkey, res);
-        }   
+        }
+        else if(ajStrMatchC(token, "Acc"))
+        {
+            if(ajStrMatchC(rest, "None"))
+                continue;
+            res->Acc = ajStrNewS(rest);
+            acckey = ajStrNewS(rest);
+            ajTablePut(resourceAccTable, acckey, res);
+        }
         else  if(ajStrMatchC(token, "Name"))
         {
             if(ajStrGetLen(res->Name))
-                resourceWarn(dbfile, linecnt,
+                resourceWarn(resfile, linecnt,
                              "duplicate tag Name");
             else
                 res->Name = ajStrNewS(rest);
@@ -159,71 +178,87 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
         else  if(ajStrMatchC(token, "Desc"))
         {
             if(ajStrGetLen(res->Desc))
-                resourceWarn(dbfile, linecnt,
+                resourceWarn(resfile, linecnt,
                              "duplicate tag Desc");
             else
                 res->Desc = ajStrNewS(rest);
         }   
-        else  if(ajStrMatchC(token, "Server"))
+        else  if(ajStrMatchC(token, "URL"))
         {
-            if(ajStrGetLen(res->Server))
-                resourceWarn(dbfile, linecnt,
-                             "duplicate tag Server");
+            if(ajStrGetLen(res->Url))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag URL");
             else
-                res->Server = ajStrNewS(rest);
+                res->Url = ajStrNewS(rest);
         }   
-        else  if(ajStrMatchC(token, "Category"))
+        else  if(ajStrMatchC(token, "Cat"))
         {
-            if(ajStrGetLen(res->Category))
-                resourceWarn(dbfile, linecnt,
+            if(ajStrGetLen(res->Cat))
+                resourceWarn(resfile, linecnt,
                              "duplicate tag Cat");
             else
-                res->Category = ajStrNewS(rest);
+                res->Cat = ajStrNewS(rest);
         }   
-        else  if(ajStrMatchC(token, "EDAM"))
+        else  if(ajStrMatchC(token, "EDAMres"))
         {
-            if(!res->Edamrefs)
-                res->Edamrefs = ajListNew();
+            if(!res->Edamres)
+                res->Edamres = ajListstrNew();
             tmpstr = ajStrNewS(rest);
-            ajListPushAppend(res->Edamrefs, tmpstr);
+            ajListPushAppend(res->Edamres, tmpstr);
+            tmpstr = NULL;
+        }
+        else  if(ajStrMatchC(token, "EDAMdat"))
+        {
+            if(!res->Edamdat)
+                res->Edamdat = ajListstrNew();
+            tmpstr = ajStrNewS(rest);
+            ajListPushAppend(res->Edamdat, tmpstr);
+            tmpstr = NULL;
+        }
+        else  if(ajStrMatchC(token, "EDAMid"))
+        {
+            if(!res->Edamid)
+                res->Edamid = ajListstrNew();
+            tmpstr = ajStrNewS(rest);
+            ajListPushAppend(res->Edamid, tmpstr);
+            tmpstr = NULL;
+        }
+        else  if(ajStrMatchC(token, "EDAMfmt"))
+        {
+            if(!res->Edamfmt)
+                res->Edamfmt = ajListstrNew();
+            tmpstr = ajStrNewS(rest);
+            ajListPushAppend(res->Edamfmt, tmpstr);
             tmpstr = NULL;
         }   
-        else  if(ajStrMatchC(token, "Link"))
+        else  if(ajStrMatchC(token, "Xref"))
         {
-            if(!res->Links)
-                res->Links = ajListNew();
+            if(!res->Xref)
+                res->Xref = ajListstrNew();
             tmpstr = ajStrNewS(rest);
-            ajListPushAppend(res->Links, tmpstr);
+            ajListPushAppend(res->Xref, tmpstr);
             tmpstr = NULL;
-        }   
-        else  if(ajStrMatchC(token, "LinkNB"))
-        {
-            if(ajStrGetLen(res->Linknote))
-                resourceWarn(dbfile, linecnt,
-                             "duplicate tag LinkNB");
-            else
-                res->Linknote = ajStrNewS(rest);
         }   
         else  if(ajStrMatchC(token, "Query"))
         {
-            if(!res->Queries)
-                res->Queries = ajListNew();
+            if(!res->Query)
+                res->Query = ajListstrNew();
             tmpstr = ajStrNewS(rest);
-            ajListPushAppend(res->Queries, tmpstr);
+            ajListPushAppend(res->Query, tmpstr);
             tmpstr = NULL;
         }   
         else  if(ajStrMatchC(token, "Example"))
         {
-            if(!res->Examples)
-                res->Examples = ajListNew();
+            if(!res->Example)
+                res->Example = ajListstrNew();
             tmpstr = ajStrNewS(rest);
-            ajListPushAppend(res->Examples, tmpstr);
+            ajListPushAppend(res->Example, tmpstr);
             tmpstr = NULL;
         }   
         else  if(ajStrMatchC(token, "Contact"))
         {
             if(ajStrGetLen(res->Contact))
-                resourceWarn(dbfile, linecnt,
+                resourceWarn(resfile, linecnt,
                              "duplicate tag Contact");
             else
                 res->Contact = ajStrNewS(rest);
@@ -231,18 +266,50 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
         else  if(ajStrMatchC(token, "Email"))
         {
             if(ajStrGetLen(res->Email))
-                resourceWarn(dbfile, linecnt,
+                resourceWarn(resfile, linecnt,
                              "duplicate tag Email");
             else
                 res->Email = ajStrNewS(rest);
         }   
-        else  if(ajStrMatchC(token, "Note"))
+        else  if(ajStrMatchC(token, "CCxref"))
         {
-            if(ajStrGetLen(res->Notes))
-                resourceWarn(dbfile, linecnt,
-                             "duplicate tag Note");
+            if(ajStrGetLen(res->CCxref))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag CCxref");
             else
-                res->Notes = ajStrNewS(rest);
+                res->CCxref = ajStrNewS(rest);
+        }
+        else  if(ajStrMatchC(token, "CCmisc"))
+        {
+            if(ajStrGetLen(res->CCmisc))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag CCmisc");
+            else
+                res->CCmisc = ajStrNewS(rest);
+        }
+                else  if(ajStrMatchC(token, "CClink"))
+        {
+            if(ajStrGetLen(res->CClink))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag CClink");
+            else
+                res->CClink = ajStrNewS(rest);
+        }
+                else  if(ajStrMatchC(token, "CCrest"))
+        {
+            if(ajStrGetLen(res->CCrest))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag CCrest");
+            else
+                res->CCrest = ajStrNewS(rest);
+        }
+                else  if(ajStrMatchC(token, "CCsoap"))
+        {
+            if(ajStrGetLen(res->CCsoap))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag CCsoap");
+            else
+                res->CCsoap = ajStrNewS(rest);
         }   
         else  if(ajStrMatchC(token, "Status"))
         {
@@ -251,11 +318,11 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
                   !ajStrMatchC(rest, resourceStatus[j]))
                 j++;
             if(!resourceStatus[j])
-                resourceWarn(dbfile, linecnt,
+                resourceWarn(resfile, linecnt,
                              "unknown Status '%S'", rest);
 
             if(ajStrGetLen(res->Status))
-                resourceWarn(dbfile, linecnt,
+                resourceWarn(resfile, linecnt,
                              "duplicate tag Desc");
             else
                 res->Status = ajStrNewS(rest);
@@ -272,7 +339,7 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
 **
 ** Formatted write as an error message.
 **
-** @param [r] obofile [const AjPFile] Input OBO file
+** @param [r] resfile [const AjPFile] Input resource file
 ** @param [r] linecnt [ajuint] Current line number
 ** @param [r] fmt [const char*] Format string
 ** @param [v] [...] Format arguments.
@@ -280,7 +347,7 @@ void ajResourceParse(AjPFile dbfile, const char* validations)
 ** @@
 ******************************************************************************/
 
-static void resourceWarn(const AjPFile obofile, ajuint linecnt,
+static void resourceWarn(const AjPFile resfile, ajuint linecnt,
                          const char* fmt, ...)
 {
     va_list args;
@@ -292,7 +359,7 @@ static void resourceWarn(const AjPFile obofile, ajuint linecnt,
     ajFmtVPrintS(&errstr, fmt, args);
     va_end(args) ;
 
-    ajWarn("File %F line %u: %S", obofile, linecnt, errstr);
+    ajWarn("File %F line %u: %S", resfile, linecnt, errstr);
     ajStrDel(&errstr);
 
     return;
@@ -301,3 +368,191 @@ static void resourceWarn(const AjPFile obofile, ajuint linecnt,
 
 
 
+/* @func ajResourceNew ******************************************************
+**
+** Default constructor for Resource object (AjPResource)
+**
+** @return [AjPResource]  New Resource object.
+**
+******************************************************************************/
+
+AjPResource ajResourceNew(void)
+{
+    AjPResource ret = NULL;
+
+    AJNEW0(ret);
+
+    ret->Id       = ajStrNew();
+    ret->Idalt    = ajListstrNew();
+    ret->Acc      = ajStrNew();
+    ret->Name     = ajStrNew();
+    ret->Desc     = ajStrNew();
+    ret->Url      = ajStrNew();
+    ret->Cat      = ajStrNew();
+    ret->Edamres  = ajListstrNew();
+    ret->Edamdat  = ajListstrNew();
+    ret->Edamid   = ajListstrNew();
+    ret->Edamfmt  = ajListstrNew();
+    ret->Xref    = ajListstrNew();
+    ret->Query  = ajListstrNew();
+    ret->Example = ajListstrNew();
+    ret->Contact  = ajStrNew();
+    ret->Email    = ajStrNew();
+    ret->CCxref    = ajStrNew();
+    ret->CCmisc    = ajStrNew();
+    ret->CClink    = ajStrNew();
+    ret->CCrest    = ajStrNew();
+    ret->CCsoap    = ajStrNew();
+    ret->Status   = ajStrNew();
+    
+    return ret;
+}
+
+
+
+/* @func ajResourceDel ********************************************************
+**
+** Default constructor for resource object (AjPResource)
+** 
+** @param [r] resource [AjPResource *] Handle on resource object
+**
+** @return [void]
+**
+******************************************************************************/
+
+void ajResourceDel(AjPResource *resource)
+{
+    AjPResource  thys;
+
+    if(!resource)
+        return;
+
+    if(!*resource)
+        return;
+
+    thys = *resource;
+
+    ajStrDel(&thys->Id);
+    ajListstrFreeData(&thys->Idalt);
+    ajStrDel(&thys->Acc);
+    ajStrDel(&thys->Name);
+    ajStrDel(&thys->Desc);
+    ajStrDel(&thys->Url);
+    ajStrDel(&thys->Cat);
+    ajListstrFreeData(&thys->Edamres);
+    ajListstrFreeData(&thys->Edamdat);
+    ajListstrFreeData(&thys->Edamid);
+    ajListstrFreeData(&thys->Edamfmt);
+    ajListstrFreeData(&thys->Xref);
+    ajListstrFreeData(&thys->Query);
+    ajListstrFreeData(&thys->Example);
+    ajStrDel(&thys->Contact);
+    ajStrDel(&thys->Email);
+    ajStrDel(&thys->CCxref);
+    ajStrDel(&thys->CCmisc);
+    ajStrDel(&thys->CClink);
+    ajStrDel(&thys->CCrest);
+    ajStrDel(&thys->CCsoap);
+    ajStrDel(&thys->Status);
+
+    return;
+}
+
+    
+/* @funcstatic resourceWrite *************************************************
+**
+** Write resource object to file in EMBOSS db.dat format.
+**
+** All elements / fields are written.
+**
+** @param [r] resource [AjPResource] Resource object
+** @param [w] resfile [AjPFile] Output resource file
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajResourceWrite(AjPResource resource, const AjPFile resfile)
+{
+    AjPStr  tmpstr  = NULL;
+    AjIList iter    = NULL;
+        
+    if(!resfile)
+    {
+        ajWarn("NULL file passed to resourceWrite in ajresource.c");
+        return;
+    }
+
+    ajFmtPrintF(resfile, "%-8s%S", "ID", resource->Id);
+
+    iter = ajListIterNew(resource->Idalt);
+    while((tmpstr = ajListstrIterGet(iter)))
+        ajFmtPrintF(resfile, "%-8s%S", "IDalt", tmpstr);
+    ajListIterDel(&iter);
+
+    ajFmtPrintF(resfile, "%-8s%S", "Acc", resource->Acc);
+    ajFmtPrintF(resfile, "%-8s%S", "Name", resource->Name);
+    ajFmtPrintF(resfile, "%-8s%S", "Desc", resource->Desc);
+    ajFmtPrintF(resfile, "%-8s%S", "URL", resource->Url);
+    ajFmtPrintF(resfile, "%-8s%S", "Cat", resource->Cat);
+
+    iter = ajListIterNew(resource->Edamres);
+    while((tmpstr = ajListstrIterGet(iter)))
+        ajFmtPrintF(resfile, "%-8s%S", "EDAMres", tmpstr);
+    ajListIterDel(&iter);
+    
+    iter = ajListIterNew(resource->Edamdat);
+    while((tmpstr = ajListstrIterGet(iter)))
+        ajFmtPrintF(resfile, "%-8s%S", "EDAMdat", tmpstr);
+    ajListIterDel(&iter);
+
+    iter = ajListIterNew(resource->Edamid);
+    while((tmpstr = ajListstrIterGet(iter)))
+        ajFmtPrintF(resfile, "%-8s%S", "EDAMid", tmpstr);
+    ajListIterDel(&iter);
+    
+    iter = ajListIterNew(resource->Edamfmt);
+    while((tmpstr = ajListstrIterGet(iter)))
+        ajFmtPrintF(resfile, "%-8s%S", "EDAMfmt", tmpstr);
+    ajListIterDel(&iter);
+
+    iter = ajListIterNew(resource->Xref);
+    while((tmpstr = ajListstrIterGet(iter)))
+        ajFmtPrintF(resfile, "%-8s%S", "Xref", tmpstr);
+    ajListIterDel(&iter);
+    
+    iter = ajListIterNew(resource->Query);
+    while((tmpstr = ajListstrIterGet(iter)))
+        ajFmtPrintF(resfile, "%-8s%S", "Query", tmpstr);
+    ajListIterDel(&iter);
+
+    iter = ajListIterNew(resource->Example);
+    while((tmpstr = ajListstrIterGet(iter)))
+        ajFmtPrintF(resfile, "%-8s%S", "Example", tmpstr);
+    ajListIterDel(&iter);
+    
+    ajFmtPrintF(resfile, "%-8s%S", "Contact", resource->Contact);
+    ajFmtPrintF(resfile, "%-8s%S", "Email", resource->Email);
+    ajFmtPrintF(resfile, "%-8s%S", "CCxref", resource->CCxref);
+    ajFmtPrintF(resfile, "%-8s%S", "CCmisc", resource->CCmisc);
+    ajFmtPrintF(resfile, "%-8s%S", "CClink", resource->CClink);
+    ajFmtPrintF(resfile, "%-8s%S", "CCrest", resource->CCrest);
+    ajFmtPrintF(resfile, "%-8s%S", "CCsoap", resource->CCsoap);
+    ajFmtPrintF(resfile, "%-8s%S", "Status", resource->Status);
+
+    return;
+}
+
+
+
+
+/* @funcstatic resourceWriteSubset ********************************************
+**
+** Write resource object to file in EMBOSS db.dat format.
+**
+** Only a subset (the most important) of the elements / fields are written.
+**
+** @param [r] resource [AjPResource] Resource object
+** @param [w] resfile [AjPFile] Output resource file
+** @return [void]
+** @@
+******************************************************************************/
