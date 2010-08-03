@@ -72,7 +72,7 @@ typedef void (*Fmt_S) (const char *fmt, const char **pos, VALIST ap, int width,
 **
 ** @attr buf [char*] buffer to write
 ** @attr bp [char*] next position in buffer
-** @attr size [ajint] size of buffer from malloc
+** @attr size [size_t] size of buffer from malloc
 ** @attr fixed [AjBool] if ajTrue, cannot reallocate
 ** @@
 ******************************************************************************/
@@ -81,7 +81,7 @@ typedef struct FmtSBuf
 {
     char* buf;
     char* bp;
-    ajint size;
+    size_t size;
     AjBool fixed;
 } FmtOBuf;
 
@@ -1671,7 +1671,7 @@ AjPStr ajFmtPrintAppS(AjPStr* pthis, const char* fmt, ...)
 **
 ** @param [w] pbuf [char**] char string to be written to.
 ** @param [r] pos [ajint] position in buffer to start writing
-** @param [u] size [ajuint*] allocated size of the buffer
+** @param [u] size [size_t*] allocated size of the buffer
 ** @param [r] fmt [const char*] Format string.
 ** @param [v] ap [va_list] Variable length argument list.
 **
@@ -1680,7 +1680,7 @@ AjPStr ajFmtPrintAppS(AjPStr* pthis, const char* fmt, ...)
 ** @@
 ******************************************************************************/
 
-ajint ajFmtVfmtStrCL(char **pbuf, ajint pos, ajuint* size,
+ajint ajFmtVfmtStrCL(char **pbuf, ajint pos, size_t* size,
 		     const char* fmt, va_list ap)
 {
     FmtOBuf cl;

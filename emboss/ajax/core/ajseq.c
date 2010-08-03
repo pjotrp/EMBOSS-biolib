@@ -4884,7 +4884,7 @@ ajuint ajSeqCountGaps(const AjPSeq seq)
 
     while(*testgap)
     {
-	ret += ajStrCalcCountK(seq->Seq, *testgap);
+      ret += (ajuint) ajStrCalcCountK(seq->Seq, *testgap);
 	testgap++;
     }
 
@@ -11080,7 +11080,7 @@ ajuint ajSeqstrCountGaps(const AjPStr seq)
 
     while(*testgap)
     {
-	ret += ajStrCalcCountK(seq, *testgap);
+      ret += (ajuint) ajStrCalcCountK(seq, *testgap);
 	testgap++;
     }
 

@@ -1068,8 +1068,8 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 
 		ajStrExchangeCC(&tmpstr, ".", "-");
 		icnt = ajStrGetLen(tmpstr)
-		    - ajStrCalcCountK(tmpstr, '-')
-			- ajStrCalcCountK(tmpstr, ' ');
+		  - (size_t) ajStrCalcCountK(tmpstr, '-')
+		  - (size_t) ajStrCalcCountK(tmpstr, ' ');
 
 		/* number the top sequence */
 		if (!iseq)
@@ -1210,8 +1210,8 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 
 	    ajStrExchangeCC(&tmpstr, ".", "-");
 	    icnt = ajStrGetLen(tmpstr)
-		- ajStrCalcCountK(tmpstr, '-')
-		    - ajStrCalcCountK(tmpstr, ' ');
+	      - (size_t) ajStrCalcCountK(tmpstr, '-')
+	      - (size_t) ajStrCalcCountK(tmpstr, ' ');
 
 	    if(!iseq)
 		ajStrAssignS(&mrkstr, tmpstr);
@@ -1477,8 +1477,8 @@ static void alignWriteSimple(AjPAlign thys)
 		
 		ajStrExchangeCC(&tmpstr, ".", "-");
 		icnt = incs[iseq] * (ajStrGetLen(tmpstr)
-				     - ajStrCalcCountK(tmpstr, '-')
-				     - ajStrCalcCountK(tmpstr, ' '));
+				     - (size_t)ajStrCalcCountK(tmpstr, '-')
+				     - (size_t)ajStrCalcCountK(tmpstr, ' '));
 		
 		if(!iseq)
 		    ajStrAssignS(&mrkstr, tmpstr);
@@ -1919,8 +1919,8 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 
 		ajStrExchangeCC(&tmpstr, ".", "-");
 		icnt = incs[iseq] * (ajStrGetLen(tmpstr)
-				     - ajStrCalcCountK(tmpstr, '-')
-				     - ajStrCalcCountK(tmpstr, ' '));
+				     - (size_t)ajStrCalcCountK(tmpstr, '-')
+				     - (size_t)ajStrCalcCountK(tmpstr, ' '));
 
 		if(!iseq)
 		    ajStrAssignS(&mrkstr, tmpstr);

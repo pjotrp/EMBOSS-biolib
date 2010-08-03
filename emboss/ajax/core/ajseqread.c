@@ -8768,7 +8768,7 @@ static AjBool seqReadBiomart(AjPSeq thys, AjPSeqin seqin)
     AjPFilebuff buff;
     AjPStrTok handle = NULL;
     AjBool ok = ajTrue;
-    ajuint ifields = 0;
+    ajulong ifields = 0;
     ajuint i;
 
     buff = seqin->Filebuff;
