@@ -518,19 +518,22 @@ typedef struct AjSSeqin {
 ** @attr Query [AjBool] Supports retrieval of selected entries
 ** @attr All [AjBool] Supports retrieval of all entries
 ** @attr Chunked [AjBool] Supports retrieval of entries in chunks
+** @attr Padding [AjBool] Pad to alignment boundary
 ** @@
 ******************************************************************************/
 
-typedef struct AjSSeqAccess {
-  const char *Name;
-  AjBool (*Access) (AjPSeqin seqin);
-  AjBool (*AccessFree) (void* qry);
-  const char* Desc;
-  AjBool Alias;
-  AjBool Entry;
-  AjBool Query;
-  AjBool All;
-  AjBool Chunked;
+typedef struct AjSSeqAccess
+{
+    const char *Name;
+    AjBool (*Access) (AjPSeqin seqin);
+    AjBool (*AccessFree) (void* qry);
+    const char* Desc;
+    AjBool Alias;
+    AjBool Entry;
+    AjBool Query;
+    AjBool All;
+    AjBool Chunked;
+    AjBool Padding;
 } AjOSeqAccess;
 
 #define AjPSeqAccess AjOSeqAccess*
