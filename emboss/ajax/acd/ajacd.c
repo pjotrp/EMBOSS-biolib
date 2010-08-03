@@ -3484,7 +3484,7 @@ void ajAcdInitPV(const char *pgm, ajint argc, char * const argv[],
     ajint *k = NULL;
     ajint *kc = NULL;
     ajuint *kp = NULL;
-    ajuint pos;
+    size_t pos;
 
     acdProgram = ajStrNewC(pgm);
 
