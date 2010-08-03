@@ -26,6 +26,9 @@ extern "C"
 ** @attr Name [AjPStr]     Name, usually the ID in full
 ** @attr Desc [AjPStr]     Description
 ** @attr Url [AjPStr]      Resource web server
+** @attr Urllink [AjPStr]  URL on linking instructions.
+** @attr Urlrest [AjPStr]  URL of documentation on REST interface
+** @attr Urlsoap [AjPStr]  URL of documentation on SOAP interface
 ** @attr Cat [AjPStr]      Database category (from dbxref.txt)
 ** @attr Edamres [AjPList] EDAM ontology references for the data resource
 ** @attr Edamdat [AjPList] EDAM ontology references (retrievable data)
@@ -38,7 +41,6 @@ extern "C"
 ** @attr Email [AjPStr]    Resource contact email address
 ** @attr CCxref [AjPStr]   Notes on "Xref" field.
 ** @attr CCmisc [AjPStr]   Miscellaneous comments.
-** @attr CClink [AjPStr]   URL / comments on linking instructions.
 ** @attr CCrest [AjPStr]   Comment on RESTful interface.
 ** @attr CCsoap [AjPStr]   Comments on SOAP-based interface.
 ** @attr Status [AjPStr]   Status of resource (controlled vocabulary)
@@ -53,6 +55,9 @@ typedef struct AjSResource
     AjPStr  Name;
     AjPStr  Desc;
     AjPStr  Url;
+    AjPStr  Urllink;
+    AjPStr  Urlrest;
+    AjPStr  Urlsoap;
     AjPStr  Cat;
     AjPList Edamres;
     AjPList Edamdat;
@@ -65,7 +70,6 @@ typedef struct AjSResource
     AjPStr  Email;
     AjPStr  CCxref;
     AjPStr  CCmisc;
-    AjPStr  CClink;
     AjPStr  CCrest;
     AjPStr  CCsoap;
     AjPStr  Status;
@@ -82,7 +86,9 @@ typedef struct AjSResource
     void         ajResourceParse(AjPFile resfile, const char* validations);
     AjPResource  ajResourceNew(void);
     void         ajResourceDel(AjPResource *resource);
-    void         ajResourceWrite(AjPResource resource, const AjPFile resfile);
+    void         ajResourceWriteAll(AjPResource resource, AjPFile resfile);
+    void         ajResourceWriteBasic(AjPResource resource, AjPFile resfile);
+    void         ajResourceWriteBasicws(AjPResource resource, AjPFile resfile);
     /*
 ** End of prototype definitions
 */

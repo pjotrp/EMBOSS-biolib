@@ -4,8 +4,8 @@
 ** @author Copyright (C) 2010 Peter Rice
 ** @version 1.0
 ** @modified Jun 10 pmr First version
-** @modified July 27 Jon Second version (Added ajResourceNew, ajResourceDel,
-** ajResourceWrite.  Changed calls of ajListNew to ajListstrNew.)
+** @modified July 27 Jon Second version (Major refactor (for new dbxref.dat
+** plus added ajResourceNew, ajResourceDel, ajResourceWrite.)
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -65,6 +65,9 @@ const char* resourceTags[] = {
     "Name",
     "Desc",
     "URL",
+    "URLlink",
+    "URLrest",
+    "URLsoap",
     "Cat",
     "EDAMres",
     "EDAMdat",
@@ -77,7 +80,6 @@ const char* resourceTags[] = {
     "Email",
     "CCxref",
     "CCmisc",
-    "CClink",
     "CCrest",
     "CCsoap", 
     "Status",
@@ -190,6 +192,30 @@ void ajResourceParse(AjPFile resfile, const char* validations)
                              "duplicate tag URL");
             else
                 res->Url = ajStrNewS(rest);
+        }
+        else  if(ajStrMatchC(token, "URLlink"))
+        {
+            if(ajStrGetLen(res->Urllink))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag Urllink");
+            else
+                res->Urllink = ajStrNewS(rest);
+        }
+        else  if(ajStrMatchC(token, "URLrest"))
+        {
+            if(ajStrGetLen(res->Urlrest))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag URLrest");
+            else
+                res->Urlrest = ajStrNewS(rest);
+        }
+        else  if(ajStrMatchC(token, "URLsoap"))
+        {
+            if(ajStrGetLen(res->Urlsoap))
+                resourceWarn(resfile, linecnt,
+                             "duplicate tag URLsoap");
+            else
+                res->Urlsoap = ajStrNewS(rest);
         }   
         else  if(ajStrMatchC(token, "Cat"))
         {
@@ -287,14 +313,6 @@ void ajResourceParse(AjPFile resfile, const char* validations)
             else
                 res->CCmisc = ajStrNewS(rest);
         }
-                else  if(ajStrMatchC(token, "CClink"))
-        {
-            if(ajStrGetLen(res->CClink))
-                resourceWarn(resfile, linecnt,
-                             "duplicate tag CClink");
-            else
-                res->CClink = ajStrNewS(rest);
-        }
                 else  if(ajStrMatchC(token, "CCrest"))
         {
             if(ajStrGetLen(res->CCrest))
@@ -388,6 +406,9 @@ AjPResource ajResourceNew(void)
     ret->Name     = ajStrNew();
     ret->Desc     = ajStrNew();
     ret->Url      = ajStrNew();
+    ret->Urllink  = ajStrNew();
+    ret->Urlrest  = ajStrNew();
+    ret->Urlsoap  = ajStrNew();
     ret->Cat      = ajStrNew();
     ret->Edamres  = ajListstrNew();
     ret->Edamdat  = ajListstrNew();
@@ -400,7 +421,6 @@ AjPResource ajResourceNew(void)
     ret->Email    = ajStrNew();
     ret->CCxref    = ajStrNew();
     ret->CCmisc    = ajStrNew();
-    ret->CClink    = ajStrNew();
     ret->CCrest    = ajStrNew();
     ret->CCsoap    = ajStrNew();
     ret->Status   = ajStrNew();
@@ -438,6 +458,9 @@ void ajResourceDel(AjPResource *resource)
     ajStrDel(&thys->Name);
     ajStrDel(&thys->Desc);
     ajStrDel(&thys->Url);
+    ajStrDel(&thys->Urllink);
+    ajStrDel(&thys->Urlrest);
+    ajStrDel(&thys->Urlsoap);
     ajStrDel(&thys->Cat);
     ajListstrFreeData(&thys->Edamres);
     ajListstrFreeData(&thys->Edamdat);
@@ -450,7 +473,6 @@ void ajResourceDel(AjPResource *resource)
     ajStrDel(&thys->Email);
     ajStrDel(&thys->CCxref);
     ajStrDel(&thys->CCmisc);
-    ajStrDel(&thys->CClink);
     ajStrDel(&thys->CCrest);
     ajStrDel(&thys->CCsoap);
     ajStrDel(&thys->Status);
@@ -459,7 +481,7 @@ void ajResourceDel(AjPResource *resource)
 }
 
     
-/* @funcstatic resourceWrite *************************************************
+/* @func resourceWriteAll ***********************************************
 **
 ** Write resource object to file in EMBOSS db.dat format.
 **
@@ -471,14 +493,14 @@ void ajResourceDel(AjPResource *resource)
 ** @@
 ******************************************************************************/
 
-void ajResourceWrite(AjPResource resource, const AjPFile resfile)
+void ajResourceWriteAll(AjPResource resource, AjPFile resfile)
 {
     AjPStr  tmpstr  = NULL;
     AjIList iter    = NULL;
         
     if(!resfile)
     {
-        ajWarn("NULL file passed to resourceWrite in ajresource.c");
+        ajWarn("NULL file passed to resourceWriteAll in ajresource.c");
         return;
     }
 
@@ -493,6 +515,9 @@ void ajResourceWrite(AjPResource resource, const AjPFile resfile)
     ajFmtPrintF(resfile, "%-8s%S", "Name", resource->Name);
     ajFmtPrintF(resfile, "%-8s%S", "Desc", resource->Desc);
     ajFmtPrintF(resfile, "%-8s%S", "URL", resource->Url);
+    ajFmtPrintF(resfile, "%-8s%S", "URLlink", resource->Urllink);
+    ajFmtPrintF(resfile, "%-8s%S", "URLrest", resource->Urlrest);
+    ajFmtPrintF(resfile, "%-8s%S", "URLsoap", resource->Urlsoap);
     ajFmtPrintF(resfile, "%-8s%S", "Cat", resource->Cat);
 
     iter = ajListIterNew(resource->Edamres);
@@ -534,7 +559,6 @@ void ajResourceWrite(AjPResource resource, const AjPFile resfile)
     ajFmtPrintF(resfile, "%-8s%S", "Email", resource->Email);
     ajFmtPrintF(resfile, "%-8s%S", "CCxref", resource->CCxref);
     ajFmtPrintF(resfile, "%-8s%S", "CCmisc", resource->CCmisc);
-    ajFmtPrintF(resfile, "%-8s%S", "CClink", resource->CClink);
     ajFmtPrintF(resfile, "%-8s%S", "CCrest", resource->CCrest);
     ajFmtPrintF(resfile, "%-8s%S", "CCsoap", resource->CCsoap);
     ajFmtPrintF(resfile, "%-8s%S", "Status", resource->Status);
@@ -545,14 +569,40 @@ void ajResourceWrite(AjPResource resource, const AjPFile resfile)
 
 
 
-/* @funcstatic resourceWriteSubset ********************************************
+/* @func ajResourceWriteBasic *********************************************
 **
 ** Write resource object to file in EMBOSS db.dat format.
 **
-** Only a subset (the most important) of the elements / fields are written.
+** Only the most important elements / fields are written:
+** Recommended or official unique identifier ('ID')
+** The full (verbose english) name ('Name')
+** URL of the database server ('URL')
 **
 ** @param [r] resource [AjPResource] Resource object
 ** @param [w] resfile [AjPFile] Output resource file
 ** @return [void]
 ** @@
 ******************************************************************************/
+
+
+/* @func ajResourceWriteBasicws *******************************************
+**
+** Write resource object to file in EMBOSS db.dat format.
+**
+** The same as ajResourceWriteBasic, the following fields / elements are written:
+** Recommended or official unique identifier ('ID')
+** The full (verbose english) name ('Name')
+** URL of the database server ('URL')
+**
+** It also writes:
+** URL of documentation on SOAP-based interfaces ('URLsoap')
+** URL of documentation on REST-based interfaces ('URLrest')
+** 
+** @param [r] resource [AjPResource] Resource object
+** @param [w] resfile [AjPFile] Output resource file
+** @return [void]
+** @@
+******************************************************************************/
+
+
+
