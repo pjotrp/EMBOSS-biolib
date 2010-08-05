@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 aclocal -I m4
+autoheader
 autoconf
 automake -a
 ./configure --enable-warnings --disable-shared --enable-debug
