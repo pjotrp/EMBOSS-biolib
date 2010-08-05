@@ -10,12 +10,13 @@
 
 /* alistat_main.c
  * Fri Jan 27 10:41:41 1995
- * RCS $Id: oalistat.c,v 1.8 2009/12/01 14:42:44 rice Exp $
+ * RCS $Id: oalistat.c,v 1.9 2010/08/05 09:22:40 ajb Exp $
  * 
  * Look at an alignment file, determine some simple statistics.
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <string.h>

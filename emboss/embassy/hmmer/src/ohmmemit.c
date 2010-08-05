@@ -12,11 +12,12 @@
  * SRE, Sun Mar  8 14:11:24 1998 [St. Louis]
  * 
  * main() for generating sequences from an HMM
- * RCS $Id: ohmmemit.c,v 1.8 2009/12/01 14:42:44 rice Exp $
+ * RCS $Id: ohmmemit.c,v 1.9 2010/08/05 09:22:40 ajb Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

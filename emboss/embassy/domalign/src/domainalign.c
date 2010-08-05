@@ -45,6 +45,7 @@
 
 
 
+#include "embconf.h"
 #include "emboss.h"
 #define MODE_STAMP    1
 #define MODE_TCOFFEE  2

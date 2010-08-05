@@ -5,11 +5,18 @@
 ## then uncomment the following line.
 #CC=cc
 
-AC_INIT(ajax/core/ajmath.c)
-AM_INIT_AUTOMAKE([EMBOSS],[6.3.1])
+AC_PREREQ([2.59])
+
+AC_INIT([EMBOSS], [6.3.1], [emboss-bug@emboss.open-bio.org], [emboss],
+        [http://emboss.sourceforge.net/])
+AC_REVISION([$Revision: 1.131 $])
+AC_CONFIG_HEADERS([ajax/core/embossconf.h])
+AC_CONFIG_SRCDIR([ajax/core/ajmath.c])
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE([EMBOSS], [6.3.1])
 
 # Make sure CFLAGS is defined to stop LT_INIT adding -g
-CFLAGS="$CFLAGS "
+CFLAGS="$CFLAGS -DEMBOSSMAIN"
 
 # Use libtool to make a shared library.
 LT_INIT
@@ -51,10 +58,10 @@ enable_64=no
 fi
 
 
-AC_ARG_ENABLE(64,
-   AS_HELP_STRING([--enable-64], [64 bit pointers]))
+AC_ARG_ENABLE([64],
+   [AS_HELP_STRING([--enable-64], [64 bit pointers])])
 if test "${enable_64}" = "yes" ; then
-AC_MSG_CHECKING(for 64bit compilation support)
+AC_MSG_CHECKING([for 64bit compilation support])
 
 dnl Test for Linux 64 bit
 
@@ -105,7 +112,7 @@ fi
 CPPFLAGS="-DAJ_HPUX64 $CPPFLAGS"
 fi
 
-AC_MSG_RESULT(done)
+AC_MSG_RESULT([done])
 fi
 
 
@@ -222,11 +229,11 @@ PCRE_POSIXLIB_VERSION=0:0:0
 
 
 dnl Define where the EMBOSS package is located
-AC_SUBST(AJAX_FIXED_ROOT)
+AC_SUBST([AJAX_FIXED_ROOT])
 AJAX_FIXED_ROOT="\\\"`pwd`/emboss\\\""
-AC_SUBST(EMBOSS_TOP)
+AC_SUBST([EMBOSS_TOP])
 EMBOSS_TOP=`pwd`
-AC_SUBST(AJAX_SYSTEM)
+AC_SUBST([AJAX_SYSTEM])
 AJAX_SYSTEM="\\\"`uname`\\\""
 
 
@@ -285,7 +292,7 @@ AC_FUNC_VPRINTF
 #as# AC_FUNC_REALLOC
 #as# AC_FUNC_STRTOD
 
-AC_CHECK_FUNCS(memmove)
+AC_CHECK_FUNCS([memmove])
 #as# AC_CHECK_FUNCS([alarm atexit bzero dup2 floor \
 #as# 		getcwd gethostbyname getspnam gettimeofday inet_ntoa \
 #as# 		localtime_r memmove memset mkdir modf pow regcomp rint \
@@ -331,39 +338,24 @@ dnl Check for 'ant' for packaging Jemboss and export result
 AC_CHECK_PROG(javac_in_path,javac,true,false)
 AC_CHECK_PROG(ant_in_path,ant,true,false)
 AM_CONDITIONAL(EHAVEANT, test "$ant_in_path" = "true" && "$javac_in_path" = "true")
-AC_SUBST(EHAVEANT)
+AC_SUBST([EHAVEANT])
 
 dnl "Export" these variables for PCRE
 
-AC_SUBST(HAVE_MEMMOVE)
-AC_SUBST(HAVE_STRERROR)
-AC_SUBST(PCRE_MAJOR)
-AC_SUBST(PCRE_MINOR)
-AC_SUBST(PCRE_DATE)
-AC_SUBST(PCRE_VERSION)
-AC_SUBST(PCRE_LIB_VERSION)
-AC_SUBST(PCRE_POSIXLIB_VERSION)
-AC_SUBST(POSIX_MALLOC_THRESHOLD)
+AC_SUBST([HAVE_MEMMOVE])
+AC_SUBST([HAVE_STRERROR])
+AC_SUBST([PCRE_MAJOR])
+AC_SUBST([PCRE_MINOR])
+AC_SUBST([PCRE_DATE])
+AC_SUBST([PCRE_VERSION])
+AC_SUBST([PCRE_LIB_VERSION])
+AC_SUBST([PCRE_POSIXLIB_VERSION])
+AC_SUBST([POSIX_MALLOC_THRESHOLD])
 
-#dnl Test if --enable-corba is given
-#AC_ARG_ENABLE(corba,
-#   AS_HELP_STRING([--enable-corba], [corba (need glib and orbit)]))
-#if test "${enable_corba}" = "yes" ; then
-#AC_MSG_CHECKING(for ORBit and glib)
-#CPPFLAGS="$CPPFLAGS -I/usr/lib/glib/include -I/usr/local/lib/glib/include"
-#
-#AC_CHECK_HEADERS(glib.h)
-#AC_CHECK_HEADERS(orb/orbit.h)
-#AC_CHECK_LIB(glib, main)
-#
-#AC_CHECK_LIB(ORBitutil, main)
-#AC_CHECK_LIB(IIOP, main)
-#AC_CHECK_LIB(ORBit, main)
-#fi
 
 dnl Test if --enable-debug given
-AC_ARG_ENABLE(debug,
-   AS_HELP_STRING([--enable-debug], [debug (-g option on compiler)]))
+AC_ARG_ENABLE([debug],
+   [AS_HELP_STRING([--enable-debug], [debug (-g option on compiler)])])
 if test "${enable_debug}" = "yes" ; then
   CFLAGS="$CFLAGS -g"
 fi          
@@ -383,10 +375,10 @@ enable_large=yes
 fi
 
 
-AC_ARG_ENABLE(large,
-   AS_HELP_STRING([--enable-large], [over 2Gb file support (default)]))
+AC_ARG_ENABLE([large],
+   [AS_HELP_STRING([--enable-large], [over 2Gb file support (default)])])
 if test "${enable_large}" = "yes" ; then
-AC_MSG_CHECKING(for large file support)
+AC_MSG_CHECKING([for large file support])
 
 dnl Test for Linux large file support
 if test "`uname`" = "Linux"; then
@@ -432,7 +424,7 @@ if test "`uname`" = "Darwin"; then
 CPPFLAGS="-DAJ_MACOSXLF $CPPFLAGS"
 fi
 
-AC_MSG_RESULT(done)
+AC_MSG_RESULT([done])
 fi
 
 
@@ -443,13 +435,13 @@ fi
 
 dnl Test if --enable-systemlibs given
 have_systemlibs=no
-AC_ARG_ENABLE(systemlibs,
-   AS_HELP_STRING([--enable-systemlibs], [utility for RPM/dpkg bundles]))
+AC_ARG_ENABLE([systemlibs],
+   [AS_HELP_STRING([--enable-systemlibs], [utility for RPM/dpkg bundles])])
 if test "${enable_systemlibs}" = "yes" ; then
     have_systemlibs=yes
 fi          
 AM_CONDITIONAL(ESYSTEMLIBS, test "$have_systemlibs" = "yes")
-AC_SUBST(ESYSTEMLIBS)
+AC_SUBST([ESYSTEMLIBS])
 
 
 
@@ -458,16 +450,16 @@ AC_SUBST(ESYSTEMLIBS)
 dnl Test if purify exists and if --enable-purify given if so
 dnl set "-g"
 
-AC_MSG_CHECKING(for purify)
+AC_MSG_CHECKING([for purify])
 dnl if(purify -version) < /dev/null > /dev/null 2>&1; then
-   AC_ARG_ENABLE(purify,
-      AS_HELP_STRING([--enable-purify], [purify]))
+   AC_ARG_ENABLE([purify],
+      [AS_HELP_STRING([--enable-purify], [purify])])
 if test "${enable_purify}" = "yes" ; then
      CC="purify --chain-length="20" -best-effort -windows=yes gcc -g"
      LIBTOOL="$LIBTOOL --tag=CC"
-     AC_MSG_RESULT(yes)
+     AC_MSG_RESULT([yes])
 else
-   AC_MSG_RESULT(no)
+   AC_MSG_RESULT([no])
 fi          
 dnl fi
 
@@ -484,10 +476,10 @@ fi
 
 dnl Test if --enable-warnings given
 have_warnings=no
-AC_SUBST(WARN_CFLAGS)
-AC_ARG_ENABLE(warnings,
-   AS_HELP_STRING([--enable-warnings],
-                  [warnings (-Wall option on gcc compiler)]))
+AC_SUBST([WARN_CFLAGS])
+AC_ARG_ENABLE([warnings],
+   [AS_HELP_STRING([--enable-warnings],
+                  [warnings (-Wall option on gcc compiler)])])
 if test "${enable_warnings}" = "yes" ; then
   if test "$CC" = "gcc"; then
     have_warnings=yes
@@ -495,7 +487,7 @@ if test "${enable_warnings}" = "yes" ; then
   fi
 fi          
 AM_CONDITIONAL(WARNINGS, test "$have_warnings" = "yes")
-AC_SUBST(WARNINGS)
+AC_SUBST([WARNINGS])
 
 
 dnl Set extra needed compiler flags
@@ -519,10 +511,10 @@ AM_CONDITIONAL(ISGCC, test "$CC" = "gcc")
 
 dnl Test if --enable-devwarnings given
 have_devwarnings=no
-AC_SUBST(DEVWARN_CFLAGS)
-AC_ARG_ENABLE(devwarnings,
-   AS_HELP_STRING([--enable-devwarnings],
-                  [strict warnings (gcc compiler only) for developers]))
+AC_SUBST([DEVWARN_CFLAGS])
+AC_ARG_ENABLE([devwarnings],
+   [AS_HELP_STRING([--enable-devwarnings],
+                   [strict warnings (gcc compiler only) for developers])])
 if test "${enable_devwarnings}" = "yes" ; then
   if test "$CC" = "gcc"; then
     have_devwarnings=yes
@@ -574,9 +566,9 @@ fi
 
 dnl Test if --enable-devextrawarnings given
 dnl Will only have an effect if --enable-devwarnings also given
-AC_ARG_ENABLE(devextrawarnings,
-   AS_HELP_STRING([--enable-devextrawarnings],
-                  [add extra warnings to devwarnings]))
+AC_ARG_ENABLE([devextrawarnings],
+   [AS_HELP_STRING([--enable-devextrawarnings],
+                   [add extra warnings to devwarnings])])
 if test "${enable_devextrawarnings}" = "yes" ; then
   if test "$have_devwarnings" = "yes"; then
 
@@ -589,7 +581,7 @@ fi
 
 
 AM_CONDITIONAL(DEVWARNINGS, test "$have_devwarnings" = "yes")
-AC_SUBST(DEVWARNINGS)
+AC_SUBST([DEVWARNINGS])
 
 dnl Test for cygwin to set AM_LDFLAGS in library & apps Makefile.ams
 dnl Replaces original version which used 'expr' and so wasn't entirely
@@ -606,7 +598,7 @@ case "$host" in
 esac
 AC_MSG_RESULT([$platform_cygwin])
 AM_CONDITIONAL(ISCYGWIN, test "$platform_cygwin" = "yes")
-AC_SUBST(ISCYGWIN)
+AC_SUBST([ISCYGWIN])
 
 dnl Tests for AIX
 dnl If shared needs -Wl,-G in plplot,ajax,nucleus, -lX11 in plplot,
@@ -615,7 +607,7 @@ dnl We therefore need a static test as well
 needajax=no
 AM_CONDITIONAL(ISAIXIA64, test "`uname`" = "AIX")
 AM_CONDITIONAL(ISSHARED, test "${enable_shared}" = "yes")
-AC_SUBST(ISAIXIA64)
+AC_SUBST([ISAIXIA64])
 
 if test "`uname`" = "AIX"; then
 if test -d ajax/.libs ; then
@@ -635,7 +627,7 @@ case $host_os in
 esac
 fi
 AM_CONDITIONAL(NEEDAJAX,test "$needajax" = "yes")
-AC_SUBST(NEEDAJAX)
+AC_SUBST([NEEDAJAX])
 
 
 dnl HP-UX needs -lsec for shadow passwords
@@ -652,13 +644,13 @@ enable_mprobe=no
 fi
 
 AC_MSG_CHECKING([for mprobe])
-AC_ARG_ENABLE(mprobe,
-   AS_HELP_STRING([--enable-mprobe], [mprobe memory allocation test]))
+AC_ARG_ENABLE([mprobe],
+   [AS_HELP_STRING([--enable-mprobe], [mprobe memory allocation test])])
 if test "${enable_mprobe}" = "yes" ; then
    CPPFLAGS="-DAJ_MPROBE $CPPFLAGS"
-   AC_MSG_RESULT(yes)
+   AC_MSG_RESULT([yes])
 else
-   AC_MSG_RESULT(no)
+   AC_MSG_RESULT([no])
 fi
 
 dnl Test if --enable-savestats is given
@@ -668,41 +660,71 @@ enable_savestats=no
 fi
 
 AC_MSG_CHECKING([for savestats])
-AC_ARG_ENABLE(savestats,
-   AS_HELP_STRING([--enable-savestats],
-                  [save statistics and print with debug output]))
+AC_ARG_ENABLE([savestats],
+   [AS_HELP_STRING([--enable-savestats],
+                   [save statistics and print with debug output])])
 if test "${enable_savestats}" = "yes" ; then
    CPPFLAGS="-DAJ_SAVESTATS $CPPFLAGS"
-   AC_MSG_RESULT(yes)
+   AC_MSG_RESULT([yes])
 else
-   AC_MSG_RESULT(no)
+   AC_MSG_RESULT([no])
 fi
 
 dnl check and set compilation flags for Jemboss auth server code
 CHECK_THREADS
 
 
-AC_OUTPUT([plplot/Makefile plplot/lib/Makefile nucleus/Makefile ajax/Makefile
-ajax/pcre/Makefile ajax/expat/Makefile ajax/zlib/Makefile ajax/core/Makefile
-ajax/graphics/Makefile ajax/ensembl/Makefile ajax/ajaxdb/Makefile
+AC_CONFIG_FILES([
+plplot/Makefile
+plplot/lib/Makefile
+nucleus/Makefile
+ajax/Makefile
+ajax/pcre/Makefile
+ajax/expat/Makefile
+ajax/zlib/Makefile
+ajax/core/Makefile
+ajax/graphics/Makefile
+ajax/ensembl/Makefile
+ajax/ajaxdb/Makefile
 ajax/acd/Makefile
-emboss/Makefile emboss/acd/Makefile test/Makefile test/data/Makefile
-test/embl/Makefile test/genbank/Makefile
-test/pir/Makefile test/swiss/Makefile
-test/swnew/Makefile test/testdb/Makefile
+emboss/Makefile
+emboss/acd/Makefile
+test/Makefile
+test/data/Makefile
+test/embl/Makefile
+test/genbank/Makefile
+test/pir/Makefile
+test/swiss/Makefile
+test/swnew/Makefile
+test/testdb/Makefile
 emboss/data/Makefile
 emboss/data/AAINDEX/Makefile
-emboss/data/CODONS/Makefile emboss/data/REBASE/Makefile 
-emboss/data/JASPAR_CORE/Makefile emboss/data/JASPAR_FAM/Makefile
-emboss/data/JASPAR_PHYLOFACTS/Makefile emboss/data/JASPAR_CNE/Makefile
-emboss/data/JASPAR_POLII/Makefile emboss/data/JASPAR_SPLICE/Makefile
-emboss/data/JASPAR_PBM/Makefile emboss/data/JASPAR_PBM_HLH/Makefile
+emboss/data/CODONS/Makefile
+emboss/data/REBASE/Makefile 
+emboss/data/JASPAR_CORE/Makefile
+emboss/data/JASPAR_FAM/Makefile
+emboss/data/JASPAR_PHYLOFACTS/Makefile
+emboss/data/JASPAR_CNE/Makefile
+emboss/data/JASPAR_POLII/Makefile
+emboss/data/JASPAR_SPLICE/Makefile
+emboss/data/JASPAR_PBM/Makefile
+emboss/data/JASPAR_PBM_HLH/Makefile
 emboss/data/JASPAR_PBM_HOMEO/Makefile
-emboss/data/PRINTS/Makefile emboss/data/PROSITE/Makefile
-doc/Makefile doc/manuals/Makefile doc/tutorials/Makefile
-doc/programs/Makefile doc/programs/html/Makefile doc/programs/text/Makefile
+emboss/data/PRINTS/Makefile
+emboss/data/PROSITE/Makefile
+doc/Makefile
+doc/manuals/Makefile
+doc/tutorials/Makefile
+doc/programs/Makefile
+doc/programs/html/Makefile
+doc/programs/text/Makefile
 jemboss/Makefile
 jemboss/images/Makefile
-jemboss/lib/Makefile jemboss/lib/axis/Makefile
-jemboss/resources/Makefile jemboss/utils/Makefile
-Makefile])
+jemboss/lib/Makefile
+jemboss/lib/axis/Makefile
+jemboss/resources/Makefile
+jemboss/utils/Makefile
+Makefile
+])
+
+AC_OUTPUT

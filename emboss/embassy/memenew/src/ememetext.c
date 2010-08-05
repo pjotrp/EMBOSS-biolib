@@ -22,6 +22,7 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
+#include "embconf.h"
 #include "emboss.h"
 
 
@@ -86,7 +87,7 @@ int main(int argc, char **argv)
 
     
     /* ACD file processing */
-    embInitPV("ememetext",argc,argv,"MEMENEW",VERSION);
+    embInitPV("ememetext",argc,argv,"MEME",VERSION);
     dataset   = ajAcdGetSeqset("dataset");
     bfile     = ajAcdGetInfile("bfile");
     plib      = ajAcdGetInfile("plibfile");

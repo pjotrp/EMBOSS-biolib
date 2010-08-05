@@ -3,6 +3,7 @@
 	   Walter Fontana, Ivo L Hofacker, Peter F Stadler
 			  Vienna RNA Package
 */
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -6,6 +6,10 @@ extern "C"
 #ifndef ajdefine_h
 #define ajdefine_h
 
+#ifdef EMBOSSMAIN
+#include "embossconf.h"
+#endif
+
 #include "ajarch.h"
 
 #ifndef WIN32

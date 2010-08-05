@@ -27,6 +27,7 @@
 /* ========================== include files =========================== */
 /* ==================================================================== */
 
+#include "embconf.h"
 #include "emboss.h"
 
 /* Inclusion of system and local header files goes here */

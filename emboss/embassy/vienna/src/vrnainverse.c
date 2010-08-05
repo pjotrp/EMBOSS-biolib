@@ -5,6 +5,7 @@
 */
 /* Last changed Time-stamp: <2000-09-28 14:58:05 ivo> */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

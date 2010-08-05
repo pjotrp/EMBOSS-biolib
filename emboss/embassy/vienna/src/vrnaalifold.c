@@ -6,6 +6,7 @@
 		  Vienna RNA package
 */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +29,7 @@ extern float energy_of_circ_struct(const char *seq, const char *structure);
 extern AjBool vienna_GetConstraints(AjPFile file, AjPStr *constring);
 
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifold.c,v 1.14 2009/12/01 14:42:44 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifold.c,v 1.15 2010/08/05 09:22:41 ajb Exp $";
 
 #define PRIVATE static
 

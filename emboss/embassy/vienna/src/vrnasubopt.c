@@ -5,6 +5,8 @@
 			   c Ivo L Hofacker
 			  Vienna RNA package
 */
+
+#include "embconf.h"
 #include "emboss.h"
 #include <config.h>
 #include <stdio.h>
@@ -21,7 +23,7 @@
 extern void  read_parameter_file(AjPFile fname);
 extern int   st_back;
 
-static char UNUSED rcsid[] = "$Id: vrnasubopt.c,v 1.10 2009/12/01 14:42:44 rice Exp $";
+static char UNUSED rcsid[] = "$Id: vrnasubopt.c,v 1.11 2010/08/05 09:22:41 ajb Exp $";
 #define PRIVATE static
 
 extern double print_energy;

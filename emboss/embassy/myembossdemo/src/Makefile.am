@@ -16,8 +16,8 @@ if LOCALLINK
 INCLUDES = -I../../../nucleus -I../../../ajax/pcre \
 	$(LLINCLUDES) \
 	-I../../../ajax/core -I../../../ajax/graphics \
-	-I../../../ajax/ensembl -I../../../ajax/ajaxdb -\
-	I../../../ajax/acd -I../../../plplot
+	-I../../../ajax/ensembl -I../../../ajax/ajaxdb \
+	-I../../../ajax/acd -I../../../plplot
 else
 INCLUDES = -I${embprefix}/include -I${embprefix}/include/eplplot \
 	$(NLINCLUDES) \

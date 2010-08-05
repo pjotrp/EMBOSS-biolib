@@ -47,7 +47,8 @@ ajpat.h ajpdb.h ajpdbio.h ajphylo.h \
 ajrange.h ajreg.h ajreport.h ajresource.h \
 ajseq.h ajseqabi.h ajseqbam.h ajseqdata.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajsort.h ajsql.h ajstr.h ajsys.h \
-ajtable.h ajtax.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h
+ajtable.h ajtax.h ajtime.h ajtranslate.h ajtree.h ajutil.h ajvector.h \
+embossconf.h
 
 
 libajax_la_SOURCES = $(AJAXSRC)

@@ -12,10 +12,11 @@
  * SRE, Thu Dec 18 16:05:29 1997 [St. Louis]
  * 
  * main() for aligning a set of sequences to an HMM.
- * RCS $Id: ohmmalign.c,v 1.8 2009/12/01 14:42:44 rice Exp $
+ * RCS $Id: ohmmalign.c,v 1.9 2010/08/05 09:22:40 ajb Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */ 
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

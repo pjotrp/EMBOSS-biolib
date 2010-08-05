@@ -10,6 +10,7 @@
 	Initialize meme.
 */
 
+#include "embconf.h"
 #include "meme.h"
 #include "logs.h"
 #include "general.h"
@@ -883,4 +884,4 @@ extern void init_meme(
   *debug_file_p = debug_file;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.10 2009/12/01 14:43:00 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.11 2010/08/05 09:22:41 ajb Exp $ */

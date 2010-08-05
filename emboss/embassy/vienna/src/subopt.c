@@ -1,5 +1,8 @@
 /*
   $Log: subopt.c,v $
+  Revision 1.7  2010/08/05 09:22:41  ajb
+  Use autoheader
+
   Revision 1.6  2010/01/20 10:47:33  ajb
   Initialise tmpE
 
@@ -82,6 +85,8 @@
 
 		       Vienna RNA package
 */
+
+#include "embconf.h"
 #include <config.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -106,7 +111,7 @@
 #define SAME_STRAND(I,J) (((I)>=cut_point)||((J)<cut_point))
 
 /*@unused@*/
-PRIVATE char UNUSED rcsid[] = "$Id: subopt.c,v 1.6 2010/01/20 10:47:33 ajb Exp $";
+PRIVATE char UNUSED rcsid[] = "$Id: subopt.c,v 1.7 2010/08/05 09:22:41 ajb Exp $";
 
 /*Typedefinitions ---------------------------------------------------------- */
 

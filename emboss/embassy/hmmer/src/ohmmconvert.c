@@ -17,6 +17,7 @@
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -6,6 +6,7 @@
 		  Vienna RNA package
 */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,7 +27,7 @@ extern void init_pf_circ_fold(int length);
 
 /*@unused@*/
 #if 0
-static char UNUSED rcsid[] = "$Id: vrnafoldpf.c,v 1.10 2009/12/01 14:42:44 rice Exp $";
+static char UNUSED rcsid[] = "$Id: vrnafoldpf.c,v 1.11 2010/08/05 09:22:41 ajb Exp $";
 #endif
 
 #define PRIVATE static

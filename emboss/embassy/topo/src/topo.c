@@ -10,6 +10,7 @@ First membrane from the outside [Y]: n
 Signature Sections: 74 82 sy 189 189 hm 239 239 sa 157 157 sa 262 262 sa
 */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdlib.h>
 #include <stdio.h>

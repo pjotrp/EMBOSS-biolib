@@ -42,6 +42,7 @@
 
 
 
+#include "embconf.h"
 #include <math.h>
 
 #include "emboss.h"

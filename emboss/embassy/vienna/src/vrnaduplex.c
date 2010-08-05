@@ -6,6 +6,7 @@
 			  Vienna RNA package
 */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

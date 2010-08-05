@@ -3,6 +3,7 @@
 		  c Ivo L Hofacker, Vienna RNA package
 */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +25,7 @@ extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: vrnacofoldconc.c,v 1.12 2009/12/01 14:42:44 rice Exp $";
+static char rcsid[] = "$Id: vrnacofoldconc.c,v 1.13 2010/08/05 09:22:41 ajb Exp $";
 #endif
 
 #define PRIVATE static

@@ -14,10 +14,11 @@
  * Score an HMM against random sequence data sets;
  * set histogram fitting parameters.
  * 
- * RCS $Id: ohmmcalibrate.c,v 1.9 2009/12/01 14:42:44 rice Exp $
+ * RCS $Id: ohmmcalibrate.c,v 1.10 2010/08/05 09:22:40 ajb Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
+#include "embconf.h"
 #include "emboss.h"
 
 #include <stdio.h>

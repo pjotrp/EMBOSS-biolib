@@ -38,6 +38,7 @@
 
 
 
+#include "embconf.h"
 #include "emboss.h"
 
 

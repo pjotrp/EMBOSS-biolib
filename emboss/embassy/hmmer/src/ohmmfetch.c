@@ -14,11 +14,12 @@
  * Recover a specific HMM file from an HMM database, using
  * a GSI index (created with hmmindex).
  * 
- * RCS $Id: ohmmfetch.c,v 1.7 2009/12/01 14:42:44 rice Exp $
+ * RCS $Id: ohmmfetch.c,v 1.8 2010/08/05 09:22:40 ajb Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

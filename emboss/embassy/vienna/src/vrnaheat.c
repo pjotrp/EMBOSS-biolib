@@ -8,6 +8,7 @@
 	    calculates specific heat using C = - T d^2/dT^2 G(T)
 */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

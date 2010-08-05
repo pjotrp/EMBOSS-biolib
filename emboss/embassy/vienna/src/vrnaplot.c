@@ -3,6 +3,7 @@
   Last changed Time-stamp: <2003-09-10 13:55:01 ivo> 
 */
 
+#include "embconf.h"
 #include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>

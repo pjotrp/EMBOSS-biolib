@@ -13,20 +13,18 @@ AC_DEFUN([CHECK_HPDF],
 #
 # Handle user hints
 #
-[AC_MSG_CHECKING(whether to look for pdf support)
+[AC_MSG_CHECKING([whether to look for pdf support])
 AC_ARG_WITH([hpdf],
     [AS_HELP_STRING([--with-hpdf=DIR],
-        [root directory path of hpdf installation @<:@defaults to /usr@:>@])]
-    [AS_HELP_STRING([--without-hpdf],
-        [to disable pdf support])],
-[if test "$withval" != no ; then
-  AC_MSG_RESULT(yes)
-  ALT_HOME="$withval"
-else
-  AC_MSG_RESULT(no)
-fi], [
-AC_MSG_RESULT(yes)
-ALT_HOME=/usr
+        [root directory path of hpdf installation @<:@defaults to /usr@:>@])],
+    [if test "$withval" != no ; then
+      AC_MSG_RESULT(yes)
+      ALT_HOME="$withval"
+    else
+      AC_MSG_RESULT([no])
+    fi], [
+    AC_MSG_RESULT([yes])
+    ALT_HOME=/usr
 ])
 
 
@@ -63,7 +61,7 @@ then
 	    LDFLAGS="$LDFLAGS -R$ALT_HOME/lib"
           fi
 
-	  AC_DEFINE(PLD_pdf)
+	  AC_DEFINE([PLD_pdf], [1], [Define to 1 if PDF support is available])
 	  AM_CONDITIONAL(AMPDF, true)
 	  echo PDF support found
 	    if test $ALT_HOME = "/usr" ; then

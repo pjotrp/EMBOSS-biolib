@@ -59,6 +59,9 @@ embGrpGetProgGroups
 
 */
 
+#include "embconf.h"
+
+
 /* the name of this program */
 #define PROGRAM_NAME "emnu"
 
