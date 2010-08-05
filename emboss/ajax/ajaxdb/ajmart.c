@@ -5008,9 +5008,9 @@ AjPStr* ajMartCheckHeader(AjPSeqin seqin, AjPMartqinfo qinfo)
     AjPStr token     = NULL;
     
     
-    ajuint nfields = 0;
+    ajulong nfields = 0;
     
-    ajuint i;
+    ajulong i;
     ajuint j;
     
     mq = ajMartGetMartqueryPtr(seqin);
