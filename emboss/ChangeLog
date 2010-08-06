@@ -1,3 +1,7 @@
+Version 6.4.0 15-Jul-2011
+	Configuration now uses autoheader and has less dependency
+	on the libtool version.
+
 Version 6.3.0 15-Jul-2010
 	'ensembl' is a new access method for accessing Ensembl
 	from MySQL. Queries take the form:
