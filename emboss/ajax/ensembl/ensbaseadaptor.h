@@ -6,11 +6,45 @@ extern "C"
 #ifndef ensbaseadaptor_h
 #define ensbaseadaptor_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensassemblymapper.h"
 #include "ensdata.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+/* EnsMBaseadaptorMaximumIdentifiers ******************************************
+**
+** Limit the number of identifiers in SQL queries to chunks of maximum size.
+** Ensure that the MySQL max_allowed_packet is not exceeded, which defaults
+** to 1 MB, by splitting large queries into smaller queries of at most 256 KiB
+** (32768 8-bit characters). Assuming a (generous) average identifier string
+** length of 16, this means a maximum of 2048 identifiers in each statement.
+**
+******************************************************************************/
+
+#define EnsMBaseadaptorMaximumIdentifiers 2048
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions

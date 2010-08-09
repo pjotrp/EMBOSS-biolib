@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -33,27 +33,40 @@
 
 
 /* ==================================================================== */
-/* ======================== private functions ========================= */
+/* ============================ constants ============================= */
 /* ==================================================================== */
 
-/* Default empty SQL SELECT LEFT JOIN statement. */
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== private data ============================ */
+/* ==================================================================== */
+
+/* baseadaptorLeftJoin ********************************************************
+**
+** Default empty SQL SELECT LEFT JOIN statement.
+**
+******************************************************************************/
 
 static EnsOBaseadaptorLeftJoin baseadaptorLeftJoin[] =
 {
-    {NULL, NULL}
+    {(const char *) NULL, (const char *) NULL}
 };
 
-/*
-** Limit the number of identifiers in SQL queries to chunks of maximum size.
-** Ensure that the MySQL max_allowed_packet is not exceeded, which defaults
-** to 1 MB, by splitting large queries into smaller queries of at most 256 KB
-** (32768 8-bit characters). Assuming a (generous) average identifier string
-** length of 16, this means a maximum of 2048 identifiers in each statement.
-*/
-
-const ajuint baseadaptorFetchAllByIdentifiersMax = 2048;
 
 
+
+/* ==================================================================== */
+/* ======================== private functions ========================= */
+/* ==================================================================== */
 
 static AjBool baseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
                                                const AjPStr values,
@@ -61,6 +74,10 @@ static AjBool baseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensbaseadaptor ************************************************
 **
@@ -625,11 +642,11 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
 
     AjBool match = AJFALSE;
 
-    AjPStr columns = NULL;
-    AjPStr tables = NULL;
-    AjPStr joins = NULL;
+    AjPStr columns     = NULL;
+    AjPStr tables      = NULL;
+    AjPStr joins       = NULL;
     AjPStr parentheses = NULL;
-    AjPStr statement = NULL;
+    AjPStr statement   = NULL;
 
     if(ajDebugTest("ensBaseadaptorGenericFetch"))
         ajDebug("ensBaseadaptorGenericFetch\n"
@@ -650,12 +667,9 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
     if(!objects)
         return ajFalse;
 
-    columns = ajStrNew();
-
-    tables = ajStrNew();
-
-    joins = ajStrNew();
-
+    columns     = ajStrNew();
+    tables      = ajStrNew();
+    joins       = ajStrNew();
     parentheses = ajStrNew();
 
     /* Build the column expression. */
@@ -752,7 +766,6 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
         if(ba->DefaultCondition)
             ajFmtPrintAppS(&statement, " AND %s", ba->DefaultCondition);
     }
-
     else if(ba->DefaultCondition)
         ajFmtPrintAppS(&statement, " WHERE %s", ba->DefaultCondition);
 
@@ -762,13 +775,9 @@ AjBool ensBaseadaptorGenericFetch(const EnsPBaseadaptor ba,
     ba->Query(ba->Adaptor, statement, am, slice, objects);
 
     ajStrDel(&columns);
-
     ajStrDel(&tables);
-
     ajStrDel(&joins);
-
     ajStrDel(&parentheses);
-
     ajStrDel(&statement);
 
     return ajTrue;
@@ -975,7 +984,7 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
 
         /* Run the statement if we exceed the maximum chunk size. */
 
-        if(i >= baseadaptorFetchAllByIdentifiersMax)
+        if(!(i % EnsMBaseadaptorMaximumIdentifiers))
         {
             /* Remove the last comma and space. */
 
@@ -984,16 +993,12 @@ AjBool ensBaseadaptorFetchAllByIdentifiers(const EnsPBaseadaptor ba,
             baseadaptorFetchAllByIdentifiers(ba, values, objects);
 
             ajStrAssignClear(&values);
-
-            i = 0;
         }
     }
 
     ajListIterDel(&iter);
 
-    /* Run the final statement. */
-
-    /* Remove the last comma and space. */
+    /* Run the final statement, but remove the last comma and space first. */
 
     ajStrCutEnd(&values, 2);
 
