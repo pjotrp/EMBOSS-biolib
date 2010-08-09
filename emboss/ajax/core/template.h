@@ -40,7 +40,8 @@ extern "C"
 /* Function prototypes for public (external) functions go here */
 
 
-#endif
+#endif /* LibraryFileName_h */
+
 #ifdef __cplusplus
 }
 #endif
