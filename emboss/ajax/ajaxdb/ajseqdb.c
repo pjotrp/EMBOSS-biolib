@@ -8265,7 +8265,8 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
 
                     /* "^%S([EGTP])[0-9]{11,11}" */
 
-                    expression = ajFmtStr("^%S([EGTP])", prefix);
+                    if(prefix)
+                        expression = ajFmtStr("^%S([EGTP])", prefix);
 
                     break;
 
@@ -8275,7 +8276,8 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
 
                     /* "^OTT...([EGTP])[0-9]{11,11}" */
 
-                    expression = ajStrNewC("^OTT...([EGTP])");
+                    if(prefix)
+                        expression = ajStrNewC("^OTT...([EGTP])");
 
                     break;
 
@@ -8285,7 +8287,8 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
 
                     /* "^%SEST([EGTP])[0-9]{11,11}" */
 
-                    expression = ajFmtStr("^%SEST([EGTP])", prefix);
+                    if(prefix)
+                        expression = ajFmtStr("^%SEST([EGTP])", prefix);
 
                     break;
 
@@ -8339,7 +8342,7 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
                             "'entry'.\n");
 
                     ajListPushAppend(se->StableIdentifiers,
-                                     ajStrNewS(se->Identifier));
+                                     (void *) ajStrNewS(se->Identifier));
 
                     break;
 
@@ -8405,7 +8408,7 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
                             "'entry'.\n");
 
                     ajListPushAppend(se->StableIdentifiers,
-                                     ajStrNewS(se->Identifier));
+                                     (void *) ajStrNewS(se->Identifier));
 
                     break;
 
@@ -8465,7 +8468,7 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
                             "'entry'.\n");
 
                     ajListPushAppend(se->StableIdentifiers,
-                                     ajStrNewS(se->Identifier));
+                                     (void *) ajStrNewS(se->Identifier));
 
                     break;
 
@@ -8511,6 +8514,82 @@ static AjBool seqAccessEnsembl(AjPSeqin seqin)
             }
         }
 
+        if(!ajStrGetLen(se->ObjectType))
+        {
+            /*
+             ** An Ensembl Object type could not be established.
+             ** For AJAX Sequence Queries of type ENTRY it is possible to
+             ** test whether this is a stable identifier of any Ensembl
+             ** *Core* Object type.
+             */
+            
+            if(qry->Type == QRY_ENTRY)
+            {
+                /* Only use the Ensembl Database Adaptor of type Core. */
+                
+                se->DatabaseAdaptor = ensRegistryGetDatabaseadaptor(
+                    ensEDatabaseadaptorGroupCore,
+                    se->Species);
+                
+                /* Check if this is an Ensembl Exon. */
+                
+                ea = ensRegistryGetExonadaptor(se->DatabaseAdaptor);
+                
+                ensExonadaptorFetchByStableIdentifier(ea,
+                                                      se->Identifier,
+                                                      0,
+                                                      &exon);
+                
+                if(exon)
+                {
+                    ajListPushAppend(se->StableIdentifiers,
+                                     (void *) ajStrNewS(se->Identifier));
+                    
+                    ajStrAssignC(&se->ObjectType, "E");
+                }
+                
+                /* Check if this is an Ensembl Transcript. */
+                
+                tca = ensRegistryGetTranscriptadaptor(se->DatabaseAdaptor);
+                
+                ensTranscriptadaptorFetchByStableIdentifier(tca,
+                                                            se->Identifier,
+                                                            0,
+                                                            &transcript);
+                
+                if(transcript)
+                {
+                    ajListPushAppend(se->StableIdentifiers,
+                                     (void *) ajStrNewS(se->Identifier));
+                    
+                    ajStrAssignC(&se->ObjectType, "T");
+                }
+                
+                /* Check if this is an Ensembl Translation. */
+                
+                tla = ensRegistryGetTranslationadaptor(se->DatabaseAdaptor);
+                
+                ensTranslationadaptorFetchByStableIdentifier(tla,
+                                                             se->Identifier,
+                                                             0,
+                                                             &translation);
+                if(translation)
+                {
+                    ajListPushAppend(se->StableIdentifiers,
+                                     (void *) ajStrNewS(se->Identifier));
+                    
+                    ajStrAssignC(&se->ObjectType, "P");
+                }
+            }
+            else
+                ajWarn("Since this species does not seem to have a "
+                       "stable identifier schema defined in the 'meta' "
+                       "table or the identifier type could not be "
+                       "established, only queries for single entries can "
+                       "be matched against Exons, Transcripts or "
+                       "Transaltions.");
+        }
+        
         /* The query has finished at this stage. */
 
         qry->TotalEntries = ajListGetLength(se->StableIdentifiers);
