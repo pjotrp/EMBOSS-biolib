@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.20 $
+** @version $Revision: 1.21 $
 ** @@
 **
 ** Bio::EnsEMBL::Registry CVS Revision: 1.165
@@ -36,11 +36,22 @@
 
 
 /* ==================================================================== */
-/* ========================== private data ============================ */
+/* ============================ constants ============================= */
 /* ==================================================================== */
 
 
 
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== private data ============================ */
+/* ==================================================================== */
 
 /* @datastatic RegistryPIdentifier ********************************************
 **
@@ -223,6 +234,10 @@ typedef struct RegistrySCoreStyle
 **         Ensembl Genetic Variation Source Adaptor
 ** @attr Variationadaptor [EnsPGvvariationadaptor]
 **         Ensembl Genetic Variation Variation Adaptor
+** @attr Variationfeatureadaptor [EnsPGvvariationfeatureadaptor]
+**         Ensembl Genetic Variation Variation Feature Adaptor
+** @attr Variationsetadaptor [EnsPGvvariationsetadaptor]
+**         Ensembl Genetic Variation Variation Set Adaptor
 ** @@
 ******************************************************************************/
 
@@ -233,9 +248,12 @@ typedef struct RegistrySGeneticVariation
     EnsPGvgenotypeadaptor Genotypeadaptor;
     EnsPGvindividualadaptor Individualadaptor;
     EnsPGvpopulationadaptor Populationadaptor;
+    EnsPGvpopulationgenotypeadaptor Populationgenotypeadaptor;
     EnsPGvsampleadaptor Sampleadaptor;
     EnsPGvsourceadaptor Sourceadaptor;
     EnsPGvvariationadaptor Variationadaptor;
+    EnsPGvvariationfeatureadaptor Variationfeatureadaptor;
+    EnsPGvvariationsetadaptor Variationsetadaptor;
 } RegistryOGeneticVariation;
 
 #define RegistryPGeneticVariation RegistryOGeneticVariation*
@@ -386,17 +404,78 @@ typedef struct RegistrySEntry
 
 
 
-/* ==================================================================== */
-/* ======================== private functions ========================= */
-/* ==================================================================== */
+/* registrySoftwareVersion ****************************************************
+**
+** The software version is the Ensembl database version number this software
+** release is compatible to. Interoperation is only guaranteed if software and
+** database versions match.
+**
+******************************************************************************/
 
 static const char *registrySoftwareVersion = "58";
 
+
+
+
+/* registryAliases ************************************************************
+**
+** The Ensembl Registry Alias Table stores AJAX String alias key data and
+** AJAX String species-name value data.
+**
+**   key data:   AJAX String aliases
+**   value data: AJAX String species names
+**
+******************************************************************************/
+
 static AjPTable registryAliases = NULL;
+
+
+
+
+/* registryEntries ************************************************************
+**
+** The Ensembl Registry Entries Table stores AJAX String species names and
+** Registry Entry value data.
+**
+**   key data:   AJAX String species names
+**   value data: RegistryPEntry objects
+******************************************************************************/
 
 static AjPTable registryEntries = NULL;
 
+
+
+
+/* registryIdentifiers ********************************************************
+**
+******************************************************************************/
+
 static AjPList registryIdentifiers = NULL;
+
+
+
+
+/* registrySources ************************************************************
+**
+** The Ensembl Registry Sources AJAX List stores AJAX String representations of
+** sources that have been used to populate the Ensembl Registry. Keeping track
+** of sources should prevent multiple attempts to configure and potentially
+** overwrite the Ensembl Registry.
+**
+** Sources are:
+**
+**   * AJAX String representations of Ensembl Database Connections used in
+**     ensRegistryLoadFromServer.
+******************************************************************************/
+
+static AjPList registrySources = NULL;
+
+
+
+
+/* ==================================================================== */
+/* ======================== private functions ========================= */
+/* ==================================================================== */
 
 static RegistryPIdentifier registryIdentifierNew(
     AjPStr expression,
@@ -424,6 +503,9 @@ static AjBool registryEntryTrace(const RegistryPEntry entry, ajuint level);
 
 static void registryEntryDel(RegistryPEntry *Pentry);
 
+static AjBool registrySourceCheckAndRegister(const AjPStr source,
+                                             AjBool *Pregistered);
+
 static AjPStr registryCheckAlias(const AjPStr alias);
 
 static AjBool registryLoadAliasesFromDatabaseconnection(
@@ -433,6 +515,20 @@ static AjBool registryLoadAliasesFromDatabaseconnection(
 static AjBool registryLoadCollection(EnsPDatabaseconnection dbc,
                                      AjPStr dbname,
                                      EnsEDatabaseadaptorGroup group);
+
+
+
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
+
+/* @filesection ensregistry ***************************************************
+**
+** @nam1rule ens Function belongs to the AJAX Ensembl library
+** @nam2rule Registry Ensembl Registry objects
+**
+******************************************************************************/
 
 
 
@@ -747,9 +843,15 @@ static void registryGeneticVariationDel(RegistryPGeneticVariation *Prgv)
 
     ensGvpopulationadaptorDel(&pthis->Populationadaptor);
 
+    ensGvpopulationgenotypeadaptorDel(&pthis->Populationgenotypeadaptor);
+
     ensGvsampleadaptorDel(&pthis->Sampleadaptor);
 
     ensGvsourceadaptorDel(&pthis->Sourceadaptor);
+
+    ensGvvariationfeatureadaptorDel(&pthis->Variationfeatureadaptor);
+
+    ensGvvariationsetadaptorDel(&pthis->Variationsetadaptor);
 
     /* Finally, delete the Ensembl Database Adaptor. */
 
@@ -1057,12 +1159,57 @@ static void registryEntryDel(RegistryPEntry *Pentry)
 
 
 
-/* @filesection ensregistry ***************************************************
+/* @funcstatic registrySourceCheckAndRegister *********************************
 **
-** @nam1rule ens Function belongs to the AJAX Ensembl library
-** @nam2rule Registry Ensembl Registry objects
+** Check if a source has been registered in the AJAX List of Registry source
+** before. If this was not the case automatically register it.
 **
+** @param [r] source [const AjPStr] Ensembl Registry source
+** @param [w] Pregistered [AjBool*] Registered boolean
+**                                  ajTrue if registered before, ajFalse if not
+**
+** @return [AjBool] ajTrue opon success, ajFalse otherwise
+** @@
 ******************************************************************************/
+
+static AjBool registrySourceCheckAndRegister(const AjPStr source,
+                                             AjBool *Pregistered)
+{
+    AjIList iterator = NULL;
+
+    AjPStr entry = NULL;
+
+    if(!Pregistered)
+        return ajFalse;
+
+    *Pregistered = ajFalse;
+
+    if(!(source && ajStrGetLen(source)))
+        return ajFalse;
+
+    iterator = ajListIterNew(registrySources);
+
+    while(!ajListIterDone(iterator))
+    {
+        entry = (AjPStr) ajListIterGet(iterator);
+
+        if(ajStrMatchCaseS(entry, source))
+        {
+            *Pregistered = ajTrue;
+
+            break;
+        }
+    }
+
+    ajListIterDel(&iterator);
+
+    /* If this source has not been seen before, add it to the AJAX List. */
+
+    if(!*Pregistered)
+        ajListPushAppend(registrySources, (void *) ajStrNewS(source));
+
+    return ajTrue;
+}
 
 
 
@@ -1103,6 +1250,8 @@ void ensRegistryInit(void)
 
     registryIdentifiers = ajListNew();
 
+    registrySources = ajListstrNew();
+
     return;
 }
 
@@ -1123,7 +1272,7 @@ void ensRegistryClear(void)
     void **valarray = NULL;
 
     register ajuint i = 0;
-    
+
     if(!registryEntries)
         return;
 
@@ -1162,7 +1311,7 @@ void ensRegistryExit(void)
     /* Free the AJAX Table of aliases. */
 
     if(registryAliases)
-    ajTablestrFree(&registryAliases);
+        ajTablestrFree(&registryAliases);
 
     /* Clear and free the AJAX Table of Registry Entries. */
 
@@ -1182,6 +1331,11 @@ void ensRegistryExit(void)
 
         ajListFree(&registryIdentifiers);
     }
+
+    /* Clear and free the AJAX List of Registry Sources. */
+
+    if(registrySources)
+        ajListstrFree(&registrySources);
 
     return;
 }
@@ -1768,7 +1922,7 @@ AjBool ensRegistryAddDatabaseadaptor(EnsPDatabaseadaptor dba)
         case ensEDatabaseadaptorGroupWebsite:
 
         case ensEDatabaseadaptorGroupProduction:
-            
+
             break;
 
         default:
@@ -1871,7 +2025,7 @@ AjBool ensRegistryAddReferenceadaptor(EnsPDatabaseadaptor dba,
         case ensEDatabaseadaptorGroupWebsite:
 
         case ensEDatabaseadaptorGroupProduction:
-            
+
             break;
 
         default:
@@ -1975,7 +2129,7 @@ AjBool ensRegistryAddStableidentifierprefix(EnsPDatabaseadaptor dba,
         case ensEDatabaseadaptorGroupWebsite:
 
         case ensEDatabaseadaptorGroupProduction:
-            
+
             break;
 
         default:
@@ -2339,7 +2493,7 @@ AjBool ensRegistryRemoveDatabaseadaptor(EnsPDatabaseadaptor *Pdba)
         case ensEDatabaseadaptorGroupWebsite:
 
         case ensEDatabaseadaptorGroupProduction:
-            
+
             break;
 
         default:
@@ -2572,7 +2726,7 @@ AjBool ensRegistryGetAllDatabaseadaptors(EnsEDatabaseadaptorGroup group,
                 case ensEDatabaseadaptorGroupWebsite:
 
                 case ensEDatabaseadaptorGroupProduction:
-                    
+
                     break;
 
                 default:
@@ -2978,7 +3132,7 @@ EnsPDatabaseadaptor ensRegistryGetDatabaseadaptor(
         case ensEDatabaseadaptorGroupWebsite:
 
         case ensEDatabaseadaptorGroupProduction:
-            
+
             break;
 
         default:
@@ -5973,6 +6127,67 @@ EnsPGvpopulationadaptor ensRegistryGetGvpopulationadaptor(
 
 
 
+/* @func ensRegistryGetGvpopulationadaptor ************************************
+**
+** Get an Ensembl Genetic Variation Population Genotype Adaptor from the
+** Ensembl Registry.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [EnsPGvpopulationgenotypeadaptor] Ensembl Genetic Variation
+**                                           Population Genotype Adaptor
+**                                           or NULL
+** @@
+******************************************************************************/
+
+EnsPGvpopulationgenotypeadaptor ensRegistryGetGvpopulationgenotypeadaptor(
+    EnsPDatabaseadaptor dba)
+{
+    RegistryPEntry entry          = NULL;
+    RegistryPGeneticVariation rgv = NULL;
+
+    if(!dba)
+        return NULL;
+
+    entry = (RegistryPEntry)
+        ajTableFetch(registryEntries,
+                     (const void *) ensDatabaseadaptorGetSpecies(dba));
+
+    if(!entry)
+        return NULL;
+
+    switch(ensDatabaseadaptorGetGroup(dba))
+    {
+        case ensEDatabaseadaptorGroupGeneticVariation:
+
+            rgv = (RegistryPGeneticVariation)
+                entry->Registry[ensDatabaseadaptorGetGroup(dba)];
+
+            if(!rgv)
+                break;
+
+            if(!rgv->Populationgenotypeadaptor)
+                rgv->Populationgenotypeadaptor =
+                    ensGvpopulationgenotypeadaptorNew(dba);
+
+            return rgv->Populationgenotypeadaptor;
+
+            break;
+
+        default:
+
+            ajWarn("ensRegistryGetGvpopulationgenotypeadaptor got an "
+                   "Ensembl Database Adaptor "
+                   "with an unexpected group %d.\n",
+                   ensDatabaseadaptorGetGroup(dba));
+    }
+
+    return NULL;
+}
+
+
+
+
 /* @func ensRegistryGetGvsampleadaptor ****************************************
 **
 ** Get an Ensembl Genetic Variation Sample Adaptor from the
@@ -6135,6 +6350,126 @@ EnsPGvvariationadaptor ensRegistryGetGvvariationadaptor(
 
 
 
+/* @func ensRegistryGetGvvariationfeatureadaptor ******************************
+**
+** Get an Ensembl Genetic Variation Variation Feature Adaptor from the
+** Ensembl Registry.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [EnsPGvvariationfeatureadaptor] Ensembl Genetic Variation
+**                                         Variation Feature Adaptor or NULL
+** @@
+******************************************************************************/
+
+EnsPGvvariationfeatureadaptor ensRegistryGetGvvariationfeatureadaptor(
+    EnsPDatabaseadaptor dba)
+{
+    RegistryPEntry entry          = NULL;
+    RegistryPGeneticVariation rgv = NULL;
+
+    if(!dba)
+        return NULL;
+
+    entry = (RegistryPEntry)
+        ajTableFetch(registryEntries,
+                     (const void *) ensDatabaseadaptorGetSpecies(dba));
+
+    if(!entry)
+        return NULL;
+
+    switch(ensDatabaseadaptorGetGroup(dba))
+    {
+        case ensEDatabaseadaptorGroupGeneticVariation:
+
+            rgv = (RegistryPGeneticVariation)
+                entry->Registry[ensDatabaseadaptorGetGroup(dba)];
+
+            if(!rgv)
+                break;
+
+            if(!rgv->Variationfeatureadaptor)
+                rgv->Variationfeatureadaptor =
+                    ensGvvariationfeatureadaptorNew(dba);
+
+            return rgv->Variationfeatureadaptor;
+
+            break;
+
+        default:
+
+            ajWarn("ensRegistryGetGvvariationfeatureadaptor got an "
+                   "Ensembl Database Adaptor "
+                   "with an unexpected group %d.\n",
+                   ensDatabaseadaptorGetGroup(dba));
+    }
+
+    return NULL;
+}
+
+
+
+
+/* @func ensRegistryGetGvvariationsetadaptor **********************************
+**
+** Get an Ensembl Genetic Variation Variation Set Adaptor from the
+** Ensembl Registry.
+**
+** @param [r] dba [EnsPDatabaseadaptor] Ensembl Database Adaptor
+**
+** @return [EnsPGvvariationsetadaptor] Ensembl Genetic Variation
+**                                     Variation Set Adaptor or NULL
+** @@
+******************************************************************************/
+
+EnsPGvvariationsetadaptor ensRegistryGetGvvariationsetadaptor(
+    EnsPDatabaseadaptor dba)
+{
+    RegistryPEntry entry          = NULL;
+    RegistryPGeneticVariation rgv = NULL;
+
+    if(!dba)
+        return NULL;
+
+    entry = (RegistryPEntry)
+        ajTableFetch(registryEntries,
+                     (const void *) ensDatabaseadaptorGetSpecies(dba));
+
+    if(!entry)
+        return NULL;
+
+    switch(ensDatabaseadaptorGetGroup(dba))
+    {
+        case ensEDatabaseadaptorGroupGeneticVariation:
+
+            rgv = (RegistryPGeneticVariation)
+                entry->Registry[ensDatabaseadaptorGetGroup(dba)];
+
+            if(!rgv)
+                break;
+
+            if(!rgv->Variationsetadaptor)
+                rgv->Variationsetadaptor =
+                    ensGvvariationsetadaptorNew(dba);
+
+            return rgv->Variationsetadaptor;
+
+            break;
+
+        default:
+
+            ajWarn("ensRegistryGetGvvariationsetadaptor got an "
+                   "Ensembl Database Adaptor "
+                   "with an unexpected group %d.\n",
+                   ensDatabaseadaptorGetGroup(dba));
+    }
+
+    return NULL;
+}
+
+
+
+
 /* registryMetaKey ************************************************************
 **
 ** Register species aliases from the following Ensembl Meta Information keys.
@@ -6281,7 +6616,7 @@ static AjBool registryLoadAliasesFromDatabaseconnection(
         case ensEDatabaseadaptorGroupWebsite:
 
         case ensEDatabaseadaptorGroupProduction:
-            
+
             /* Ensembl Database Adaptor groups without a 'meta' table. */
 
             break;
@@ -6410,7 +6745,8 @@ static AjBool registryLoadCollection(EnsPDatabaseconnection dbc,
 
 AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc)
 {
-    AjBool debug = AJFALSE;
+    AjBool debug      = AJFALSE;
+    AjBool registered = AJFALSE;
 
     AjPRegexp multire      = NULL;
     AjPRegexp speciesre    = NULL;
@@ -6426,6 +6762,7 @@ AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc)
     AjPStr prefix    = NULL;
     AjPStr swversion = NULL;
     AjPStr multi     = NULL;
+    AjPStr source    = NULL;
 
     EnsEDatabaseadaptorGroup egroup = ensEDatabaseadaptorGroupNULL;
 
@@ -6440,21 +6777,35 @@ AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc)
                 dbc);
 
         ensDatabaseconnectionTrace(dbc, 1);
+
+        ajDebug("ensRegistryLoadFromServer software version '%s'.\n",
+                registrySoftwareVersion);
     }
 
     if(!dbc)
         return ajFalse;
 
-    multi = ajStrNewC("DEFAULT");
+    /* Check if this Ensembl Database Connection has been used before. */
+
+    ensDatabaseconnectionFetchUrl(dbc, &source);
+
+    registrySourceCheckAndRegister(source, &registered);
+
+    ajStrDel(&source);
+
+    if(registered)
+        return ajTrue;
+
+    multi = ajStrNewC("default");
 
     collectionre =
-        ajRegCompC("^\\w+_collection_([a-z]+)(?:_\\d+)??_(\\d+)_\\w+");
+        ajRegCompC("^\\w+_collection_([a-z]+)(?:_\\d+)?_(\\d+)_\\w+");
 
     multire =
-        ajRegCompC("^ensembl_([a-z]+)(?:_\\w+?)*?_(\\d+)");
+        ajRegCompC("^ensembl_([a-z]+)(_\\w+?)*?(?:_\\d+)?_(\\d+)$");
 
     speciesre =
-        ajRegCompC("^([a-z]+_[a-z0-9]+)_([a-z]+)(?:_\\d+)??_(\\d+)_\\w+");
+        ajRegCompC("^([a-z]+_[a-z0-9]+)_([a-z]+)(?:_\\d+)?_(\\d+)_\\w+");
 
     statement = ajStrNewC("SHOW DATABASES");
 
@@ -6491,8 +6842,8 @@ AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc)
             if(ajStrMatchCaseC(swversion, registrySoftwareVersion))
             {
                 if(debug)
-                    ajDebug("ensRegistryLoadFromServer matched "
-                            "collection database '%S'.\n",
+                    ajDebug("ensRegistryLoadFromServer '%S' "
+                            "collection matched\n",
                             dbname);
 
                 egroup = ensDatabaseadaptorGroupFromStr(group);
@@ -6504,8 +6855,68 @@ AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc)
                             "string '%S' for database name '%S'.\n",
                             group, dbname);
             }
+            else
+            {
+                if(debug)
+                    ajDebug("ensRegistryLoadFromServer '%S' "
+                            "collection\n",
+                            dbname);
+
+            }
 
             ajStrDel(&group);
+            ajStrDel(&swversion);
+        }
+        else if(ajRegExec(multire, dbname))
+        {
+            /* Multi-species databases */
+
+            group     = ajStrNew();
+            prefix    = ajStrNew();
+            swversion = ajStrNew();
+
+            ajRegSubI(multire, 1, &group);
+
+            if(ajRegLenI(multire, 3))
+            {
+                ajRegSubI(multire, 2, &prefix);
+                ajRegSubI(multire, 3, &swversion);
+            }
+            else
+                ajRegSubI(multire, 2, &swversion);
+
+            if(ajStrMatchCaseC(swversion, registrySoftwareVersion))
+            {
+                if(debug)
+                    ajDebug("ensRegistryLoadFromServer '%S' "
+                            "multi-species matched\n",
+                            dbname);
+
+                egroup = ensDatabaseadaptorGroupFromStr(group);
+
+                if(egroup)
+                    ensRegistryNewDatabaseadaptor(dbc,
+                                                  dbname,
+                                                  (ajStrGetLen(prefix))
+                                                  ? prefix : multi,
+                                                  egroup,
+                                                  ajFalse,
+                                                  0);
+                else
+                    ajDebug("ensRegistryLoadFromServer got unexpected group "
+                            "string '%S' for database name '%S'.\n",
+                            group, dbname);
+            }
+            else
+            {
+                if(debug)
+                    ajDebug("ensRegistryLoadFromServer '%S' "
+                            "multi-species\n",
+                            dbname);
+            }
+
+            ajStrDel(&group);
+            ajStrDel(&prefix);
             ajStrDel(&swversion);
         }
         else if(ajRegExec(speciesre, dbname))
@@ -6520,11 +6931,18 @@ AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc)
             ajRegSubI(speciesre, 2, &group);
             ajRegSubI(speciesre, 3, &swversion);
 
+            /*
+              if(debug)
+              ajDebug("ensRegistryLoadFromServer parsed database '%S' into "
+              "prefix '%S', group '%S' and swversion '%S.\n",
+              dbname, prefix, group, swversion);
+            */
+
             if(ajStrMatchCaseC(swversion, registrySoftwareVersion))
             {
                 if(debug)
-                    ajDebug("ensRegistryLoadFromServer matched "
-                            "species-specific database '%S'.\n",
+                    ajDebug("ensRegistryLoadFromServer '%S' "
+                            "species-specific matched\n",
                             dbname);
 
                 egroup = ensDatabaseadaptorGroupFromStr(group);
@@ -6545,49 +6963,20 @@ AjBool ensRegistryLoadFromServer(EnsPDatabaseconnection dbc)
                             "string '%S' for database name '%S'.\n",
                             group, dbname);
             }
+            else
+            {
+                if(debug)
+                    ajDebug("ensRegistryLoadFromServer '%S' "
+                            "species-specific\n",
+                            dbname);
+            }
 
             ajStrDel(&prefix);
             ajStrDel(&group);
             ajStrDel(&swversion);
         }
-        else if(ajRegExec(multire, dbname))
-        {
-            /* Multi-species databases */
-
-            group     = ajStrNew();
-            swversion = ajStrNew();
-
-            ajRegSubI(multire, 1, &group);
-            ajRegSubI(multire, 2, &swversion);
-
-            if(ajStrMatchCaseC(swversion, registrySoftwareVersion))
-            {
-                if(debug)
-                    ajDebug("ensRegistryLoadFromServer matched "
-                            "multi-species database '%S'.\n",
-                            dbname);
-
-                egroup = ensDatabaseadaptorGroupFromStr(group);
-
-                if(egroup)
-                    ensRegistryNewDatabaseadaptor(dbc,
-                                                  dbname,
-                                                  multi,
-                                                  egroup,
-                                                  ajFalse,
-                                                  0);
-                else
-                    ajDebug("ensRegistryLoadFromServer got unexpected group "
-                            "string '%S' for database name '%S'.\n",
-                            group, dbname);
-            }
-
-            ajStrDel(&group);
-            ajStrDel(&swversion);
-        }
         else
-            ajDebug("ensRegistryLoadFromServer could not match "
-                    "database name '%S'.\n", dbname);
+            ajDebug("ensRegistryLoadFromServer '%S' no match\n", dbname);
 
         ajStrDel(&dbname);
     }
