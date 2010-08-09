@@ -286,7 +286,7 @@ int main(int argc, char **argv)
         {
             switch(ensMapperresultGetType(mr))
             {
-                case ensEMapperresultCoordinate:
+                case ensEMapperresultTypeCoordinate:
 
                     ajFmtPrintF(outfile,
                                 "Ensembl Transcript Mapper map positions 2:3 "
@@ -297,7 +297,7 @@ int main(int argc, char **argv)
 
                     break;
 
-                case ensEMapperresultGap:
+                case ensEMapperresultTypeGap:
 
                     ajFmtPrintF(outfile,
                                 "Ensembl Transcript Mapper 2:3 to Slice got "
