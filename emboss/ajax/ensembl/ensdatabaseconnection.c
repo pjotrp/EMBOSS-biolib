@@ -3,8 +3,8 @@
 **
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
-** @modified $Date: 2010/06/16 20:58:43 $ by $Author: mks $
-** @version $Revision: 1.12 $
+** @modified $Date: 2010/08/09 11:56:30 $ by $Author: mks $
+** @version $Revision: 1.13 $
 **
 ** This library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
@@ -32,6 +32,20 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
@@ -44,6 +58,10 @@
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensdatabaseconnection *****************************************
 **
@@ -1151,6 +1169,43 @@ AjBool ensDatabaseconnectionTrace(const EnsPDatabaseconnection dbc,
     ajSqlconnectionTrace(dbc->Sqlconnection, level + 1);
 
     ajStrDel(&indent);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensDatabaseconnectionFetchUrl ****************************************
+**
+** Fetch a Uniform Resource Locator representation of an
+** Ensembl Database Connection.
+**
+** @param [r] dbc [const EnsPDatabaseconnection] Ensembl Database Connection
+** @param [wP] Purl [AjPStr*] Uniform Resource Locator
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensDatabaseconnectionFetchUrl(const EnsPDatabaseconnection dbc,
+                                     AjPStr *Purl)
+{
+    if(!dbc)
+        return ajFalse;
+
+    if(!Purl)
+        return ajFalse;
+
+    if(dbc->SocketFile && ajStrGetLen(dbc->SocketFile))
+        *Purl = ajFmtStr("file:///%S", dbc->SocketFile);
+    else
+        *Purl = ajFmtStr("%s://%S@%S:%S/%S",
+                         ajSqlconnectionClientToChar(dbc->SqlconnectionClient),
+                         dbc->UserName,
+                         dbc->HostName,
+                         dbc->HostPort,
+                         dbc->DatabaseName);
 
     return ajTrue;
 }

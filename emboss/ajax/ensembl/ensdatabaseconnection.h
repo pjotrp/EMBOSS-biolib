@@ -6,10 +6,25 @@ extern "C"
 #ifndef ensdatabaseconnection_h
 #define ensdatabaseconnection_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ajax.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
 
 /* @data EnsPDatabaseconnection ***********************************************
 **
@@ -56,6 +71,10 @@ typedef struct EnsSDatabaseconnection
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions
@@ -129,6 +148,9 @@ AjBool ensDatabaseconnectionEscapeS(EnsPDatabaseconnection dbc,
 
 AjBool ensDatabaseconnectionTrace(const EnsPDatabaseconnection dbc,
                                   ajuint level);
+
+AjBool ensDatabaseconnectionFetchUrl(const EnsPDatabaseconnection dbc,
+                                     AjPStr *Purl);
 
 /*
 ** End of prototype definitions
