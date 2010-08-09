@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.17 $
+** @version $Revision: 1.18 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -35,11 +35,22 @@
 
 
 /* ==================================================================== */
-/* ========================== private data ============================ */
+/* ============================ constants ============================= */
 /* ==================================================================== */
 
 
 
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== private data ============================ */
+/* ==================================================================== */
 
 /* @datastatic ExonPCoordinates ***********************************************
 **
@@ -110,6 +121,19 @@ static void exonadaptorCacheDelete(void **value);
 static ajulong exonadaptorCacheSize(const void *value);
 
 static EnsPFeature exonadaptorGetFeature(const void *value);
+
+
+
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
+
+/* @filesection ensexon *******************************************************
+**
+** @nam1rule ens Function belongs to the Ensembl library
+**
+******************************************************************************/
 
 
 
@@ -190,15 +214,6 @@ static void exonCoordinatesDel(ExonPCoordinates* Pec)
 
     return;
 }
-
-
-
-
-/* @filesection ensexon *******************************************************
-**
-** @nam1rule ens Function belongs to the Ensembl library
-**
-******************************************************************************/
 
 
 
@@ -2040,7 +2055,7 @@ static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
 
     switch(ensMapperresultGetType(mr))
     {
-        case ensEMapperresultCoordinate:
+        case ensEMapperresultTypeCoordinate:
 
             ec->TranscriptStart = ensMapperresultGetStart(mr);
             ec->TranscriptEnd   = ensMapperresultGetEnd(mr);
@@ -2055,7 +2070,7 @@ static ExonPCoordinates exonGetExonCoodinates(EnsPExon exon,
 
             break;
 
-        case ensEMapperresultGap:
+        case ensEMapperresultTypeGap:
 
             if(debug)
             {
@@ -2885,7 +2900,7 @@ static AjBool exonadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 /* Load the next Feature but destroy first! */
 

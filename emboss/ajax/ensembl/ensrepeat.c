@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -28,6 +28,20 @@
 /* ==================================================================== */
 
 #include "ensrepeat.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
 
 
 
@@ -67,6 +81,10 @@ static AjBool repeatfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensrepeat *****************************************************
 **
@@ -2623,7 +2641,7 @@ static AjBool repeatfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 if(debug)
                 {

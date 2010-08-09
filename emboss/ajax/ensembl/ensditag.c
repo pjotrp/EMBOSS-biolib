@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -28,6 +28,20 @@
 /* ==================================================================== */
 
 #include "ensditag.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
 
 
 
@@ -89,6 +103,10 @@ static EnsPFeature ditagfeatureadaptorGetFeature(const void *value);
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensditag ******************************************************
 **
@@ -2603,7 +2621,7 @@ static AjBool ditagfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 /* Load the next Feature but destroy first! */
 

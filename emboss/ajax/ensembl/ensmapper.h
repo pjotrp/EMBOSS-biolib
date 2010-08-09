@@ -6,11 +6,56 @@ extern "C"
 #ifndef ensmapper_h
 #define ensmapper_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "enscoordsystem.h"
 #include "enstable.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+/* EnsEMapperunitType *********************************************************
+**
+** Ensembl Mapper Unit Type enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOMapperunitType
+{
+    ensEMapperunitTypeNULL,
+    ensEMapperunitTypeSource,
+    ensEMapperunitTypeTarget
+} EnsEMapperunitType;
+
+
+
+
+/* EnsEMapperresultType *******************************************************
+**
+** Ensembl Mapper Result Type enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOMapperresultType
+{
+    ensEMapperresultTypeNULL,
+    ensEMapperresultTypeCoordinate,
+    ensEMapperresultTypeGap,
+    ensEMapperresultTypeInDel
+} EnsEMapperresultType;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
 
 /* @data EnsPMapperunit *******************************************************
 **
@@ -38,22 +83,6 @@ typedef struct EnsSMapperunit
 } EnsOMapperunit;
 
 #define EnsPMapperunit EnsOMapperunit*
-
-
-
-
-/* EnsEMapperunitType *********************************************************
-**
-** Ensembl Mapper Unit Type enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOMapperunitType
-{
-    ensEMapperunitTypeNULL,
-    ensEMapperunitTypeSource,
-    ensEMapperunitTypeTarget
-} EnsEMapperunitType;
 
 
 
@@ -89,23 +118,6 @@ typedef struct EnsSMapperpair
 } EnsOMapperpair;
 
 #define EnsPMapperpair EnsOMapperpair*
-
-
-
-
-/* EnsEMapperresultType *******************************************************
-**
-** Ensembl Mapper Result Type enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOMapperresultType
-{
-    ensEMapperresultNULL,
-    ensEMapperresultCoordinate,
-    ensEMapperresultGap,
-    ensEMapperresultInDel
-} EnsEMapperresultType;
 
 
 
@@ -274,6 +286,10 @@ typedef struct EnsSMapper
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions
@@ -527,15 +543,15 @@ ensMapperpairNew(source, target, ori, AJTRUE);
 ensMapperpairDel(Pmp);
 
 #define MENSMAPPERCOORDINATENEW(oid, start, end, strand, cs, rank)      \
-ensMapperresultNew(ensEMapperresultCoordinate, oid, start, end, strand, cs, \
-                   0, 0, rank)
+ensMapperresultNew(ensEMapperresultTypeCoordinate, oid, start, end, strand, \
+                   cs, 0, 0, rank)
 
 #define MENSMAPPERGAPNEW(start, end, rank)                              \
-ensMapperresultNew(ensEMapperresultGap, 0, 0, 0, 0, (EnsPCoordsystem) NULL, \
-                   start, end, rank)
+ensMapperresultNew(ensEMapperresultTypeGap, 0, 0, 0, 0,             \
+                   (EnsPCoordsystem) NULL, start, end, rank)
 
 #define MENSMAPPERINDELNEW(oid, start, end, strand, cs, gstart, gend)   \
-ensMapperresultNew(ensEMapperresultInDel, oid, start, end, strand, cs, \
+ensMapperresultNew(ensEMapperresultTypeInDel, oid, start, end, strand, cs, \
                    gstart, gend, 0)
 
 #endif /* ensmapper_h */

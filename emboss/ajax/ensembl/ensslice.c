@@ -7,7 +7,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.19 $
+** @version $Revision: 1.20 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,6 +36,20 @@
 #include "enssequenceedit.h"
 #include "ensrepeat.h"
 #include "enstranslation.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
 
 
 
@@ -78,6 +92,10 @@ static ajulong sliceadaptorCacheSize(const void* value);
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensslice ******************************************************
 **
@@ -2294,7 +2312,7 @@ AjBool ensSliceProject(EnsPSlice slice,
 
             /* Skip gaps. */
 
-            if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) == ensEMapperresultTypeCoordinate)
             {
                 mrcs = ensMapperresultGetCoordsystem(mr);
 
@@ -2530,7 +2548,7 @@ AjBool ensSliceProjectToSlice(EnsPSlice srcslice,
 
             /* Skip gaps. */
 
-            if(ensMapperresultGetType(mr) == ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) == ensEMapperresultTypeCoordinate)
             {
                 /*
                 ** AJB: The variable mrcs, set below, is not used
@@ -4203,7 +4221,7 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
     {
         switch(ensMapperresultGetType(mr))
         {
-            case ensEMapperresultCoordinate:
+            case ensEMapperresultTypeCoordinate:
 
                 if(debug)
                     ajDebug("ensSliceadaptorFetchNormalisedSliceProjection\n"
@@ -4233,7 +4251,7 @@ AjBool ensSliceadaptorFetchNormalisedSliceProjection(EnsPSliceadaptor adaptor,
 
                 break;
 
-            case ensEMapperresultGap:
+            case ensEMapperresultTypeGap:
 
                 if(debug)
                     ajDebug("ensSliceadaptorFetchNormalisedSliceProjection\n"

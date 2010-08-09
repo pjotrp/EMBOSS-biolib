@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -28,6 +28,20 @@
 /* ==================================================================== */
 
 #include "ensmapper.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
 
 
 
@@ -64,6 +78,10 @@ static AjBool mapperMapInsert(EnsPMapper mapper,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensmapper *****************************************************
 **
@@ -1320,8 +1338,8 @@ EnsPMapperresult ensMapperresultNew(EnsEMapperresultType type,
     if(!type)
         return NULL;
 
-    if((type == ensEMapperresultCoordinate) ||
-       (type == ensEMapperresultInDel))
+    if((type == ensEMapperresultTypeCoordinate) ||
+       (type == ensEMapperresultTypeInDel))
     {
         if(!oid)
             return NULL;
@@ -1532,14 +1550,14 @@ void ensMapperresultDel(EnsPMapperresult *Pmr)
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
-** @return [EnsEMapperresultType] Type or ensEMapperresultNULL
+** @return [EnsEMapperresultType] Type or ensEMapperresultTypeNULL
 ** @@
 ******************************************************************************/
 
 EnsEMapperresultType ensMapperresultGetType(const EnsPMapperresult mr)
 {
     if(!mr)
-        return ensEMapperresultNULL;
+        return ensEMapperresultTypeNULL;
 
     return mr->Type;
 }
@@ -1761,8 +1779,8 @@ ajuint ensMapperresultGetGapLength(const EnsPMapperresult mr)
 **
 ** Get the length of an Ensembl Mapper Result.
 ** This is the coordinate length for Mapper Results of type
-** ensEMapperresultCoordinate and ensEMapperresultInDel and the gap length
-** for Mapper Resuls of type ensEMapperresultGap.
+** ensEMapperresultTypeCoordinate and ensEMapperresultTypeInDel and the
+** gap length for Mapper Resuls of type ensEMapperresultTypeGap.
 **
 ** @param [r] mr [const EnsPMapperresult] Ensembl Mapper Result
 **
@@ -1777,11 +1795,11 @@ ajuint ensMapperresultGetLength(const EnsPMapperresult mr)
 
     switch(mr->Type)
     {
-        case ensEMapperresultCoordinate:
+        case ensEMapperresultTypeCoordinate:
             return ensMapperresultGetCoordinateLength(mr);
-        case ensEMapperresultGap:
+        case ensEMapperresultTypeGap:
             return ensMapperresultGetGapLength(mr);
-        case ensEMapperresultInDel:
+        case ensEMapperresultTypeInDel:
             return ensMapperresultGetCoordinateLength(mr);
         default:
             ajWarn("ensMapperresultGetLength got unexpected "
@@ -3991,7 +4009,7 @@ static AjBool mapperMapInsert(EnsPMapper mapper,
 
         ajListPop(coords, (void **) &mr);
 
-        if(mr->Type == ensEMapperresultCoordinate)
+        if(mr->Type == ensEMapperresultTypeCoordinate)
         {
             /* The insert is after the first coordinate. */
 
@@ -4007,7 +4025,7 @@ static AjBool mapperMapInsert(EnsPMapper mapper,
 
         ajListPop(coords, (void **) &mr);
 
-        if(mr->Type == ensEMapperresultCoordinate)
+        if(mr->Type == ensEMapperresultTypeCoordinate)
         {
             /* The insert is before the second coordinate. */
 

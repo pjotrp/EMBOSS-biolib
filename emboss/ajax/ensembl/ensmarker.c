@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -33,8 +33,30 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* markerType *****************************************************************
+**
+** The Ensembl Marker type element is enumerated in both, the SQL table
+** definition and the data structure. The following strings are used for
+** conversion in database operations and correspond to EnsEMarkerType.
+**
+******************************************************************************/
 
 static const char *markerType[] =
 {
@@ -93,6 +115,10 @@ static EnsPFeature markerfeatureadaptorGetFeature(const void *value);
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensmarker *****************************************************
 **
@@ -3653,11 +3679,11 @@ AjBool ensMarkeradaptorFetchAllBySynonym(const EnsPMarkeradaptor ma,
 
 
 
-/* @obsolete ensMarkeradaptorFetchAttributes
+/* @obsolete ensMarkeradaptorFetchAttributes **********************************
 **
 ** @remove ensMarkerGetMarkersynonyms or ensMarkerGetMarkermaplocations
 **
-*/
+******************************************************************************/
 
 __deprecated AjBool ensMarkeradaptorFetchAttributes(const EnsPMarkeradaptor ma,
                                                     EnsPMarker marker)
@@ -4912,7 +4938,7 @@ static AjBool markerfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 /* Load the next Feature but destroy first! */
 

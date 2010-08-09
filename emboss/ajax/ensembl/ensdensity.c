@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.19 $
+** @version $Revision: 1.20 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -34,11 +34,22 @@
 
 
 /* ==================================================================== */
-/* ========================== private data ============================ */
+/* ============================ constants ============================= */
 /* ==================================================================== */
 
 
 
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== private data ============================ */
+/* ==================================================================== */
 
 /* @datastatic DensityPTypeRatio **********************************************
 **
@@ -224,6 +235,10 @@ static int densitytyperatioCompareRatioAscending(const void* P1,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensdensity ****************************************************
 **
@@ -2736,7 +2751,7 @@ static AjBool densityfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 /* Load the next Feature but destroy first! */
 

@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.23 $
+** @version $Revision: 1.24 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -40,11 +40,22 @@
 
 
 /* ==================================================================== */
-/* ========================== private data ============================ */
+/* ============================ constants ============================= */
 /* ==================================================================== */
 
 
 
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== private data ============================ */
+/* ==================================================================== */
 
 /* @datastatic TranscriptPExonRank ********************************************
 **
@@ -76,7 +87,8 @@ typedef struct TranscriptSExonRank
 **
 ** The Ensembl Transcript status element is enumerated in both, the SQL table
 ** definition and the data structure. The following strings are used for
-** conversion in database operations and correspond to EnsETranscriptStatus.
+** conversion in database operations and correspond to EnsETranscriptStatus
+** and the 'transcript.status' field.
 **
 ******************************************************************************/
 
@@ -118,6 +130,41 @@ static const char *transcriptSequenceEditCode[] =
 /* ==================================================================== */
 /* ======================== private functions ========================= */
 /* ==================================================================== */
+
+static TranscriptPExonRank transcriptExonRankNew(ajuint trid, ajint rank);
+
+static void transcriptExonRankDel(TranscriptPExonRank *Ptrex);
+
+static int transcriptCompareStartAscending(const void* P1, const void* P2);
+
+static int transcriptCompareStartDescending(const void* P1, const void* P2);
+
+static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
+                                             const AjPStr statement,
+                                             EnsPAssemblymapper am,
+                                             EnsPSlice slice,
+                                             AjPList transcripts);
+
+static void *transcriptadaptorCacheReference(void *value);
+
+static void transcriptadaptorCacheDelete(void **value);
+
+static ajulong transcriptadaptorCacheSize(const void *value);
+
+static EnsPFeature transcriptadaptorGetFeature(const void *value);
+
+
+
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
+
+/* @filesection enstranscript *************************************************
+**
+** @nam1rule ens Function belongs to the Ensembl library
+**
+******************************************************************************/
 
 
 
@@ -170,36 +217,6 @@ static void transcriptExonRankDel(TranscriptPExonRank *Ptrex)
 
     return;
 }
-
-
-
-
-static int transcriptCompareStartAscending(const void* P1, const void* P2);
-
-static int transcriptCompareStartDescending(const void* P1, const void* P2);
-
-static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
-                                             const AjPStr statement,
-                                             EnsPAssemblymapper am,
-                                             EnsPSlice slice,
-                                             AjPList transcripts);
-
-static void *transcriptadaptorCacheReference(void *value);
-
-static void transcriptadaptorCacheDelete(void **value);
-
-static ajulong transcriptadaptorCacheSize(const void *value);
-
-static EnsPFeature transcriptadaptorGetFeature(const void *value);
-
-
-
-
-/* @filesection enstranscript *************************************************
-**
-** @nam1rule ens Function belongs to the Ensembl library
-**
-******************************************************************************/
 
 
 
@@ -5287,7 +5304,7 @@ AjBool ensTranscriptMapperSliceToCDS(EnsPTranscript transcript,
 
     while(ajListPop(result, (void **) &gcmr))
     {
-        if(ensMapperresultGetType(gcmr) == ensEMapperresultGap)
+        if(ensMapperresultGetType(gcmr) == ensEMapperresultTypeGap)
             ajListPushAppend(mrs, (void *) gcmr);
         else
         {
@@ -5451,7 +5468,7 @@ AjBool ensTranscriptMapperSliceToTranslation(EnsPTranscript transcript,
 
     while(ajListPop(result, (void **) &gcmr))
     {
-        if(ensMapperresultGetType(gcmr) == ensEMapperresultGap)
+        if(ensMapperresultGetType(gcmr) == ensEMapperresultTypeGap)
             ajListPushAppend(mrs, (void *) gcmr);
         else
         {
@@ -5948,7 +5965,7 @@ static AjBool transcriptadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 /* Load the next Feature but destroy first! */
 
