@@ -1,2 +1,10 @@
-Makefile.in Makefile *.o *.lo *.la
-.deps .libs
+Makefile.in
+Makefile
+*.o
+*.lo
+*.la
+.deps
+.libs
+embossconf.h
+stamp-h1
+embossconf.h.in
