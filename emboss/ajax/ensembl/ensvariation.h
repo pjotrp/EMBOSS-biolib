@@ -6,12 +6,20 @@ extern "C"
 #ifndef ensvariation_h
 #define ensvariation_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensgvdata.h"
 #include "ensgvsample.h"
 #include "ensgvpopulation.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
 
 /* #data EnsPGvalleleadaptor **************************************************
 **
@@ -31,6 +39,117 @@ extern "C"
 
 
 
+/* #data EnsPGvgenotypeadaptor ************************************************
+**
+** Ensembl Genetic Variation Genotype Adaptor.
+** Defined as an alias in EnsPDatabaseadaptor
+**
+** #alias EnsPDatabaseadaptor
+** ##
+******************************************************************************/
+
+#define EnsPGvgenotypeadaptor EnsPDatabaseadaptor
+
+
+
+
+/* #data EnsPGvpopulationgenotypeadaptor **************************************
+**
+** Ensembl Genetic Variation Population Genotype Adaptor.
+** Defined as an alias in EnsPBaseadaptor
+**
+** #alias EnsPBaseadaptor
+** ##
+******************************************************************************/
+
+#define EnsPGvpopulationgenotypeadaptor EnsPBaseadaptor
+
+
+
+
+/* #data EnsPGvsynonymadaptor *************************************************
+**
+** Ensembl Genetic Variation Synonym Adaptor.
+** Defined as an alias in EnsPDatabaseadaptor
+**
+** #alias EnsPDatabaseadaptor
+** ##
+******************************************************************************/
+
+#define EnsPGvsynonymadaptor EnsPDatabaseadaptor
+
+
+
+
+/* #data EnsPGvvariationadaptor ***********************************************
+**
+** Ensembl Genetic Variation Variation Adaptor.
+** Defined as an alias in EnsPDatabaseadaptor
+**
+** #alias EnsPDatabaseadaptor
+** ##
+******************************************************************************/
+
+#define EnsPGvvariationadaptor EnsPDatabaseadaptor
+
+
+
+
+/* #data EnsPGvvariationfeatureadaptor ****************************************
+**
+** Ensembl Genetic Variation Variation Feature Adaptor.
+** Defined as an alias in EnsPFeatureadaptor
+**
+** #alias EnsPFeatureadaptor
+** ##
+******************************************************************************/
+
+#define EnsPGvvariationfeatureadaptor EnsPFeatureadaptor
+
+
+
+
+/* #data EnsPGvvariationsetadaptor ********************************************
+**
+** Ensembl Genetic Variation Variation Set Adaptor.
+** Defined as an alias in EnsPBaseadaptor
+**
+** #alias EnsPBaseadaptor
+** ##
+******************************************************************************/
+
+#define EnsPGvvariationsetadaptor EnsPBaseadaptor
+
+
+
+
+/* EnsEGvvariationValidationState *********************************************
+**
+** Ensembl Genetic Variation Variation validation state enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOGvvariationValidationState
+{
+    ensEGvvariationValidationStateNULL,
+    ensEGvvariationValidationStateCluster,
+    ensEGvvariationValidationStateFrequency,
+    ensEGvvariationValidationStateSubmitter,
+    ensEGvvariationValidationStateDoublehit,
+    ensEGvvariationValidationStateHapMap,
+    ensEGvvariationValidationStateFailed,
+    ensEGvvariationValidationStateNonPolymorphic,
+    ensEGvvariationValidationStateObserved,
+    ensEGvvariationValidationStateUnknown
+} EnsEGvvariationValidationState;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
+
 /* @data EnsPGvallele *********************************************************
 **
 ** Ensembl Genetic Variation Allele.
@@ -46,6 +165,7 @@ extern "C"
 ** @cc Bio::EnsEMBL::Variation::Allele
 ** @attr Gvpopulation [EnsPGvpopulation] Ensembl Genetic Variation Population
 ** @attr Allele [AjPStr] Allele
+** @attr SubSNPHandle [AjPStr] Sub SNP handle
 ** @attr Frequency [float] Frequency
 ** @attr SubSNPIdentifier [ajuint] Sub SNP Identifier
 ** @@
@@ -58,25 +178,12 @@ typedef struct EnsSGvallele
     EnsPGvalleleadaptor Adaptor;
     EnsPGvpopulation Gvpopulation;
     AjPStr Allele;
+    AjPStr SubSNPHandle;
     float Frequency;
     ajuint SubSNPIdentifier;
 } EnsOGvallele;
 
 #define EnsPGvallele EnsOGvallele*
-
-
-
-
-/* #data EnsPGvgenotypeadaptor ************************************************
-**
-** Ensembl Genetic Variation Genotype Adaptor.
-** Defined as an alias in EnsPDatabaseadaptor
-**
-** #alias EnsPDatabaseadaptor
-** ##
-******************************************************************************/
-
-#define EnsPGvgenotypeadaptor EnsPDatabaseadaptor
 
 
 
@@ -123,6 +230,7 @@ typedef struct EnsSGvgenotype
 ** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @attr CacheByIdentifier [AjPTable] Identifier cache
 ** @attr CacheByName [AjPTable] Name cache
+** @attr DefaultGvsource [void*] Default Ensembl Genetic Variation Source
 ** @@
 ******************************************************************************/
 
@@ -130,6 +238,7 @@ typedef struct EnsSGvsourceadaptor {
     EnsPBaseadaptor Adaptor;
     AjPTable CacheByIdentifier;
     AjPTable CacheByName;
+    void * DefaultGvsource;
 } EnsOGvsourceadaptor;
 
 #define EnsPGvsourceadaptor EnsOGvsourceadaptor*
@@ -154,6 +263,8 @@ typedef struct EnsSGvsourceadaptor {
 ** @attr Version [AjPStr] Version
 ** @attr Description [AjPStr] Description
 ** @attr URL [AjPStr] Uniform Resource Locator
+** @attr Somatic [AjBool] Somatic or germline variation
+** @attr Padding [ajuint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -166,6 +277,8 @@ typedef struct EnsSGvsource
     AjPStr Version;
     AjPStr Description;
     AjPStr URL;
+    AjBool Somatic;
+    ajuint Padding;
 } EnsOGvsource;
 
 #define EnsPGvsource EnsOGvsource*
@@ -173,39 +286,40 @@ typedef struct EnsSGvsource
 
 
 
-/* #data EnsPGvvariationadaptor ***********************************************
+/* @data EnsPGvsynonym ********************************************************
 **
-** Ensembl Genetic Variation Variation Adaptor.
-** Defined as an alias in EnsPDatabaseadaptor
+** Ensembl Genetic Variation Synonym.
 **
-** #alias EnsPDatabaseadaptor
-** ##
+** @alias EnsSGvsynonym
+** @alias EnsOGvsynonym
+**
+** @attr Use [ajuint] Use counter
+** @cc Bio::EnsEMBL::Storable
+** @attr Identifier [ajuint] SQL database-internal identifier
+** @attr Adaptor [EnsPGvsynonymadaptor] Ensembl Genetic Variation
+**                                      Synonym Adaptor
+** @cc Bio::EnsEMBL::Variation::??
+** @attr Gvsource [EnsPGvsource] Ensembl Genetic Variation Source
+** @attr Name [AjPStr] Name
+** @attr Moleculetype [AjPStr] Molecule type
+** @attr Gvvariationidentifier [ajuint] Ensembl Genetic Variation identifier
+** @attr Subidentifier [ajuint] Sub Identifier
+** @@
 ******************************************************************************/
 
-#define EnsPGvvariationadaptor EnsPDatabaseadaptor
-
-
-
-
-/******************************************************************************
-**
-** Ensembl Genetic Variation Variation validation state enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOGvvariationValidationState
+typedef struct EnsSGvsynonym
 {
-    ensEGvvariationValidationStateNULL,
-    ensEGvvariationValidationStateCluster,
-    ensEGvvariationValidationStateFrequency,
-    ensEGvvariationValidationStateSubmitter,
-    ensEGvvariationValidationStateDoublehit,
-    ensEGvvariationValidationStateHapMap,
-    ensEGvvariationValidationStateFailed,
-    ensEGvvariationValidationStateNonPolymorphic,
-    ensEGvvariationValidationStateObserved,
-    ensEGvvariationValidationStateUnknown
-} EnsEGvvariationValidationState;
+    ajuint Use;
+    ajuint Identifier;
+    EnsPGvsynonymadaptor Adaptor;
+    EnsPGvsource Gvsource;
+    AjPStr Name;
+    AjPStr Moleculetype;
+    ajuint Gvvariationidentifier;
+    ajuint Subidentifier;
+} EnsOGvsynonym;
+
+#define EnsPGvsynonym EnsOGvsynonym*
 
 
 
@@ -225,16 +339,16 @@ typedef enum EnsOGvvariationValidationState
 ** @cc Bio::EnsEMBL::Variation::Variation
 ** @attr Gvsource [EnsPGvsource] Ensembl Genetic Variation Source
 ** @attr Name [AjPStr] Name
-** @attr Synonyms [AjPTable] Synonyms
 ** @attr Handles [AjPTable] Handles
 ** @attr AncestralAllele [AjPStr] Ancestral allele
 ** @attr Gvalleles [AjPList] AJAX List of Ensembl Genetic Variation Alleles
+** @attr Gvsynonyms [AjPList] AJAX List of Ensembl Genetic Variation Synonyms
 ** @attr MoleculeType [AjPStr] Molecule type
 ** @attr FivePrimeFlank [AjPStr] Five prime flanking sequence
 ** @attr ThreePrimeFlank [AjPStr] Three prime flanking sequence
 ** @attr FailedDescription [AjPStr] Failed description
+** @attr Flank [AjBool] Flank
 ** @attr ValidationStates [ajuint] Bit field of validation states
-** @attr Padding [ajuint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -245,40 +359,19 @@ typedef struct EnsSGvvariation
     EnsPGvvariationadaptor Adaptor;
     EnsPGvsource Gvsource;
     AjPStr Name;
-    AjPTable Synonyms;
     AjPTable Handles;
     AjPStr AncestralAllele;
     AjPList Gvalleles;
+    AjPList Gvsynonyms;
     AjPStr MoleculeType;
     AjPStr FivePrimeFlank;
     AjPStr ThreePrimeFlank;
     AjPStr FailedDescription;
+    AjBool Flank;
     ajuint ValidationStates;
-    ajuint Padding;
 } EnsOGvvariation;
 
 #define EnsPGvvariation EnsOGvvariation*
-
-
-
-
-/* @data EnsPGvvariationfeatureadaptor ****************************************
-**
-** Ensembl Genetic Variation Variation Feature Adaptor.
-**
-** @alias EnsSGvvariationfeatureadaptor
-** @alias EnsOGvvariationfeatureadaptor
-**
-** @attr Adaptor [EnsPFeatureadaptor] Ensembl Feature Adaptor
-** @@
-******************************************************************************/
-
-typedef struct EnsSGvvariationfeatureadaptor
-{
-    EnsPFeatureadaptor Adaptor;
-} EnsOGvvariationfeatureadaptor;
-
-#define EnsPGvvariationfeatureadaptor EnsOGvvariationfeatureadaptor*
 
 
 
@@ -298,9 +391,10 @@ typedef struct EnsSGvvariationfeatureadaptor
 ** @cc Bio::EnsEMBL::Feature
 ** @attr Feature [EnsPFeature] Ensembl Feature
 ** @cc Bio::EnsEMBL::Variation::VariationFeature
-** @attr Gvvariation [EnsPGvvariation] Ensembl Variation
-** @attr Name [AjPStr] Name
-** @attr Source [AjPStr] Source
+** @attr Gvsource [EnsPGvsource] Ensembl Genetic Variation Source
+** @attr Gvvariation [EnsPGvvariation] Ensembl Genetic Variation Variation
+** @attr Allele [AjPStr] Allele, denormalisation from allele.allele
+** @attr Name [AjPStr] Name, denormalisation from variation.name
 ** @attr ValidationCode [AjPStr] Validation code
 ** @attr ConsequenceType [AjPStr] Consequence type
 ** @attr MapWeight [ajuint] Map weight or the number of times that the
@@ -308,7 +402,8 @@ typedef struct EnsSGvvariationfeatureadaptor
 **                          the genome. If this was the only Feature associated
 **                          with this Variation Feature the map weight would be
 **                          1.
-** @attr Padding [ajuint] Padding to alignment boundary
+** @attr Gvvariationidentifier [ajuint] Ensembl Genetic Variation Variation
+**                                      identifier
 ** @@
 ******************************************************************************/
 
@@ -318,19 +413,132 @@ typedef struct EnsSGvvariationfeature
     ajuint Identifier;
     EnsPGvvariationfeatureadaptor Adaptor;
     EnsPFeature Feature;
+    EnsPGvsource Gvsource;
     EnsPGvvariation Gvvariation;
+    AjPStr Allele;
     AjPStr Name;
-    AjPStr Source;
     AjPStr ValidationCode;
     AjPStr ConsequenceType;
     ajuint MapWeight;
-    ajuint Padding;
+    ajuint Gvvariationidentifier;
 } EnsOGvvariationfeature;
 
 #define EnsPGvvariationfeature EnsOGvvariationfeature*
 
 
 
+
+/* @data EnsPGvconsequence ****************************************************
+**
+** Ensembl Genetic Variation Consequence.
+**
+** @alias EnsSGvconsequence
+** @alias EnsOGvconsequence
+**
+** @attr Use [ajuint] Use counter
+** @cc Bio::EnsEMBL::Variation::ConsequenceType
+** @attr TranscriptIdentifier [ajuint] Ensembl Transcript identifier
+** @attr GvvariationfeatureIdentifier [ajuint] Ensembl Genetic Variation
+**                                             Variation Feature identifier
+** @attr Start [ajint] Start
+** @attr End [ajint] End
+** @attr Strand [ajuint] Strand
+** @attr Alleles [AjPList] AJAX List of AJAX String alleles
+** @attr Types [AjPList] AJAX List of AJAX String consequence types
+** @@
+******************************************************************************/
+
+typedef struct EnsSGvconsequence
+{
+    ajuint Use;
+    ajuint TranscriptIdentifier;
+    ajuint GvvariationfeatureIdentifier;
+    ajuint Start;
+    ajuint End;
+    ajuint Strand;
+    AjPList Alleles;
+    AjPList Types;
+} EnsOGvconsequence;
+
+#define EnsPGvconsequence EnsOGvconsequence*
+
+
+
+
+/* @data EnsPGvvariationset ***************************************************
+**
+** Ensembl Genetic Variation Variation Set.
+**
+** @alias EnsSGvvariationset
+** @alias EnsOGvvariationset
+**
+** @attr Use [ajuint] Use counter
+** @cc Bio::EnsEMBL::Storable
+** @attr Identifier [ajuint] SQL database-internal identifier
+** @attr Adaptor [EnsPGvsetadaptor] Ensembl Genetic Variation Set Adaptor
+** @cc Bio::EnsEMBL::Variation::VariationSet
+** @attr Name [AjPStr] Name
+** @attr Description [AjPstr] Description
+** @@
+******************************************************************************/
+
+typedef struct EnsSGvvariationset
+{
+    ajuint Use;
+    ajuint Identifier;
+    EnsPGvvariationsetadaptor Adaptor;
+    AjPStr Name;
+    AjPStr Description;
+} EnsOGvvariationset;
+
+#define EnsPGvvariationset EnsOGvvariationset*
+
+
+
+
+/* @data EnsPGvpopulationgenotype *****************************************
+**
+** Ensembl Genetic Variation Population Genotype.
+**
+** @alias EnsSGvpopulationgenotype
+** @alias EnsOGvpopulationgenotype
+**
+** @attr Use [ajuint] Use counter
+** @cc Bio::EnsEMBL::Storable
+** @attr Identifier [ajuint] SQL database-internal identifier
+** @attr Adaptor [EnsPGvpopulationgenotypeadaptor] Ensembl Genetic
+**                                       Variation Population Genotype Adaptor
+** @cc Bio::EnsEMBL::Variation::PopulationGenotype
+** @attr Gvpopulation [EnsPGvpopulation] Ensembl Genetic Variation Population
+** @attr Gvvariation [EnsPGvvariation] Ensembl Genetic Variation Variation
+** @attr Allele1 [AjPStr] Allele1
+** @attr Allele2 [AjPStr] Allele2
+** @attr Subidentifier [ajuint] Sub-Identifier
+** @attr Frequency [float] Frequency
+** @@
+******************************************************************************/
+
+typedef struct EnsSGvpopulationgenotype
+{
+    ajuint Use;
+    ajuint Identifier;
+    EnsPGvpopulationgenotypeadaptor Adaptor;
+    EnsPGvpopulation Gvpopulation;
+    EnsPGvvariation Gvvariation;
+    AjPStr Allele1;
+    AjPStr Allele2;
+    ajuint Subidentifier;
+    float Frequency;
+} EnsOGvpopulationgenotype;
+
+#define EnsPGvpopulationgenotype EnsOGvpopulationgenotype*
+
+
+
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions
@@ -341,7 +549,7 @@ typedef struct EnsSGvvariationfeature
 EnsPGvallele ensGvalleleNew(EnsPGvalleleadaptor gvaa,
                             ajuint identifier,
                             EnsPGvpopulation gvp,
-                            AjPStr allelestr,
+                            AjPStr allele,
                             float frequency,
                             ajuint subsnpid);
 
@@ -361,6 +569,8 @@ AjPStr ensGvalleleGetAllele(const EnsPGvallele gva);
 
 float ensGvalleleGetFrequency(const EnsPGvallele gva);
 
+AjPStr ensGvalleleGetSubSNPHandle(EnsPGvallele gva);
+
 ajuint ensGvalleleGetSubSNPIdentifier(const EnsPGvallele gva);
 
 AjBool ensGvalleleSetAdaptor(EnsPGvallele gva, EnsPGvalleleadaptor gvaa);
@@ -372,6 +582,8 @@ AjBool ensGvalleleSetPopulation(EnsPGvallele gva, EnsPGvpopulation gvp);
 AjBool ensGvalleleSetAllele(EnsPGvallele gva, AjPStr allelestr);
 
 AjBool ensGvalleleSetFrequency(EnsPGvallele gva, float frequency);
+
+AjBool ensGvalleleSetSubSNPHandle(EnsPGvallele gva, AjPStr subsnphandle);
 
 AjBool ensGvalleleSetSubSNPIdentifier(EnsPGvallele gva, ajuint subsnpid);
 
@@ -429,7 +641,8 @@ EnsPGvsource ensGvsourceNew(EnsPGvsourceadaptor gvsa,
                             AjPStr name,
                             AjPStr version,
                             AjPStr description,
-                            AjPStr url);
+                            AjPStr url,
+                            AjBool somatic);
 
 EnsPGvsource ensGvsourceNewObj(const EnsPGvsource object);
 
@@ -449,6 +662,8 @@ AjPStr ensGvsourceGetDescription(const EnsPGvsource gvs);
 
 AjPStr ensGvsourceGetURL(const EnsPGvsource gvs);
 
+AjBool ensGvsourceGetSomatic(const EnsPGvsource gvs);
+
 AjBool ensGvsourceSetAdaptor(EnsPGvsource gvs, EnsPGvsourceadaptor gvsa);
 
 AjBool ensGvsourceSetIdentifier(EnsPGvsource gvs, ajuint identifier);
@@ -461,9 +676,13 @@ AjBool ensGvsourceSetDescription(EnsPGvsource gvs, AjPStr description);
 
 AjBool ensGvsourceSetURL(EnsPGvsource gvs, AjPStr url);
 
+AjBool ensGvsourceSetSomatic(EnsPGvsource gvs, AjBool somatic);
+
 ajulong ensGvsourceGetMemsize(const EnsPGvsource gvs);
 
 AjBool ensGvsourceTrace(const EnsPGvsource gvs, ajuint level);
+
+AjBool ensGvsourceMatch(const EnsPGvsource gvs1, const EnsPGvsource gvs2);
 
 /* Ensembl Genetic Variation Source Adaptor */
 
@@ -491,6 +710,64 @@ AjBool ensGvsourceadaptorFetchByName(EnsPGvsourceadaptor gvsa,
                                      const AjPStr name,
                                      EnsPGvsource *Pgvs);
 
+AjBool ensGvsourceadaptorFetchDefault(EnsPGvsourceadaptor gvsa,
+                                      EnsPGvsource *Pgvs);
+
+/* Ensembl Genetic Variation Synonym */
+
+EnsPGvsynonym ensGvsynonymNew(EnsPGvsynonymadaptor gvsa,
+                              ajuint identifier,
+                              EnsPGvsource gvsource,
+                              AjPStr name,
+                              AjPStr moleculetype,
+                              ajuint gvvidentifier,
+                              ajuint subidentifier);
+
+EnsPGvsynonym ensGvsynonymNewObj(const EnsPGvsynonym object);
+
+EnsPGvsynonym ensGvsynonymNewRef(EnsPGvsynonym gvs);
+
+void ensGvsynonymDel(EnsPGvsynonym *Pgvs);
+
+EnsPGvsynonymadaptor ensGvsynonymGetAdaptor(const EnsPGvsynonym gvs);
+
+ajuint ensGvsynonymGetIdentifier(const EnsPGvsynonym gvs);
+
+EnsPGvsource ensGvsynonymGetGvsource(const EnsPGvsynonym gvs);
+
+AjPStr ensGvsynonymGetName(const EnsPGvsynonym gvs);
+
+AjPStr ensGvsynonymGetMoleculetype(const EnsPGvsynonym gvs);
+
+ajuint ensGvsynonymGetGvvariationidentifier(const EnsPGvsynonym gvs);
+
+ajuint ensGvsynonymGetSubidentifier(const EnsPGvsynonym gvs);
+
+AjBool ensGvsynonymSetAdaptor(EnsPGvsynonym gvs,
+                              EnsPGvsynonymadaptor gvsa);
+
+AjBool ensGvsynonymSetIdentifier(EnsPGvsynonym gvs,
+                                 ajuint identifier);
+
+AjBool ensGvsynonymSetGvsource(EnsPGvsynonym gvs,
+                               EnsPGvsource gvsource);
+
+AjBool ensGvsynonymSetName(EnsPGvsynonym gvs,
+                           AjPStr name);
+
+AjBool ensGvsynonymSetMoleculetype(EnsPGvsynonym gvs,
+                                   AjPStr moleculetype);
+
+AjBool ensGvsynonymSetGvvariationidentifier(EnsPGvsynonym gvs,
+                                            ajuint gvvidentifier);
+
+AjBool ensGvsynonymSetSubidentifier(EnsPGvsynonym gvs,
+                                    ajuint subidentifier);
+
+ajulong ensGvsynonymGetMemsize(const EnsPGvsynonym gvs);
+
+AjBool ensGvsynonymTrace(const EnsPGvsynonym gvs, ajuint level);
+
 /* Ensembl Genetic Variation Variation */
 
 EnsPGvvariation ensGvvariationNew(EnsPGvvariationadaptor gvva,
@@ -498,13 +775,14 @@ EnsPGvvariation ensGvvariationNew(EnsPGvvariationadaptor gvva,
                                   EnsPGvsource gvs,
                                   AjPStr name,
                                   AjPStr ancestralallele,
-                                  AjPTable synonyms,
-                                  AjPList alleles,
+                                  AjPList gvalleles,
+                                  AjPList gvsynonyms,
                                   AjPStr validationstates,
                                   AjPStr moltype,
                                   AjPStr fiveflank,
                                   AjPStr threeflank,
-                                  AjPStr faileddescription);
+                                  AjPStr faileddescription,
+                                  AjBool flank);
 
 EnsPGvvariation ensGvvariationNewObj(const EnsPGvvariation object);
 
@@ -520,21 +798,23 @@ EnsPGvsource ensGvvariationGetGvsource(const EnsPGvvariation gvv);
 
 AjPStr ensGvvariationGetName(const EnsPGvvariation gvv);
 
-const AjPTable ensGvvariationGetSynonyms(const EnsPGvvariation gvv);
-
 AjPStr ensGvvariationGetAncestralAllele(const EnsPGvvariation gvv);
 
 const AjPList ensGvvariationGetGvalleles(const EnsPGvvariation gvv);
+
+const AjPList ensGvvariationGetGvsynonyms(const EnsPGvvariation gvv);
 
 ajuint ensGvvariationGetValidationStates(const EnsPGvvariation gvv);
 
 AjPStr ensGvvariationGetMoleculeType(const EnsPGvvariation gvv);
 
-AjPStr ensGvvariationGetFivePrimeFlank(const EnsPGvvariation gvv);
+AjPStr ensGvvariationGetFivePrimeFlank(EnsPGvvariation gvv);
 
-AjPStr ensGvvariationGetThreePrimeFlank(const EnsPGvvariation gvv);
+AjPStr ensGvvariationGetThreePrimeFlank(EnsPGvvariation gvv);
 
 AjPStr ensGvvariationGetFailedDescription(const EnsPGvvariation gvv);
+
+AjBool ensGvvariationGetFlank(const EnsPGvvariation gvv);
 
 AjBool ensGvvariationSetAdaptor(EnsPGvvariation gvv,
                                 EnsPGvvariationadaptor gvva);
@@ -563,16 +843,16 @@ AjBool ensGvvariationSetThreePrimeFlank(EnsPGvvariation gvv,
 AjBool ensGvvariationSetFailedDescription(EnsPGvvariation gvv,
                                           AjPStr faileddescription);
 
+AjBool ensGvvariationSetFlank(EnsPGvvariation gvv,
+                              AjBool flank);
+
 ajulong ensGvvariationGetMemsize(const EnsPGvvariation gvv);
 
 AjBool ensGvvariationTrace(const EnsPGvvariation gvv, ajuint level);
 
-AjBool ensGvvariationAddSynonym(EnsPGvvariation gvv,
-                                AjPStr source,
-                                AjPStr synonym,
-                                AjPStr handle);
-
 AjBool ensGvvariationAddGvallele(EnsPGvvariation gvv, EnsPGvallele gva);
+
+AjBool ensGvvariationAddGvsynonym(EnsPGvvariation gvv, EnsPGvsynonym gvs);
 
 AjBool ensGvvariationAddValidationState(EnsPGvvariation gvv,
                                         EnsEGvvariationValidationState state);
@@ -587,16 +867,21 @@ ajuint ensGvvariationValidationStatesFromSet(const AjPStr set);
 
 AjBool ensGvvariationValidationStatesToSet(ajuint states, AjPStr *Pstr);
 
-AjBool ensGvvariationFetchAllSynonyms(const EnsPGvvariation gvv,
-                                      const AjPStr source,
-                                      AjPList synonyms);
+AjBool ensGvvariationFetchAllGvsynonyms(const EnsPGvvariation gvv,
+                                        const AjPStr gvsourcename,
+                                        AjPList gvss);
 
-AjBool ensGvvariationFetchAllSynonymSources(const EnsPGvvariation gvv,
-                                            AjPList sources);
+AjBool ensGvvariationFetchAllGvsynonymGvsources(const EnsPGvvariation gvv,
+                                                AjPList gvss);
 
-AjBool ensGvvariationFetchHandleBySynonym(EnsPGvvariation gvv,
-                                          const AjPStr synonym,
-                                          AjPStr *Phandle);
+AjBool ensGvvariationFetchAllGenes(EnsPGvvariation gvv,
+                                   ajint flank,
+                                   AjPList genes);
+
+AjBool ensGvvariationFetchAllGvvariationfeatures(EnsPGvvariation gvv,
+                                                 AjPList gvvfs);
+
+AjBool ensTableDeleteGvvariations(AjPTable *Pgvvs);
 
 /* Ensembl Genetic Variation Variation Adaptor */
 
@@ -621,20 +906,28 @@ AjBool ensGvvariationadaptorFetchAllByGvpopulation(EnsPGvvariationadaptor gvva,
                                                    const EnsPGvpopulation gvp,
                                                    AjPList gvvs);
 
-AjBool ensGvvariationadaptorFetchAllSources(EnsPGvvariationadaptor gvva,
-                                            AjPList sources);
+AjBool ensGvvariationadaptorFetchAllByGvpopulationFrequency(
+    EnsPGvvariationadaptor gvva,
+    const EnsPGvpopulation gvp,
+    float frequency,
+    AjPList gvvs);
 
-AjBool ensGvvariationadaptorFetchSourceVersion(EnsPGvvariationadaptor gvva,
-                                               const AjPStr source,
-                                               AjPStr *Pversion);
-
-AjBool ensGvvariationadaptorFetchDefaultSource(EnsPGvvariationadaptor gvva,
-                                               AjPStr *Psource);
+AjBool ensGvvariationadaptorFetchAllByGvvariationset(
+    EnsPGvvariationadaptor gvva,
+    EnsPGvvariationset gvvset,
+    AjPList gvvs);
 
 AjBool ensGvvariationadaptorFetchFlankingSequence(EnsPGvvariationadaptor gvva,
-                                                  ajuint variationid,
+                                                  ajuint gvvidentifier,
                                                   AjPStr *Pfiveseq,
                                                   AjPStr *Pthreeseq);
+
+AjBool ensGvvariationadaptorFetchAllByIdentifiers(EnsPGvvariationadaptor gvva,
+                                                  AjPTable gvvs);
+
+AjBool ensGvvariationadaptorFetchAllByNames(EnsPGvvariationadaptor gvva,
+                                            const AjPList names,
+                                            AjPList gvvs);
 
 /* Ensembl Genetic Variation Variation Feature */
 
@@ -642,9 +935,22 @@ EnsPGvvariationfeature ensGvvariationfeatureNew(
     EnsPGvvariationfeatureadaptor adaptor,
     ajuint identifier,
     EnsPFeature feature,
+    EnsPGvsource gvsource,
     EnsPGvvariation gvv,
+    AjPStr allele,
     AjPStr name,
-    AjPStr source,
+    AjPStr validation,
+    AjPStr consequence,
+    ajuint mapweight);
+
+EnsPGvvariationfeature ensGvvariationfeatureNewIdentifier(
+    EnsPGvvariationfeatureadaptor gvvfa,
+    ajuint identifier,
+    EnsPFeature feature,
+    EnsPGvsource gvsource,
+    ajuint gvvidentifier,
+    AjPStr allele,
+    AjPStr name,
     AjPStr validation,
     AjPStr consequence,
     ajuint mapweight);
@@ -659,16 +965,26 @@ void ensGvvariationfeatureDel(EnsPGvvariationfeature *Pgvvf);
 EnsPGvvariationfeatureadaptor ensGvvariationfeatureGetAdaptor(
     const EnsPGvvariationfeature gvvf);
 
-ajuint ensGvvariationfeatureGetIdentifier(const EnsPGvvariationfeature gvvf);
-
-EnsPFeature ensGvvariationfeatureGetFeature(const EnsPGvvariationfeature gvvf);
-
-EnsPGvvariation ensGvvariationfeatureGetGvvariation(
+ajuint ensGvvariationfeatureGetIdentifier(
     const EnsPGvvariationfeature gvvf);
 
-AjPStr ensGvvariationfeatureGetName(const EnsPGvvariationfeature gvvf);
+EnsPFeature ensGvvariationfeatureGetFeature(
+    const EnsPGvvariationfeature gvvf);
 
-AjPStr ensGvvariationfeatureGetSource(const EnsPGvvariationfeature gvvf);
+EnsPGvsource ensGvvariationfeatureGetGvsource(
+    const EnsPGvvariationfeature gvvf);
+
+EnsPGvvariation ensGvvariationfeatureGetGvvariation(
+    EnsPGvvariationfeature gvvf);
+
+AjPStr ensGvvariationfeatureGetAllele(
+    const EnsPGvvariationfeature gvvf);
+
+AjPStr ensGvvariationfeatureGetName(
+    const EnsPGvvariationfeature gvvf);
+
+AjPStr ensGvvariationfeatureGetSource(
+    const EnsPGvvariationfeature gvvf);
 
 AjPStr ensGvvariationfeatureGetValidationCode(
     const EnsPGvvariationfeature gvvf);
@@ -676,7 +992,8 @@ AjPStr ensGvvariationfeatureGetValidationCode(
 AjPStr ensGvvariationfeatureGetConsequenceType(
     const EnsPGvvariationfeature gvvf);
 
-ajuint ensGvvariationfeatureGetMapWeight(const EnsPGvvariationfeature gvvf);
+ajuint ensGvvariationfeatureGetMapWeight(
+    const EnsPGvvariationfeature gvvf);
 
 AjBool ensGvvariationfeatureSetAdaptor(EnsPGvvariationfeature gvvf,
                                        EnsPGvvariationfeatureadaptor gvvfa);
@@ -687,13 +1004,17 @@ AjBool ensGvvariationfeatureSetIdentifier(EnsPGvvariationfeature gvvf,
 AjBool ensGvvariationfeatureSetFeature(EnsPGvvariationfeature gvvf,
                                        EnsPFeature feature);
 
+AjBool ensGvvariationfeatureSetGvsource(EnsPGvvariationfeature gvvf,
+                                        EnsPGvsource gvsource);
+
 AjBool ensGvvariationfeatureSetGvvariation(EnsPGvvariationfeature gvvf,
                                            EnsPGvvariation gvv);
 
-AjBool ensGvvariationfeatureSetName(EnsPGvvariationfeature gvvf, AjPStr name);
+AjBool ensGvvariationfeatureSetAllele(EnsPGvvariationfeature gvvf,
+                                      AjPStr allele);
 
-AjBool ensGvvariationfeatureSetSource(EnsPGvvariationfeature gvvf,
-                                      AjPStr source);
+AjBool ensGvvariationfeatureSetName(EnsPGvvariationfeature gvvf,
+                                    AjPStr name);
 
 AjBool ensGvvariationfeatureSetValidationCode(EnsPGvvariationfeature gvvf,
                                               AjPStr validationcode);
@@ -712,6 +1033,289 @@ AjBool ensGvvariationfeatureTrace(const EnsPGvvariationfeature gvvf,
 AjBool ensGvvariationfeatureSortByStartAscending(AjPList gvvfs);
 
 AjBool ensGvvariationfeatureSortByStartDescending(AjPList gvvfs);
+
+/* Ensembl Genetic Variation Feature Adaptor */
+
+EnsPGvvariationfeatureadaptor ensRegistryGetGvvariationfeatureadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPGvvariationfeatureadaptor ensGvvariationfeatureadaptorNew(
+    EnsPDatabaseadaptor dba);
+
+void ensGvvariationfeatureadaptorDel(EnsPGvvariationfeatureadaptor *Pgvvfa);
+
+AjBool ensGvvariationfeatureAdaptorFetchAllBySliceConstraint(
+    EnsPGvvariationfeatureadaptor gvvfa,
+    EnsPSlice slice,
+    const AjPStr constraint,
+    AjBool somatic,
+    AjPList gvvfs);
+
+AjBool ensGvvariationfeatureAdaptorFetchAllBySlice(
+    EnsPGvvariationfeatureadaptor gvvfa,
+    EnsPSlice slice,
+    AjBool somatic,
+    AjPList gvvfs);
+
+AjBool ensGvvariationfeatureadaptorFetchAllBySliceGenotyped(
+    EnsPGvvariationfeatureadaptor gvvfa,
+    EnsPSlice slice,
+    AjPList gvvfs);
+
+AjBool ensGvvariationfeatureadaptorFetchAllBySliceAnnotated(
+    EnsPGvvariationfeatureadaptor gvvfa,
+    const AjPStr vsource,
+    const AjPStr psource,
+    const AjPStr annotation,
+    AjBool somatic,
+    EnsPSlice slice,
+    AjPList gvvfs);
+
+AjBool ensGvvariationfeatureadaptorFetchAllByGvvariation(
+    EnsPGvvariationfeatureadaptor gvvfa,
+    EnsPGvvariation gvv,
+    AjPList gvvfs);
+
+AjBool ensGvvariationfeatureadaptorFetchAllByGvpopulation(
+    EnsPGvvariationfeatureadaptor gvvfa,
+    const EnsPGvpopulation gvp,
+    EnsPSlice slice,
+    AjPList gvvfs);
+
+AjBool ensGvvariationfeatureadaptorFetchAllByGvpopulationFrequency(
+    EnsPGvvariationfeatureadaptor gvvfa,
+    const EnsPGvpopulation gvp,
+    float frequency,
+    EnsPSlice slice,
+    AjPList gvvfs);
+
+AjBool ensGvvariationfeatureadaptorFetchAllIdentifiers(
+    const EnsPGvvariationfeatureadaptor gvvfa,
+    AjPList identifiers);
+
+/* Ensembl Genetic Variation Variation Set */
+
+EnsPGvvariationset ensGvvariationsetNew(EnsPGvvariationsetadaptor gvvsa,
+                                        ajuint identifier,
+                                        AjPStr name,
+                                        AjPStr description);
+
+EnsPGvvariationset ensGvvariationsetNewObj(const EnsPGvvariationset object);
+
+EnsPGvvariationset ensGvvariationsetNewRef(EnsPGvvariationset gvvs);
+
+void ensGvvariationsetDel(EnsPGvvariationset *Pgvvs);
+
+EnsPGvvariationsetadaptor ensGvvariationsetGetAdaptor(
+    const EnsPGvvariationset gvvs);
+
+ajuint ensGvvariationsetGetIdentifier(
+    const EnsPGvvariationset gvvs);
+
+AjPStr ensGvvariationsetGetName(
+    const EnsPGvvariationset gvvs);
+
+AjPStr ensGvvariationsetGetDescription(
+    const EnsPGvvariationset gvvs);
+
+AjBool ensGvvariationsetSetAdaptor(EnsPGvvariationset gvvs,
+                                   EnsPGvvariationsetadaptor gvvsa);
+
+AjBool ensGvvariationsetSetIdentifier(EnsPGvvariationset gvvs,
+                                      ajuint identifier);
+
+AjBool ensGvvariationsetSetName(EnsPGvvariationset gvvs,
+                                AjPStr name);
+
+AjBool ensGvvariationsetSetDescription(EnsPGvvariationset gvvs,
+                                       AjPStr description);
+
+ajulong ensGvvariationsetGetMemsize(const EnsPGvvariationset gvvs);
+
+AjBool ensGvvariationsetTrace(const EnsPGvvariationset gvvs,
+                              ajuint level);
+
+AjBool ensGvvariationsetFetchAllSubSets(EnsPGvvariationset gvvs,
+                                        AjBool immediate,
+                                        AjPList gvvss);
+
+AjBool ensGvvariationsetFetchAllSuperSets(EnsPGvvariationset gvvs,
+                                          AjBool immediate,
+                                          AjPList gvvss);
+
+AjBool ensGvvariationsetFetchAllGvvariations(
+    EnsPGvvariationset gvvs,
+    AjPList gvvss);
+
+/* Ensembl Genetic Variation Variation Set Adaptor */
+
+EnsPGvvariationsetadaptor ensRegistryGetGvvariationsetadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPGvvariationsetadaptor ensGvvariationsetadaptorNew(
+    EnsPDatabaseadaptor dba);
+
+void ensGvvariationsetadaptorDel(EnsPGvvariationsetadaptor* Pgvvsa);
+
+AjBool ensGvvariationsetadaptorFetchByIdentifier(
+    EnsPGvvariationsetadaptor gvvsa,
+    ajuint identifier,
+    EnsPGvvariationset *Pgvvs);
+
+AjBool ensGvvariationsetadaptorFetchByName(
+    EnsPGvvariationsetadaptor gvvsa,
+    const AjPStr name,
+    EnsPGvvariationset *Pgvvs);
+
+AjBool ensGvvariationsetadaptorFetchAllToplevel(
+    EnsPGvvariationsetadaptor gvvsa,
+    AjPList gvvss);
+
+AjBool ensGvvariationsetadaptorFetchAllByGvvariation(
+    EnsPGvvariationsetadaptor gvvsa,
+    const EnsPGvvariation gvv,
+    AjPList gvvss);
+
+AjBool ensGvvariationsetadaptorFetchAllBySubSet(
+    EnsPGvvariationsetadaptor gvvsa,
+    const EnsPGvvariationset gvvs,
+    AjBool immediate,
+    AjPList gvvss);
+
+AjBool ensGvvariationsetadaptorFetchAllBySuperSet(
+    EnsPGvvariationsetadaptor gvvsa,
+    const EnsPGvvariationset gvvs,
+    AjBool immediate,
+    AjPList gvvss);
+
+/* Ensembl Genetic Variation Consequence */
+
+EnsPGvconsequence ensGvconsequenceNew(ajuint transcriptid,
+                                      ajuint gvvfid,
+                                      ajint start,
+                                      ajint end,
+                                      ajint strand);
+
+EnsPGvconsequence ensGvconsequenceNewObj(const EnsPGvconsequence object);
+
+EnsPGvconsequence ensGvconsequenceNewRef(EnsPGvconsequence gvvc);
+
+void ensGvconsequenceDel(EnsPGvconsequence *Pgvvc);
+
+ajuint ensGvconsequenceGetTranscriptIdentifier(
+    const EnsPGvconsequence gvvc);
+ajuint ensGvconsequenceGetGvvariationfeatureIdentifier(
+    const EnsPGvconsequence gvvc);
+ajint ensGvconsequenceGetStart(
+    const EnsPGvconsequence gvvc);
+
+ajint ensGvconsequenceGetEnd(
+    const EnsPGvconsequence gvvc);
+
+ajint ensGvconsequenceGetStrand(
+    const EnsPGvconsequence gvvc);
+
+AjBool ensGvconsequenceSetTranscriptIdentifier(EnsPGvconsequence gvvc,
+                                               ajuint transcriptid);
+
+AjBool ensGvconsequenceSetGvvariationfeatureIdentifier(EnsPGvconsequence gvvc,
+                                                       ajuint gvvfid);
+
+AjBool ensGvconsequenceSetStart(EnsPGvconsequence gvvc,
+                                ajint start);
+
+AjBool ensGvconsequenceSetEnd(EnsPGvconsequence gvvc,
+                              ajint end);
+
+AjBool ensGvconsequenceSetStrand(EnsPGvconsequence gvvc,
+                                 ajint strand);
+
+ajulong ensGvconsequenceGetMemsize(const EnsPGvconsequence gvvc);
+
+AjBool ensGvconsequenceTrace(const EnsPGvconsequence gvvc,
+                             ajuint level);
+
+/* Ensembl Genetic Variation Poulation Genotype */
+
+EnsPGvpopulationgenotype ensGvpopulationgenotypeNew(
+    EnsPGvpopulationgenotypeadaptor gvpga,
+    ajuint identifier,
+    EnsPGvpopulation gvp,
+    EnsPGvvariation gvv,
+    AjPStr allele1,
+    AjPStr allele2,
+    float frequency);
+
+EnsPGvpopulationgenotype ensGvpopulationgenotypeNewObj(
+    const EnsPGvpopulationgenotype object);
+
+EnsPGvpopulationgenotype ensGvpopulationgenotypeNewRef(
+    EnsPGvpopulationgenotype gvpg);
+
+void ensGvpopulationgenotypeDel(EnsPGvpopulationgenotype *Pgvpg);
+
+EnsPGvpopulationgenotypeadaptor ensGvpopulationgenotypeGetAdaptor(
+    const EnsPGvpopulationgenotype gvpg);
+
+ajuint ensGvpopulationgenotypeGetIdentifier(
+    const EnsPGvpopulationgenotype gvpg);
+
+EnsPGvpopulation ensGvpopulationgenotypeGetGvpopulation(
+    const EnsPGvpopulationgenotype gvpg);
+
+EnsPGvvariation ensGvpopulationgenotypeGetGvvariation(
+    const EnsPGvpopulationgenotype gvpg);
+
+AjPStr ensGvpopulationgenotypeGetAllele1(
+    const EnsPGvpopulationgenotype gvpg);
+
+AjPStr ensGvpopulationgenotypeGetAllele2(
+    const EnsPGvpopulationgenotype gvpg);
+
+ajuint ensGvpopulationgenotypeGetSubidentifier(
+    const EnsPGvpopulationgenotype gvpg);
+
+float ensGvpopulationgenotypeGetFrequency(
+    const EnsPGvpopulationgenotype gvpg);
+
+AjBool ensGvpopulationgenotypeSetAdaptor(EnsPGvpopulationgenotype gvpg,
+                                         EnsPGvpopulationgenotypeadaptor gvpga);
+
+AjBool ensGvpopulationgenotypeSetIdentifier(EnsPGvpopulationgenotype gvpg,
+                                            ajuint identifier);
+
+AjBool ensGvpopulationgenotypeSetGvpopulation(EnsPGvpopulationgenotype gvpg,
+                                              EnsPGvpopulation gvp);
+
+AjBool ensGvpopulationgenotypeSetGvvariation(EnsPGvpopulationgenotype gvpg,
+                                             EnsPGvvariation gvv);
+
+AjBool ensGvpopulationgenotypeSetAllele1(EnsPGvpopulationgenotype gvpg,
+                                         AjPStr allele1);
+
+AjBool ensGvpopulationgenotypeSetAllele2(EnsPGvpopulationgenotype gvpg,
+                                         AjPStr allele2);
+
+AjBool ensGvpopulationgenotypeSetSubidentifier(EnsPGvpopulationgenotype gvpg,
+                                               ajuint subidentifier);
+
+AjBool ensGvpopulationgenotypeSetFrequency(EnsPGvpopulationgenotype gvpg,
+                                           float frequency);
+
+ajulong ensGvpopulationgenotypeGetMemsize(const EnsPGvpopulationgenotype gvpg);
+
+AjBool ensGvpopulationgenotypeTrace(const EnsPGvpopulationgenotype gvpg,
+                                    ajuint level);
+
+/* Ensembl Genetic Variation Population Genotype Adaptor */
+
+EnsPGvpopulationgenotypeadaptor ensRegistryGetGvpopulationgenotypeadaptor(
+    EnsPDatabaseadaptor dba);
+
+EnsPGvpopulationgenotypeadaptor ensGvpopulationgenotypeadaptorNew(
+    EnsPDatabaseadaptor dba);
+
+void ensGvpopulationgenotypeadaptorDel(EnsPGvpopulationgenotypeadaptor* Pgvpga);
 
 /*
 ** End of prototype definitions
