@@ -1,4 +1,4 @@
-/* $Id: gd.c,v 1.5 2009/12/01 14:49:05 rice Exp $
+/* $Id: gd.c,v 1.6 2010/08/09 12:09:48 mks Exp $
 
          PNG, GIF, and JPEG device driver based on libgd
 
@@ -598,8 +598,11 @@ plD_init_gif_Dev(PLStream *pls)
     dev->red15=red15;
 
     dev->optimise=0;    /* Optimise does not work for GIFs... should, but it doesn't */
+
+#if GD2_VERS >= 2
     dev->palette=1;     /* Always use palette mode for GIF files */
     dev->truecolour=0;  /* Never have truecolour in GIFS */
+#endif
 
 #ifdef HAVE_FREETYPE
 if (freetype)
