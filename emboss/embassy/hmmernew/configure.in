@@ -8,7 +8,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.59])
 AC_INIT([HMMER], [2.3.2], [emboss-bug@emboss.open-bio.org], [emboss],
         [http://emboss.sourceforge.net/])
-AC_REVISION([$Revision: 1.15 $])
+AC_REVISION([$Revision: 1.16 $])
 AC_CONFIG_HEADERS([src/embconf.h])
 AC_CONFIG_SRCDIR(src/ehmmalign.c)
 AC_CONFIG_MACRO_DIR([m4])
@@ -26,131 +26,124 @@ AC_PROG_CPP
 AC_C_INLINE
 
 
-dnl Test whether --with-sgiabi given for IRIX (n32m3 n32m4 64m3 64m4)
-if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
+
 if test "$CC" != "gcc"; then
-  CC=cc
-  CHECK_SGI
-fi
-fi
+
+case $host_os in
+irix*)
+	if test "$CC" != "gcc"; then
+  	CFLAGS="$CFLAGS"
+ 	CHECK_SGI
+	fi
+	;;
+esac
 
 
 dnl Test if --enable-64 is given
+
 if test "${enable_64+set}" != set; then
 enable_64=no
 fi
+
 
 AC_ARG_ENABLE([64],
    [AS_HELP_STRING([--enable-64], [64 bit pointers])])
 if test "${enable_64}" = "yes" ; then
 AC_MSG_CHECKING([for 64bit compilation support])
 
+case $host_os in
 
-dnl Test for Linux 64 bit
-if test "`uname`" = "Linux"; then
-CPPFLAGS="-DAJ_Linux64 $CPPFLAGS"
-fi
+linux*)
+	CPPFLAGS="-DAJ_Linux64 $CPPFLAGS"
+	;;
 
-dnl Test for FreeBSD 64 bit
-if test "`uname`" = "FreeBSD"; then
-CPPFLAGS="-DAJ_FreeBSD64 $CPPFLAGS"
-fi
+freebsd*)
+	CPPFLAGS="-DAJ_FreeBSD64 $CPPFLAGS"
+	;;
 
 dnl Test for Solaris 64 bit. This is done in the optimisation section...
 dnl Another Solaris feature is that -fast implies -xarch=v8 and
 dnl therefore switches off -xarch=v9 if it is given first.
 
+osf*)
+	CPPFLAGS="-DAJ_OSF164 $CPPFLAGS"
+	;;
 
-dnl Test for OSF1 64 bit (its always this anyway)
-if test "`uname`" = "OSF1"; then
-CPPFLAGS="-DAJ_OSF164 $CPPFLAGS"
-fi
+irix*)
+	CPPFLAGS="-DAJ_IRIX64 $CPPFLAGS"
+	;;
 
-dnl Test for SGI 64 bit
-if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64"; then
-CPPFLAGS="-DAJ_IRIX64 $CPPFLAGS"
-fi
 
-dnl Test for AIX 64 bit
-if test "`uname`" = "AIX"; then
-CPPFLAGS="-DAJ_AIX64 $CPPFLAGS"
-if test "$CC" != "gcc"; then
-CC="$CC -q64"
-fi
-NM="nm -B -X 64"
-AR="ar -X 64"
-fi
+aix*)
+	CPPFLAGS="-DAJ_AIX64 $CPPFLAGS"
+	if test "$CC" != "gcc"; then
+	   CC="$CC -q64"
+	fi
+	NM="nm -B -X 64"
+	AR="ar -X 64"
+	;;
 
-dnl Test for HP-UX 64 bit
-if test "`uname`" = "HP-UX"; then
-if test "$CC" != "gcc"; then
-CC="$CC +DD64"
-fi
-CPPFLAGS="-DAJ_HPUX64 $CPPFLAGS"
-fi
+hpux*)
+	if test "$CC" != "gcc"; then
+	    CC="$CC +DD64"
+	fi
+	CPPFLAGS="-DAJ_HPUX64 $CPPFLAGS"
+	;;
+
+esac
 
 AC_MSG_RESULT([done])
 fi
 
 
-
-
-
-
-
 dnl Set optimisation flags
-if test "$CC" != "gcc"; then
 
-dnl Test for AIX optimisation
-if test "`uname`" = "AIX"; then
-CFLAGS="$CFLAGS -O3 -qstrict -qarch=auto -qtune=auto"
-fi
+case $host_os in
 
-dnl test for SGI optimisation
-if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64" ; then
-LD="/usr/bin/ld -IPA"
-CFLAGS="$CFLAGS -Ofast"
-fi
+aix*)
+	CFLAGS="$CFLAGS -O3 -qstrict -qarch=auto -qtune=auto"
+	;;
 
-dnl Test for HP-UX optimisation
-if test "`uname`" = "HP-UX"; then
-CFLAGS="$CFLAGS -fast"
-fi
+irix*)
+	LD="/usr/bin/ld -IPA"
+	CFLAGS="$CFLAGS -O3"
+	;;
 
-dnl Test for OSF1 optimisation
-if test "`uname`" = "OSF1"; then
-CFLAGS="$CFLAGS -fast -U_FASTMATH"
-fi
+hpux*)
+	CFLAGS="$CFLAGS -fast"
+	;;
 
-dnl test for Solaris optimisation
-if test "`uname`" = "SunOS"; then
-CFLAGS="$CFLAGS -O"
-dnl test for 64 bit ptr here (see Solaris 64bit above)
-if test "${enable_64}" = "yes" ; then
-CFLAGS="$CFLAGS -xtarget=ultra -xarch=v9"
-fi
-fi
+osf*)
+	CFLAGS="$CFLAGS -fast -U_FASTMATH"
+	;;
 
-dnl Test for Linux optimisation
-if test "`uname`" = "Linux"; then
-CFLAGS="$CFLAGS -O2"
-fi
+solaris*)
+	CFLAGS="$CFLAGS -O"
 
-dnl Test for FreeBSD optimisation
-if test "`uname`" = "FreeBSD"; then
-CFLAGS="$CFLAGS -O2"
-fi
+	dnl test for 64 bit ptr here (see Solaris 64bit above)
 
+	if test "${enable_64}" = "yes" ; then
+	CFLAGS="$CFLAGS -xtarget=ultra -xarch=v9"
+	fi
+	;;
+
+linux*)
+	CFLAGS="$CFLAGS -O2"
+	;;
+
+
+freebsd*)
+	CFLAGS="$CFLAGS -O2"
+	;;
+
+esac
+
+dnl This is a GCC compiler
 else
 CFLAGS="$CFLAGS -O2"
+
 fi
-dnl End of Optimisation tests
-
-
-
-
-
-
+dnl end of "if ! GCC"
 
 
 
@@ -189,13 +182,16 @@ AC_PROG_MAKE_SET
 
 dnl Intel MacOSX 10.6 puts X11 in a non-standard place
 if test "${with_x}" != "no" ; then
-if test "`uname -a | grep Darwin`"; then
-OSXX=`sw_vers -productVersion | sed 's/\(10\.[[0-9]]*\).*/\1/'`
-if test ${OSXX} '>' '10.4'; then
-CFLAGS="$CFLAGS -I/usr/X11/include -L/usr/X11/lib"
+case $host_os in
+darwin*)
+	OSXX=`sw_vers -productVersion | sed 's/\(10\.[[0-9]]*\).*/\1/'`
+	if test ${OSXX} '>' '10.4'; then
+	   CFLAGS="$CFLAGS -I/usr/X11/include -L/usr/X11/lib"
+	fi
+	;;
+esac
 fi
-fi
-fi
+
 
 dnl Check for header files
 AC_PATH_XTRA
@@ -213,7 +209,7 @@ AC_STRUCT_TM
 dnl Check for library functions
 AC_FUNC_GETPGRP
 AC_FUNC_STRFTIME
-AC_FUNC_VFORK
+AC_FUNC_FORK
 AC_FUNC_VPRINTF
 
 AC_CHECK_FUNCS([strdup strstr strchr erand48 memmove])
@@ -227,9 +223,13 @@ AC_CHECK_LIB(c, socket, LIBS="$LIBS" , LIBS="$LIBS -lsocket")
 AC_CHECK_LIB(m, main)
 
 dnl GD for FreeBSD requires libiconv
-if test "`uname`" = "FreeBSD"; then
-AC_CHECK_LIB(iconv, main, LIBS="$LIBS", LIBS="-liconv $LIBS")
-fi
+case $host_os in
+freebsd*)
+	if test ${with_pngdriver} != "no"; then
+	   AC_CHECK_LIB(iconv, main, LIBS="$LIBS", LIBS="-liconv $LIBS")
+	fi
+	;;
+esac
 
 AM_CONDITIONAL(AMPNG, false)
 AM_CONDITIONAL(AMPDF, false)
@@ -300,9 +300,11 @@ fi
 
 
 dnl Turn off irritating linker warnings in IRIX
-if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64"; then
-CFLAGS="-Wl,-LD_MSG:off=85:off=84:off=16:off=134 $CFLAGS"
-fi
+case $host_os in
+irix*)
+	CFLAGS="-Wl,-LD_MSG:off=85:off=84:off=16:off=134 $CFLAGS"
+	;;
+esac
 
 
 
@@ -319,48 +321,43 @@ AC_MSG_CHECKING([for large file support])
 
 
 dnl Test for Linux large file support
-if test "`uname`" = "Linux"; then
-CPPFLAGS="-DAJ_LinuxLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE $CPPFLAGS"
-fi
+case $host_os in
+linux*)
+	CPPFLAGS="-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE $CPPFLAGS"
+	CPPFLAGS="-DAJ_LinuxLF -D_FILE_OFFSET_BITS=64 $CPPFLAGS"
+	;;
 
-dnl Test for FreeBSD large file support
-if test "`uname`" = "FreeBSD"; then
-CPPFLAGS="-DAJ_FreeBSDLF $CPPFLAGS"
-fi
+freebsd*)
+	CPPFLAGS="-DAJ_FreeBSDLF $CPPFLAGS"
+	;;
 
-dnl Test for Solaris large file support
-if test "`uname`" = "SunOS"; then
-CPPFLAGS="-DAJ_SolarisLF -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE $CPPFLAGS"
-fi
+solaris*)
+	CPPFLAGS="-D_LARGEFILE_SOURCE $CPPFLAGS"
+	CPPFLAGS="-DAJ_SolarisLF -D_FILE_OFFSET_BITS=64 $CPPFLAGS"
+	;;
 
-dnl Test for OSF1 large file support (its always this anyway)
-if test "`uname`" = "OSF1"; then
-CPPFLAGS="-DAJ_OSF1LF $CPPFLAGS"
-fi
+osf*)
+	CPPFLAGS="-DAJ_OSF1LF $CPPFLAGS"
+	;;
 
-dnl Test for SGI large file support
-dnl CPPFLAGS="-DAJ_IRIXLF -D_LARGEFILE64_SOURCE $CPPFLAGS"
-if test "`uname`" = "IRIX" || test "`uname`" = "IRIX64"; then
-CPPFLAGS="-DAJ_IRIXLF -D_LARGEFILE64_SOURCE $CPPFLAGS"
-fi
 
-dnl Test for AIX large file support
-dnl CPPFLAGS="-DAJ_AIXLF $CPPFLAGS"
-if test "`uname`" = "AIX"; then
-CPPFLAGS="-DAJ_AIXLF -D_LARGE_FILES $CPPFLAGS"
-fi
+irix*)
+	CPPFLAGS="-DAJ_IRIXLF -D_LARGEFILE64_SOURCE $CPPFLAGS"
+	;;
 
-dnl Test for HP-UX large file support
-dnl CPPFLAGS="-DAJ_HPUXLF -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $CPPFLAGS"
-if test "`uname`" = "HP-UX"; then
-CPPFLAGS="-DAJ_HPUXLF -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $CPPFLAGS"
-fi
+aix*)
+	CPPFLAGS="-DAJ_AIXLF -D_LARGE_FILES $CPPFLAGS"
+	;;
 
-dnl Test for MacOSX large file support off_t and fpos_t are always 64-bit
-dnl CPPFLAGS="-DAJ_MACOSXLF
-if test "`uname`" = "Darwin"; then
-CPPFLAGS="-DAJ_MACOSXLF"
-fi
+hpux*)
+	CPPFLAGS="-D_FILE_OFFSET_BITS=64 $CPPFLAGS"
+	CPPFLAGS="-DAJ_HPUXLF -D_LARGEFILE_SOURCE $CPPFLAGS"
+	;;
+
+darwin*)
+	CPPFLAGS="-DAJ_MACOSXLF $CPPFLAGS"
+	;;
+esac
 
 AC_MSG_RESULT([done])
 fi
@@ -447,25 +444,44 @@ dnl If shared needs -Wl,-G in plplot,ajax,nucleus, -lX11 in plplot,
 dnl and -Wl,brtl -Wl,-bdynamic in emboss
 dnl We therefore need a static test as well
 needajax=no
-AM_CONDITIONAL(ISAIXIA64, test "`uname`" = "AIX")
+
+case $host_os in
+aix*)
+	AM_CONDITIONAL(ISAIXIA64, true)
+	;;
+*)
+	AM_CONDITIONAL(ISAIXIA64, false)
+	;;
+esac
+
 AM_CONDITIONAL(ISSHARED, test "${enable_shared}" = "yes")
 AC_SUBST([ISAIXIA64])
 
-if test "`uname`" = "AIX"; then
 case $host_os in
-	aix5*) needajax=no ;;
-	aix4.3.3*) needajax=yes ;;
-	*) needajax=no ;;
+aix*)
+	if test -d ajax/.libs ; then
+	   echo AIX ajax/.libs exists
+	else
+	   mkdir ajax/.libs
+	fi
+
+	case $host_os in
+	     aix5*) needajax=no ;;
+	     aix4.3.3*) needajax=yes ;;
+	     *) needajax=no ;;
+	     esac
 esac
-fi
+
 AM_CONDITIONAL(NEEDAJAX,test "$needajax" = "yes")
 AC_SUBST([NEEDAJAX])
 
 
 dnl HP-UX needs -lsec for shadow passwords
-if test "`uname`" = "HP-UX"; then
-LDFLAGS="$LDFLAGS -lsec"
-fi
+case $host_os in
+hpux*)
+	LDFLAGS="$LDFLAGS -lsec"
+	;;
+esac
 
 
 dnl check and set compilation flags for Jemboss auth server code
