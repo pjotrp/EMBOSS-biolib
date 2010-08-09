@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.13 $
+** @version $Revision: 1.14 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@
 
 
 /* ==================================================================== */
-/* ========================== private data ============================ */
+/* ============================ constants ============================= */
 /* ==================================================================== */
 
 /* assemblymapperMaxPairCount *************************************************
@@ -45,7 +45,7 @@
 **
 ******************************************************************************/
 
-const ajuint assemblymapperMaxPairCount = 1 << 11;
+static const ajuint assemblymapperMaxPairCount = 1 << 11;
 
 
 
@@ -57,7 +57,21 @@ const ajuint assemblymapperMaxPairCount = 1 << 11;
 **
 ******************************************************************************/
 
-const ajuint assemblymapperChunkFactor = 20;
+static const ajuint assemblymapperChunkFactor = 20;
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== private data ============================ */
+/* ==================================================================== */
 
 
 
@@ -88,6 +102,10 @@ static AjBool assemblymapperadaptorBuildCombinedMapper(
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensassemblymapper *********************************************
 **
@@ -2590,7 +2608,7 @@ AjBool ensToplevelassemblymapperMap(EnsPToplevelassemblymapper tlam,
 
                     ajListPeekFirst(mrs, (void **) &mr);
 
-                    if(ensMapperresultGetType(mr) != ensEMapperresultGap)
+                    if(ensMapperresultGetType(mr) != ensEMapperresultTypeGap)
                     {
                         done = ajTrue;
 
@@ -4738,7 +4756,7 @@ static AjBool assemblymapperadaptorBuildCombinedMapper(
 
         while(ajListPop(mrs1, (void **) &mr1))
         {
-            if(ensMapperresultGetType(mr1) == ensEMapperresultGap)
+            if(ensMapperresultGetType(mr1) == ensEMapperresultTypeGap)
             {
                 sum += ensMapperresultGetGapLength(mr1);
 
@@ -4761,7 +4779,8 @@ static AjBool assemblymapperadaptorBuildCombinedMapper(
 
             while(ajListPop(mrs2, (void **) &mr2))
             {
-                if(ensMapperresultGetType(mr2) == ensEMapperresultCoordinate)
+                if(ensMapperresultGetType(mr2) ==
+                   ensEMapperresultTypeCoordinate)
                 {
                     totalstart = ensMapperunitGetStart(mu) + sum;
 
