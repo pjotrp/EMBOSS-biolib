@@ -6,12 +6,127 @@ extern "C"
 #ifndef ensdata_h
 #define ensdata_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "enscache.h"
 #include "enscoordsystem.h"
 #include "ensmapper.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+/* EnsEExternaldatabaseStatus *************************************************
+**
+** Ensembl External Database Status enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOExternaldatabaseStatus
+{
+    ensEExternaldatabaseStatusNULL,
+    ensEExternaldatabaseStatusKnownXref,
+    ensEExternaldatabaseStatusKnown,
+    ensEExternaldatabaseStatusXref,
+    ensEExternaldatabaseStatusPred,
+    ensEExternaldatabaseStatusOrth,
+    ensEExternaldatabaseStatusPseudo
+} EnsEExternaldatabaseStatus;
+
+
+
+
+/* EnsEExternaldatabaseType ***************************************************
+**
+** Ensembl External Database Type enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOExternaldatabaseType
+{
+    ensEExternaldatabaseTypeNULL,
+    ensEExternaldatabaseTypeArray,
+    ensEExternaldatabaseTypeAltTrans,
+    ensEExternaldatabaseTypeMisc,
+    ensEExternaldatabaseTypeLit,
+    ensEExternaldatabaseTypePrimaryDbSynonym,
+    ensEExternaldatabaseTypeEnsembl
+} EnsEExternaldatabaseType;
+
+
+
+
+/* EnsEExternalreferenceInfoType **********************************************
+**
+** Ensembl External Reference InfoType enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOExternalreferenceInfoType
+{
+    ensEExternalreferenceInfoTypeNULL,
+    ensEExternalreferenceInfoTypeProjection,
+    ensEExternalreferenceInfoTypeMisc,
+    ensEExternalreferenceInfoTypeDependent,
+    ensEExternalreferenceInfoTypeDirect,
+    ensEExternalreferenceInfoTypeSequenceMatch,
+    ensEExternalreferenceInfoTypeInferrredPair,
+    ensEExternalreferenceInfoTypeProbe,
+    ensEExternalreferenceInfoTypeUnmapped,
+    ensEExternalreferenceInfoTypeCoordinateOverlap
+} EnsEExternalreferenceInfoType;
+
+
+
+
+/* EnsEGeneStatus *************************************************************
+**
+** Ensembl Gene Status enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOGeneStatus
+{
+    ensEGeneStatusNULL,
+    ensEGeneStatusKnown,
+    ensEGeneStatusNovel,
+    ensEGeneStatusPutative,
+    ensEGeneStatusPredicted,
+    ensEGeneStatusKnownByProjection,
+    ensEGeneStatusUnknown
+} EnsEGeneStatus;
+
+
+
+
+/* EnsETranscriptStatus *******************************************************
+**
+** Ensembl Transcript Status enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOTranscriptStatus
+{
+    ensETranscriptStatusNULL,
+    ensETranscriptStatusKnown,
+    ensETranscriptStatusNovel,
+    ensETranscriptStatusPutative,
+    ensETranscriptStatusPredicted,
+    ensETranscriptStatusKnownByProjection,
+    ensETranscriptStatusUnknown
+} EnsETranscriptStatus;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
 
 /* #data EnsPAttributeadaptor *************************************************
 **
@@ -436,21 +551,21 @@ typedef struct EnsSBaseadaptorLeftJoin {
 **
 ** @attr Adaptor [EnsPDatabaseadaptor] Ensembl Database Adaptor.
 ** @attr Tables [const char**] One dimensional array of table name character
-**                              strings
+**                             strings
 ** @attr Columns [const char**] One dimensional array of column name character
-**                               strings
+**                              strings
 ** @attr LeftJoin [EnsOBaseadaptorLeftJoin*] Address of an array of
 **                                   Ensembl Base Adaptor Left Join Statements
 ** @attr DefaultCondition [const char*] Default condition in a
-**                                       SQL SELECT statement
+**                                      SQL SELECT statement
 ** @attr FinalCondition [const char*] Final condition in a
-**                                     SQL SELECT statement
+**                                    SQL SELECT statement
 ** @attr StraightJoin [AjBool] Set the MySQL-specific STRAIGHT_JOIN option in a
 **                             SQL SELECT statement
 ** @attr Padding [ajuint] Padding to alignment boundary
 ** @attr Query [(AjBool*)] Function pointer to an Ensembl object-spcific Query
-**                        function, consolidating SQL results into Ensembl
-**                        objects
+**                         function, consolidating SQL results into Ensembl
+**                         objects
 ** @@
 ** NOTE: In constrast to the Perl API, this implementation does not have a
 ** species_id element, which is already available from the Database Adaptor.
@@ -591,46 +706,6 @@ typedef struct EnsSExternaldatabaseadaptor {
 
 
 
-/* EnsEExternaldatabaseStatus *************************************************
-**
-** Ensembl External Database Status enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOExternaldatabaseStatus
-{
-    ensEExternaldatabaseStatusNULL,
-    ensEExternaldatabaseStatusKnownXref,
-    ensEExternaldatabaseStatusKnown,
-    ensEExternaldatabaseStatusXref,
-    ensEExternaldatabaseStatusPred,
-    ensEExternaldatabaseStatusOrth,
-    ensEExternaldatabaseStatusPseudo
-} EnsEExternaldatabaseStatus;
-
-
-
-
-/* EnsEExternaldatabaseType ***************************************************
-**
-** Ensembl External Database Type enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOExternaldatabaseType
-{
-    ensEExternaldatabaseTypeNULL,
-    ensEExternaldatabaseTypeArray,
-    ensEExternaldatabaseTypeAltTrans,
-    ensEExternaldatabaseTypeMisc,
-    ensEExternaldatabaseTypeLit,
-    ensEExternaldatabaseTypePrimaryDbSynonym,
-    ensEExternaldatabaseTypeEnsembl
-} EnsEExternaldatabaseType;
-
-
-
-
 /* @data EnsPExternaldatabase *************************************************
 **
 ** Ensembl External Database.
@@ -679,29 +754,6 @@ typedef struct EnsSExternaldatabase {
 } EnsOExternaldatabase;
 
 #define EnsPExternaldatabase EnsOExternaldatabase*
-
-
-
-
-/* EnsEExternalreferenceInfoType **********************************************
-**
-** Ensembl External Reference InfoType enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOExternalreferenceInfoType
-{
-    ensEExternalreferenceInfoTypeNULL,
-    ensEExternalreferenceInfoTypeProjection,
-    ensEExternalreferenceInfoTypeMisc,
-    ensEExternalreferenceInfoTypeDependent,
-    ensEExternalreferenceInfoTypeDirect,
-    ensEExternalreferenceInfoTypeSequenceMatch,
-    ensEExternalreferenceInfoTypeInferrredPair,
-    ensEExternalreferenceInfoTypeProbe,
-    ensEExternalreferenceInfoTypeUnmapped,
-    ensEExternalreferenceInfoTypeCoordinateOverlap
-} EnsEExternalreferenceInfoType;
 
 
 
@@ -919,8 +971,16 @@ typedef struct EnsSFeature {
 **
 ** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
 ** @attr Cache [EnsPCache] Ensembl LRU Cache
-** @attr Tables [char**] Tables
-** @attr Condition [char*] Default SQL condition
+** @attr Tables [char**] One dimensional array of table name character strings,
+**                       which is used for multi-species databases only.
+**                       This array is dynamically allocated to extend for
+**                       'seq_region' and 'coord_system' tables. The array is
+**                       then set in the Ensembl Base Adaptor object.
+** @attr Condition [char*] Default SQL condition, which is used for
+**                         multi-species databases only. This character string
+**                         is dynamically allocated to extend for 'seq_region'
+**                         and 'coord_system' conditions. The string is then
+**                         set in the Ensembl Base Adaptor object.
 ** @attr GetFeature [(EnsPFeature*)] Ensembl Object-specific 'GetFeature'
 **                                  element function
 ** @attr Reference [(void**)] Ensembl Object-specific referencing function
@@ -1163,26 +1223,6 @@ typedef struct EnsSTranscriptadaptor {
 
 
 
-/* EnsETranscriptStatus *******************************************************
-**
-** Ensembl Transcript Status enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOTranscriptStatus
-{
-    ensETranscriptStatusNULL,
-    ensETranscriptStatusKnown,
-    ensETranscriptStatusNovel,
-    ensETranscriptStatusPutative,
-    ensETranscriptStatusPredicted,
-    ensETranscriptStatusKnownByProjection,
-    ensETranscriptStatusUnknown
-} EnsETranscriptStatus;
-
-
-
-
 /* @data EnsPTranscript *******************************************************
 **
 ** Ensembl Transcript.
@@ -1284,26 +1324,6 @@ typedef struct EnsSGeneadaptor {
 
 
 
-/* EnsEGeneStatus *************************************************************
-**
-** Ensembl Gene Status enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOGeneStatus
-{
-    ensEGeneStatusNULL,
-    ensEGeneStatusKnown,
-    ensEGeneStatusNovel,
-    ensEGeneStatusPutative,
-    ensEGeneStatusPredicted,
-    ensEGeneStatusKnownByProjection,
-    ensEGeneStatusUnknown
-} EnsEGeneStatus;
-
-
-
-
 /* @data EnsPGene *************************************************************
 **
 ** Ensembl Gene.
@@ -1363,6 +1383,13 @@ typedef struct EnsSGene {
 } EnsOGene;
 
 #define EnsPGene EnsOGene*
+
+
+
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 
 
