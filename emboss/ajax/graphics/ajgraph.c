@@ -9843,7 +9843,7 @@ static void GraphOpenXwin(AjPGraph thys, const char *ext )
 
     plargv[0] = argname;
     plargv[1] = MAJSTRGETPTR(ajUtilGetProgram());
-    ajDebug("=g= plparseopts('%S', '%s') ajUtilGetProgram\n",
+    ajDebug("=g= plparseopts('%s', '%s') ajUtilGetProgram\n",
             plargv[0], plargv[1]);
 
     plparseopts(&plargc, plargv,
