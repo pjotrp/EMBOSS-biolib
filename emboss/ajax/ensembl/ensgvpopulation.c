@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -34,6 +34,20 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
@@ -44,6 +58,10 @@
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
+static void tableClearGvpopulations(void **key,
+                                    void **value,
+                                    void *cl);
+
 static AjBool gvpopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
                                                const AjPStr statement,
                                                EnsPAssemblymapper am,
@@ -52,6 +70,10 @@ static AjBool gvpopulationadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensgvpopulation ***********************************************
 **
@@ -716,6 +738,88 @@ AjBool ensGvpopulationTrace(const EnsPGvpopulation gvp, ajuint level)
 
 
 
+/* @funcstatic tableClearGvpopulations ****************************************
+**
+** An ajTableMapDel 'apply' function to clear the AJAX Table of Ensembl Genetic
+** Variation Population identifier key data and Ensembl Genetic Variation
+** Population object value data.
+**
+** @param [u] key [void**] AJAX unsigned integer key data address
+** @param [u] value [void**] Ensembl Genetic Variation Population objects
+** @param [u] cl [void*] Standard, passed in from ajTableMapDel
+** @see ajTableMapDel
+** @see ensTableDeleteGvpopulations
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void tableClearGvpopulations(void **key,
+                                    void **value,
+                                    void *cl)
+{
+    if(!key)
+        return;
+
+    if(!*key)
+        return;
+
+    if(!value)
+        return;
+
+    if(!*value)
+        return;
+
+    (void) cl;
+
+    AJFREE(*key);
+
+    ensGvpopulationDel((EnsPGvpopulation *) value);
+
+    *key   = NULL;
+    *value = NULL;
+
+    return;
+}
+
+
+
+
+/* @func ensTableClearGvpopulations *******************************************
+**
+** Utility function to clear and delete AJAX Tables of AJAX unsigned integer
+** key data and Ensembl Genetic Variation Population object value data.
+**
+** @param [d] *Pgvps [AjPTable*] AJAX Table
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensTableDeleteGvpopulations(AjPTable *Pgvps)
+{
+    AjPTable pthis = NULL;
+
+    if(!Pgvps)
+        return ajFalse;
+
+    if(!*Pgvps)
+        return ajFalse;
+
+    pthis = *Pgvps;
+
+    ajTableMapDel(pthis, tableClearGvpopulations, NULL);
+
+    ajTableFree(&pthis);
+
+    *Pgvps = NULL;
+
+    return ajTrue;
+}
+
+
+
+
 /* @datasection [EnsPGvpopulationadaptor] Genetic Variation Population Adaptor
 **
 ** Functions for manipulating Ensembl Genetic Variation Population Adaptor
@@ -1104,6 +1208,130 @@ AjBool ensGvpopulationadaptorFetchByName(
     ajListFree(&gvps);
 
     ajStrDel(&constraint);
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ensGvpopulationadaptorFetchAllByIdentifiers **************************
+**
+** Fetch Ensembl Populations by an AJAX Table of AJAX unsigned integer
+** key data and assign them as value data.
+**
+** The caller is responsible for deleting the Ensembl Genetic Variation
+** Population value data before deleting the AJAX Table.
+**
+** @cc Bio::EnsEMBL::DBSQL::BaseAdaptor::fetch_all_by_dbID_list
+** @param [r] gvpa [const EnsPGvpopulationadaptor] Ensembl Genetic Variation
+**                                                 Population Adaptor
+** @param [u] gvps [AjPTable] AJAX Table of AJAX unsigned integer identifier
+**                            key data and Ensembl Genetic Variation
+**                            Population value data
+**
+** @return [AjBool] ajTrue upon success, ajFalse otherwise
+** @@
+******************************************************************************/
+
+AjBool ensGvpopulationadaptorFetchAllByIdentifiers(
+    EnsPGvpopulationadaptor gvpa,
+    AjPTable gvps)
+{
+    void **keyarray = NULL;
+
+    register ajuint i = 0;
+
+    ajuint *Pidentifier = NULL;
+
+    AjPList lgvps = NULL;
+
+    AjPStr constraint = NULL;
+    AjPStr values     = NULL;
+
+    EnsPGvpopulation gvp = NULL;
+
+    if(!gvpa)
+        return ajFalse;
+
+    if(!gvps)
+        return ajFalse;
+
+    lgvps = ajListNew();
+
+    values = ajStrNew();
+
+    /*
+    ** MySQL is faster and we ensure that we do not exceed the maximum
+    ** query size by splitting large queries into smaller queries of
+    ** up to 200 identifiers.
+    */
+
+    ajTableToarrayKeys(gvps, &keyarray);
+
+    for(i = 0; keyarray[i]; i++)
+    {
+        ajFmtPrintAppS(&values, "%u, ", *((ajuint *) keyarray[i]));
+
+        /* Run the statement if the maximum chunk size is exceed. */
+
+        if(!(i % EnsMBaseadaptorMaximumIdentifiers))
+        {
+            /* Remove the last comma and space. */
+
+            ajStrCutEnd(&values, 2);
+
+            constraint = ajFmtStr("sample.sample_id IN (%S)", values);
+
+            ensBaseadaptorGenericFetch(gvpa,
+                                       constraint,
+                                       (EnsPAssemblymapper) NULL,
+                                       (EnsPSlice) NULL,
+                                       lgvps);
+
+            ajStrDel(&constraint);
+
+            ajStrAssignClear(&values);
+        }
+    }
+
+    AJFREE(keyarray);
+
+    /* Run the final statement, but remove the last comma and space first. */
+
+    ajStrCutEnd(&values, 2);
+
+    constraint = ajFmtStr("sample.sample_id IN (%S)", values);
+
+    ensBaseadaptorGenericFetch(gvpa,
+                               constraint,
+                               (EnsPAssemblymapper) NULL,
+                               (EnsPSlice) NULL,
+                               lgvps);
+
+    ajStrDel(&constraint);
+    ajStrDel(&values);
+
+    /*
+    ** Move Ensembl Genetic Variation Population objects from the AJAX List
+    ** to the AJAX Table.
+    */
+
+    while(ajListPop(lgvps, (void **) &gvp))
+    {
+        AJNEW0(Pidentifier);
+
+        *Pidentifier = ensGvpopulationGetIdentifier(gvp);
+
+        if(ajTableFetch(gvps, (const void *) Pidentifier))
+            AJFREE(Pidentifier);
+        else
+            ajTablePut(gvps,
+                       (void *) Pidentifier,
+                       (void *) ensGvpopulationNewRef(gvp));
+
+        ensGvpopulationDel(&gvp);
+    }
 
     return ajTrue;
 }

@@ -6,11 +6,33 @@ extern "C"
 #ifndef ensgvpopulation_h
 #define ensgvpopulation_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensgvdata.h"
 #include "ensgvsample.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions
@@ -51,6 +73,8 @@ ajulong ensGvpopulationGetMemsize(const EnsPGvpopulation gvp);
 
 AjBool ensGvpopulationTrace(const EnsPGvpopulation gvp, ajuint level);
 
+AjBool ensTableDeleteGvpopulations(AjPTable *Pgvps);
+
 /* Ensembl Genetic Variation Population Adaptor */
 
 EnsPGvpopulationadaptor ensRegistryGetGvpopulationadaptor(
@@ -73,6 +97,10 @@ AjBool ensGvpopulationadaptorFetchByName(
     EnsPGvpopulationadaptor gvpa,
     const AjPStr name,
     EnsPGvpopulation* Pgvp);
+
+AjBool ensGvpopulationadaptorFetchAllByIdentifiers(
+    EnsPGvpopulationadaptor gvpa,
+    AjPTable gvps);
 
 AjBool ensGvpopulationadaptorFetchAllBySynonym(
     const EnsPGvpopulationadaptor gvpa,
