@@ -6,35 +6,18 @@ extern "C"
 #ifndef ensqcdatabase_h
 #define ensqcdatabase_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensanalysis.h"
 
 
 
 
-/* @data EnsPQcdatabaseadaptor ************************************************
-**
-** Ensembl QC Database Adaptor
-**
-** @alias EnsSQcdatabaseadaptor
-** @alias EnsOQcdatabaseadaptor
-**
-** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
-** @attr CacheByIdentifier [AjPTable] Identifier cache
-** @attr CacheByName [AjPTable] Name cache
-** @@
-******************************************************************************/
-
-typedef struct EnsSQcdatabaseadaptor
-{
-    EnsPBaseadaptor Adaptor;
-    AjPTable CacheByIdentifier;
-    AjPTable CacheByName;
-} EnsOQcdatabaseadaptor;
-
-#define EnsPQcdatabaseadaptor EnsOQcdatabaseadaptor*
-
-
-
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
 
 /* EnsEQcdatabaseClass ********************************************************
 **
@@ -68,6 +51,35 @@ typedef enum EnsOQcdatabaseType
     ensEQcdatabaseTypeDNA,
     ensEQcdatabaseTypeProtein
 } EnsEQcdatabaseType;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
+
+/* @data EnsPQcdatabaseadaptor ************************************************
+**
+** Ensembl QC Database Adaptor
+**
+** @alias EnsSQcdatabaseadaptor
+** @alias EnsOQcdatabaseadaptor
+**
+** @attr Adaptor [EnsPBaseadaptor] Ensembl Base Adaptor
+** @attr CacheByIdentifier [AjPTable] Identifier cache
+** @attr CacheByName [AjPTable] Name cache
+** @@
+******************************************************************************/
+
+typedef struct EnsSQcdatabaseadaptor
+{
+    EnsPBaseadaptor Adaptor;
+    AjPTable CacheByIdentifier;
+    AjPTable CacheByName;
+} EnsOQcdatabaseadaptor;
+
+#define EnsPQcdatabaseadaptor EnsOQcdatabaseadaptor*
 
 
 
@@ -129,6 +141,10 @@ typedef struct EnsSQcdatabase
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions
@@ -193,36 +209,50 @@ AjPStr ensQcdatabaseGetInternalURL(const EnsPQcdatabase qcdb);
 AjBool ensQcdatabaseSetAdaptor(EnsPQcdatabase qcdb,
                                EnsPQcdatabaseadaptor qcdba);
 
-AjBool ensQcdatabaseSetIdentifier(EnsPQcdatabase qcdb, ajuint identifier);
+AjBool ensQcdatabaseSetIdentifier(EnsPQcdatabase qcdb,
+                                  ajuint identifier);
 
-AjBool ensQcdatabaseSetAnalysis(EnsPQcdatabase qcdb, EnsPAnalysis analysis);
+AjBool ensQcdatabaseSetAnalysis(EnsPQcdatabase qcdb,
+                                EnsPAnalysis analysis);
 
-AjBool ensQcdatabaseSetName(EnsPQcdatabase qcdb, AjPStr name);
+AjBool ensQcdatabaseSetName(EnsPQcdatabase qcdb,
+                            AjPStr name);
 
-AjBool ensQcdatabaseSetRelease(EnsPQcdatabase qcdb, AjPStr release);
+AjBool ensQcdatabaseSetRelease(EnsPQcdatabase qcdb,
+                               AjPStr release);
 
-AjBool ensQcdatabaseSetDate(EnsPQcdatabase qcdb, AjPStr date);
+AjBool ensQcdatabaseSetDate(EnsPQcdatabase qcdb,
+                            AjPStr date);
 
-AjBool ensQcdatabaseSetFormat(EnsPQcdatabase qcdb, AjPStr format);
+AjBool ensQcdatabaseSetFormat(EnsPQcdatabase qcdb,
+                              AjPStr format);
 
-AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, EnsEQcdatabaseClass class);
+AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb,
+                             EnsEQcdatabaseClass class);
 
-AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb, EnsEQcdatabaseType type);
+AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb,
+                            EnsEQcdatabaseType type);
 
-AjBool ensQcdatabaseSetSpecies(EnsPQcdatabase qcdb, AjPStr species);
+AjBool ensQcdatabaseSetSpecies(EnsPQcdatabase qcdb,
+                               AjPStr species);
 
 AjBool ensQcdatabaseSetGroup(EnsPQcdatabase qcdb,
                              EnsEDatabaseadaptorGroup group);
 
-AjBool ensQcdatabaseSetHost(EnsPQcdatabase qcdb, AjPStr host);
+AjBool ensQcdatabaseSetHost(EnsPQcdatabase qcdb,
+                            AjPStr host);
 
-AjBool ensQcdatabaseSetDirectory(EnsPQcdatabase qcdb, AjPStr directory);
+AjBool ensQcdatabaseSetDirectory(EnsPQcdatabase qcdb,
+                                 AjPStr directory);
 
-AjBool ensQcdatabaseSetFile(EnsPQcdatabase qcdb, AjPStr file);
+AjBool ensQcdatabaseSetFile(EnsPQcdatabase qcdb,
+                            AjPStr file);
 
-AjBool ensQcdatabaseSetExternalURL(EnsPQcdatabase qcdb, AjPStr url);
+AjBool ensQcdatabaseSetExternalURL(EnsPQcdatabase qcdb,
+                                   AjPStr url);
 
-AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb, AjPStr url);
+AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb,
+                                   AjPStr url);
 
 ajulong ensQcdatabaseGetMemsize(const EnsPQcdatabase qcdb);
 

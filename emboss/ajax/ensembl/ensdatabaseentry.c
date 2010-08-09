@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.14 $
+** @version $Revision: 1.15 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,8 +36,31 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* externalreferenceInfoType **************************************************
+**
+** The Ensembl External Reference info type element is enumerated in both,
+** the SQL table definition and the data structure. The following strings are
+** used for conversion in database operations and correspond to
+** EnsEExternalreferenceInfoType.
+**
+******************************************************************************/
 
 static const char *externalreferenceInfoType[] =
 {
@@ -99,6 +122,10 @@ static AjBool databaseentryadaptorFetchAllIdentifiersByExternaldatabaseName(
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensdatabaseentry **********************************************
 **

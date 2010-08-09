@@ -6,11 +6,40 @@ extern "C"
 #ifndef ensassemblyexception_h
 #define ensassemblyexception_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensdatabaseadaptor.h"
 #include "enstable.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+/* EnsEAssemblyexceptionType **************************************************
+**
+** Ensembl Assembly Exception Type enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOAssemblyexceptionType
+{
+    ensEAssemblyexceptionTypeNULL,
+    ensEAssemblyexceptionTypeHAP,
+    ensEAssemblyexceptionTypePAR,
+    ensEAssemblyexceptionTypeHAPREF
+} EnsEAssemblyexceptionType;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
 
 /* @data EnsPAssemblyexceptionadaptor *****************************************
 **
@@ -33,23 +62,6 @@ typedef struct EnsSAssemblyexceptionadaptor
 } EnsOAssemblyexceptionadaptor;
 
 #define EnsPAssemblyexceptionadaptor EnsOAssemblyexceptionadaptor*
-
-
-
-
-/* EnsEAssemblyexceptionType **************************************************
-**
-** Ensembl Assembly Exception Type enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOAssemblyexceptionType
-{
-    ensEAssemblyexceptionTypeNULL,
-    ensEAssemblyexceptionTypeHAP,
-    ensEAssemblyexceptionTypePAR,
-    ensEAssemblyexceptionTypeHAPREF
-} EnsEAssemblyexceptionType;
 
 
 
@@ -108,6 +120,10 @@ typedef struct EnsSAssemblyexception
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions

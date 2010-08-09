@@ -6,10 +6,18 @@ extern "C"
 #ifndef ensditag_h
 #define ensditag_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensfeature.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
 
 /* #data EnsPDitagadaptor *****************************************************
 **
@@ -23,6 +31,27 @@ extern "C"
 
 
 
+
+/* EnsEDitagfeatureSide *******************************************************
+**
+** Ensembl Ditag Feature Side enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsODitagfeatureSide
+{
+    ensEDitagfeatureSideNULL,
+    ensEDitagfeatureSideLeft,
+    ensEDitagfeatureSideRight,
+    ensEDitagfeatureSideFull
+} EnsEDitagfeatureSide;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
 
 /* @data EnsPDitag ************************************************************
 **
@@ -83,23 +112,6 @@ typedef struct EnsSDitagfeatureadaptor
 
 
 
-/* EnsEDitagfeatureSide *******************************************************
-**
-** Ensembl Ditag Feature Side enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsODitagfeatureSide
-{
-    ensEDitagfeatureSideNULL,
-    ensEDitagfeatureSideLeft,
-    ensEDitagfeatureSideRight,
-    ensEDitagfeatureSideFull
-} EnsEDitagfeatureSide;
-
-
-
-
 /* @data EnsPDitagfeature *****************************************************
 **
 ** Ensembl Ditag Feature
@@ -145,6 +157,10 @@ typedef struct EnsSDitagfeature
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions

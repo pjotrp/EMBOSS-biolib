@@ -6,10 +6,38 @@ extern "C"
 #ifndef ensdensity_h
 #define ensdensity_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensfeature.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+/* EnsEDensitytypeValueType ***************************************************
+**
+** Ensembl Density Type value type enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsODensitytypeValueType
+{
+    ensEDensitytypeValueTypeNULL,
+    ensEDensitytypeValueTypeSum,
+    ensEDensitytypeValueTypeRatio
+} EnsEDensitytypeValueType;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
 
 /* @data EnsPDensitytypeadaptor ***********************************************
 **
@@ -30,22 +58,6 @@ typedef struct EnsSDensitytypeadaptor
 } EnsODensitytypeadaptor;
 
 #define EnsPDensitytypeadaptor EnsODensitytypeadaptor*
-
-
-
-
-/* EnsEDensitytypeValueType ***************************************************
-**
-** Ensembl Density Type value type enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsODensitytypeValueType
-{
-    ensEDensitytypeValueTypeNULL,
-    ensEDensitytypeValueTypeSum,
-    ensEDensitytypeValueTypeRatio
-} EnsEDensitytypeValueType;
 
 
 
@@ -144,6 +156,10 @@ typedef struct EnsSDensityfeature
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions

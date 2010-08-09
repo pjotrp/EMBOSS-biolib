@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -34,8 +34,30 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* databaseadaptorGroup *******************************************************
+**
+** The Ensembl Database Adaptor group element is enumerated in the data
+** structure. The following strings are used for conversion in database
+** operations and correspond to EnsEDatabaseadaptorGroup.
+**
+******************************************************************************/
 
 static const char *databaseadaptorGroup[] =
 {
@@ -68,6 +90,10 @@ static const char *databaseadaptorGroup[] =
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensdatabaseadaptor ********************************************
 **

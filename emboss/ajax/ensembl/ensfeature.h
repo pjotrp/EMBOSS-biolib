@@ -6,6 +6,10 @@ extern "C"
 #ifndef ensfeature_h
 #define ensfeature_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensdata.h"
 #include "ensassemblyexception.h"
 #include "ensdatabaseentry.h"
@@ -15,6 +19,30 @@ extern "C"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+/* EnsEBasealignfeatureType ***************************************************
+**
+** Ensembl Base Align Feature Type enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOBasealignfeatureType
+{
+    ensEBasealignfeatureTypeNULL,
+    ensEBasealignfeatureTypeDNA,
+    ensEBasealignfeatureTypeProtein
+} EnsEBasealignfeatureType;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
 
 /* @data EnsPFeaturepair ******************************************************
 **
@@ -102,22 +130,6 @@ typedef struct EnsSProteinalignfeatureadaptor
 } EnsOProteinalignfeatureadaptor;
 
 #define EnsPProteinalignfeatureadaptor EnsOProteinalignfeatureadaptor*
-
-
-
-
-/* EnsEBasealignfeatureType ***************************************************
-**
-** Ensembl Base Align Feature Type enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOBasealignfeatureType
-{
-    ensEBasealignfeatureTypeNULL,
-    ensEBasealignfeatureTypeDNA,
-    ensEBasealignfeatureTypeProtein
-} EnsEBasealignfeatureType;
 
 
 
@@ -343,6 +355,10 @@ typedef struct EnsSAssemblyexceptionfeature
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions

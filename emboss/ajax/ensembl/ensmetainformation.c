@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -33,8 +33,29 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* metainformationNonSpeciesKeys **********************************************
+**
+** The following Ensembl Meta-Information keys are not species-specific,
+** i.e. they are not linked to a species identifier.
+**
+******************************************************************************/
 
 static const char *metainformationNonSpeciesKeys[] =
 {
@@ -70,6 +91,10 @@ static void metainformationadaptorClearKeyCache(void **key,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensmetainformation ********************************************
 **

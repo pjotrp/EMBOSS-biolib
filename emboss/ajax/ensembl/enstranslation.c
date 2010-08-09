@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.19 $
+** @version $Revision: 1.20 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -32,6 +32,20 @@
 #include "ensexon.h"
 #include "enssequenceedit.h"
 #include "enstranscript.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
 
 
 
@@ -128,6 +142,10 @@ static void translationadaptorClearTranscriptTable(void **key,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection enstranslation ************************************************
 **

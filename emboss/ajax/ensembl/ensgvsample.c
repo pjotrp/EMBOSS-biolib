@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -28,6 +28,20 @@
 /* ==================================================================== */
 
 #include "ensgvsample.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
 
 
 
@@ -69,6 +83,10 @@ static AjBool gvsampleadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensgvsample ***************************************************
 **
@@ -795,8 +813,7 @@ EnsEGvsampleDisplay ensGvsampleDisplayFromStr(const AjPStr display)
 ** @@
 ******************************************************************************/
 
-const char*
-ensGvsampleDisplayToChar(EnsEGvsampleDisplay display)
+const char* ensGvsampleDisplayToChar(EnsEGvsampleDisplay display)
 {
     register EnsEGvsampleDisplay i = ensEGvsampleDisplayNULL;
 

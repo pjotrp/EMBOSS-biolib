@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.9 $
+** @version $Revision: 1.10 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -36,6 +36,20 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
@@ -52,6 +66,10 @@ static AjBool attributeadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensattribute **************************************************
 **
@@ -255,11 +273,8 @@ void ensAttributeDel(EnsPAttribute* Pattribute)
     }
 
     ajStrDel(&pthis->Code);
-
     ajStrDel(&pthis->Name);
-
     ajStrDel(&pthis->Description);
-
     ajStrDel(&pthis->Value);
 
     AJFREE(pthis);

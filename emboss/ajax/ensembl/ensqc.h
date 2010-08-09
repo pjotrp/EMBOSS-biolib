@@ -6,12 +6,20 @@ extern "C"
 #ifndef ensqc_h
 #define ensqc_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensanalysis.h"
 #include "ensqcalignment.h"
 #include "ensqcsequence.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
 
 /* EnsPQcdasfeatureadaptor ****************************************************
 **
@@ -20,6 +28,28 @@ extern "C"
 ******************************************************************************/
 
 #define EnsPQcdasfeatureadaptor EnsPBaseadaptor
+
+
+
+
+/* EnsPQcsubmissionadaptor ****************************************************
+**
+** Ensembl QC Submission Adaptor
+**
+******************************************************************************/
+
+#define EnsPQcsubmissionadaptor EnsPBaseadaptor
+
+
+
+
+/* EnsPQcvariationadaptor *****************************************************
+**
+** Ensembl QC Variation Adaptor
+**
+******************************************************************************/
+
+#define EnsPQcvariationadaptor EnsPBaseadaptor
 
 
 
@@ -70,6 +100,66 @@ typedef enum EnsOQcdasfeatureType
 
 
 
+/* EnsEQcvariationClass *******************************************************
+**
+** Ensembl QC Variation Class enumeration
+**
+******************************************************************************/
+
+typedef enum EnsOQcvariationClass
+{
+    ensEQcvariationClassNULL,
+    ensEQcvariationClassNone,
+    ensEQcvariationClassSimple,
+    ensEQcvariationClassSplice,
+    ensEQcvariationClassExon
+} EnsEQcvariationClass;
+
+
+
+
+/* EnsEQcvariationState *******************************************************
+**
+** Ensembl QC Variation State enumeration
+**
+******************************************************************************/
+
+typedef enum EnsOQcvariationState
+{
+    ensEQcvariationStateNULL,
+    ensEQcvariationStateNone,
+    ensEQcvariationStateMatch,
+    ensEQcvariationStateGap,
+    ensEQcvariationStateFrameshift,
+    ensEQcvariationState5ss,
+    ensEQcvariationState3ss,
+    EnsEQcvariationStateSplit
+} EnsEQcvariationState;
+
+
+
+
+/* EnsEQcvariationType ********************************************************
+**
+** Ensembl QC Variation Type enumeration
+**
+******************************************************************************/
+
+typedef enum EnsOQcvariationType
+{
+    ensEQcvariationTypeNULL,
+    ensEQcvariationTypeNone,
+    ensEQcvariationTypeSingle,
+    ensEQcvariationTypeMulti
+} EnsEQcvariationType;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
+
 /* @data EnsPQcdasfeature *****************************************************
 **
 ** Ensembl QC DAS Feature
@@ -118,73 +208,6 @@ typedef struct EnsSQcdasfeature
 } EnsOQcdasfeature;
 
 #define EnsPQcdasfeature EnsOQcdasfeature*
-
-
-
-
-/* EnsPQcvariationadaptor *****************************************************
-**
-** Ensembl QC Variation Adaptor
-**
-******************************************************************************/
-
-#define EnsPQcvariationadaptor EnsPBaseadaptor
-
-
-
-
-/* EnsEQcvariationClass *******************************************************
-**
-** Ensembl QC Variation Class enumeration
-**
-******************************************************************************/
-
-typedef enum EnsOQcvariationClass
-{
-    ensEQcvariationClassNULL,
-    ensEQcvariationClassNone,
-    ensEQcvariationClassSimple,
-    ensEQcvariationClassSplice,
-    ensEQcvariationClassExon
-} EnsEQcvariationClass;
-
-
-
-
-/* EnsEQcvariationType ********************************************************
-**
-** Ensembl QC Variation Type enumeration
-**
-******************************************************************************/
-
-typedef enum EnsOQcvariationType
-{
-    ensEQcvariationTypeNULL,
-    ensEQcvariationTypeNone,
-    ensEQcvariationTypeSingle,
-    ensEQcvariationTypeMulti
-} EnsEQcvariationType;
-
-
-
-
-/* EnsEQcvariationState *******************************************************
-**
-** Ensembl QC Variation State enumeration
-**
-******************************************************************************/
-
-typedef enum EnsOQcvariationState
-{
-    ensEQcvariationStateNULL,
-    ensEQcvariationStateNone,
-    ensEQcvariationStateMatch,
-    ensEQcvariationStateGap,
-    ensEQcvariationStateFrameshift,
-    ensEQcvariationState5ss,
-    ensEQcvariationState3ss,
-    EnsEQcvariationStateSplit
-} EnsEQcvariationState;
 
 
 
@@ -245,17 +268,6 @@ typedef struct EnsSQcvariation
 
 
 
-/* EnsPQcsubmissionadaptor ****************************************************
-**
-** Ensembl QC Submission Adaptor
-**
-******************************************************************************/
-
-#define EnsPQcsubmissionadaptor EnsPBaseadaptor
-
-
-
-
 /* @data EnsPQcsubmission *****************************************************
 **
 ** Ensembl QC Submission
@@ -305,6 +317,10 @@ typedef struct EnsSQcsubmission
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions

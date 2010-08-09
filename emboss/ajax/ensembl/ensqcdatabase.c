@@ -5,7 +5,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.15 $
+** @version $Revision: 1.16 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -29,6 +29,20 @@
 /* ==================================================================== */
 
 #include "ensqcdatabase.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
 
 
 
@@ -108,6 +122,10 @@ static AjBool qcdatabaseadaptorCacheExit(EnsPQcdatabaseadaptor qcdba);
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensqcdatabase *************************************************
 **
@@ -855,7 +873,8 @@ AjPStr ensQcdatabaseGetInternalURL(const EnsPQcdatabase qcdb)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetAdaptor(EnsPQcdatabase qcdb, EnsPQcdatabaseadaptor qcdba)
+AjBool ensQcdatabaseSetAdaptor(EnsPQcdatabase qcdb,
+                               EnsPQcdatabaseadaptor qcdba)
 {
     if(!qcdb)
         return ajFalse;
@@ -879,7 +898,8 @@ AjBool ensQcdatabaseSetAdaptor(EnsPQcdatabase qcdb, EnsPQcdatabaseadaptor qcdba)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetIdentifier(EnsPQcdatabase qcdb, ajuint identifier)
+AjBool ensQcdatabaseSetIdentifier(EnsPQcdatabase qcdb,
+                                  ajuint identifier)
 {
     if(!qcdb)
         return ajFalse;
@@ -903,7 +923,8 @@ AjBool ensQcdatabaseSetIdentifier(EnsPQcdatabase qcdb, ajuint identifier)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetAnalysis(EnsPQcdatabase qcdb, EnsPAnalysis analysis)
+AjBool ensQcdatabaseSetAnalysis(EnsPQcdatabase qcdb,
+                                EnsPAnalysis analysis)
 {
     if(!qcdb)
         return ajFalse;
@@ -929,7 +950,8 @@ AjBool ensQcdatabaseSetAnalysis(EnsPQcdatabase qcdb, EnsPAnalysis analysis)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetName(EnsPQcdatabase qcdb, AjPStr name)
+AjBool ensQcdatabaseSetName(EnsPQcdatabase qcdb,
+                            AjPStr name)
 {
     if(!qcdb)
         return ajFalse;
@@ -955,7 +977,8 @@ AjBool ensQcdatabaseSetName(EnsPQcdatabase qcdb, AjPStr name)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetRelease(EnsPQcdatabase qcdb, AjPStr release)
+AjBool ensQcdatabaseSetRelease(EnsPQcdatabase qcdb,
+                               AjPStr release)
 {
     if(!qcdb)
         return ajFalse;
@@ -981,7 +1004,8 @@ AjBool ensQcdatabaseSetRelease(EnsPQcdatabase qcdb, AjPStr release)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetDate(EnsPQcdatabase qcdb, AjPStr date)
+AjBool ensQcdatabaseSetDate(EnsPQcdatabase qcdb,
+                            AjPStr date)
 {
     if(!qcdb)
         return ajFalse;
@@ -1007,7 +1031,8 @@ AjBool ensQcdatabaseSetDate(EnsPQcdatabase qcdb, AjPStr date)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetFormat(EnsPQcdatabase qcdb, AjPStr format)
+AjBool ensQcdatabaseSetFormat(EnsPQcdatabase qcdb,
+                              AjPStr format)
 {
     if(!qcdb)
         return ajFalse;
@@ -1033,7 +1058,8 @@ AjBool ensQcdatabaseSetFormat(EnsPQcdatabase qcdb, AjPStr format)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, EnsEQcdatabaseClass class)
+AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb,
+                             EnsEQcdatabaseClass class)
 {
     if(!qcdb)
         return ajFalse;
@@ -1057,7 +1083,8 @@ AjBool ensQcdatabaseSetClass(EnsPQcdatabase qcdb, EnsEQcdatabaseClass class)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb, EnsEQcdatabaseType type)
+AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb,
+                            EnsEQcdatabaseType type)
 {
     if(!qcdb)
         return ajFalse;
@@ -1081,7 +1108,8 @@ AjBool ensQcdatabaseSetType(EnsPQcdatabase qcdb, EnsEQcdatabaseType type)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetSpecies(EnsPQcdatabase qcdb, AjPStr species)
+AjBool ensQcdatabaseSetSpecies(EnsPQcdatabase qcdb,
+                               AjPStr species)
 {
     if(!qcdb)
         return ajFalse;
@@ -1132,7 +1160,8 @@ AjBool ensQcdatabaseSetGroup(EnsPQcdatabase qcdb,
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetHost(EnsPQcdatabase qcdb, AjPStr host)
+AjBool ensQcdatabaseSetHost(EnsPQcdatabase qcdb,
+                            AjPStr host)
 {
     if(!qcdb)
         return ajFalse;
@@ -1158,7 +1187,8 @@ AjBool ensQcdatabaseSetHost(EnsPQcdatabase qcdb, AjPStr host)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetDirectory(EnsPQcdatabase qcdb, AjPStr directory)
+AjBool ensQcdatabaseSetDirectory(EnsPQcdatabase qcdb,
+                                 AjPStr directory)
 {
     if(!qcdb)
         return ajFalse;
@@ -1184,7 +1214,8 @@ AjBool ensQcdatabaseSetDirectory(EnsPQcdatabase qcdb, AjPStr directory)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetFile(EnsPQcdatabase qcdb, AjPStr file)
+AjBool ensQcdatabaseSetFile(EnsPQcdatabase qcdb,
+                            AjPStr file)
 {
     if(!qcdb)
         return ajFalse;
@@ -1210,7 +1241,8 @@ AjBool ensQcdatabaseSetFile(EnsPQcdatabase qcdb, AjPStr file)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetExternalURL(EnsPQcdatabase qcdb, AjPStr url)
+AjBool ensQcdatabaseSetExternalURL(EnsPQcdatabase qcdb,
+                                   AjPStr url)
 {
     if(!qcdb)
         return ajFalse;
@@ -1236,7 +1268,8 @@ AjBool ensQcdatabaseSetExternalURL(EnsPQcdatabase qcdb, AjPStr url)
 ** @@
 ******************************************************************************/
 
-AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb, AjPStr url)
+AjBool ensQcdatabaseSetInternalURL(EnsPQcdatabase qcdb,
+                                   AjPStr url)
 {
     if(!qcdb)
         return ajFalse;

@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.10 $
+** @version $Revision: 1.11 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -33,6 +33,20 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
 
@@ -51,6 +65,10 @@ static AjBool qcsequenceadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensqcsequence *************************************************
 **
@@ -1309,6 +1327,10 @@ AjBool ensHTMLEncodeEntities(AjPStr *Pstr)
         return ajFalse;
 
     ajStrExchangeCC(Pstr, "\"", "&quot;");
+    /*
+    ** FIXME: This should be the first character to replace.
+    ** It would be better to check for the occurence of &amp; before replacing.
+    */
     ajStrExchangeCC(Pstr, "&", "&amp;");
     ajStrExchangeCC(Pstr, "<", "&lt;");
     ajStrExchangeCC(Pstr, ">", "&gt;");

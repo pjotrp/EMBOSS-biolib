@@ -6,7 +6,43 @@ extern "C"
 #ifndef ensgvdata_h
 #define ensgvdata_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensfeature.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+/* #data EnsPGvindividualadaptor **********************************************
+**
+** Ensembl Genetic Variation Individual Adaptor.
+** Defined as an alias in EnsPBaseadaptor
+**
+** #alias EnsPBaseadaptor
+** ##
+******************************************************************************/
+
+#define EnsPGvindividualadaptor EnsPBaseadaptor
+
+
+
+
+/* #data EnsPGvpopulationadaptor **********************************************
+**
+** Ensembl Genetic Variation Population Adaptor.
+** Defined as an alias in EnsPBaseadaptor
+**
+** #alias EnsPBaseadaptor
+** ##
+******************************************************************************/
+
+#define EnsPGvpopulationadaptor EnsPBaseadaptor
 
 
 
@@ -21,74 +57,6 @@ extern "C"
 ******************************************************************************/
 
 #define EnsPGvsampleadaptor EnsPBaseadaptor
-
-
-
-
-/* EnsEGvsampleDisplay ********************************************************
-**
-** Ensembl Genetic Variation Sample Display enumeration.
-**
-******************************************************************************/
-
-typedef enum EnsOGvsampleDisplay
-{
-    ensEGvsampleDisplayNULL,
-    ensEGvsampleDisplayReference,
-    ensEGvsampleDisplayDefault,
-    ensEGvsampleDisplayDisplayable,
-    ensEGvsampleDisplayUndisplayable
-} EnsEGvsampleDisplay;
-
-
-
-
-/* @data EnsPGvsample *********************************************************
-**
-** Ensembl Genetic Variation Sample.
-**
-** @alias EnsSGvsample
-** @alias EnsOGvsample
-**
-** @attr Use [ajuint] Use counter
-** @cc Bio::EnsEMBL::Storable
-** @attr Identifier [ajuint] SQL database-internal identifier
-** @attr Adaptor [EnsPGvsampleadaptor] Ensembl Genetic Variation
-**                                     Sample Adaptor
-** @cc Bio::EnsEMBL::Variation::Sample
-** @attr Name [AjPStr] Name
-** @attr Description [AjPStr] Description
-** @attr Display [EnsEGvsampleDisplay] Display
-** @attr Size [ajuint] Size
-** @@
-******************************************************************************/
-
-typedef struct EnsSGvsample
-{
-    ajuint Use;
-    ajuint Identifier;
-    EnsPGvsampleadaptor Adaptor;
-    AjPStr Name;
-    AjPStr Description;
-    EnsEGvsampleDisplay Display;
-    ajuint Size;
-} EnsOGvsample;
-
-#define EnsPGvsample EnsOGvsample*
-
-
-
-
-/* #data EnsPGvindividualadaptor **********************************************
-**
-** Ensembl Genetic Variation Individual Adaptor.
-** Defined as an alias in EnsPBaseadaptor
-**
-** #alias EnsPBaseadaptor
-** ##
-******************************************************************************/
-
-#define EnsPGvindividualadaptor EnsPBaseadaptor
 
 
 
@@ -125,6 +93,64 @@ typedef enum EnsOGvindividualType
     ensEGvindividualTypeMutant,
     ensEGvindividualTypeUnknown
 } EnsEGvindividualType;
+
+
+
+
+/* EnsEGvsampleDisplay ********************************************************
+**
+** Ensembl Genetic Variation Sample Display enumeration.
+**
+******************************************************************************/
+
+typedef enum EnsOGvsampleDisplay
+{
+    ensEGvsampleDisplayNULL,
+    ensEGvsampleDisplayReference,
+    ensEGvsampleDisplayDefault,
+    ensEGvsampleDisplayDisplayable,
+    ensEGvsampleDisplayUndisplayable
+} EnsEGvsampleDisplay;
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
+
+/* @data EnsPGvsample *********************************************************
+**
+** Ensembl Genetic Variation Sample.
+**
+** @alias EnsSGvsample
+** @alias EnsOGvsample
+**
+** @attr Use [ajuint] Use counter
+** @cc Bio::EnsEMBL::Storable
+** @attr Identifier [ajuint] SQL database-internal identifier
+** @attr Adaptor [EnsPGvsampleadaptor] Ensembl Genetic Variation
+**                                     Sample Adaptor
+** @cc Bio::EnsEMBL::Variation::Sample
+** @attr Name [AjPStr] Name
+** @attr Description [AjPStr] Description
+** @attr Display [EnsEGvsampleDisplay] Display
+** @attr Size [ajuint] Size
+** @@
+******************************************************************************/
+
+typedef struct EnsSGvsample
+{
+    ajuint Use;
+    ajuint Identifier;
+    EnsPGvsampleadaptor Adaptor;
+    AjPStr Name;
+    AjPStr Description;
+    EnsEGvsampleDisplay Display;
+    ajuint Size;
+} EnsOGvsample;
+
+#define EnsPGvsample EnsOGvsample*
 
 
 
@@ -170,20 +196,6 @@ typedef struct EnsSGvindividual
 
 
 
-/* #data EnsPGvpopulationadaptor **********************************************
-**
-** Ensembl Genetic Variation Population Adaptor.
-** Defined as an alias in EnsPBaseadaptor
-**
-** #alias EnsPBaseadaptor
-** ##
-******************************************************************************/
-
-#define EnsPGvpopulationadaptor EnsPBaseadaptor
-
-
-
-
 /* @data EnsPGvpopulation *****************************************************
 **
 ** Ensembl Genetic Variation Population.
@@ -214,6 +226,13 @@ typedef struct EnsSGvpopulation
 } EnsOGvpopulation;
 
 #define EnsPGvpopulation EnsOGvpopulation*
+
+
+
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 
 

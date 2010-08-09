@@ -6,10 +6,18 @@ extern "C"
 #ifndef ensprediction_h
 #define ensprediction_h
 
+/* ==================================================================== */
+/* ========================== include files =========================== */
+/* ==================================================================== */
+
 #include "ensfeature.h"
 
 
 
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
 
 /* EnsPPredictionexonadaptor **************************************************
 **
@@ -23,6 +31,23 @@ extern "C"
 
 
 
+
+/* EnsPPredictiontranscriptadaptor ********************************************
+**
+** Ensembl Prediction Transcript Adaptor
+**
+** Bio::EnsEMBL::DBSQL::PredictionTranscriptAdaptor
+**
+******************************************************************************/
+
+#define EnsPPredictiontranscriptadaptor EnsPFeatureadaptor
+
+
+
+
+/* ==================================================================== */
+/* ========================== public data ============================= */
+/* ==================================================================== */
 
 /* @data EnsPPredictionexon ***************************************************
 **
@@ -65,19 +90,6 @@ typedef struct EnsSPredictionexon
 
 
 
-/* EnsPPredictiontranscriptadaptor ********************************************
-**
-** Ensembl Prediction Transcript Adaptor
-**
-** Bio::EnsEMBL::DBSQL::PredictionTranscriptAdaptor
-**
-******************************************************************************/
-
-#define EnsPPredictiontranscriptadaptor EnsPFeatureadaptor
-
-
-
-
 /* @data EnsPPredictiontranscript *********************************************
 **
 ** Ensembl Prediction Transcript.
@@ -112,6 +124,10 @@ typedef struct EnsSPredictiontranscript
 
 
 
+
+/* ==================================================================== */
+/* ======================= public functions =========================== */
+/* ==================================================================== */
 
 /*
 ** Prototype definitions
