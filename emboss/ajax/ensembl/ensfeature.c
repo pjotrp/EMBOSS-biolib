@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.18 $
+** @version $Revision: 1.19 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -28,6 +28,37 @@
 /* ==================================================================== */
 
 #include "ensfeature.h"
+
+
+
+
+/* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ========================== private data ============================ */
+/* ==================================================================== */
+
+/* featureadaptorMaxSplitQuerySeqregions **************************************
+**
+** Maximum number of Ensembl Mapper Result objects for which multiple regional
+** constraints For Features on Sequence Regions are used. Above this number of
+** regions, it is faster to limit by start and end coordinates.
+**
+******************************************************************************/
+
+static const ajuint featureadaptorMaxSplitQuerySeqregions = 3;
 
 
 
@@ -130,10 +161,9 @@ static AjBool assemblyexceptionfeatureadaptorRemap(
 
 
 
-static ajuint featureadaptorMaxSplitQuerySeqregions = 3;
-
-
-
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection ensfeature ****************************************************
 **
@@ -2451,6 +2481,9 @@ static ajuint featureadaptorCacheMaxSize = 0;
 ** associated with a Sequence Region so that the Sequence Region constraint
 ** is more natural here.
 ** TODO: Suggest to the Ensembl Core team!
+** TODO: Separate this function into an ensFeatureadaptorNew and
+** ensFeatureadaptorNewCache function, since not all Ensembl Feature Adaptors
+** require an Ensembl Cache.
 ******************************************************************************/
 
 EnsPFeatureadaptor ensFeatureadaptorNew(
@@ -2484,7 +2517,12 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
 
     if(ensDatabaseadaptorGetMultiSpecies(dba))
     {
-        /* Extend the array of table names. */
+        /*
+        ** Allocate an array of SQL table names extended for 'seq_region' and
+        ** 'coord_system' tables. This array, instead of the one provided here
+        ** (const char **Ptables) will then be used by the Ensembl Base Adaptor
+        ** via ensBaseadaptorNew.
+        */
 
         AJCNEW0(fa->Tables, sizeof (Ptables) + 2 * sizeof (char *));
 
@@ -2492,18 +2530,19 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
             fa->Tables[i] = ajCharNewC(Ptables[i]);
 
         fa->Tables[i] = ajCharNewC("seq_region");
-
         i++;
-
         fa->Tables[i] = ajCharNewC("coord_system");
-
         i++;
-
         fa->Tables[i] = (char *) NULL;
 
         Ptables = (const char **) fa->Tables;
 
-        /* Extend the default SQL condition. */
+        /*
+        ** Allocate the default SQL condition and extend for 'seq_region' and
+        ** 'coord_system' conditions. This character string, instead of the one
+        ** provided here (const char *condition) will then be used by the
+        ** Ensembl Base Adaptor via ensBaseadaptorNew.
+        */
 
         if(condition)
             fa->Condition = ajFmtString(
@@ -2528,7 +2567,7 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
                 Ptables[0],
                 ensDatabaseadaptorGetIdentifier(dba));
 
-        condition = fa->Condition;
+        condition = (const char *) fa->Condition;
     }
 
     fa->Adaptor = ensBaseadaptorNew(
@@ -2556,10 +2595,8 @@ EnsPFeatureadaptor ensFeatureadaptorNew(
     fa->MaxFeatureLength = 0;
 
     fa->GetFeature = Fgetfeature;
-
-    fa->Reference = Freference;
-
-    fa->Delete = Fdelete;
+    fa->Reference  = Freference;
+    fa->Delete     = Fdelete;
 
     return fa;
 }
@@ -2614,7 +2651,7 @@ void ensFeatureadaptorDel(EnsPFeatureadaptor *Pfa)
 
     ensCacheDel(&pthis->Cache);
 
-    /* Clear the array of table names. */
+    /* Clear the array of SQL table names. */
 
     if(pthis->Tables)
     {
@@ -2627,9 +2664,7 @@ void ensFeatureadaptorDel(EnsPFeatureadaptor *Pfa)
     /* Clear the default SQL condition. */
 
     if(pthis->Condition)
-    {
         ajCharDel(&pthis->Condition);
-    }
 
     AJFREE(pthis);
 
@@ -2847,21 +2882,22 @@ AjBool ensFeatureadaptorSetTables(EnsPFeatureadaptor fa,
             AJFREE(fa->Tables);
         }
 
-        /* Extend the array of table names. */
+        /*
+        ** Allocate an array of SQL table names extended for 'seq_region' and
+        ** 'coord_system' tables. This array, instead of the one provided here
+        ** (const char **Ptables) will then be set in the Ensembl Base Adaptor
+        ** via ensBaseadaptorSetTables.
+        */
 
-        AJCNEW0(fa->Tables, sizeof (Ptables) + 2);
+        AJCNEW0(fa->Tables, sizeof (Ptables) + 2 * sizeof (char *));
 
         for(i = 0; Ptables[i]; i++)
             fa->Tables[i] = ajCharNewC(Ptables[i]);
 
         fa->Tables[i] = ajCharNewC("seq_region");
-
         i++;
-
         fa->Tables[i] = ajCharNewC("coord_system");
-
         i++;
-
         fa->Tables[i] = (char *) NULL;
 
         Ptables = (const char **) fa->Tables;
@@ -2934,7 +2970,12 @@ AjBool ensFeatureadaptorSetDefaultCondition(EnsPFeatureadaptor fa,
         if(fa->Condition)
             ajCharDel(&fa->Condition);
 
-        /* Extend the default SQL condition. */
+        /*
+        ** Allocate the default SQL condition and extend for 'seq_region' and
+        ** 'coord_system' conditions. This character string, instead of the one
+        ** provided here (const char *condition) will then be set in the
+        ** Ensembl Base Adaptor via ensBaseadaptorSetDefaultCondition.
+        */
 
         if(condition)
             fa->Condition = ajFmtString(
@@ -2958,7 +2999,7 @@ AjBool ensFeatureadaptorSetDefaultCondition(EnsPFeatureadaptor fa,
                 ensBaseadaptorGetPrimaryTable(fa->Adaptor),
                 ensDatabaseadaptorGetIdentifier(dba));
 
-        condition = fa->Condition;
+        condition = (const char *) fa->Condition;
     }
 
     return ensBaseadaptorSetDefaultCondition(fa->Adaptor, condition);
@@ -3671,7 +3712,7 @@ static AjBool featureadaptorSliceFetch(EnsPFeatureadaptor fa,
 
                 /* Remove all Ensembl Mapper Results that represent gaps. */
 
-                if(ensMapperresultGetType(mr) == ensEMapperresultGap)
+                if(ensMapperresultGetType(mr) == ensEMapperresultTypeGap)
                 {
                     ajListIterRemove(iter);
 
@@ -7854,7 +7895,7 @@ static AjBool dnaalignfeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 /* Load the next Feature but destroy first! */
 
@@ -8886,7 +8927,7 @@ static AjBool proteinalignfeatureadaptorFetchAllBySQL(
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 /* Load the next Feature but destroy first! */
 
@@ -11676,7 +11717,7 @@ static AjBool simplefeatureadaptorFetchAllBySQL(EnsPDatabaseadaptor dba,
             ** Coordinate System boundaries.
             */
 
-            if(ensMapperresultGetType(mr) != ensEMapperresultCoordinate)
+            if(ensMapperresultGetType(mr) != ensEMapperresultTypeCoordinate)
             {
                 /* Load the next Feature but destroy first! */
 
