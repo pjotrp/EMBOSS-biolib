@@ -4,7 +4,7 @@
 ** @author Copyright (C) 1999 Ensembl Developers
 ** @author Copyright (C) 2006 Michael K. Schuster
 ** @modified 2009 by Alan Bleasby for incorporation into EMBOSS core
-** @version $Revision: 1.12 $
+** @version $Revision: 1.13 $
 ** @@
 **
 ** This library is free software; you can redistribute it and/or
@@ -34,8 +34,73 @@
 
 
 /* ==================================================================== */
+/* ============================ constants ============================= */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
+/* ======================== global variables ========================== */
+/* ==================================================================== */
+
+
+
+
+/* ==================================================================== */
 /* ========================== private data ============================ */
 /* ==================================================================== */
+
+/* sequenceChunkPower *********************************************************
+**
+** 1 << 18 = 256 KiB, about the size of a BAC clone
+**
+******************************************************************************/
+
+static const ajuint sequenceChunkPower = 18;
+
+
+
+
+/* sequenceadaptorCacheMaxBytes ***********************************************
+**
+** 1 << 26 = 64 MiB
+**
+******************************************************************************/
+
+static const ajuint sequenceadaptorCacheMaxBytes = 1 << 26;
+
+
+
+
+/* sequenceadaptorCacheMaxCount ***********************************************
+**
+** 1 << 16 = 64 Ki
+**
+******************************************************************************/
+
+static const ajuint sequenceadaptorCacheMaxCount = 1 << 16;
+
+
+
+
+/* sequenceadaptorCacheMaxSize ************************************************
+**
+**
+******************************************************************************/
+
+static const ajuint sequenceadaptorCacheMaxSize = 0;
+
+
+
+
+/* sequenceadaptorCacheMaximum ************************************************
+**
+** 1 << 21 = 2 Mi, or about 8 BAC clones
+**
+******************************************************************************/
+
+static const ajuint sequenceadaptorCacheMaximum = 1 << 21;
 
 
 
@@ -52,6 +117,10 @@ static ajulong sequenceadaptorCacheSize(const void *value);
 
 
 
+
+/* ==================================================================== */
+/* ===================== All functions by section ===================== */
+/* ==================================================================== */
 
 /* @filesection enssequence ***************************************************
 **
@@ -71,24 +140,6 @@ static ajulong sequenceadaptorCacheSize(const void *value);
 ** @nam2rule Sequenceadaptor
 **
 ******************************************************************************/
-
-/* 1 << 18 = 256 KiB, about the size of a BAC clone */
-
-static ajuint sequenceChunkPower = 18;
-
-/* 1 << 26 =  64 MiB */
-
-static ajuint sequenceadaptorCacheMaxBytes = 1 << 26;
-
-/* 1 << 16 =  64 Ki  */
-
-static ajuint sequenceadaptorCacheMaxCount = 1 << 16;
-
-static ajuint sequenceadaptorCacheMaxSize = 0;
-
-/* 1 << 18 = 256 Ki * 5, or about 5 BAC clones */
-
-static ajuint sequenceadaptorCacheMaximum = (1 << 18) * 5;
 
 
 
