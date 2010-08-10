@@ -7,7 +7,7 @@ SUBDIRS = images lib resources utils
 # files with nonstandard names in this directory
 EXTRA_DIST = LICENSE
 
-clean: clean-recursive
+clean-local:
 if EHAVEANT
 	ant clean;
 endif
