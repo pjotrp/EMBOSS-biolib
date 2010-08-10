@@ -8,7 +8,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.59])
 AC_INIT([HMMER], [2.3.2], [emboss-bug@emboss.open-bio.org], [emboss],
         [http://emboss.sourceforge.net/])
-AC_REVISION([$Revision: 1.16 $])
+AC_REVISION([$Revision: 1.17 $])
 AC_CONFIG_HEADERS([src/embconf.h])
 AC_CONFIG_SRCDIR(src/ehmmalign.c)
 AC_CONFIG_MACRO_DIR([m4])
@@ -148,7 +148,7 @@ dnl end of "if ! GCC"
 
 
 dnl endian test for indexing system
-AC_C_BIGENDIAN(CPPFLAGS="$CPPFLAGS -DBENDIAN",CPPFLAGS="$CPPFLAGS -DLENDIAN")
+AC_C_BIGENDIAN
 
 dnl PCRE library definitions - see the MAJOR and MINOR values
 dnl to see which version's configure.in these lines come from

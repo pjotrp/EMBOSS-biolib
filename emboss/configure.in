@@ -9,7 +9,7 @@ AC_PREREQ([2.59])
 
 AC_INIT([EMBOSS], [6.3.1], [emboss-bug@emboss.open-bio.org], [emboss],
         [http://emboss.sourceforge.net/])
-AC_REVISION([$Revision: 1.132 $])
+AC_REVISION([$Revision: 1.133 $])
 AC_CONFIG_HEADERS([ajax/core/embossconf.h])
 AC_CONFIG_SRCDIR([ajax/core/ajmath.c])
 AC_CONFIG_MACRO_DIR([m4])
@@ -187,8 +187,8 @@ esac
 
 
 
-dnl endian test for indexing system
-AC_C_BIGENDIAN(CPPFLAGS="$CPPFLAGS -DBENDIAN",CPPFLAGS="$CPPFLAGS -DLENDIAN")
+dnl endian test for indexing system and fileio
+AC_C_BIGENDIAN
 
 dnl PCRE library definitions - see the MAJOR and MINOR values
 dnl to see which version's configure.in these lines come from

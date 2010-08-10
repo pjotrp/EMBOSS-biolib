@@ -289,7 +289,7 @@ typedef struct AjSNumBucket
 ** Directory/FileName pairs
 */
 
-#if defined(LENDIAN)
+#if !defined(WORDS_BIGENDIAN)
 #define BT_GETAJINT(p,v) (memcpy((void*)v,(void*)p,sizeof(ajint)))
 #define BT_GETAJUINT(p,v) (memcpy((void*)v,(void*)p,sizeof(ajuint)))
 #define BT_GETAJLONG(p,v) (memcpy((void*)v,(void*)p,sizeof(ajlong)))
@@ -329,7 +329,7 @@ typedef struct AjSNumBucket
 ** Macros to return a page entry value within a bucket
 */
 
-#if defined(LENDIAN)
+#if !defined(WORDS_BIGENDIAN)
 #define GBT_BUCKNODETYPE(p,v) (memcpy((void*)v,(void*)PBT_BUCKNODETYPE(p), \
 				      sizeof(ajint)))
 #define GBT_BUCKNENTRIES(p,v) (memcpy((void*)v,(void*)PBT_BUCKNENTRIES(p), \
@@ -353,7 +353,7 @@ typedef struct AjSNumBucket
 ** Macros to set a page entry value within an internal/leaf node
 */
 
-#if defined(LENDIAN)
+#if !defined(WORDS_BIGENDIAN)
 #define SBT_BUCKNODETYPE(p,v) (memcpy((void*)PBT_BUCKNODETYPE(p), \
 				      (const void*)&v,sizeof(ajint)))
 #define SBT_BUCKNENTRIES(p,v) (memcpy((void*)PBT_BUCKNENTRIES(p), \
@@ -397,7 +397,7 @@ typedef struct AjSNumBucket
 ** Macros to return a page entry value within an internal/leaf node
 */
 
-#if defined(LENDIAN)
+#if !defined(WORDS_BIGENDIAN)
 #define GBT_NODETYPE(p,v) (memcpy((void*)v,(void*)PBT_NODETYPE(p), \
 				  sizeof(ajint)))
 #define GBT_BLOCKNUMBER(p,v) (memcpy((void*)v,(void*)PBT_BLOCKNUMBER(p), \
@@ -447,7 +447,7 @@ typedef struct AjSNumBucket
 ** Macros to set a page entry value within an internal/leaf node
 */
 
-#if defined(LENDIAN)
+#if !defined(WORDS_BIGENDIAN)
 #define SBT_NODETYPE(p,v) (memcpy((void*)PBT_NODETYPE(p),(const void*)&v, \
 				  sizeof(ajint)))
 #define SBT_BLOCKNUMBER(p,v) (memcpy((void*)PBT_BLOCKNUMBER(p), \
