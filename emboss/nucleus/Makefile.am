@@ -24,7 +24,7 @@ endif
 endif
 
 
-INCLUDES = -I$(top_srcdir)/plplot $(X_CFLAGS) -I$(srcdir)/ \
+AM_CPPFLAGS = -I$(top_srcdir)/plplot $(X_CFLAGS) -I$(srcdir)/ \
 	-I$(top_srcdir)/ajax -I$(top_srcdir)/ajax/pcre \
 	$(EXTRA_INCLUDES) \
 	-I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/graphics \

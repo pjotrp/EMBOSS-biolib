@@ -14,7 +14,7 @@ EXTRA_INCLUDES = -I$(top_srcdir)/ajax/expat
 endif
 
 
-INCLUDES = -I$(top_srcdir)/plplot $(EXTRA_INCLUDES) \
+AM_CPPFLAGS = -I$(top_srcdir)/plplot $(EXTRA_INCLUDES) \
 -I$(top_srcdir)/ajax/pcre -I$(top_srcdir)/ajax/core
 
 ENSEMBLSRC = ensanalysis.c ensassembly.c ensassemblyexception.c \

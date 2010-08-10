@@ -16,7 +16,7 @@ if !ESYSTEMLIBS
 EXTRA_INCLUDES = -I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib
 endif
 
-INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
+AM_CPPFLAGS = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
 $(EXTRA_INCLUDES) \
 -I$(top_srcdir)/ajax/core \
 -I$(top_srcdir)/ajax/graphics \

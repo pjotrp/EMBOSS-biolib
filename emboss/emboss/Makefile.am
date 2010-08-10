@@ -82,7 +82,7 @@ if !ESYSTEMLIBS
 EXTRA_INCLUDES = -I$(top_srcdir)/ajax/expat -I$(top_srcdir)/ajax/zlib
 endif
 
-INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax/pcre \
+AM_CPPFLAGS = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax/pcre \
 	$(EXTRA_INCLUDES) \
 	-I$(top_srcdir)/ajax/core -I$(top_srcdir)/ajax/graphics \
 	-I$(top_srcdir)/ajax/ensembl -I$(top_srcdir)/ajax/ajaxdb \

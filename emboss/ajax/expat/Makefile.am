@@ -7,7 +7,7 @@ if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
 endif
 
-INCLUDES =
+AM_CPPFLAGS =
 
 EXPATSRC = xmlparse.c xmltok.c xmlrole.c xmltok_impl.c xmltok_ns.c
 

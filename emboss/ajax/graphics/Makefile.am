@@ -14,7 +14,7 @@ EXTRA_INCLUDES = -I$(top_srcdir)/ajax/expat
 endif
 
 
-INCLUDES = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
+AM_CPPFLAGS = -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre \
 $(EXTRA_INCLUDES) -I$(top_srcdir)/ajax/core
 
 AJAXGSRC = ajgraph.c ajhist.c
