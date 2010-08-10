@@ -18,6 +18,7 @@ endif
 
 AM_CPPFLAGS = -DAJAX_FIXED_ROOT=$(AJAX_FIXED_ROOT) \
 -DAJAX_SYSTEM="$(AJAX_SYSTEM)" -DPREFIX=\"$(prefix)\" \
+$(MYSQL_CPPFLAGS) $(POSTGRESQL_CPPFLAGS) \
 -I$(top_srcdir)/plplot -I$(top_srcdir)/ajax/pcre $(EXTRA_INCLUDES)
 
 AJAXSRC = ajalign.c ajarr.c ajassert.c \
@@ -61,4 +62,4 @@ else
 LINKFLAGS = $(VERS_INF)
 endif
 
-libajax_la_LDFLAGS = $(LINKFLAGS)
+libajax_la_LDFLAGS = $(LINKFLAGS) $(MYSQL_LDFLAGS) $(POSTGRESQL_LDFLAGS)
