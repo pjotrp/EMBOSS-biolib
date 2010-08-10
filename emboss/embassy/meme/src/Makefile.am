@@ -29,14 +29,14 @@ endif
 endif
 
 if LOCALLINK
-INCLUDES = -IINCLUDE \
+AM_CPPFLAGS = -IINCLUDE \
 	-I../../../nucleus -I../../../ajax/pcre \
 	$(LLINCLUDES) \
 	-I../../../ajax/core -I../../../ajax/graphics \
 	-I../../../ajax/ensembl -I../../../ajax/ajaxdb \
 	-I../../../ajax/acd -I../../../plplot
 else
-INCLUDES = -IINCLUDE -I${embprefix}/include \
+AM_CPPFLAGS = -IINCLUDE -I${embprefix}/include \
 	-I${embprefix}/include/eplplot \
 	$(NLINCLUDES) \
 	-I${embprefix}/include/epcre

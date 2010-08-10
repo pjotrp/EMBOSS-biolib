@@ -10,13 +10,14 @@ NLADD = -leexpat -lezlib
 endif
 
 if LOCALLINK
-INCLUDES = -I../include -I../../../nucleus -I../../../ajax/pcre \
+AM_CPPFLAGS = -I../include -I../../../nucleus -I../../../ajax/pcre \
 	$(LLINCLUDES) \
 	-I../../../ajax/core -I../../../ajax/graphics \
 	-I../../../ajax/ensembl -I../../../ajax/ajaxdb \
 	-I../../../ajax/acd -I../../../plplot
 else
-INCLUDES = -I../include -I${embprefix}/include -I${embprefix}/include/eplplot \
+AM_CPPFLAGS = -I../include -I${embprefix}/include \
+	-I${embprefix}/include/eplplot \
 	$(NLINCLUDES) \
 	-I${embprefix}/include/epcre
 endif
