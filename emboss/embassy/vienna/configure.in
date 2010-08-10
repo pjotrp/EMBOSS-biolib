@@ -8,7 +8,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.59])
 AC_INIT([VIENNA], [1.7.2], [emboss-bug@emboss.open-bio.org],
     [VIENNA], [http://emboss.sourceforge.net/])
-AC_REVISION([$Revision: 1.21 $])
+AC_REVISION([$Revision: 1.22 $])
 AC_CONFIG_HEADERS([src/embconf.h])
 AC_CONFIG_SRCDIR(src/eLfold.c)
 AC_CONFIG_MACRO_DIR([m4])
@@ -253,15 +253,8 @@ CHECK_PNGDRIVER
 CHECK_AUTH
 CHECK_AMD64
 
-
 AX_LIB_MYSQL
 AX_LIB_POSTGRESQL
-
-CFLAGS="$CFLAGS $MYSQL_CFLAGS"
-LDFLAGS="$LDFLAGS $MYSQL_LDFLAGS"
-
-CFLAGS="$CFLAGS $POSTGRESQL_CFLAGS"
-LDFLAGS="$LDFLAGS $POSTGRESQL_LDFLAGS"
 
 
 dnl "Export" these variables for PCRE
