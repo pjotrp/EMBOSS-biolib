@@ -25,9 +25,10 @@
 #
 #   This macro calls:
 #
-#     AC_SUBST(POSTGRESQL_CFLAGS)
-#     AC_SUBST(POSTGRESQL_LDFLAGS)
-#     AC_SUBST(POSTGRESQL_VERSION)
+#     AC_SUBST([POSTGRESQL_CFLAGS])
+#     AC_SUBST([POSTGRESQL_CPPFLAGS])
+#     AC_SUBST([POSTGRESQL_LDFLAGS])
+#     AC_SUBST([POSTGRESQL_VERSION])
 #
 #   And sets:
 #
@@ -36,6 +37,7 @@
 # LAST MODIFICATION
 #
 #   2006-07-16
+#   2010-05-14 MKS: Added POSTGRESQL_CPPFLAGS
 #
 # COPYLEFT
 #
@@ -65,6 +67,7 @@ AC_DEFUN([AX_LIB_POSTGRESQL],
     )
 
     POSTGRESQL_CFLAGS=""
+    POSTGRESQL_CPPFLAGS=""
     POSTGRESQL_LDFLAGS=""
     POSTGRESQL_POSTGRESQL=""
 
@@ -82,12 +85,13 @@ AC_DEFUN([AX_LIB_POSTGRESQL],
             AC_MSG_CHECKING([for PostgreSQL libraries])
 
             POSTGRESQL_CFLAGS="-I`$PG_CONFIG --includedir`"
+            POSTGRESQL_CPPFLAGS="-I`$PG_CONFIG --includedir`"
             POSTGRESQL_LDFLAGS="-L`$PG_CONFIG --libdir` -lpq"
 
             POSTGRESQL_VERSION=`$PG_CONFIG --version | sed -e 's#PostgreSQL ##'`
 
             AC_DEFINE([HAVE_POSTGRESQL], [1],
-                [Define to 1 if PostgreSQL libraries are available])
+                [Define to 1 if PostgreSQL libraries are available.])
 
             found_postgresql="yes"
             AC_MSG_RESULT([yes])
@@ -144,5 +148,6 @@ AC_DEFUN([AX_LIB_POSTGRESQL],
 
     AC_SUBST([POSTGRESQL_VERSION])
     AC_SUBST([POSTGRESQL_CFLAGS])
+    AC_SUBST([POSTGRESQL_CPPFLAGS])
     AC_SUBST([POSTGRESQL_LDFLAGS])
 ])
