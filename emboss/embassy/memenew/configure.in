@@ -6,13 +6,13 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_PREREQ([2.59])
-AC_INIT([MEME], [4.0.0], [emboss-bug@emboss.open-bio.org], [emboss],
-        [http://emboss.sourceforge.net/])
-AC_REVISION([$Revision: 1.17 $])
+AC_INIT([MEME], [4.0.0], [emboss-bug@emboss.open-bio.org],
+    [MEME], [http://emboss.sourceforge.net/])
+AC_REVISION([$Revision: 1.18 $])
 AC_CONFIG_HEADERS([src/embconf.h])
 AC_CONFIG_SRCDIR(src/emast.c)
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([MEME], [4.0.0])
+AM_INIT_AUTOMAKE
 
 dnl Make sure CFLAGS is defined to stop LT_INIT adding -g
 CFLAGS="$CFLAGS "
