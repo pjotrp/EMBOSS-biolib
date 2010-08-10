@@ -58,13 +58,15 @@ then
         CPPFLAGS="$CPPFLAGS -I$ALT_HOME/include"
 
 	  ICCHECK=0
-	  if test "`uname`" = "SunOS"; then
+	  case $host_os in
+          solaris*)
 	        AC_CHECK_LIB(iconv, libiconv_close, ICCHECK=1, ICCHECK=0, -L${ALT_HOME}/lib -liconv)
-	if test $ICCHECK = "1" ; then
-	        LDFLAGS="${LDFLAGS} -L${ALT_HOME}/lib -liconv"
-	fi
-	    LDFLAGS="$LDFLAGS -R$ALT_HOME/lib"
-          fi
+	           if test $ICCHECK = "1" ; then
+	               LDFLAGS="${LDFLAGS} -L${ALT_HOME}/lib -liconv"
+	           fi
+	        LDFLAGS="$LDFLAGS -R$ALT_HOME/lib"
+                ;;
+          esac
 
 
 
@@ -105,9 +107,11 @@ then
 		  LIBS="$LIBS -liconv"
 	  fi
         
-	  if test "`uname`" = "SunOS"; then
-	    LDFLAGS="$LDFLAGS -R$ALT_HOME/lib"
-          fi
+          case $host_os in
+          solaris*)
+	      LDFLAGS="$LDFLAGS -R$ALT_HOME/lib"
+              ;;
+          esac
 
 	  AC_DEFINE([PLD_png], [1], [Define to 1 is PNG support is available])
 	  AM_CONDITIONAL(AMPNG, true)

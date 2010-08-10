@@ -36,11 +36,16 @@ dnl distribution terms that you use for the rest of that program.
 
 AC_DEFUN([LF_EMBOSS_PATH_XLIB],[
   CFLAGS="$CFLAGS $X_CFLAGS"
-if test "`uname`" != "IRIX64" && test "`uname`" != "IRIX" ; then
-  XLIB="$X_LIBS -lX11 $X_EXTRA_LIBS"
-else
-  XLIB="-lX11 $X_EXTRA_LIBS"
-fi
+
+case $host_os in
+irix*)
+    XLIB="$X_LIBS -lX11 $X_EXTRA_LIBS"
+    ;;
+*)
+    XLIB="-lX11 $X_EXTRA_LIBS"
+    ;;
+esac
+
   AC_SUBST([XLIB])
 
 AC_CHECK_HEADER(X11/Xlib.h,

@@ -1,7 +1,7 @@
 dnl @synopsis CHECK_JAVA()
 dnl
 dnl Need to specify --with-java and --with-javaos
-dnl @author Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+dnl @author Alan Bleasby
 dnl
 
 AC_DEFUN([CHECK_JAVA],
@@ -14,7 +14,7 @@ AC_ARG_WITH([java],
         [root directory path of java installation])]
     [AS_HELP_STRING([--without-java], [to disable java])],
 [if test "$withval" != no ; then
-  AC_MSG_RESULT(yes)
+  AC_MSG_RESULT([yes])
   JALT_HOME="$withval"
   if test -d $withval ; then
 	echo "Java directory $withval exists"
@@ -29,22 +29,25 @@ AC_ARG_WITH([java],
   echo "Error: Either JAVA not installed or 'javac' not in your PATH"
   exit 1
   fi
+  if test -f /etc/debian_release || test -f /etc/debian_version ; then
+     CFLAGS="$CFLAGS -DDEBIAN"
+  fi
   JAVA_OK=yes
-  AC_SUBST(JAVA_OK)
+  AC_SUBST([JAVA_OK])
 else
   JAVA_OK=no
-  AC_SUBST(JAVA_OK)
-  AC_MSG_RESULT(no)
+  AC_SUBST([JAVA_OK])
+  AC_MSG_RESULT([no])
 
 fi], [
 
-AC_MSG_RESULT(no)
+AC_MSG_RESULT([no])
 
 ])
 
 if test -n "${JALT_HOME}"
 then
-	CPPFLAGS="$CPPFLAGS -I${JALT_HOME}"
+	CFLAGS="$CFLAGS -I${JALT_HOME}"
 fi
 
 ])
@@ -60,7 +63,7 @@ AC_ARG_WITH([javaos],
     [AS_HELP_STRING([--with-javaos=DIR],
         [root directory path of java installation include OS])],
 [if test "$withval" != no ; then
-  AC_MSG_RESULT(yes)
+  AC_MSG_RESULT([yes])
 	  if test -d $withval ; then
 		echo "Javaos directory $withval exists"
 	  else
@@ -69,9 +72,9 @@ AC_ARG_WITH([javaos],
 	  fi
 	  ALT_HOMEOS="$withval"
 else
-  AC_MSG_RESULT(no)
+  AC_MSG_RESULT([no])
 fi], [
-AC_MSG_RESULT(no)
+AC_MSG_RESULT([no])
 	if test "$JAVA_OK" = "yes" ; then
 		echo "Error: --with-java=dir unspecified"
 		exit 0
@@ -80,7 +83,7 @@ AC_MSG_RESULT(no)
 
 if test -n "${ALT_HOMEOS}"
 then
-	CPPFLAGS="$CPPFLAGS -I${ALT_HOMEOS}"
+	CFLAGS="$CFLAGS -I${ALT_HOMEOS}"
 fi
 
 
@@ -96,7 +99,7 @@ AC_DEFUN([CHECK_AUTH],
 AC_ARG_WITH([auth],
     [AS_HELP_STRING([--with-auth=@<:@AUTHTYPE@:>@], [defaults to PAM])],
 [if test "$withval" != no ; then
-  AC_MSG_RESULT(yes)
+  AC_MSG_RESULT([yes])
 
 	  ALT_AUTHTYPE="-D${withval}"
 
@@ -124,25 +127,26 @@ AC_ARG_WITH([auth],
 	  if test "$withval" = "hpuxshadow" ; then
 		ALT_AUTHTYPE="-DHPUX_SHADOW"
 	  fi
-if test "`uname`" != "IRIX64" && test "`uname`" != "IRIX" ; then
-	  AC_CHECK_LIB(crypt, main, LDFLAGS="$LDFLAGS -lcrypt",LDFLAGS="$LDFLAGS")
-fi
+
+case $host_os in
+irix*)
+	AC_CHECK_LIB(crypt, main, LDFLAGS="$LDFLAGS -lcrypt",LDFLAGS="$LDFLAGS")
+	;;
+esac
+
 	  AC_CHECK_LIB(pam, main, LDFLAGS="$LDFLAGS -lpam",LDFLAGS="$LDFLAGS")
 else
-  AC_MSG_RESULT(no)
+  AC_MSG_RESULT([no])
 fi], [
-AC_MSG_RESULT(no)
-#	if test "$JAVA_OK" = "yes" ; then
-#		echo "Error: --with-java=dir unspecified"
-#		exit 0
-#	fi
+AC_MSG_RESULT([no])
+
 ])
 
 if test -n "${ALT_AUTHTYPE}"
 then
-	CPPFLAGS="$CPPFLAGS ${ALT_AUTHTYPE}"
+	CFLAGS="$CFLAGS ${ALT_AUTHTYPE}"
 else
-	CPPFLAGS="$CPPFLAGS -DNO_AUTH"
+	CFLAGS="$CFLAGS -DNO_AUTH"
 fi
 
 
@@ -171,7 +175,7 @@ AC_ARG_WITH([thread],
     [AS_HELP_STRING([--with-thread=@<:@TYPE@:>@],
         [thread type @<:@default=linux@:>@])],
 [if test "$withval" != no ; then
-  AC_MSG_RESULT(yes)
+  AC_MSG_RESULT([yes])
 
 	  ALT_THREADTYPE="-D${withval}"
 
@@ -224,8 +228,8 @@ AC_ARG_WITH([thread],
 		LIBS="$LIBS -lpthread"
 	  fi
 else
-  AC_MSG_RESULT(no)
+  AC_MSG_RESULT([no])
 fi], [
-AC_MSG_RESULT(no)
+AC_MSG_RESULT([no])
 ])
 ])

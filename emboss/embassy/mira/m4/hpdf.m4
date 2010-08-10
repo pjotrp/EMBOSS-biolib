@@ -57,9 +57,11 @@ then
 	if test $CHECK = "1" ; then
 	  LIBS="$LIBS -lhpdf"
 
-	  if test "`uname`" = "SunOS"; then
-	    LDFLAGS="$LDFLAGS -R$ALT_HOME/lib"
-          fi
+	  case $host_os in
+	  solaris*)
+		LDFLAGS="$LDFLAGS -R$ALT_HOME/lib"
+		;;
+          esac
 
 	  AC_DEFINE([PLD_pdf], [1], [Define to 1 if PDF support is available])
 	  AM_CONDITIONAL(AMPDF, true)
