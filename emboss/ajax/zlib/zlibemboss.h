@@ -1,3 +1,7 @@
+#ifndef WIN32
+#include "embossconf.h"
+#endif
+
 #ifndef ELIBSOURCES
 #define ELIBSOURCES
 #endif
