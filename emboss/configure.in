@@ -8,7 +8,7 @@
 AC_PREREQ([2.59])
 AC_INIT([EMBOSS], [6.3.1], [emboss-bug@emboss.open-bio.org],
     [EMBOSS], [http://emboss.sourceforge.net/])
-AC_REVISION([$Revision: 1.134 $])
+AC_REVISION([$Revision: 1.135 $])
 AC_CONFIG_HEADERS([ajax/core/embossconf.h])
 AC_CONFIG_SRCDIR([ajax/core/ajmath.c])
 AC_CONFIG_MACRO_DIR([m4])
@@ -21,15 +21,11 @@ CFLAGS="$CFLAGS -DEMBOSSMAIN"
 LT_INIT
 
 # Checks for programs.
-#as# AC_PROG_CXX
 AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
 AC_C_INLINE
-#as# AC_PROG_INSTALL
-#as# AC_PROG_LN_S
-#as# AC_PROG_MAKE_SET
-#as# AC_PROG_RANLIB
+
 
 # Checks for libraries.
 
@@ -242,51 +238,26 @@ fi
 
 
 # Checks for header files.
-#as# AC_PATH_X
 AC_PATH_XTRA
 AC_HEADER_DIRENT
 AC_HEADER_STDC
 
 AC_CHECK_HEADERS([unistd.h TargetConfig.h])
-#as# AC_CHECK_HEADERS([arpa/inet.h fcntl.h float.h limits.h \
-#as# 		  malloc.h memory.h netdb.h netinet/in.h \
-#as# 		  shadow.h stddef.h stdint.h stdlib.h string.h strings.h \
-#as# 		  sys/file.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h \
-#as# 		  termios.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
-#as# AC_HEADER_STDBOOL
-#as# AC_TYPE_UID_T
-#as# AC_C_INLINE
-#as# AC_TYPE_INT32_T
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
-#as# AC_STRUCT_TIMEZONE
-#as# AC_TYPE_UINT32_T
 AC_STRUCT_TM
-
-#as# AC_CHECK_TYPES([ptrdiff_t])
-
 
 
 dnl Check for library functions
-#AC_FUNC_ERROR_AT_LINE
 AC_FUNC_GETPGRP
 AC_FUNC_STRFTIME
 AC_FUNC_FORK
 AC_FUNC_VPRINTF
-#as# AC_FUNC_MALLOC
-#as# AC_FUNC_MKTIME
-#as# AC_FUNC_REALLOC
-#as# AC_FUNC_STRTOD
 
 AC_CHECK_FUNCS([memmove])
-#as# AC_CHECK_FUNCS([alarm atexit bzero dup2 floor \
-#as# 		getcwd gethostbyname getspnam gettimeofday inet_ntoa \
-#as# 		localtime_r memmove memset mkdir modf pow regcomp rint \
-#as# 		select socket sqrt strchr strcspn strdup strerror strpbrk \
-#as# 		strrchr strspn strstr strtol])
 
 if test "${with_x}" != "no" ; then
 LF_EMBOSS_PATH_XLIB
