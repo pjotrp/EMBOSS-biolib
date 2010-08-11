@@ -1216,7 +1216,7 @@ size_t ajReadbinUint8Endian(AjPFile file, ajulong *Pu8)
     ret = fread(Pu8, 8, 1, file->fp);
 
 #ifndef WORDS_BIGENDIAN
-    val2 = *Pu8;
+    val2 = (ajlong) *Pu8;
     ajByteRevLen8(&val2);
     *Pu8 = val2;
 #endif

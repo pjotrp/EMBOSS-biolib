@@ -983,9 +983,6 @@ AjPStr ensGvvariationfeatureGetAllele(
 AjPStr ensGvvariationfeatureGetName(
     const EnsPGvvariationfeature gvvf);
 
-AjPStr ensGvvariationfeatureGetSource(
-    const EnsPGvvariationfeature gvvf);
-
 AjPStr ensGvvariationfeatureGetValidationCode(
     const EnsPGvvariationfeature gvvf);
 

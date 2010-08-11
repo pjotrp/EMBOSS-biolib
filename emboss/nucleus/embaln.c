@@ -3209,10 +3209,10 @@ void embAlignReportLocal(AjPAlign align,
     ajint offend1;
     ajint offend2;
 
-    offend1 = ajSeqGetLen(seqa) - ajStrGetLen(m) - start1
-	+ ajStrCalcCountK(m, '.')
-	+ ajStrCalcCountK(m, '-')
-	    + ajStrCalcCountK(m, ' ');
+    offend1 = (ajint) (ajSeqGetLen(seqa) - ajStrGetLen(m) - start1
+                       + ajStrCalcCountK(m, '.')
+                       + ajStrCalcCountK(m, '-')
+                       + ajStrCalcCountK(m, ' '));
 
     ajDebug("embAlignReportLocal lenseqa: %d lenm: %d start1: %d "
 	    ".count:%d -count: %d spacecount:%d\n",
@@ -3221,10 +3221,10 @@ void embAlignReportLocal(AjPAlign align,
 	    	ajStrCalcCountK(m, '-'),
 	    	    ajStrCalcCountK(m, ' '));
 
-    offend2 = ajSeqGetLen(seqb) - ajStrGetLen(n) - start2
-	+ ajStrCalcCountK(n, '.')
-	+ ajStrCalcCountK(n, '-')
-	    + ajStrCalcCountK(n, ' ');
+    offend2 = (ajint) (ajSeqGetLen(seqb) - ajStrGetLen(n) - start2
+                       + ajStrCalcCountK(n, '.')
+                       + ajStrCalcCountK(n, '-')
+                       + ajStrCalcCountK(n, ' '));
 
     ajDebug("embAlignReportLocal lenseqb: %d lenn: %d start2: %d "
 	    ".count:%d -count: %d spacecount:%d\n",
