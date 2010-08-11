@@ -1,0 +1,149 @@
+application: dbfinddat 
+[
+  documentation: "Find public databases by type of data (content) or query term"
+  groups: "Display, Information"
+    relations: "0000088 topic Literature and documentation"
+    relations: "0000516 operation Database information retrieval"
+]
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+  string: keyword
+  [
+      default: ""
+      parameter: "Y"
+      information: "Keyword(s) to use when specifying type of data or query term"
+      knowntype: "keywords"
+    relations: "0000968 data Keyword"
+  ]
+
+endsection: input
+
+
+
+
+
+section: additional 
+[
+  information: "Additional section"
+  type: "page"
+]
+
+boolean: data
+  [
+    additional: "Y"
+    default: "Y"
+    information: "Match retrievable datatypes"
+    help: "Match keywords against the database content, i.e. the datatypes of the objects that are retrievable."
+    relations: "0002135 data Toggle"
+  ]
+
+boolean: query
+  [
+    additional: "Y"
+    default: "N"
+    information: "Match query terms"
+    help: "Match keywords against the database query terms, i.e. the terms (typically identifiers) that are used to query or cross-reference (link to) the database."
+    relations: "0002135 data Toggle"
+  ]
+
+  boolean: allmatch [
+    additional: "Y"
+    default: "Y"
+    information: "Match all words in the search string"
+    help: "By default, all words in the search string must match. This
+           option searches for a match to any word in the search string."
+    relations: "0002135 data Toggle"
+  ]
+
+
+boolean: verbose
+  [
+    additional: "Y"
+    default: "N"
+    information: "Verbose output"
+    help: "The default behaviour is to report for relevant databases only basic information from the EMBOSS data file db.dat including (fields from db.dat are in parentheses): the recommended or official unique identifier ('ID'), the full (verbose english) name ('Name') and URL of the database server ('URL').  This option will report additional information including alternative identifiers ('IDalt'), accession number ('Acc'), short description ('Desc'), description of valid queries ('Query'), URL of documentation on REST-based ('URLrest') and SOAP-based ('URLsoap') web service interfaces and database classification taken from the EDAM ontology, http://edamontology.sourceforge.net/ ('EDAMres')."
+    relations: "0002135 data Toggle"
+  ]
+
+endsection: additional
+
+
+
+
+
+section: advanced 
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+boolean: sens
+  [
+    default: "N"
+    information: "Increase sensitivity of search"
+    help: "dbfinddat reports on databases whose content (retrievable datatypes) or query terms (used for retrieval) match the supplied keywords.  The EMBOSS data file db.dat is used for descriptions of datatypes ('EDAMdat' field) and query terms ('EDAMid' field) are term names from the EDAM ontology (http://edamontology.sourceforge.net/). By default, the keywords are matched against the EDAM term names (and synonyms) only.  This option also matches the keywords against the EDAM term definitions and will therefore (typically) report more matches."
+    relations: "0002135 data Toggle"
+  ]
+
+boolean: more
+  [
+    default: "Y"
+    information: "Include subclasses of hits"
+    help: "dbfinddat reports on databases whose content (retrievable datatypes) or query terms (used for retrieval) match the supplied keywords.  The EMBOSS data file db.dat is used for descriptions of datatypes ('EDAMdat' field) and query terms ('EDAMid' field) are term names from the EDAM ontology (http://edamontology.sourceforge.net/). By default the output includes all matching databases.  This option will also include databases which, according to the db.dat annotation and EDAM, are specialisations (EDAM sub-classes) of the matched datatype or query term.   It will therefore (typically) report more matches."
+    relations: "0002135 data Toggle"
+  ]
+
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile 
+  [
+    additional: "Y"
+    default: "stdout"
+    knowntype: "dbfinddat output"
+    relations: "0000957 data Database metadata"
+  ]
+
+endsection: output
+
+    boolean: table [
+      additional: "Y"
+      default: "N"
+      information: "Format the output as a table"
+      help: "This option will format the output into a table.  This is only possible if verbose output is off."
+      outputmodifier: "Y"
+    relations: "0002135 data Toggle"
+    ]
+
+
+  section: htmlsection [
+    information: "Html section"
+    type: "frame"
+  ]
+
+    boolean: html [
+      additional: "Y"
+      default: "N"
+      information: "Format the output for HTML"
+      help: "If you are sending the output to a file, this will format
+             it for displaying as a table in a WWW document."
+      outputmodifier: "Y"
+    relations: "0002135 data Toggle"
+    ]
+
+  endsection: htmlsection
+

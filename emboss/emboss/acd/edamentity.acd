@@ -1,0 +1,164 @@
+application: edamentity 
+[
+  documentation: "Find EDAM ontology 'entity' terms by keyword"
+  groups: "Display, Information"
+    relations: "0000090 topic Database search and retrieval"
+    relations: "0002224 operation Ontology search and retrieval"
+]
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+  string: keyword
+  [
+      default: ""
+      parameter: "Y"
+      information: "Keyword(s) to search for in ontology"
+      knowntype: "keywords"
+    relations: "0000968 data Keyword"
+  ]
+
+endsection: input
+
+
+
+
+
+section: additional 
+[
+  information: "Additional section"
+  type: "page"
+]
+
+  boolean: id
+  [
+    additional: "Y"
+    default: "Y"
+    information: "Search the ontology term IDs"
+    help: "This search is over the 'id:' fields of the EMBOSS data file edam.obo.  This is the unique identifier of the EDAM ontology terms."
+    relations: "0002135 data Toggle"
+  ]
+
+  boolean: name 
+  [
+    additional: "Y"
+    default: "Y"
+    information: "Search the ontology term names"
+    help: "This search is over the 'name:' and 'synonym:' fields of the EMBOSS data file edam.obo.  This is the name and synonyms of the EDAM ontology terms."
+    relations: "0002135 data Toggle"
+  ]
+
+  boolean: def
+  [
+    additional: "Y"
+    default: "N"
+    information: "Search the ontology term definitions"
+    help: "This search is over the 'def:' field of the EMBOSS data file edam.obo.  This is the definition of the EDAM ontology terms."
+    relations: "0002135 data Toggle"
+  ]
+
+  boolean: comment
+  [
+    additional: "Y"
+    default: "N"
+    information: "Search the ontology term comments"
+    help: "This search is over the 'comment:' field of the EMBOSS data file edam.obo.  This is comments on the EDAM ontology terms."
+    relations: "0002135 data Toggle"
+  ]
+
+  boolean: all 
+  [
+    additional: "Y"
+    default: "N"
+    information: "Search all available sections of information"
+    relations: "0002135 data Toggle"
+  ]
+
+  boolean: allmatch [
+    additional: "Y"
+    default: "Y"
+    information: "Match all words in the search string"
+    help: "By default, all words in the search string must match. This
+           option searches for a match to any word in the search string."
+    relations: "0002135 data Toggle"
+  ]
+
+boolean: verbose
+  [
+    additional: "Y"
+    default: "Y"
+    information: "Verbose output"
+    help: "The default behaviour is to report the entire OBO term statement from the EDAM ontology.  If this option is unset, then output settings from the 'terse' or 'idonly' options will apply."
+    relations: "0002135 data Toggle"
+  ]
+
+boolean: terse
+  [
+    additional: "Y"
+    default: "N"
+    information: "Terse output"
+    help: "The default behaviour is to report the entire OBO term statement from the EDAM ontology.  If this option is set, then only the term id, name and namespace will be reported."
+    relations: "0002135 data Toggle"
+  ]
+
+boolean: idonly
+  [
+    additional: "Y"
+    default: "N"
+    information: "Output IDs only"
+    help: "The default behaviour is to report the entire OBO term statement from the EDAM ontology.  If this option is set, then only the term id will be reported.  Note that as a minimum, regardless of any settings, the ids are reported."
+    relations: "0002135 data Toggle"
+  ]
+
+list: format [
+      additional: "Y"
+      default: "T"
+      minimum: "1"
+      maximum: "1"
+      header: "Output format"
+      values: "O:OBO (plain text), H:HTML, X:XML (OBO-XML), J:JSON"
+      delimiter: ","
+      codedelimiter: ":"
+      information: "Format of output"
+      help: "By default output is in plain text (OBO) format. This option will change the format."
+    relations: "0002129 data File format name"
+    ]
+
+endsection: additional
+
+
+
+
+
+section: advanced 
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile 
+  [
+    additional: "Y"
+    default: "stdout"
+    knowntype: "edamentity output"
+    relations: "0002223 data Ontology metadata"
+  ]
+
+endsection: output
+
+

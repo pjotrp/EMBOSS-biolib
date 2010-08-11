@@ -1,0 +1,151 @@
+application: dbshowall
+[
+  documentation: "Show list of public databases by category"
+  groups: "Display, Information"
+    relations: "0000088 topic Literature and documentation"
+    relations: "0000516 operation Database information retrieval"
+]
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+list: mode [
+      parameter: "Y"
+      default: "A"
+      minimum: "1"
+      maximum: "1"
+      header: "Categories to show"
+      values: "T:Top-level, L:Level below top-level, A:All"
+      delimiter: ","
+      codedelimiter: ":"
+      information: "Select category level"
+      help: "Optionally, all databases in the top-level categories, the one-down-from top-level categories, or the bottom-level categories are shown.  There are fewest categories at the top-level and most at the bottom level. Bottom level is the default as this best resolves differences between databases.  Categories are taken from the EMBOSS data file db.dat ('EDAMres' field) and are terms from the 'Data resource' namespace of the EDAM ontology, http://edamontology.sourceforge.net/."
+    relations: "0001773 data Tool-specific parameter"
+    ]
+
+
+endsection: input
+
+
+
+
+
+section: additional 
+[
+  information: "Additional section"
+  type: "page"
+]
+
+
+# Must add list of EDAM top-level data resource names
+selection: top [
+      standard: "@($(mode)=='T')"
+      default: "All"
+      minimum: "1"
+      header: "Categories to show"
+      values: "All"
+      information: "Select categories"
+      help: "Select one or more (top-level) categories to display. Categories are taken from the EMBOSS data file db.dat ('EDAMres' field) and are terms from the 'Data resource' namespace of the EDAM ontology, http://edamontology.sourceforge.net/."
+    relations: "0001773 data Tool-specific parameter ]"
+
+# Must add list of EDAM one-down-from top-level data resource names
+selection: level [
+      standard: "@($(mode)=='L')"
+      default: "All"
+      minimum: "1"
+      header: "Categories to show"
+      values: "All;"
+      information: "Select categories"
+      help: "Select one or more (one-down-from top-level) categories to display. Categories are taken from the EMBOSS data file db.dat ('EDAMres' field) and are terms from the 'Data resource' namespace of the EDAM ontology, http://edamontology.sourceforge.net/."
+    relations: "0001773 data Tool-specific parameter ]"
+
+# Must add list of bottom level data resource names
+selection: bottom [
+      standard: "@($(mode)=='A')"
+      default: "All"
+      minimum: "1"
+      header: "Categories to show"
+      values: "All;"
+      information: "Select categories"
+      help: "Select one or more (bottom level) categories to display. Categories are taken from the EMBOSS data file db.dat ('EDAMres' field) and are terms from the 'Data resource' namespace of the EDAM ontology, http://edamontology.sourceforge.net/."
+    relations: "0001773 data Tool-specific parameter ]"
+
+
+
+
+
+boolean: verbose
+  [
+    additional: "Y"
+    default: "N"
+    information: "Verbose output"
+    help: "The default behaviour is to report for relevant databases only basic information from the EMBOSS data file db.dat including (fields from db.dat are in parentheses): the recommended or official unique identifier ('ID'), the full (verbose english) name ('Name') and URL of the database server ('URL').  This option will report additional information including alternative identifiers ('IDalt'), accession number ('Acc'), short description ('Desc'), description of valid queries ('Query'), URL of documentation on REST-based ('URLrest') and SOAP-based ('URLsoap') web service interfaces and database classification taken from the EDAM ontology, http://edamontology.sourceforge.net/ ('EDAMres')."
+    relations: "0002135 data Toggle"
+  ]
+
+
+endsection: additional
+
+
+
+
+
+section: advanced 
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile 
+  [
+    additional: "Y"
+    default: "stdout"
+    knowntype: "dbshowall output"
+    relations: "0000957 data Database metadata"
+  ]
+
+endsection: output
+
+
+  section: htmlsection [
+    information: "Html section"
+    type: "frame"
+  ]
+
+    boolean: table [
+      additional: "Y"
+      default: "N"
+      information: "Format the output as a table"
+      help: "This option will format the output into a table.  This is only possible if verbose output is off."
+      outputmodifier: "Y"
+    relations: "0002135 data Toggle"
+    ]
+
+    boolean: html [
+      additional: "Y"
+      default: "N"
+      information: "Format the output for HTML"
+      help: "If you are sending the output to a file, this will format
+             it for displaying as a table in a WWW document."
+      outputmodifier: "Y"
+    relations: "0002135 data Toggle"
+    ]
+
+
+
+  endsection: htmlsection

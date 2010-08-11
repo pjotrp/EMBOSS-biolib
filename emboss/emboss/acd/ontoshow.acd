@@ -1,0 +1,71 @@
+application: ontoshow 
+[
+  documentation: "Display information on ontologies known to EMBOSS"
+  groups: "Display, Information"
+    relations: "0000088 topic Literature and documentation"
+    relations: "0002222 operation Ontology information retrieval"
+]
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+endsection: input
+
+
+
+
+
+section: additional 
+[
+  information: "Additional section"
+  type: "page"
+]
+  string: ontology
+  [
+      default: ""
+      additional: "Y"
+      information: "Name of ontology to display information for"
+      help: "By default, information for all available ontologies is shown.  This option will display information for the named ontology only."
+      knowntype: "keywords"
+    relations: "0001051 data Ontology name"
+  ]
+
+
+endsection: additional
+
+
+
+
+
+section: advanced 
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile 
+  [
+    additional: "Y"
+    default: "stdout"
+    knowntype: "ontoshow output"
+    relations: "0002223 data Ontology metadata"
+  ]
+
+endsection: output
+
+
