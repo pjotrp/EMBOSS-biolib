@@ -1,8 +1,8 @@
 application: wobble [
   documentation: "Plot third base position variability in a nucleotide sequence"
   groups: "Nucleic:Gene finding"
-  relations: "/edam/topic/0000109 Gene finding"
-  relations: "/edam/operation/0000287 Base position variability plotting"
+    relations: "0000109 topic Gene finding"
+    relations: "0000287 operation Base position variability plotting"
 ]
 
 section: input [
@@ -13,8 +13,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0001215 Pure DNA sequence"                  
-    relations: "/edam/data/0000849 Sequence record"                  
+    relations: "0001215 data Pure DNA sequence"
+    relations: "0000849 data Sequence record"
   ]
 
 endsection: input
@@ -29,7 +29,7 @@ section: additional [
     default: "30"
     minimum: "1"
     information: "Window size in codons"
-    relations: "/edam/data/0001251 Window size"
+    relations: "0001251 data Window size"
   ]
 
 endsection: additional
@@ -43,7 +43,7 @@ section: advanced [
     default: "GC"
     information: "Bases used"
     knowntype: "nucleotide codes"
-    relations:  "/edam/data/0001007 Nucleotide code"                         
+    relations: "0001007 data Nucleotide code"
   ]
 
 endsection: advanced
@@ -56,13 +56,13 @@ section: output [
   xygraph: graph [
     standard: "Y"
     multiple: "6"
-    relations: "/edam/data/0001263 Base position variability"
+    relations: "0001263 data Base position variability"
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "wobble output"
-    relations: "/edam/data/0001263 Base position variability"
+    relations: "0001263 data Base position variability"
   ]
 
 endsection: output

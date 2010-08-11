@@ -1,8 +1,8 @@
 application: union [
   documentation: "Concatenate multiple sequences into a single sequence"
   groups: "Edit"
-  relations: "/edam/topic/0000156 Sequence editing"
-  relations: "/edam/operation/0000232 Sequence merging"
+    relations: "0000156 topic Sequence editing"
+    relations: "0000232 operation Sequence merging"
 ]
 
 section: input [
@@ -13,16 +13,16 @@ section: input [
   boolean: feature [
     default: "N"
     information: "Use feature information"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
     features: "$(feature)"
-    relations: "/edam/data/0000848 Sequence" 
-    relations: "/edam/data/0000849 Sequence record" 
-    relations: "/edam/data/0002178 1 or more" 
+    relations: "0000848 data Sequence"
+    relations: "0000849 data Sequence record"
+    relations: "0002178 data 1 or more"
   ]
 
 endsection: input
@@ -35,13 +35,13 @@ section: advanced [
   boolean: source [
     default: "N"
     information: "Create source features"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   boolean: findoverlap [
     default: "N"
     information: "Look for overlaps when joining"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -54,8 +54,8 @@ section: output [
   seqout: outseq [
     parameter: "Y"
     features: "$(feature)"
-    relations: "/edam/data/0000848 Sequence"        
-    relations: "/edam/data/0000849 Sequence record"                                     
+    relations: "0000848 data Sequence"
+    relations: "0000849 data Sequence record"
   ]
 
   outfile: overlapfile [
@@ -65,7 +65,7 @@ section: output [
     extension: "overlaps"
     nullok: "Y"
     nulldefault: "Y"
-    relations: "/edam/data/0000850 Sequence set"
+    relations: "0000850 data Sequence set"
   ]
 
 endsection: output

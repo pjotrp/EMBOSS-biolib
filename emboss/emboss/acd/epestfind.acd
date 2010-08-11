@@ -2,8 +2,8 @@ application: epestfind [
   documentation: "Finds PEST motifs as potential proteolytic
                   cleavage sites"
   groups: "Protein:Motifs"
-  relations: "/edam/topic/0000141 Proteolysis and peptide mass"
-  relations: "/edam/operation/0000422 Protein cleavage site prediction"
+    relations: "0000141 topic Proteolysis and peptide mass"
+    relations: "0000422 operation Protein cleavage site prediction"
 ]
 
 section: input [
@@ -15,8 +15,8 @@ section: input [
     parameter: "Y"
     type: "protein"
     help: "Protein sequence USA to be analysed."
-    relations: "/edam/data/0001219 Pure protein sequence"  
-    relations: "/edam/data/0000849 Sequence record"                              
+    relations: "0001219 data Pure protein sequence"
+    relations: "0000849 data Sequence record"
   ]
 
   datafile: mwdata [
@@ -24,7 +24,7 @@ section: input [
     default: "Emolwt.dat"
     information: "Molecular weights data file"
     knowntype: "molecular weights"
-    relations:  "/edam/data/0001505 Amino acid molecular weight data"               
+    relations: "0001505 data Amino acid molecular weight data"
   ]
 
 endsection: input
@@ -43,7 +43,7 @@ section: required [
     minimum: "2"
     failrange: "N"
     trueminimum: "Y"
-    relations: "/edam/data/0001251 Window size"
+    relations: "0001251 data Window size"
   ]
 
   selection: order [
@@ -59,7 +59,7 @@ section: required [
     maximum: "1"
     minimum: "1"
     values: "length, position, score"
-    relations: "/edam/data/0002134 Results sort order"                                
+    relations: "0002134 data Results sort order"
   ]
 
 endsection: required
@@ -82,7 +82,7 @@ section: additional [
     maximum: "+55.0"
     minimum: "-55.0"
     precision: "2"
-relations: "/edam/data/0002146 Threshold"
+    relations: "0002146 data Threshold"
   ]
 
 endsection: additional
@@ -95,35 +95,35 @@ section: advanced [
   boolean: mono [
     default: "N"
     information: "Use monoisotopic weights"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   boolean: potential [
     default: "Y"
     help: "Decide whether potential PEST motifs should be printed."
     information: "Display potential PEST motifs"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   boolean: poor [
     default: "Y"
     help: "Decide whether poor PEST motifs should be printed."
     information: "Display poor PEST motifs"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   boolean: invalid [
     default: "N"
     help: "Decide whether invalid PEST motifs should be printed."
     information: "Display invalid PEST motifs"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   boolean: map [
     default: "Y"
     help: "Decide whether PEST motifs should be mapped to sequence."
     information: "Display PEST motifs map"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -137,13 +137,13 @@ section: output [
     parameter: "Y"
     help: "Name of file to which results will be written."
     knowntype: "epestfind output"
-    relations:  "/edam/data/0001331 PEST site report"                                    
+    relations: "0001331 data PEST site report"
   ]
 
   xygraph: graph [
     standard: "Y"
     multiple: "1"
-    relations:  "/edam/data/0001331 PEST site report"                                    
+    relations: "0001331 data PEST site report"
   ]
 
 endsection: output

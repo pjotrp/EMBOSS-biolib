@@ -4,9 +4,9 @@ application: einverted [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  relations: "/edam/topic/0000157 Sequence composition"
-  relations: "/edam/operation/0000379 Repeat sequence identification"
-  relations: "/edam/operation/0000278 RNA secondary structure prediction"
+    relations: "0000157 topic Sequence composition"
+    relations: "0000379 operation Repeat sequence identification"
+    relations: "0000278 operation RNA secondary structure prediction"
 ]
 
 section: input [
@@ -17,9 +17,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0001215 Pure DNA sequence"
-    relations: "/edam/data/0000849 Sequence record" 
-    relations: "/edam/data/0002178 1 or more"
+    relations: "0001215 data Pure DNA sequence"
+    relations: "0000849 data Sequence record"
+    relations: "0002178 data 1 or more"
   ]
 
 endsection: input
@@ -33,28 +33,28 @@ section: required [
     default: "12"
     standard: "Y"
     information: "Gap penalty"
-    relations: "/edam/data/0002137 Gap penalty"
+    relations: "0002137 data Gap penalty"
   ]
 
   integer: threshold [
     default: "50"
     standard: "Y"
     information: "Minimum score threshold"
-relations: "/edam/data/0002146 Threshold"
+    relations: "0002146 data Threshold"
   ]
 
   integer: match [
     default: "3"
     standard: "Y"
     information: "Match score"
-    relations: "/edam/data/0001401 Match reward score"
+    relations: "0001401 data Match reward score"
   ]
 
   integer: mismatch [
     default: "-4"
     standard: "Y"
     information: "Mismatch score"
-    relations: "/edam/data/0001402 Mismatch penalty score"
+    relations: "0001402 data Mismatch penalty score"
   ]
 
 endsection: required
@@ -70,7 +70,7 @@ section: additional [
     information: "Maximum extent of repeats"
     help: "Maximum separation between the start of repeat and the end
            of the inverted repeat (the default is 2000 bases)."
-    relations: "/edam/data/0001249 Sequence length"                                     
+    relations: "0001249 data Sequence length"
   ]
 
 endsection: additional
@@ -85,7 +85,7 @@ section: output [
     extension: "inv"
     knowntype: "inverted output"
     information: "Sanger Centre program inverted output file"
-    relations: "/edam/data/0000969 Free text"                                      
+    relations: "0000969 data Free text"
   ]
 
   seqout: outseq [
@@ -95,8 +95,8 @@ section: output [
                   repeats."
     help: "The sequence of the inverted repeat regions without gap
            characters."
-    relations: "/edam/data/0000848 Sequence"                 
-    relations: "/edam/data/0000849 Sequence record"                            
+    relations: "0000848 data Sequence"
+    relations: "0000849 data Sequence record"
   ]
 
 endsection: output

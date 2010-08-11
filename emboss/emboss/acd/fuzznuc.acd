@@ -4,9 +4,9 @@ application: fuzznuc [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  relations: "/edam/topic/0000162 Nucleic acid sequence motifs"
-  relations: "/edam/operation/0000381 Nucleotide sequence motif searching"
-  relations: "/edam/operation/0000347 Sequence database search by motif or pattern"
+    relations: "0000162 topic Nucleic acid sequence motifs"
+    relations: "0000381 operation Nucleotide sequence motif searching"
+    relations: "0000347 operation Sequence database search by motif or pattern"
 ]
 
 section: input [
@@ -17,9 +17,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0001215 Pure DNA sequence"
-    relations: "/edam/data/0000849 Sequence record" 
-    relations: "/edam/data/0002178 1 or more" 
+    relations: "0001215 data Pure DNA sequence"
+    relations: "0000849 data Sequence record"
+    relations: "0002178 data 1 or more"
   ]
 
   pattern: pattern [
@@ -49,7 +49,7 @@ section: input [
            For example, [CG](5)TG{A}N(1,5)C"
     type: "nucleotide"
     pmismatch: "0"
-    relations: "/edam/data/0001353 Sequence motif"
+    relations: "0001353 data Sequence motif"
   ]
 
 endsection: input
@@ -62,7 +62,7 @@ section: advanced [
   boolean: complement [
     default: "N"
     information: "Search complementary strand"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -77,7 +77,7 @@ section: output [
     taglist: "str:pat=Pattern_name int:mismatch=Mismatch"
     rformat: "seqtable"
     precision: "0"
-    relations: "/edam/data/0001298 Sequence motif report"
+    relations: "0001298 data Sequence motif report"
   ]
 
 endsection: output

@@ -1,8 +1,8 @@
 application: chips [
   documentation: "Calculates Nc codon usage statistic"
   groups: "Nucleic:Codon usage"
-  relations: "/edam/topic/0000107 Codon usage"
-  relations: "/edam/operation/0000286 Codon usage analysis"
+    relations: "0000107 topic Codon usage"
+    relations: "0000286 operation Codon usage analysis"
 ]
 
 section: input [
@@ -13,9 +13,9 @@ section: input [
   seqall: seqall [
     parameter: "Y"
     type: "DNA"
-    relations: "/edam/data/0001215 Pure DNA sequence"
-    relations: "/edam/data/0000849 Sequence record" 
-    relations: "/edam/data/0002178 1 or more" 
+    relations: "0001215 data Pure DNA sequence"
+    relations: "0000849 data Sequence record"
+    relations: "0002178 data 1 or more"
   ]
 
 endsection: input
@@ -28,7 +28,7 @@ section: advanced [
   boolean: sum [
     default: "Y"
     information: "Sum codons over all sequences"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -41,7 +41,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "chips output"
-    relations:  "/edam/data/0001601 Nc statistic"                                        
+    relations: "0001601 data Nc statistic"
   ]
 
 endsection: output

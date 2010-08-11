@@ -2,8 +2,8 @@ application: marscan [
   documentation: "Finds matrix/scaffold recognition (MRS) signatures
                   in DNA sequences"
   groups: "Nucleic:Gene finding, Nucleic:Motifs"
-  relations: "/edam/topic/0000110 Transcription regulatory sequence analysis"
-  relations: "/edam/operation/0000444 Matrix/scaffold attachment site prediction"
+    relations: "0000110 topic Transcription regulatory sequence analysis"
+    relations: "0000444 operation Matrix/scaffold attachment site prediction"
 ]
 
 section: input [
@@ -14,9 +14,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0001215 Pure DNA sequence"
-    relations: "/edam/data/0000849 Sequence record" 
-    relations: "/edam/data/0002178 1 or more" 
+    relations: "0001215 data Pure DNA sequence"
+    relations: "0000849 data Sequence record"
+    relations: "0002178 data 1 or more"
   ]
 
 endsection: input
@@ -36,7 +36,7 @@ section: output [
            The MRS consists of two recognition sites, one of 8 bp and one of
            16 bp on either sense strand of the genomic DNA, within 200 bp of
            each other."
-    relations: "/edam/data/0001270 Sequence feature table"                              
+    relations: "0001270 data Sequence feature table"
   ]
 
 endsection: output

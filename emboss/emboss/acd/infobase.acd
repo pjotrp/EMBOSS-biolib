@@ -5,8 +5,8 @@ application: infobase
   gui: "yes"
   batch: "yes"
   cpu: "low"
-  relations: "/edam/topic/0000154 Small molecules analysis"
-  relations: "/edam/operation/0002123 Small molecule property calculation"
+    relations: "0000154 topic Small molecules analysis"
+    relations: "0002123 operation Small molecule property calculation"
 ]
 
 
@@ -26,7 +26,7 @@ section: input
     help: "Enter IUPAC nucleotide base codes, e.g. A, C, G, T, R, Y etc."
     knowntype: "nucleotide codes"
     default: "ABCDGHKMNRSTUVWXY"
-    relations:  "/edam/data/0001007 Nucleotide code"                         
+    relations: "0001007 data Nucleotide code"
   ]
 
 endsection: input
@@ -78,7 +78,7 @@ section: output
   [
     parameter: "Y"
     knowntype: "infobase output"
-    relations:  "/edam/data/0000911 Nucleotide base"                  
+    relations: "0000911 data Nucleotide base"
   ]
   
 

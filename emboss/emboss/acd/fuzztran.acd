@@ -4,10 +4,10 @@ application: fuzztran [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  relations: "/edam/topic/0000158 Sequence motifs"
-  relations: "/edam/operation/0000382 Protein sequence motif searching"
-  relations: "/edam/operation/0000347 Sequence database search by motif or pattern"
-  relations: "/edam/operation/0000371 DNA translation"
+    relations: "0000158 topic Sequence motifs"
+    relations: "0000382 operation Protein sequence motif searching"
+    relations: "0000347 operation Sequence database search by motif or pattern"
+    relations: "0000371 operation DNA translation"
 ]
 
 section: input [
@@ -18,9 +18,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0001215 Pure DNA sequence"
-    relations: "/edam/data/0000849 Sequence record" 
-    relations: "/edam/data/0002178 1 or more" 
+    relations: "0001215 data Pure DNA sequence"
+    relations: "0000849 data Sequence record"
+    relations: "0002178 data 1 or more"
   ]
 
   pattern: pattern [
@@ -50,7 +50,7 @@ section: input [
            For example, [DE](2)HS{P}X(2)PX(2,4)C"
     type: "protein"
     pmismatch: "0"
-    relations: "/edam/data/0001353 Sequence motif" 
+    relations: "0001353 data Sequence motif"
   ]
 
 endsection: input
@@ -71,7 +71,7 @@ section: additional [
     delimiter: ","
     codedelimiter: ":"
     information: "Frame(s) to translate"
-    relations: "/edam/data/0002126 Translation frame specification" 
+    relations: "0002126 data Translation frame specification"
   ]
 
   list: table [
@@ -93,7 +93,7 @@ section: additional [
     delimiter: ";"
     codedelimiter: ":"
     information: "Code to use"
-    relations: "/edam/data/0002128 Genetic code name"
+    relations: "0002128 data Genetic code name"
   ]
 
 endsection: additional
@@ -110,7 +110,7 @@ section: output [
               str:translation=Translation"
     rformat: "table"
     precision: "0"
-    relations: "/edam/data/0001298 Sequence motif report"                                       
+    relations: "0001298 data Sequence motif report"
   ]
 
 endsection: output

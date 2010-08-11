@@ -2,8 +2,8 @@ application: silent [
   documentation: "Find restriction sites to insert (mutate)
                   with no translation change"
   groups: "Nucleic:Restriction"
-  relations: "/edam/topic/0000100 Nucleic acid restriction"
-  relations: "/edam/operation/0000431 Restriction site identification"
+    relations: "0000100 topic Nucleic acid restriction"
+    relations: "0000431 operation Restriction site identification"
 ]
 
 section: input [
@@ -14,8 +14,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "/edam/data/0001215 Pure DNA sequence"                                   
-    relations: "/edam/data/0000849 Sequence record" 
+    relations: "0001215 data Pure DNA sequence"
+    relations: "0000849 data Sequence record"
   ]
 
 endsection: input
@@ -30,7 +30,7 @@ section: required [
     default: "all"
     information: "Comma separated enzyme list"
     knowntype: "enzyme list"
-    relations:  "/edam/data/0001013 Restriction enzyme name"                        
+    relations: "0001013 data Restriction enzyme name"
   ]
 
 endsection: required
@@ -43,19 +43,19 @@ section: output [
   boolean: sshow [
     default: "N"
     information: "Display untranslated sequence"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   boolean: tshow [
     default: "N"
     information: "Display translated sequence"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   boolean: allmut [
     default: "N"
     information: "Display all mutations"
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   report: outfile [
@@ -65,7 +65,7 @@ section: output [
     	      int:baseposn=Base-Posn rstr:aa=AAs
               rstr:silent=Silent rstr:mutation=Mutation"
     rscoreshow: "N"
-    relations: "/edam/data/0001305 Restriction site report"                                       
+    relations: "0001305 data Restriction site report"
   ]
 
 endsection: output

@@ -2,8 +2,8 @@ application: edamclean
 [
   documentation: "Validate and fix EDAM OBO ontology"
   groups: "Ontology:EDAM"
-  relations: "/edam/topic/0000220 File handling"
-  relations: "/edam/operation/0000336 File debugging"
+    relations: "0000220 topic File handling"
+    relations: "0000336 operation File debugging"
 ]
 
 
@@ -82,7 +82,7 @@ section: output
   [
     parameter: "Y"
     information: "Log file"
-    relations:  "/edam/data/0001678 Tool log"
+    relations: "0001678 data Tool log"
     default: "EDAM_out.log"
   ]
 

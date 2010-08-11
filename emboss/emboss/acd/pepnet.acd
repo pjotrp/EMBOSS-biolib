@@ -1,11 +1,11 @@
 application: pepnet [
   documentation: "Draw a helical net for a protein sequence"
   groups: "Display, Protein:2D Structure"
-  relations: "/edam/topic/0000137 Protein hydropathy"
-  relations: "/edam/topic/0000092 Visualisation and rendering"
-  relations: "/edam/topic/0002124 Protein secondary structure analysis"
-  relations: "/edam/operation/0000569 Protein secondary structure visualisation"
-  relations: "/edam/operation/0000401 Protein sequence hydropathy calculation"
+    relations: "0000137 topic Protein hydropathy"
+    relations: "0000092 topic Visualisation and rendering"
+    relations: "0002124 topic Protein secondary structure analysis"
+    relations: "0000569 operation Protein secondary structure visualisation"
+    relations: "0000401 operation Protein sequence hydropathy calculation"
 ]
 
 section: input [
@@ -16,8 +16,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "Protein"
-    relations: "/edam/data/0000848 Sequence"                     
-    relations: "/edam/data/0000849 Sequence record"                        
+    relations: "0000848 data Sequence"
+    relations: "0000849 data Sequence record"
   ]
 
 endsection: input
@@ -33,7 +33,7 @@ section: output [
            squares and all other residues are unmarked. This overrides any
            other markup that you may have specified using the qualifiers
            '-squares', '-diamonds' and '-octags'."
-    relations: "/edam/data/0002135 Toggle"                                     
+    relations: "0002135 data Toggle"
   ]
 
   string: squares [
@@ -43,7 +43,7 @@ section: output [
     help: "By default the aliphatic residues ILVM are marked with
            squares."
     knowntype: "protein codes"
-    relations:  "/edam/data/0001006 Amino acid code"                         
+    relations: "0001006 data Amino acid code"
   ]
 
   string: diamonds [
@@ -52,7 +52,7 @@ section: output [
     information: "Mark as diamonds"
     help: "By default the residues DENQST are marked with diamonds."
     knowntype: "protein codes"
-    relations:  "/edam/data/0001006 Amino acid code"                         
+    relations: "0001006 data Amino acid code"
   ]
 
   string: octags [
@@ -62,13 +62,13 @@ section: output [
     help: "By default the positively charged residues HKR are marked
            with octagons."
     knowntype: "protein codes"
-    relations:  "/edam/data/0001006 Amino acid code"                         
+    relations: "0001006 data Amino acid code"
   ]
 
   graph: graph [
     standard: "Y"
     gdesc: "Helical net"
-    relations: "/edam/data/0002163 Helical net"                                   
+    relations: "0002163 data Helical net"
   ]
 
 endsection: output

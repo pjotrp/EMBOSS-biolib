@@ -2,10 +2,10 @@ application: seqretall [
   documentation: "Reads and writes (returns) a set of
                   sequences one at a time"
   groups: "Edit"
-  relations: "/edam/topic/0000220 File handling"  
-  relations: "/edam/topic/0000155 Sequence retrieval"  
-  relations: "/edam/operation/0001813 Sequence retrieval"  
-  relations: "/edam/operation/0002121 Sequence file handling"  
+    relations: "0000220 topic File handling"
+    relations: "0000155 topic Sequence retrieval"
+    relations: "0001813 operation Sequence retrieval"
+    relations: "0002121 operation Sequence file handling"
 ]
 
 section: input [
@@ -16,9 +16,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
-    relations: "/edam/data/0000848 Sequence"
-    relations: "/edam/data/0000849 Sequence record" 
-    relations: "/edam/data/0002178 1 or more" 
+    relations: "0000848 data Sequence"
+    relations: "0000849 data Sequence record"
+    relations: "0002178 data 1 or more"
   ]
 
 endsection: input
@@ -30,9 +30,9 @@ section: output [
 
   seqoutall: outseq [
     parameter: "Y"
-    relations: "/edam/data/0000848 Sequence"
-    relations: "/edam/data/0000849 Sequence record" 
-    relations: "/edam/data/0002178 1 or more"
+    relations: "0000848 data Sequence"
+    relations: "0000849 data Sequence record"
+    relations: "0002178 data 1 or more"
   ]
 
 endsection: output
