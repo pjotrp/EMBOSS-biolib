@@ -2,8 +2,8 @@ application: recoder [
   documentation: "Find restriction sites to remove (mutate)
                   with no translation change"
   groups: "Nucleic:Restriction"
-    relations: "0000100 topic Nucleic acid restriction"
-    relations: "0000431 operation Restriction site identification"
+    relations: "EDAM:0000100 topic Nucleic acid restriction"
+    relations: "EDAM:0000431 operation Restriction site identification"
 ]
 
 section: input [
@@ -14,8 +14,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
   ]
 
 endsection: input
@@ -30,7 +30,7 @@ section: required [
     default: "all"
     information: "Comma separated enzyme list"
     knowntype: "enzyme list"
-    relations: "0001013 data Restriction enzyme name"
+    relations: "EDAM:0001013 data Restriction enzyme name"
   ]
 
 endsection: required
@@ -43,13 +43,13 @@ section: output [
   boolean: sshow [
     default: "N"
     information: "Display untranslated sequence"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: tshow [
     default: "N"
     information: "Display translated sequence"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   report: outfile [
@@ -59,7 +59,7 @@ section: output [
               str:rspattern=RS-Pattern int:baseposn=Base-Posn rstr:aa=AAs
               rstr:mutation=Mutation"
     rscoreshow: "N"
-    relations: "0001305 data Restriction site report"
+    relations: "EDAM:0001305 data Restriction site report"
   ]
 
 endsection: output

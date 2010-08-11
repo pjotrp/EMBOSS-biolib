@@ -2,8 +2,8 @@ application: prima [
   documentation: "Selects primers for PCR and DNA
                   amplification."
   groups: "Nucleic:Primers"
-    relations: "0000195 topic Polymerase chain reaction"
-    relations: "0000308 operation PCR primer design"
+    relations: "EDAM:0000195 topic Polymerase chain reaction"
+    relations: "EDAM:0000308 operation PCR primer design"
 ]
 
 section: input [
@@ -14,8 +14,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "dna"
-    relations: "0001215 data Pure DNA sequence"
-    relations: "0000849 data Sequence record"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
   ]
 
 endsection: input
@@ -34,7 +34,7 @@ section: required [
       parameter: "Y"
       default: "N"
       information: "Specify a Target Range?"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
     ]
 
     integer: targetstart [
@@ -42,7 +42,7 @@ section: required [
       default: "$(sequence.begin)"
       information: "Target start position."
       expected: "Start of sequence"
-    relations: "0001016 data Sequence position"
+    relations: "EDAM:0001016 data Sequence position"
     ]
 
     integer: targetend [
@@ -50,7 +50,7 @@ section: required [
       default: "$(sequence.length)"
       information: "Target end position."
       expected: "End of sequence"
-    relations: "0001016 data Sequence position"
+    relations: "EDAM:0001016 data Sequence position"
     ]
 
   endsection: targetsection
@@ -59,14 +59,14 @@ section: required [
     standard: "Y"
     default: "53"
     information: "Minimum Primer Tm (deg Celsius)"
-    relations: "0002139 data Melting temperature"
+    relations: "EDAM:0002139 data Melting temperature"
   ]
 
   float: maxtmprimer [
     standard: "Y"
     default: "58"
     information: "Maximum Primer Tm (deg Celsius)"
-    relations: "0002139 data Melting temperature"
+    relations: "EDAM:0002139 data Melting temperature"
   ]
 
 endsection: required
@@ -85,14 +85,14 @@ section: additional [
       additional: "@(!$(targetrange))"
       default: "100"
       information: "Minimum product length"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
     ]
 
     integer: maxplen [
       additional: "@(!$(targetrange))"
       default: "300"
       information: "Maximum product length"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
     ]
 
     float: minpgccont [
@@ -101,7 +101,7 @@ section: additional [
       maximum: ".70"
       default: ".40"
       information: "Minimum product GC fraction"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
     ]
 
     float: maxpgccont [
@@ -110,7 +110,7 @@ section: additional [
       maximum: ".70"
       default: ".55"
       information: "Maximum product GC fraction"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
     ]
 
   endsection: productsection
@@ -125,21 +125,21 @@ section: additional [
       information: "Pick PCR primer(s)"
       default: "Y"
       help: "Specify primer properties"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
     ]
 
     integer: minprimerlen [
       additional: "$(primer)"
       default: "18"
       information: "Minimum primer length"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
     ]
 
     integer: maxprimerlen [
       additional: "$(primer)"
       default: "22"
       information: "Maximum primer length"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
     ]
 
     float: minpmgccont [
@@ -148,7 +148,7 @@ section: additional [
       maximum: ".70"
       default: ".40"
       information: "Minimum primer GC fraction"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
     ]
 
     float: maxpmgccont [
@@ -157,7 +157,7 @@ section: additional [
       maximum: ".70"
       default: ".55"
       information: "Maximum primer GC fraction"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
     ]
 
   endsection: primersection
@@ -172,7 +172,7 @@ section: advanced [
   integer: overlap [
     default: "50"
     information: "Minimum overlap of sequences"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
   ]
 
   float: saltconc [
@@ -180,7 +180,7 @@ section: advanced [
     maximum: "100"
     default: "50"
     information: "Salt concentration (mM)"
-    relations: "0002140 data Concentration"
+    relations: "EDAM:0002140 data Concentration"
   ]
 
   float: dnaconc [
@@ -188,13 +188,13 @@ section: advanced [
     maximum: "100"
     default: "50"
     information: "DNA concentration (mM)"
-    relations: "0002140 data Concentration"
+    relations: "EDAM:0002140 data Concentration"
   ]
 
   boolean: list [
     default: "N"
     information: "Force list-style output"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -207,7 +207,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "prima output"
-    relations: "0000922 data Primer report"
+    relations: "EDAM:0000922 data Primer report"
   ]
 
 endsection: output

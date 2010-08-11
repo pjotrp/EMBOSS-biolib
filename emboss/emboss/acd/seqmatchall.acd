@@ -1,8 +1,8 @@
 application: seqmatchall [
   documentation: "All-against-all word comparison of a sequence set"
   groups: "Alignment:Local"
-    relations: "0000159 topic Sequence comparison"
-    relations: "0000288 operation Sequence word comparison"
+    relations: "EDAM:0000159 topic Sequence comparison"
+    relations: "EDAM:0000288 operation Sequence word comparison"
 ]
 
 section: input [
@@ -14,9 +14,9 @@ section: input [
     parameter: "Y"
     type: "any"
     aligned: "N"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -31,7 +31,7 @@ section: required [
     default: "4"
     minimum: "2"
     information: "Word size"
-    relations: "0001250 data Word size"
+    relations: "EDAM:0001250 data Word size"
   ]
 
 endsection: required
@@ -46,7 +46,7 @@ section: output [
     aformat: "match"
     minseqs: "2"
     maxseqs: "2"
-    relations: "0001381 data Pairwise sequence alignment"
+    relations: "EDAM:0001381 data Pairwise sequence alignment"
   ]
 
 endsection: output

@@ -1,8 +1,8 @@
 application: showpep [
   documentation: "Displays protein sequences with features in pretty format"
   groups: "Display"
-    relations: "0000092 topic Visualisation and rendering"
-    relations: "0000564 operation Sequence visualisation"
+    relations: "EDAM:0000092 topic Visualisation and rendering"
+    relations: "EDAM:0000564 operation Sequence visualisation"
 ]
 
 section: input [
@@ -14,9 +14,9 @@ section: input [
     parameter: "Y"
     features: "Y"
     type: "gapprotein"
-    relations: "0001208 data Protein sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001208 data Protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -38,7 +38,7 @@ section: required [
     delimiter: ","
     codedelimiter: ":"
     information: "Display format"
-    relations: "0002152 data Rendering parameter"
+    relations: "EDAM:0002152 data Rendering parameter"
   ]
 
   list: things [
@@ -57,7 +57,7 @@ section: required [
            the page. For example if you wish to see things displayed in the
            order: sequence, ticks line, blank line; then you should enter
            'S,T,B'."
-    relations: "0002152 data Rendering parameter"
+    relations: "EDAM:0002152 data Rendering parameter"
   ]
 
 endsection: required
@@ -82,7 +82,7 @@ section: additional [
            1,5,8,10,23,45,57,99"
     expected: "If this is left blank, then the sequence case is
                left alone."
-    relations: "0001017 data Sequence range"
+    relations: "EDAM:0001017 data Sequence range"
   ]
 
   range: highlight [
@@ -100,7 +100,7 @@ section: additional [
            1-100 green 120-156 red \
            A file of ranges to colour (one range per line) can be specified
            as '@filename'."
-    relations: "0001017 data Sequence range"
+    relations: "EDAM:0001017 data Sequence range"
   ]
 
   range: annotation [
@@ -122,7 +122,7 @@ section: additional [
            as '@filename'."
     expected: "If this is left blank, then no annotation is
                added."
-    relations: "0001017 data Sequence range"
+    relations: "EDAM:0001017 data Sequence range"
   ]
 
   section: featuresection [
@@ -145,7 +145,7 @@ section: additional [
              with the character '|', eg: \
              gene* | embl"
       knowntype: "feature source list"
-    relations: "0000856 data Sequence feature source"
+    relations: "EDAM:0000856 data Sequence feature source"
     ]
 
     string: typematch [
@@ -164,7 +164,7 @@ section: additional [
              with the character '|', eg: \
              *UTR | intron"
       knowntype: "feature key list"
-    relations: "0001020 data Sequence feature key"
+    relations: "EDAM:0001020 data Sequence feature key"
     ]
 
     float: minscore [
@@ -172,7 +172,7 @@ section: additional [
       default: "0.0"
       information: "Minimum score of feature to display"
       help: "Minimum score of feature to display (see also maxscore)"
-    relations: "0001772 data Score"
+    relations: "EDAM:0001772 data Score"
     ]
 
     float: maxscore [
@@ -182,7 +182,7 @@ section: additional [
       help: "Maximum score of feature to display. \
              If both minscore and maxscore are zero (the default),
              then any score is ignored"
-    relations: "0001772 data Score"
+    relations: "EDAM:0001772 data Score"
     ]
 
     string: tagmatch [
@@ -198,7 +198,7 @@ section: additional [
              the character '|', eg: \
              gene | label"
       knowntype: "feature tag list"
-    relations: "0001021 data Sequence feature qualifier"
+    relations: "EDAM:0001021 data Sequence feature qualifier"
     ]
 
     string: valuematch [
@@ -215,7 +215,7 @@ section: additional [
              names with the character '|', eg: \
              pax* | 10"
       knowntype: "feature tagvalue list"
-    relations: "0001021 data Sequence feature qualifier"
+    relations: "EDAM:0001021 data Sequence feature qualifier"
     ]
 
     boolean: stricttags [
@@ -227,7 +227,7 @@ section: additional [
              feature will be displayed. If this is set to be true, then only
              those tag/value pairs in a feature that match the specified tag
              and value will be displayed."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
     ]
 
   endsection: featuresection
@@ -243,34 +243,34 @@ section: advanced [
     default: "N"
     information: "Display protein sequences in three-letter
                   code"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: number [
     default: "N"
     information: "Number the sequences"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   integer: width [
     default: "60"
     minimum: "1"
     information: "Width of sequence to display"
-    relations: "0002136 data Sequence width"
+    relations: "EDAM:0002136 data Sequence width"
   ]
 
   integer: length [
     default: "0"
     minimum: "0"
     information: "Line length of page (0 for indefinite)"
-    relations: "0002152 data Rendering parameter"
+    relations: "EDAM:0002152 data Rendering parameter"
   ]
 
   integer: margin [
     default: "10"
     minimum: "0"
     information: "Margin around sequence for numbering"
-    relations: "0002152 data Rendering parameter"
+    relations: "EDAM:0002152 data Rendering parameter"
   ]
 
   boolean: name [
@@ -278,7 +278,7 @@ section: advanced [
     information: "Show sequence ID"
     help: "Set this to be false if you do not wish to display the ID
            name of the sequence"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: description [
@@ -286,20 +286,20 @@ section: advanced [
     information: "Show description"
     help: "Set this to be false if you do not wish to display the
            description of the sequence"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   integer: offset [
     default: "1"
     information: "Offset to start numbering the sequence from"
-    relations: "0002145 data Sequence offset"
+    relations: "EDAM:0002145 data Sequence offset"
   ]
 
   boolean: html [
     default: "N"
     information: "Use HTML formatting"
     outputmodifier: "Y"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -312,7 +312,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "showpep output"
-    relations: "0001277 data Protein sequence feature report"
+    relations: "EDAM:0001277 data Protein sequence feature report"
   ]
 
 endsection: output

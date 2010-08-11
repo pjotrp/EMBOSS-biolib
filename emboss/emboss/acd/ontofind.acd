@@ -2,8 +2,8 @@ application: ontofind
 [
   documentation: "Find ontology terms by keyword"
   groups: "Display, Information"
-    relations: "0000088 topic Literature and documentation"
-    relations: "0002222 operation Ontology information retrieval"
+    relations: "EDAM:0000088 topic Literature and documentation"
+    relations: "EDAM:0002222 operation Ontology information retrieval"
 ]
 
 section: input 
@@ -18,7 +18,7 @@ section: input
       information: "Name of ontology to search"
       help: "This is the ontology from which to retrieve terms.  If you are unsure of the names of the available ontolgoies, use ontoshow."
       knowntype: "keywords"
-    relations: "0001051 data Ontology name"
+    relations: "EDAM:0001051 data Ontology name"
   ]
 
   string: keyword
@@ -27,7 +27,7 @@ section: input
       parameter: "Y"
       information: "Keyword(s) to search for in ontology"
       knowntype: "keywords"
-    relations: "0000968 data Keyword"
+    relations: "EDAM:0000968 data Keyword"
   ]
 
 endsection: input
@@ -48,7 +48,7 @@ section: additional
     default: "Y"
     information: "Search the ontology term IDs"
     help: "This search is over the 'id:' field of the OBO format ontology file.  This is the unique identifier of the ontology terms."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: name 
@@ -57,7 +57,7 @@ section: additional
     default: "Y"
     information: "Search the ontology term names"
     help: "This search is over the 'name:' and 'synonym:' fields of the OBO-format ontology file.  This is the name and synonyms of the ontology terms."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: namespace
@@ -66,7 +66,7 @@ section: additional
     default: "N"
     information: "Search the ontology term namespaces"
     help: "This search is over the 'namespace:' field of the OBO-format ontology file.  This is the namespace of the ontology terms."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: def
@@ -75,7 +75,7 @@ section: additional
     default: "N"
     information: "Search the ontology term definitions"
     help: "This search is over the 'def:' field of the OBO-format ontology file.  This is the definition of the ontology terms."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: comment
@@ -84,7 +84,7 @@ section: additional
     default: "N"
     information: "Search the ontology term comments"
     help: "This search is over the 'comment:' field of the OBO-format ontology file.  This is comments on the ontology terms."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: all 
@@ -92,7 +92,7 @@ section: additional
     additional: "Y"
     default: "N"
     information: "Search all available sections of information"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: allmatch [
@@ -101,7 +101,7 @@ section: additional
     information: "Match all words in the search string"
     help: "By default, all words in the search string must match. This
            option searches for a match to any word in the search string."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 boolean: verbose
@@ -110,7 +110,7 @@ boolean: verbose
     default: "Y"
     information: "Verbose output"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is unset, then output settings from the 'terse' or 'idonly' options will apply."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 boolean: terse
@@ -119,7 +119,7 @@ boolean: terse
     default: "N"
     information: "Terse output"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is set, then only the term id, name and namespace will be reported."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 boolean: idonly
@@ -128,7 +128,7 @@ boolean: idonly
     default: "N"
     information: "Output IDs only"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is set, then only the term id will be reported.  Note that as a minimum, regardless of any settings, the ids are reported."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 list: format [
@@ -142,7 +142,7 @@ list: format [
       codedelimiter: ":"
       information: "Format of output"
       help: "By default output is in plain text (OBO) format. This option will change the format."
-    relations: "0002129 data File format name"
+    relations: "EDAM:0002129 data File format name"
     ]
 
 endsection: additional
@@ -174,7 +174,7 @@ section: output
     additional: "Y"
     default: "stdout"
     knowntype: "ontofind output"
-    relations: "0002223 data Ontology metadata"
+    relations: "EDAM:0002223 data Ontology metadata"
   ]
 
 endsection: output

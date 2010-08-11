@@ -5,8 +5,8 @@ application: idtell
   gui: "yes"
   batch: "yes"
   cpu: "low"
-    relations: "0000088 topic Literature and documentation"
-    relations: "0000516 operation Database information retrieval"
+    relations: "EDAM:0000088 topic Literature and documentation"
+    relations: "EDAM:0000516 operation Database information retrieval"
 ]
 
 section: input 
@@ -21,7 +21,7 @@ section: input
       additional: "Y"
       information: "Identifier to identify."
       knowntype: "database category name"
-    relations: "0000842 data Identifier"
+    relations: "EDAM:0000842 data Identifier"
   ]
 
   datafile: dbref
@@ -30,7 +30,7 @@ section: input
       help: "File of database information including identifier, description, type, URL etc."
       default: "dbref.dat"
       knowntype: "database info"
-    relations: "0000957 data Database metadata "
+    relations: "EDAM:0000957 data Database metadata "
   ]
 
 endsection: input

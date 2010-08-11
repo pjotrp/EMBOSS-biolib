@@ -2,11 +2,11 @@ application: seqretallfeat [
   documentation: "Reads and writes (returns) one or more
                   sequences"
   groups: "Test"
-    relations: "0000160 topic Sequence features"
-    relations: "0000220 topic File handling"
-    relations: "0000155 topic Sequence retrieval"
-    relations: "0001813 operation Sequence retrieval"
-    relations: "0002121 operation Sequence file handling"
+    relations: "EDAM:0000160 topic Sequence features"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000155 topic Sequence retrieval"
+    relations: "EDAM:0001813 operation Sequence retrieval"
+    relations: "EDAM:0002121 operation Sequence file handling"
 ]
 
 section: input [
@@ -18,9 +18,9 @@ section: input [
     parameter: "Y"
     features: "Y"
     type: "gapany"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -33,9 +33,9 @@ section: output [
   seqoutall: outseq [
     parameter: "Y"
     features: "Y"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: output

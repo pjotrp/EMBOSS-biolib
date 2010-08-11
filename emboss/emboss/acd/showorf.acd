@@ -2,10 +2,10 @@ application: showorf [
   documentation: "Display a nucleotide sequence and translation in
                   pretty format"
   groups: "Nucleic:Gene finding, Nucleic:Translation"
-    relations: "0000108 topic Transcription and translation"
-    relations: "0000371 operation DNA translation"
-    relations: "0000564 operation Sequence visualisation"
-    relations: "0000436 operation Coding region prediction"
+    relations: "EDAM:0000108 topic Transcription and translation"
+    relations: "EDAM:0000371 operation DNA translation"
+    relations: "EDAM:0000564 operation Sequence visualisation"
+    relations: "EDAM:0000436 operation Coding region prediction"
 ]
 
 section: input [
@@ -16,8 +16,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
   ]
 
 endsection: input
@@ -38,7 +38,7 @@ section: required [
     codedelimiter: ":"
     information: "Select one or more values"
     button: "Y"
-    relations: "0002126 data Translation frame specification"
+    relations: "EDAM:0002126 data Translation frame specification"
   ]
 
 endsection: required
@@ -67,7 +67,7 @@ section: additional [
     delimiter: ";"
     codedelimiter: ":"
     information: "Genetic code to use"
-    relations: "0002128 data Genetic code name"
+    relations: "EDAM:0002128 data Genetic code name"
   ]
 
 endsection: additional
@@ -80,35 +80,35 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "showorf output"
-    relations: "0001317 data Nucleotide sequence translation report"
+    relations: "EDAM:0001317 data Nucleotide sequence translation report"
   ]
 
   boolean: ruler [
     additional: "Y"
     default: "Y"
     information: "Add a ruler"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: plabel [
     additional: "Y"
     default: "Y"
     information: "Number translations"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: nlabel [
     additional: "Y"
     default: "Y"
     information: "Number DNA sequence"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   integer: width [
     minimum: "10"
     default: "50"
     information: "Width of screen"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
   ]
 
 endsection: output

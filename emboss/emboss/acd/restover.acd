@@ -1,8 +1,8 @@
 application: restover [
   documentation: "Find restriction enzymes producing a specific overhang"
   groups: "Nucleic:Restriction"
-    relations: "0000100 topic Nucleic acid restriction"
-    relations: "0000431 operation Restriction site identification"
+    relations: "EDAM:0000100 topic Nucleic acid restriction"
+    relations: "EDAM:0000431 operation Restriction site identification"
 ]
 
 section: input [
@@ -13,9 +13,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "0001215 data Pure DNA sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
   datafile: datafile [
@@ -23,14 +23,14 @@ section: input [
     information: "Restriction enzyme data file (optional)"
     knowntype: "restriction enzyme data"
     nullok: "Y"
-    relations: "0001518 data Restriction enzyme pattern data"
+    relations: "EDAM:0001518 data Restriction enzyme pattern data"
   ]
 
   datafile: mfile [
     default: "Emethylsites.dat"
     information: "Restriction enzyme methylation data file"
     knowntype: "restriction enzyme methylation data"
-    relations: "0001517 data Restriction enzyme information"
+    relations: "EDAM:0001517 data Restriction enzyme information"
   ]
 
 endsection: input
@@ -44,7 +44,7 @@ section: required [
     parameter: "Y"
     information: "Overlap sequence"
     knowntype: "nucleotide sequence"
-    relations: "0001210 data Pure nucleotide sequence"
+    relations: "EDAM:0001210 data Pure nucleotide sequence"
   ]
 
 endsection: required
@@ -59,51 +59,51 @@ section: advanced [
     maximum: "1000"
     default: "1"
     information: "Minimum cuts per RE"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
   integer: max [
     minimum: "$(min)"
     default: "2000000000"
     information: "Maximum cuts per RE"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
   boolean: single [
     default: "N"
     information: "Force single site only cuts"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: threeprime [
     default: "N"
     information: "Use 3' overhang e.g. BamHI has CTAG as a 5'
                   overhang, and ApaI has CCGG as 3' overhang."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: blunt [
     default: "Y"
     information: "Allow blunt end cutters"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: sticky [
     default: "Y"
     information: "Allow sticky end cutters"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: ambiguity [
     default: "Y"
     information: "Allow ambiguous matches"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: plasmid [
     default: "N"
     information: "Allow circular DNA"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: methylation [
@@ -111,13 +111,13 @@ section: advanced [
     information: "Use methylation data"
     help: "If this is set then RE recognition sites will not match
            methylated bases."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: commercial [
     default: "Y"
     information: "Only enzymes with suppliers"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -131,31 +131,31 @@ section: output [
     default: "N"
     information: "Create HTML output"
     outputmodifier: "Y"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: limit [
     default: "Y"
     information: "Limits reports to one isoschizomer"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: alphabetic [
     default: "N"
     information: "Sort output alphabetically"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: fragments [
     default: "N"
     information: "Show fragment lengths"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "restover output"
-    relations: "0001305 data Restriction site report"
+    relations: "EDAM:0001305 data Restriction site report"
   ]
 
 endsection: output

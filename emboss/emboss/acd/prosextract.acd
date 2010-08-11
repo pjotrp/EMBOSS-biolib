@@ -4,9 +4,9 @@ application: prosextract [
   gui: "no"
   batch: "no"
   cpu: "low"
-    relations: "0000158 topic Sequence motifs"
-    relations: "0000091 topic Database and file management"
-    relations: "0001812 operation File loading"
+    relations: "EDAM:0000158 topic Sequence motifs"
+    relations: "EDAM:0000091 topic Database and file management"
+    relations: "EDAM:0001812 operation File loading"
 ]
 
 section: input [
@@ -18,7 +18,7 @@ section: input [
     parameter: "Y"
     information: "PROSITE database directory"
     knowntype: "prosite database"
-    relations: "0001353 data Sequence motif"
+    relations: "EDAM:0001353 data Sequence motif"
   ]
 
 endsection: input

@@ -1,8 +1,8 @@
 application: splitter [
   documentation: "Split sequence(s) into smaller sequences"
   groups: "Edit"
-    relations: "0000156 topic Sequence editing"
-    relations: "0000369 operation Sequence cutting"
+    relations: "EDAM:0000156 topic Sequence editing"
+    relations: "EDAM:0000369 operation Sequence cutting"
 ]
 
 section: input [
@@ -13,16 +13,16 @@ section: input [
   boolean: feature [
     default: "N"
     information: "Use feature information"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   seqall: sequence [
     parameter: "Y"
     type: "any"
     features: "$(feature)"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -37,7 +37,7 @@ section: additional [
     minimum: "1"
     default: "10000"
     information: "Size to split at"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
   ]
 
   integer: overlap [
@@ -48,7 +48,7 @@ section: additional [
     failrange: "N"
     trueminimum: "Y"
     information: "Overlap between split sequences"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
   ]
 
 endsection: additional
@@ -61,7 +61,7 @@ section: advanced [
   boolean: addoverlap [
     default: "N"
     information: "Include overlap in output sequence size"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -74,9 +74,9 @@ section: output [
   seqoutall: outseq [
     parameter: "Y"
     features: "$(feature)"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: output

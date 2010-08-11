@@ -2,10 +2,10 @@ application: coderet [
   documentation: "Extract CDS, mRNA and translations from
                   feature tables"
   groups: "Feature tables, Nucleic:Translation"
-    relations: "0000109 topic Gene finding"
-    relations: "0000436 operation Coding region prediction"
-    relations: "0000371 operation DNA translation"
-    relations: "0000372 operation DNA transcription"
+    relations: "EDAM:0000109 topic Gene finding"
+    relations: "EDAM:0000436 operation Coding region prediction"
+    relations: "EDAM:0000371 operation DNA translation"
+    relations: "EDAM:0000372 operation DNA transcription"
 ]
 
 section: input [
@@ -17,9 +17,9 @@ section: input [
     parameter: "Y"
     type: "DNA"
     features: "Y"
-    relations: "0001215 data Pure DNA sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -33,8 +33,8 @@ section: output [
     parameter: "Y"
     extension: "coderet"
     knowntype: "coderet output"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
   ]
 
   seqoutall: cdsoutseq [
@@ -45,9 +45,9 @@ section: output [
     osextension: "cds"
     nullok: "Y"
     knowntype: "cds sequence"
-    relations: "0001210 data Pure nucleotide sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001210 data Pure nucleotide sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
   seqoutall: mrnaoutseq [
@@ -58,9 +58,9 @@ section: output [
     osextension: "mrna"
     nullok: "Y"
     knowntype: "mrna sequence"
-    relations: "0001213 data RNA sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001213 data RNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
   seqoutall: translationoutseq [
@@ -71,9 +71,9 @@ section: output [
     osextension: "prot"
     nullok: "Y"
     knowntype: "translated cds sequence"
-    relations: "0001208 data Protein sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001208 data Protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
   seqoutall: restoutseq [
@@ -84,9 +84,9 @@ section: output [
     osextension: "noncoding"
     nullok: "Y"
     knowntype: "non coding sequence"
-    relations: "0001210 data Pure nucleotide sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001210 data Pure nucleotide sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: output

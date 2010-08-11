@@ -2,8 +2,8 @@ application: acdrelations
 [
   documentation: "Add relations: attribute to ACD files"
   groups: "Acd"
-    relations: "0000220 topic File handling"
-    relations: "0000335 operation File reformatting"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000335 operation File reformatting"
 ]
 
 
@@ -28,7 +28,7 @@ list: mode
     codedelimiter: ":"
     header: "Mode of operation"
     information: "Select mode"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
 ]
 
   dirlist: indir

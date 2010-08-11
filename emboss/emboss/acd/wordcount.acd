@@ -1,8 +1,8 @@
 application: wordcount [
   documentation: "Count and extract unique words in molecular sequence(s)"
   groups: "Nucleic:Composition,Protein:Composition"
-    relations: "0000157 topic Sequence composition"
-    relations: "0000236 operation Sequence composition analysis"
+    relations: "EDAM:0000157 topic Sequence composition"
+    relations: "EDAM:0000236 operation Sequence composition analysis"
 ]
 
 section: input [
@@ -13,9 +13,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "any"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -30,7 +30,7 @@ section: required [
     default: "@($(acdprotein)? 2 : 4)"
     minimum: "1"
     information: "Word size"
-    relations: "0001250 data Word size"
+    relations: "EDAM:0001250 data Word size"
   ]
 
 endsection: required
@@ -45,7 +45,7 @@ section: additional [
     default: "1"
     minimum: "1"
     information: "Minimum word count to report"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
 endsection: additional
@@ -58,7 +58,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "wordcount output"
-    relations: "0002157 data Word composition"
+    relations: "EDAM:0002157 data Word composition"
   ]
 
 endsection: output

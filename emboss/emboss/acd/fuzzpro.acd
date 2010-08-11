@@ -4,9 +4,9 @@ application: fuzzpro [
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-    relations: "0000161 topic Protein sequence motifs"
-    relations: "0000382 operation Protein sequence motif searching"
-    relations: "0000347 operation Sequence database search by motif or pattern"
+    relations: "EDAM:0000161 topic Protein sequence motifs"
+    relations: "EDAM:0000382 operation Protein sequence motif searching"
+    relations: "EDAM:0000347 operation Sequence database search by motif or pattern"
 ]
 
 section: input [
@@ -17,9 +17,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "protein"
-    relations: "0001219 data Pure protein sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001219 data Pure protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
   pattern: pattern [
@@ -49,7 +49,7 @@ section: input [
            For example, [DE](2)HS{P}X(2)PX(2,4)C"
     type: "protein"
     pmismatch: "0"
-    relations: "0001353 data Sequence motif"
+    relations: "EDAM:0001353 data Sequence motif"
   ]
 
 endsection: input
@@ -64,7 +64,7 @@ section: output [
     taglist: "str:pat=Pattern_name int:mismatch=Mismatch"
     rformat: "seqtable"
     precision: "0"
-    relations: "0001298 data Sequence motif report"
+    relations: "EDAM:0001298 data Sequence motif report"
   ]
 
 endsection: output

@@ -1,8 +1,8 @@
 application: extractalign [
   documentation: "Extract regions from a sequence alignment"
   groups: "Edit"
-    relations: "0000187 topic Sequence alignment analysis"
-    relations: "0002122 operation Alignment file handling"
+    relations: "EDAM:0000187 topic Sequence alignment analysis"
+    relations: "EDAM:0002122 operation Alignment file handling"
 ]
 
 section: input [
@@ -14,7 +14,7 @@ section: input [
     parameter: "Y"
     type: "gapany"
     aligned: "Y"
-    relations: "0000863 data Sequence alignment"
+    relations: "EDAM:0000863 data Sequence alignment"
   ]
 
 endsection: input
@@ -37,7 +37,7 @@ section: required [
            1:45, 67=99;765..888 \
            1,5,8,10,23,45,57,99"
     expected: "Whole sequence"
-    relations: "0001017 data Sequence range"
+    relations: "EDAM:0001017 data Sequence range"
   ]
 
 endsection: required
@@ -49,9 +49,9 @@ section: output [
 
   seqoutall: outseq [
     parameter: "Y"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: output

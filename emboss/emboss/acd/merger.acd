@@ -1,9 +1,9 @@
 application: merger [
   documentation: "Merge two overlapping sequences"
   groups: "Alignment:Consensus"
-    relations: "0000185 topic Pairwise sequence alignment"
-    relations: "0000494 operation Global pairwise sequence alignment"
-    relations: "0000232 operation Sequence merging"
+    relations: "EDAM:0000185 topic Pairwise sequence alignment"
+    relations: "EDAM:0000494 operation Global pairwise sequence alignment"
+    relations: "EDAM:0000232 operation Sequence merging"
 ]
 
 section: input [
@@ -14,15 +14,15 @@ section: input [
   sequence: asequence [
     parameter: "Y"
     type: "any"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
   ]
 
   sequence: bsequence [
     parameter: "Y"
     type: "@($(acdprotein) ? stopprotein : nucleotide)"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
   ]
 
   matrixf: datafile [
@@ -33,7 +33,7 @@ section: input [
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are
            found in the 'data' directory of the EMBOSS installation."
-    relations: "0001447 data Comparison matrix (floats)"
+    relations: "EDAM:0001447 data Comparison matrix (floats)"
   ]
 
 endsection: input
@@ -49,7 +49,7 @@ section: additional [
     minimum: "0.0"
     maximum: "100.0"
     default: "@($(acdprotein)? 50.0 : 50.0 )"
-    relations: "0001397 data Gap opening penalty"
+    relations: "EDAM:0001397 data Gap opening penalty"
   ]
 
   float: gapextend [
@@ -58,7 +58,7 @@ section: additional [
     minimum: "0.0"
     maximum: "10.0"
     default: "@($(acdprotein)? 5.0 : 5.0)"
-    relations: "0001398 data Gap extension penalty"
+    relations: "EDAM:0001398 data Gap extension penalty"
   ]
 
 endsection: additional
@@ -74,13 +74,13 @@ section: output [
     minseqs: "2"
     maxseqs: "2"
     aglobal: "Y"
-    relations: "0001381 data Pairwise sequence alignment"
+    relations: "EDAM:0001381 data Pairwise sequence alignment"
   ]
 
   seqout: outseq [
     parameter: "Y"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
   ]
 
 endsection: output

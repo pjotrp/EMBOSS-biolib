@@ -4,8 +4,8 @@ application: dbxstat [
   gui: "yes"
   batch: "no"
   cpu: "medium"
-    relations: "0000091 topic Database and file management"
-    relations: "0000228 operation Database index analysis"
+    relations: "EDAM:0000091 topic Database and file management"
+    relations: "EDAM:0000228 operation Database index analysis"
 ]
 
 section: input [
@@ -20,7 +20,7 @@ section: input [
     information: "Basename for index files"
     knowntype: "emboss database name"
     pattern: "[A-z][A-z0-9_]+"
-    relations: "0001056 data Database name"
+    relations: "EDAM:0001056 data Database name"
   ]
 
   directory: indexdir [
@@ -28,7 +28,7 @@ section: input [
     default: "."
     information: "Index directory"
     knowntype: "emboss database index"
-    relations: "0001049 data Directory name"
+    relations: "EDAM:0001049 data Directory name"
   ]
 
   list: idtype [
@@ -41,7 +41,7 @@ section: input [
     maximum: "1"
     minimum: "1"
     default: "id"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
 endsection: input
@@ -62,14 +62,14 @@ section: advanced [
     information: "Minimum occurrences"
     minimum: "1"
     default: "1"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
   integer: maximum [
     information: "Maximum occurrences (0=no maximum)"
     minimum: "0"
     default: "0"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
 endsection: advanced
@@ -82,7 +82,7 @@ section: output [
   outfile: outfile [
     standard: "y"
     knowntype: "dbxstat output"
-    relations: "0000955 data Database index"
+    relations: "EDAM:0000955 data Database index"
   ]
 
 endsection: output

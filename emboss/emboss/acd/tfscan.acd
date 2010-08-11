@@ -1,8 +1,8 @@
 application: tfscan [
   documentation: "Identify transcription factor binding sites in DNA sequences"
   groups: "Nucleic:Transcription"
-    relations: "0000110 topic Transcription regulatory sequence analysis"
-    relations: "0000445 operation Transcription factor binding site prediction"
+    relations: "EDAM:0000110 topic Transcription regulatory sequence analysis"
+    relations: "EDAM:0000445 operation Transcription factor binding site prediction"
 ]
 
 section: input [
@@ -13,9 +13,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "0001215 data Pure DNA sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
   list: menu [
@@ -29,7 +29,7 @@ section: input [
     header: "Transcription Factor Class"
     information: "Select class"
     button: "Y"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
   datafile: custom [
@@ -38,7 +38,7 @@ section: input [
     nullok: "@($(menu)!=C)"
     knowntype: "transfac data"
     default: ""
-    relations: "0002147 data Transcription factor binding sites"
+    relations: "EDAM:0002147 data Transcription factor binding sites"
   ]
 
 endsection: input
@@ -53,7 +53,7 @@ section: required [
     default: "0"
     minimum: "0"
     information: "Number of mismatches"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
 endsection: required
@@ -69,7 +69,7 @@ section: additional [
     minimum: "1"
     information: "Display matches equal to or above this
                   length"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
   ]
 
 endsection: additional
@@ -83,7 +83,7 @@ section: output [
     parameter: "Y"
     rformat: "seqtable"
     taglist: "str:acc=Accession str:factor=Factor"
-    relations: "0001315 data Transcription factor binding site report"
+    relations: "EDAM:0001315 data Transcription factor binding site report"
   ]
 
 endsection: output

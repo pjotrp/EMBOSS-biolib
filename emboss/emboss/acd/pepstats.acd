@@ -1,8 +1,8 @@
 application: pepstats [
   documentation: "Calculates statistics of protein properties"
   groups: "Protein:Composition"
-    relations: "0000123 topic Protein physicochemical properties"
-    relations: "0000250 operation Protein physicochemical property calculation"
+    relations: "EDAM:0000123 topic Protein physicochemical properties"
+    relations: "EDAM:0000250 operation Protein physicochemical property calculation"
 ]
 
 section: input [
@@ -13,9 +13,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "protein"
-    relations: "0001219 data Pure protein sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001219 data Pure protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
   datafile: aadata [
@@ -23,7 +23,7 @@ section: input [
     help: "Amino acid properties"
     default: "Eamino.dat"
     knowntype: "amino acid properties"
-    relations: "0001502 data Amino acid chemical classes data"
+    relations: "EDAM:0001502 data Amino acid chemical classes data"
   ]
 
   datafile: mwdata [
@@ -31,7 +31,7 @@ section: input [
     help: "Molecular weight data for amino acids"
     default: "Emolwt.dat"
     knowntype: "molecular weights"
-    relations: "0001505 data Amino acid molecular weight data"
+    relations: "EDAM:0001505 data Amino acid molecular weight data"
   ]
 
 endsection: input
@@ -44,13 +44,13 @@ section: advanced [
   boolean: termini [
     default: "Y"
     information: "Include charge at N and C terminus"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: mono [
     default: "N"
     information: "Use monoisotopic weights"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -64,7 +64,7 @@ section: output [
     parameter: "Y"
     knowntype: "pepstats output"
     information: "Pepstats program output file"
-    relations: "0000897 data Protein physicochemical property"
+    relations: "EDAM:0000897 data Protein physicochemical property"
   ]
 
 endsection: output

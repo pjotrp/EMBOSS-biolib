@@ -2,8 +2,8 @@ application: newcpgseek [
   documentation: "Identify and report CpG-rich regions in
                   nucleotide sequence(s)"
   groups: "Nucleic:CpG Islands"
-    relations: "0000157 topic Sequence composition"
-    relations: "0000430 operation CpG island and isochores identification"
+    relations: "EDAM:0000157 topic Sequence composition"
+    relations: "EDAM:0000430 operation CpG island and isochores identification"
 ]
 
 section: input [
@@ -14,9 +14,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "DNA"
-    relations: "0001215 data Pure DNA sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -32,7 +32,7 @@ section: required [
     maximum: "200"
     default: "17"
     information: "CpG score"
-    relations: "0001772 data Score"
+    relations: "EDAM:0001772 data Score"
   ]
 
 endsection: required
@@ -45,7 +45,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "newcpgseek output"
-    relations: "0001304 data CpG island and isochore report"
+    relations: "EDAM:0001304 data CpG island and isochore report"
   ]
 
 endsection: output

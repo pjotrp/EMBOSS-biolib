@@ -1,9 +1,9 @@
 application: patmatdb [
   documentation: "Searches protein sequences with a sequence motif"
   groups: "Protein:Motifs"
-    relations: "0000161 topic Protein sequence motifs"
-    relations: "0000382 operation Protein sequence motif searching"
-    relations: "0000347 operation Sequence database search by motif or pattern"
+    relations: "EDAM:0000161 topic Protein sequence motifs"
+    relations: "EDAM:0000382 operation Protein sequence motif searching"
+    relations: "EDAM:0000347 operation Sequence database search by motif or pattern"
 ]
 
 section: input [
@@ -14,9 +14,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "Protein"
-    relations: "0001219 data Pure protein sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001219 data Pure protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -38,7 +38,7 @@ section: required [
            followed by Cys. The search is case-independent, so 'AAA' matches
            'aaa'."
     knowntype: "prosite pattern"
-    relations: "0002071 data Protein sequence motif"
+    relations: "EDAM:0002071 data Protein sequence motif"
   ]
 
 endsection: required
@@ -52,7 +52,7 @@ section: output [
     parameter: "Y"
     rformat: "dbmotif"
     precision: "0"
-    relations: "0001298 data Sequence motif report"
+    relations: "EDAM:0001298 data Sequence motif report"
   ]
 
 endsection: output

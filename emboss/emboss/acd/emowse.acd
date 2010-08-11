@@ -1,9 +1,9 @@
 application: emowse [
   documentation: "Search protein sequences by digest fragment molecular weight"
   groups: "Protein:Composition"
-    relations: "0000123 topic Protein physicochemical properties"
-    relations: "0000141 topic Proteolysis and peptide mass"
-    relations: "0000356 operation Sequence database search by isoelectric point"
+    relations: "EDAM:0000123 topic Protein physicochemical properties"
+    relations: "EDAM:0000141 topic Proteolysis and peptide mass"
+    relations: "EDAM:0000356 operation Sequence database search by isoelectric point"
 ]
 
 section: input [
@@ -14,30 +14,30 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "protein"
-    relations: "0001219 data Pure protein sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001219 data Pure protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
   infile: infile [
     parameter: "Y"
     information: "Peptide molecular weight values file"
     knowntype: "peptide molweights"
-    relations: "0001519 data Peptide molecular weights"
+    relations: "EDAM:0001519 data Peptide molecular weights"
   ]
 
   datafile: mwdata [
     information: "Molecular weights data file"
     default: "Emolwt.dat"
     knowntype: "molecular weights"
-    relations: "0001505 data Amino acid molecular weight data"
+    relations: "EDAM:0001505 data Amino acid molecular weight data"
   ]
 
   datafile: frequencies [
     default: "Efreqs.dat"
     information: "Amino acid frequencies data file"
     knowntype: "amino acid frequencies"
-    relations: "0001535 data Peptide fragment molecular weight frequencies"
+    relations: "EDAM:0001535 data Peptide fragment molecular weight frequencies"
   ]
 
 endsection: input
@@ -51,14 +51,14 @@ section: required [
     standard: "Y"
     default: "0"
     information: "Whole sequence molwt"
-    relations: "0000844 data Molecular mass"
+    relations: "EDAM:0000844 data Molecular mass"
   ]
 
   boolean: mono [
     standard: "Y"
     default: "N"
     information: "Use monoisotopic weights"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: required
@@ -78,7 +78,7 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Enzyme or reagent"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
   integer: pcrange [
@@ -86,7 +86,7 @@ section: advanced [
     minimum: "0"
     maximum: "75"
     information: "Allowed whole sequence weight variability"
-    relations: "0000844 data Molecular mass"
+    relations: "EDAM:0000844 data Molecular mass"
   ]
 
   float: tolerance [
@@ -94,7 +94,7 @@ section: advanced [
     minimum: "0.1"
     maximum: "1.0"
     information: "Tolerance"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
   float: partials [
@@ -102,7 +102,7 @@ section: advanced [
     minimum: "0.1"
     maximum: "1.0"
     information: "Partials factor"
-    relations: "0001773 data Tool-specific parameter"
+    relations: "EDAM:0001773 data Tool-specific parameter"
   ]
 
 endsection: advanced
@@ -115,7 +115,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "emowse output"
-    relations: "0001262 data Peptide molecular weight hits"
+    relations: "EDAM:0001262 data Peptide molecular weight hits"
   ]
 
 endsection: output

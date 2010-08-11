@@ -1,8 +1,8 @@
 application: infoalign [
   documentation: "Display basic information about a multiple sequence alignment"
   groups: "Alignment:Multiple, Information"
-    relations: "0000187 topic Sequence alignment analysis"
-    relations: "0000257 operation Sequence alignment description"
+    relations: "EDAM:0000187 topic Sequence alignment analysis"
+    relations: "EDAM:0000257 operation Sequence alignment description"
 ]
 
 section: input [
@@ -15,7 +15,7 @@ section: input [
     type: "gapany"
     aligned: "Y"
     help: "The sequence alignment to be displayed."
-    relations: "0000863 data Sequence alignment"
+    relations: "EDAM:0000863 data Sequence alignment"
   ]
 
   matrix: matrix [
@@ -26,7 +26,7 @@ section: input [
            sequences. By default it is the file 'EBLOSUM62' (for proteins) or
            the file 'EDNAFULL' (for nucleic sequences). These files are
            found in the 'data' directory of the EMBOSS installation."
-    relations: "0001446 data Comparison matrix (integers)"
+    relations: "EDAM:0001446 data Comparison matrix (integers)"
   ]
 
   string: refseq [
@@ -41,7 +41,7 @@ section: input [
            sequence will be used as the reference sequence. By default the
            consensus sequence is used as the reference sequence."
     knowntype: "sequence id input"
-    relations: "0001063 data Sequence identifier"
+    relations: "EDAM:0001063 data Sequence identifier"
   ]
 
 endsection: input
@@ -59,7 +59,7 @@ section: advanced [
     help: "Set a cut-off for the % of positive scoring matches below
            which there is no consensus. The default plurality is taken as 50%
            of the total weight of all the sequences in the alignment."
-    relations: "0002146 data Threshold"
+    relations: "EDAM:0002146 data Threshold"
   ]
 
   float: identity [
@@ -72,7 +72,7 @@ section: advanced [
            identities at a position for it to give a consensus. Therefore, if
            this is set to 100% only columns of identities contribute to the
            consensus."
-    relations: "0002146 data Threshold"
+    relations: "EDAM:0002146 data Threshold"
   ]
 
 endsection: advanced
@@ -88,7 +88,7 @@ section: output [
     knowntype: "infoalign output"
     help: "If you enter the name of a file here then this program will
            write the sequence details into that file."
-    relations: "0000867 data Sequence alignment annotation"
+    relations: "EDAM:0000867 data Sequence alignment annotation"
   ]
 
   boolean: html [
@@ -96,7 +96,7 @@ section: output [
     default: "N"
     information: "Format output as an HTML table"
     outputmodifier: "Y"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: only [
@@ -108,85 +108,85 @@ section: output [
            -noidcount -nodiffcount -noweight' \
            to get only the sequence length output, you can specify \
            '-only -seqlength'"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: heading [
     default: "@(!$(only))"
     information: "Display column headings"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: usa [
     default: "@(!$(only))"
     information: "Display the USA of the sequence"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: name [
     default: "@(!$(only))"
     information: "Display 'name' column"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: seqlength [
     default: "@(!$(only))"
     information: "Display 'seqlength' column"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: alignlength [
     default: "@(!$(only))"
     information: "Display 'alignlength' column"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: gaps [
     default: "@(!$(only))"
     information: "Display number of gaps"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: gapcount [
     default: "@(!$(only))"
     information: "Display number of gap positions"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: idcount [
     default: "@(!$(only))"
     information: "Display number of identical positions"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: simcount [
     default: "@(!$(only))"
     information: "Display number of similar positions"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: diffcount [
     default: "@(!$(only))"
     information: "Display number of different positions"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: change [
     default: "@(!$(only))"
     information: "Display % number of changed positions"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: weight [
     default: "@(!$(only))"
     information: "Display 'weight' column"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: description [
     default: "@(!$(only))"
     information: "Display 'description' column"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: output

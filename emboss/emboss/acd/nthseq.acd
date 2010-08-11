@@ -2,8 +2,8 @@ application: nthseq [
   documentation: "Write to file a single sequence from an input stream
                   of sequences"
   groups: "Edit"
-    relations: "0000220 topic File handling"
-    relations: "0002121 operation Sequence file handling"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0002121 operation Sequence file handling"
 ]
 
 section: input [
@@ -14,9 +14,9 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -31,7 +31,7 @@ section: required [
     minimum: "1"
     default: "1"
     information: "The number of the sequence to output"
-    relations: "0001694 data Number of output entities"
+    relations: "EDAM:0001694 data Number of output entities"
   ]
 
 endsection: required
@@ -43,9 +43,9 @@ section: output [
 
   seqout: outseq [
     parameter: "Y"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: output

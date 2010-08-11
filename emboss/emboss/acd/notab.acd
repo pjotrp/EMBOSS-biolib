@@ -5,8 +5,8 @@ application: notab
   gui: "yes"
   batch: "yes"
   cpu: "low"
-    relations: "0000220 topic File handling"
-    relations: "0000335 operation File reformatting"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000335 operation File reformatting"
 ]
 
 
@@ -24,7 +24,7 @@ infile: infile
     parameter: "Y"
     knowntype: "ascii text"
     information: "ASCII text file"
-    relations: "0000969 data Free text"
+    relations: "EDAM:0000969 data Free text"
 ]
 
 endsection: input
@@ -77,7 +77,7 @@ outfile: outfile
     parameter: "Y"
     knowntype: "ascii text"
     information: "ASCII text output file"
-    relations: "0000969 data Free text"
+    relations: "EDAM:0000969 data Free text"
 ]
 
 endsection: output

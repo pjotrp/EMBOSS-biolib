@@ -1,8 +1,8 @@
 application: makeprotseq [
   documentation: "Create random protein sequences"
   groups: "Edit"
-    relations: "0000156 topic Sequence editing"
-    relations: "0000364 operation Random sequence generation"
+    relations: "EDAM:0000156 topic Sequence editing"
+    relations: "EDAM:0000364 operation Random sequence generation"
 ]
 
 section: input [
@@ -18,7 +18,7 @@ section: input [
            output file."
     nullok: "Y"
     knowntype: "pepstats output"
-    relations: "0000897 data Protein physicochemical property"
+    relations: "EDAM:0000897 data Protein physicochemical property"
   ]
 
 endsection: input
@@ -33,7 +33,7 @@ section: required [
     default: "100"
     minimum: "1"
     information: "Number of sequences created"
-    relations: "0001694 data Number of output entities"
+    relations: "EDAM:0001694 data Number of output entities"
   ]
 
   integer: length [
@@ -41,14 +41,14 @@ section: required [
     default: "100"
     minimum: "1"
     information: "Length of each sequence"
-    relations: "0001249 data Sequence length"
+    relations: "EDAM:0001249 data Sequence length"
   ]
 
   toggle: useinsert [
     additional: "Y"
     information: "Do you want to make an insert"
     default: "N"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   string: insert [
@@ -56,7 +56,7 @@ section: required [
     information: "Inserted string"
     help: "String that is inserted into sequence"
     knowntype: "sequence"
-    relations: "0000848 data Sequence"
+    relations: "EDAM:0000848 data Sequence"
   ]
 
   integer: start [
@@ -64,7 +64,7 @@ section: required [
     information: "Start point of inserted sequence"
     minimum: "1"
     default: "1"
-    relations: "0001016 data Sequence position"
+    relations: "EDAM:0001016 data Sequence position"
   ]
 
 endsection: required
@@ -78,9 +78,9 @@ section: output [
     parameter: "Y"
     type: "protein"
     name: "makeseq"
-    relations: "0001219 data Pure protein sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0001219 data Pure protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: output

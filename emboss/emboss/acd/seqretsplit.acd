@@ -1,10 +1,10 @@
 application: seqretsplit [
   documentation: "Reads sequences and writes them to individual files"
   groups: "Edit"
-    relations: "0000220 topic File handling"
-    relations: "0000155 topic Sequence retrieval"
-    relations: "0001813 operation Sequence retrieval"
-    relations: "0002121 operation Sequence file handling"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000155 topic Sequence retrieval"
+    relations: "EDAM:0001813 operation Sequence retrieval"
+    relations: "EDAM:0002121 operation Sequence file handling"
 ]
 
 section: input [
@@ -14,16 +14,16 @@ section: input [
 
   boolean: feature [
     information: "Use feature information"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   seqall: sequence [
     parameter: "Y"
     type: "gapany"
     features: "$(feature)"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: input
@@ -35,7 +35,7 @@ section: advanced [
 
   boolean: firstonly [
     information: "Read one sequence and stop"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: advanced
@@ -49,9 +49,9 @@ section: output [
     parameter: "Y"
     ossingle: "Y"
     features: "$(feature)"
-    relations: "0000848 data Sequence"
-    relations: "0000849 data Sequence record"
-    relations: "0002178 data 1 or more"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
   ]
 
 endsection: output

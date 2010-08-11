@@ -2,8 +2,8 @@ application: ontogetall
 [
   documentation: "Get all terms from an ontology"
   groups: "Display, Information"
-    relations: "0000090 topic Database search and retrieval"
-    relations: "0002224 operation Ontology search and retrieval"
+    relations: "EDAM:0000090 topic Database search and retrieval"
+    relations: "EDAM:0002224 operation Ontology search and retrieval"
 ]
 
 section: input 
@@ -19,7 +19,7 @@ section: input
       information: "Name of ontology to search"
       help: "This is the ontology from which to retrieve terms.  If you are unsure of the names of the available ontolgoies, use ontoshow."
       knowntype: "keywords"
-    relations: "0001051 data Ontology name"
+    relations: "EDAM:0001051 data Ontology name"
   ]
 
 endsection: input
@@ -41,7 +41,7 @@ boolean: verbose
     default: "Y"
     information: "Verbose output"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is unset, then output settings from the 'terse' or 'idonly' options will apply."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 boolean: terse
@@ -50,7 +50,7 @@ boolean: terse
     default: "N"
     information: "Terse output"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is set, then only the term id, name and namespace will be reported."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 boolean: idonly
@@ -59,7 +59,7 @@ boolean: idonly
     default: "N"
     information: "Output IDs only"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is set, then only the term id will be reported.  Note that as a minimum, regardless of any settings, the ids are reported."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 list: format [
@@ -73,7 +73,7 @@ list: format [
       codedelimiter: ":"
       information: "Format of output"
       help: "By default output is in plain text (OBO) format. This option will change the format."
-    relations: "0002129 data File format name"
+    relations: "EDAM:0002129 data File format name"
     ]
 
 endsection: additional
@@ -93,7 +93,7 @@ boolean: obsolete
     default: "Y"
     information: "Retrieve obsolete terms"
     help: "The default behaviour is to report all terms.  This option if unset will not return obsolete terms."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 
@@ -114,7 +114,7 @@ section: output
     additional: "Y"
     default: "stdout"
     knowntype: "ontogetall output"
-    relations: "0002223 data Ontology metadata"
+    relations: "EDAM:0002223 data Ontology metadata"
   ]
 
 endsection: output

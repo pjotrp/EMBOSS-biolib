@@ -1,10 +1,10 @@
 application: pepinfo [
   documentation: "Plot amino acid properties of a protein sequence in parallel."
   groups: "Protein:Composition"
-    relations: "0000092 topic Visualisation and rendering"
-    relations: "0000123 topic Protein physicochemical properties"
-    relations: "0000564 operation Sequence visualisation"
-    relations: "0000250 operation Protein physicochemical property calculation"
+    relations: "EDAM:0000092 topic Visualisation and rendering"
+    relations: "EDAM:0000123 topic Protein physicochemical properties"
+    relations: "EDAM:0000564 operation Sequence visualisation"
+    relations: "EDAM:0000250 operation Protein physicochemical property calculation"
 ]
 
 section: input [
@@ -15,8 +15,8 @@ section: input [
   sequence: sequence [
     parameter: "Y"
     type: "protein"
-    relations: "0001219 data Pure protein sequence"
-    relations: "0000849 data Sequence record"
+    relations: "EDAM:0001219 data Pure protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
   ]
 
   datafile: aaproperties [
@@ -24,7 +24,7 @@ section: input [
     default: "Eaa_properties.dat"
     information: "Amino acid chemical classes data file"
     knowntype: "amino acid classification"
-    relations: "0001502 data Amino acid chemical classes data"
+    relations: "EDAM:0001502 data Amino acid chemical classes data"
   ]
 
   datafile: aahydropathy [
@@ -32,7 +32,7 @@ section: input [
     default: "Eaa_hydropathy.dat"
     information: "Amino acid hydropathy values data file"
     knowntype: "amino acid hydropathy"
-    relations: "0001506 data Amino acid hydropathy data"
+    relations: "EDAM:0001506 data Amino acid hydropathy data"
   ]
 
 endsection: input
@@ -50,7 +50,7 @@ section: additional [
     failrange: "N"
     trueminimum: "Y"
     information: "Window size for hydropathy averaging"
-    relations: "0001251 data Window size"
+    relations: "EDAM:0001251 data Window size"
   ]
 
 endsection: additional
@@ -63,25 +63,25 @@ section: output [
   xygraph: graph [
     standard: "Y"
     multiple: "3"
-    relations: "0001522 data Protein sequence hydropathy plot"
+    relations: "EDAM:0001522 data Protein sequence hydropathy plot"
   ]
 
   outfile: outfile [
     parameter: "Y"
     knowntype: "pepinfo output"
-    relations: "0001257 data Protein sequence property"
+    relations: "EDAM:0001257 data Protein sequence property"
   ]
 
   boolean: generalplot [
     default: "Y"
     information: "Plot histogram of general properties"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
   boolean: hydropathyplot [
     default: "Y"
     information: "Plot graphs of hydropathy"
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 endsection: output

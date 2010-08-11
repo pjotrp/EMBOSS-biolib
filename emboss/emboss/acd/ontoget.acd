@@ -2,8 +2,8 @@ application: ontoget
 [
   documentation: "Get ontology term(s) by id"
   groups: "Display, Information"
-    relations: "0000090 topic Database search and retrieval"
-    relations: "0002224 operation Ontology search and retrieval"
+    relations: "EDAM:0000090 topic Database search and retrieval"
+    relations: "EDAM:0002224 operation Ontology search and retrieval"
 ]
 
 section: input 
@@ -18,7 +18,7 @@ section: input
       information: "Name of ontology to search"
       help: "This is the ontology from which to retrieve terms.  If you are unsure of the names of the available ontolgoies, use ontoshow."
       knowntype: "keywords"
-    relations: "0001051 data Ontology name"
+    relations: "EDAM:0001051 data Ontology name"
   ]
 
   string: id
@@ -28,7 +28,7 @@ section: input
       information: "ID(s) of term(s) to retrieve"
       help: "This is the unique identifier of the ontology term(s) (from the 'id:' field of the OBO format ontology file). One or more may be specified and should be separated by a space.  The identifiers may be specified with our without the prefix, e.g. both 'EDAM:0002223' and '0002223' are acceptable."
       knowntype: "keywords"
-    relations: "0001087 data Ontology term identifier"
+    relations: "EDAM:0001087 data Ontology term identifier"
   ]
 
 
@@ -51,7 +51,7 @@ boolean: verbose
     default: "Y"
     information: "Verbose output"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is unset, then output settings from the 'terse' or 'idonly' options will apply."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 boolean: terse
@@ -60,7 +60,7 @@ boolean: terse
     default: "N"
     information: "Terse output"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is set, then only the term id, name and namespace will be reported."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 boolean: idonly
@@ -69,7 +69,7 @@ boolean: idonly
     default: "N"
     information: "Output IDs only"
     help: "The default behaviour is to report the entire OBO term statement from the ontology.  If this option is set, then only the term id will be reported.  Note that as a minimum, regardless of any settings, the ids are reported."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 list: format [
@@ -83,7 +83,7 @@ list: format [
       codedelimiter: ":"
       information: "Format of output"
       help: "By default output is in plain text (OBO) format. This option will change the format."
-    relations: "0002129 data File format name"
+    relations: "EDAM:0002129 data File format name"
     ]
 
 endsection: additional
@@ -103,7 +103,7 @@ boolean: parents
     default: "N"
     information: "Retrieve parent terms"
     help: "The default behaviour is to report a single term with the specified id.  This option will also return the parent(s) of that term, i.e. terms to which the specified term id are related via an is_a (class/subclass) relationship."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 boolean: children
@@ -111,7 +111,7 @@ boolean: children
     default: "N"
     information: "Retrieve child terms"
     help: "The default behaviour is to report a single term with the specified id.  This option will also return the children of that term, i.e. terms which are related to the specified term via an is_a (class/subclass) relationship."
-    relations: "0002135 data Toggle"
+    relations: "EDAM:0002135 data Toggle"
   ]
 
 
@@ -132,7 +132,7 @@ section: output
     additional: "Y"
     default: "stdout"
     knowntype: "ontoget output"
-    relations: "0002223 data Ontology metadata"
+    relations: "EDAM:0002223 data Ontology metadata"
   ]
 
 endsection: output

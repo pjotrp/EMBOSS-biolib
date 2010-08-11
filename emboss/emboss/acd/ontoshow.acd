@@ -2,8 +2,8 @@ application: ontoshow
 [
   documentation: "Display information on ontologies known to EMBOSS"
   groups: "Display, Information"
-    relations: "0000088 topic Literature and documentation"
-    relations: "0002222 operation Ontology information retrieval"
+    relations: "EDAM:0000088 topic Literature and documentation"
+    relations: "EDAM:0002222 operation Ontology information retrieval"
 ]
 
 section: input 
@@ -30,7 +30,7 @@ section: additional
       information: "Name of ontology to display information for"
       help: "By default, information for all available ontologies is shown.  This option will display information for the named ontology only."
       knowntype: "keywords"
-    relations: "0001051 data Ontology name"
+    relations: "EDAM:0001051 data Ontology name"
   ]
 
 
@@ -63,7 +63,7 @@ section: output
     additional: "Y"
     default: "stdout"
     knowntype: "ontoshow output"
-    relations: "0002223 data Ontology metadata"
+    relations: "EDAM:0002223 data Ontology metadata"
   ]
 
 endsection: output
