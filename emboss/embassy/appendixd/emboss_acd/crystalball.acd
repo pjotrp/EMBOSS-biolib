@@ -1,0 +1,109 @@
+application: crystalball [
+  documentation: "Answers every drug discovery question about
+                  a sequence."
+  groups: "Test"
+  embassy: "appendixd"
+  relations: "EDAM:0000202 topic Pharmacological analysis"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "any"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  boolean: competition [
+    additional: "Y"
+    information: "Who else is working with this target?"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: rdtime [
+    additional: "Y"
+    information: "Total research and development time to bring
+                  a drug for this target to market."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: rdcost [
+    additional: "Y"
+    information: "Total cost of our research and development
+                  effort."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: animalstudies [
+    additional: "Y"
+    information: "What will we learn from the animal studies?"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: clinicaltrials [
+    additional: "Y"
+    information: "Detail all of the surprises we'll get from
+                  the clinical trials."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: fdaproblems [
+    additional: "Y"
+    information: "List all of the issues the FDA will raise
+                  with our paperwork."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: fdatime [
+    additional: "Y"
+    information: "How long will the FDA take to render a
+                  decision?"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: profit [
+    additional: "Y"
+    information: "How much will we make after the drug gets to
+                  market?"
+    relations: "EDAM:0002135 data Toggle"
+    relations: "EDAM:0000223 operation Undefined"
+  ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: everythingelse [
+    information: "Tell us everything else we'd really like to
+                  know now rather than later"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "crystalball output"
+    relations:  "EDAM:0000969 data Free text" 
+  ]
+
+endsection: output
