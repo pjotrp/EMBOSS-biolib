@@ -1,7 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
 lib_LTLIBRARIES = libepcre.la
-AM_CFLAGS = -DHAVE_CONFIG_H
 
 if ISCYGWIN
 CYGWIN_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import
