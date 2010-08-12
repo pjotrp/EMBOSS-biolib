@@ -1,0 +1,62 @@
+Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.enetphos] Output file name
+
+   Additional (Optional) qualifiers:
+   -cutoff             float      [0.0] Report only scores above this value
+                                  (Any numeric value)
+
+   Advanced (Unprompted) qualifiers:
+   -plot               boolean    [N] Produce graphics
+   -two                boolean    [N] Run generic predictions only
+   -kinase             boolean    [N] Run kinase-specific only
+   -residue            menu       [all] Residues to predict with (Values: all
+                                  (all); serine (serine); threonine
+                                  (threonine); tyrosine (tyrosine))
+   -gff                boolean    [N] Produce gff output
+   -best               boolean    [N] Report only the highest score for each
+                                  residue
+   -addseq             boolean    [N] Add sequence to gff output
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

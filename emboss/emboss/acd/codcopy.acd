@@ -1,0 +1,37 @@
+application: codcopy [
+  documentation: "Copy and reformat a codon usage table"
+  groups: "Edit"
+    relations: "EDAM:0000107 topic Codon usage"
+    relations: "EDAM:0000563 operation Codon usage table reformating"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  codon: infile [
+    parameter: "Y"
+    relations: "EDAM:0001597 data Codon usage table"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outcodon: outfile [
+    parameter: "Y"
+    relations: "EDAM:0001597 data Codon usage table"
+  ]
+
+endsection: output

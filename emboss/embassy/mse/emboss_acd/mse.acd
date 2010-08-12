@@ -1,0 +1,53 @@
+application: mse [
+  documentation: "Multiple Sequence Editor"
+  groups: "Alignment:multiple"
+  gui: "N"
+  embassy: "mse"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    help: "File containing a sequence alignment"
+    type: "gapany"
+    aligned: "N"
+    nullok: "Y"
+    relations: "EDAM: Sequence record"                                     
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: gcgmode [
+    information: "Use GCG Unix mode for keyboard shortcuts and commands"
+    default: "N"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+  
+  boolean: protein [
+    information: "Sequences are protein"
+    default: "$(acdprotein)"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+  
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutset: outseq [
+    parameter: "Y"
+    relations: "EDAM: Sequence record"                                     
+  ]
+
+endsection: output

@@ -1,0 +1,41 @@
+<b>Here is a sample session with eiprscan</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eiprscan -nocrc -goterms -iprlookup </b>
+Motif detection
+Input sequence set: <b>iprtest.seq</b>
+Applications to use
+          all : all
+  blastprodom : blastprodom
+        coils : coils
+       gene3d : gene3d
+   hmmpanther : hmmpanther
+       hmmpir : hmmpir
+      hmmpfam : hmmpfam
+     hmmsmart : hmmsmart
+      hmmtigr : hmmtigr
+   fprintscan : fprintscan
+   scanregexp : scanregexp
+  profilescan : profilescan
+  superfamily : superfamily
+          seg : seg
+      signalp : signalp
+        tmhmm : tmhmm
+Application(s) to use [all]: <b></b>
+Output Formats
+       raw : Raw
+       txt : Text
+      html : Html
+       xml : Xml
+    ebixml : EBIxml
+       gff : GFF
+Format to use [xml]: <b>raw</b>
+EIPRSCAN program output file [iprtest.eiprscan]: <b></b>
+SUBMITTED-iprscan-20100715-12345678
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

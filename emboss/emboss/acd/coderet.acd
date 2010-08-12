@@ -1,0 +1,92 @@
+application: coderet [
+  documentation: "Extract CDS, mRNA and translations from
+                  feature tables"
+  groups: "Feature tables, Nucleic:Translation"
+    relations: "EDAM:0000109 topic Gene finding"
+    relations: "EDAM:0000436 operation Coding region prediction"
+    relations: "EDAM:0000371 operation DNA translation"
+    relations: "EDAM:0000372 operation DNA transcription"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: seqall [
+    parameter: "Y"
+    type: "DNA"
+    features: "Y"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    extension: "coderet"
+    knowntype: "coderet output"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+  seqoutall: cdsoutseq [
+    parameter: "Y"
+    type: "nucleotide"
+    information: "Coding nucleotide output sequence(s)
+                  (optional)"
+    osextension: "cds"
+    nullok: "Y"
+    knowntype: "cds sequence"
+    relations: "EDAM:0001210 data Pure nucleotide sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+  seqoutall: mrnaoutseq [
+    parameter: "Y"
+    type: "nucleotide"
+    information: "Messenger RNA nucleotide output sequence(s)
+                  (optional)"
+    osextension: "mrna"
+    nullok: "Y"
+    knowntype: "mrna sequence"
+    relations: "EDAM:0001213 data RNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+  seqoutall: translationoutseq [
+    parameter: "Y"
+    type: "protein"
+    information: "Translated coding protein output sequence(s)
+                  (optional)"
+    osextension: "prot"
+    nullok: "Y"
+    knowntype: "translated cds sequence"
+    relations: "EDAM:0001208 data Protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+  seqoutall: restoutseq [
+    parameter: "Y"
+    type: "nucleotide"
+    information: "Non-coding nucleotide output sequence(s)
+                  (optional)"
+    osextension: "noncoding"
+    nullok: "Y"
+    knowntype: "non coding sequence"
+    relations: "EDAM:0001210 data Pure nucleotide sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: output

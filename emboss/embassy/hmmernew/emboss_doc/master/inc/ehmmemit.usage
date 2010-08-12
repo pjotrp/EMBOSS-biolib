@@ -1,0 +1,27 @@
+<b>Here is a sample session with ehmmemit</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmemit -c N -n 10 </b>
+Generate sequences from a profile HMM.
+
+hmmemit - generate sequences from a profile HMM
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:             ../ehmmcalibrate-ex-keep/globino.hmm
+Number of seqs:       10
+Random seed:          0
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Output saved in file globino.ehmmemit
+
+/shared/software/bin/hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

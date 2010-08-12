@@ -1,0 +1,493 @@
+                           SEQALIGN documentation
+
+
+
+CONTENTS
+
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
+
+1.0 SUMMARY
+
+   Extend alignments (DAF file) with sequences (DHF file)
+
+2.0 INPUTS & OUTPUTS
+
+   SEQALIGN reads a directory of "seed" alignments and a directory of sets
+   of protein sequences and writes a directory of "extended" alignments.
+   An extended alignment is a seed alignment that is extended with
+   sequences from the appropriate sequence set. The sets directory must
+   contain a sequence set for each seed alignment directory and the files
+   must have the same base name. For example, sequences from "family.sets"
+   are used to extend the seed alignment "family.aln".
+   Typically, the inputs are (i) DAF files (domain alignment files)
+   containing structure-based sequence alignments and (ii) DHF files
+   (domain hits files) containing sequence relatives (of unknown
+   structure) of these alignments, and the output are DAF files containing
+   the extended alignments.
+   The base names of the output alignments are the same as the input
+   alignments. The paths for input and output files are specified by the
+   user and the file extensions are set in the ACD file.
+
+3.0 INPUT FILE FORMAT
+
+   The format of the domain alignment file is described in DOMAINALIGN
+   documentation.
+   If other alignment files are used as input, all of the common file
+   formats are supported.
+   The format of the domain hits file is described in SEQSEARCH
+   documentation.
+   If other sequence sets are used as input, all of the common file
+   formats are supported.
+
+4.0 OUTPUT FILE FORMAT
+
+   The format of the domain alignment file is described in DOMAINALIGN
+   documentation. Note however that the file will never contain 'Number'
+   or 'Post_similar' records. Futhermore, the code before each sequence is
+   of the form Acc_Start_End (where domain hits files were used as input
+   sequences) or Acc_n (where other sequences were used as input), where
+   'Acc' is the accession number of the sequence, 'Start' and 'End' are
+   the start and end point of the sequence in the full length sequence
+   respectively, and 'n' is a sequential count of the sequence in the
+   alignment.
+
+  Output files for usage example
+
+  File: 54894.daf
+
+# TY   SCOP
+# XX
+# CL   Alpha and beta proteins (a+b)
+# XX
+# FO   Ferredoxin-like
+# XX
+# SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+# XX
+# FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+# XX
+# SI   54894
+# XX
+d4at1b1_0                 0 GVEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPXSGEMG
+RKDLIKIE 0
+d4at1d1_1                 0 GVEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSGXEMG
+RKDLIKIE 0
+P00478_1_92               0 -VEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSG-EMG
+RKDLIKIE 0
+Q83IL8_1_92               0 -VEAIKRGTVIDHIPAQIGFKLLSLFKLTETD----QRITIGLNLPSG-EMG
+RKDLIKIE 0
+P08421_1_92               0 -VEAIKCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSG-EMG
+RKDLIKIE 0
+Q8Z130_1_92               0 -VEAIKCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSG-EMG
+RKDLIKIE 0
+Q8ZB38_1_92               0 -VEAIKCGTVIDHIPAQIGFKLLSLFKLTATD----QRITIGLNLPSK-RSG
+RKDLIKIE 0
+P19936_1_92               0 -VEAIKCGTVIDHIPAQIGFKLLTLFKLTATD----QRITIGLNLPSN-ELG
+RKDLIKIE 0
+Q7MZ14_1_92               0 -VEAIRCGTVIDHIPAQVGFKLLSLFKLTETD----QRITIGLNLPSN-RLG
+KKDLIKIE 0
+Q8K9H8_1_92               0 -VEAIKSGSVIDHIPAHIGFKLLSLFRFTETE----KRITIGLNLPSQ-KLD
+KKDIIKIE 0
+P57451_1_92               0 -VEAIKSGSVIDHIPEYIGFKLLSLFRFTETE----KRITIGLNLPSK-KLG
+RKDIIKIE 0
+Q9KP65_1_92               0 -VEAIKNGTVIDHIPAKVGIKVLKLFDMHNSA----QRVTIGLNLPSS-ALG
+SKDLLKIE 0
+Q87LF7_1_92               0 -VEAIKNGTVIDHIPAQIGIKVLKLFDMHNSS----QRVTIGLNLPSS-ALG
+HKDLLKIE 0
+Q8DCF7_1_92               0 -VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSS----QRVTIGLNLPSS-ALG
+NKDLLKIE 0
+Q7MHF0_1_92               0 -VEAIKNGTVIDHIPAQVGIKVLKLFDMHNSS----QRVTIGLNLPSS-ALG
+NKDLLKIE 0
+Q8D1W6_1_92               0 -VEAIFGGTVIDHIPAQVGLKLLSLFKWLHTK----ERITMGLNLPSN-QQK
+KKDLIKLE 0
+Q7P144_1_92               0 -VEALKQGTVIDHIPAGEGVKILRLFKLTETG----ERVTVGLNLVSR-HMG
+SKDLIKVE 0
+P96175_1_92               0 -VEAICNGYVIDHIPSGQGVKILRLFSLTDTK----QRVTVGFNLPSH-DGT
+TKDLIKVE 0
+Q9K1K9_1_92               0 -VEAIEKGTVIDHIPAGRGLTILRQFKLLHYG----NAVTVGFNLPSK-TQG
+SKDIIKIK 0
+Q9JWY6_1_92               0 -VEAIEKGTVIDHIPAGRGLTILRQFKLLHYG----NAVTVGFNLPSK-TQG
+SKDIIKIK 0
+Q970X3_1_91               0 -VSKIKNGTVIDHIPAGRALAVLRILKIAEG-----YRIALVMNVESK-KMG
+KKDIVKIE 0
+Q9UX07_1_93               0 -VSKIRNGTVIDHIPAGRALAVLRILGIRGSEG---YRVALVMNVESK-KIG
+RKDIVKIE 0
+P74766_1_93               0 -VSKIKNGTVIDHIPAGRAFAVLNVLGIKGHEG---FRIALVINVDSK-KMG
+KKDIVKIE 0
+Q8ZTG2_1_93               0 -VSKIENGTVIDHIPAGRALTVLRILGISGKEG---LRVALVMNVESK-KLG
+KKDIVKIE 0
+O58452_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIEILGLSKLSNG--GSVLLAMNVPSK-KLG
+RKDIVKVE 0
+Q8U374_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIQILGLGELKNG--GAVLLAMNVPSK-KLG
+RKDIVKVE 0
+P77919_1_94               0 -VSAIKEGTVIDHIPAGKGLKVIEILKLGKLTNG--GAVLLAMNVPSK-KLG
+RKDIVKVE 0
+O30129_1_93               0 -VSKIKEGTVIDHINAGKALLVLKILKIQPGTD---LTVSMAMNVPSS-KMG
+KKDIVKVE 0
+Q8TVB1_1_92               0 -VKRIEMGTVLDHLPPGTAPQIMRILDIDPTET----TLLVAINVESS-KMG
+RKDILKIE 0
+Q8THL3_1_92               0 -IQAIENGTVIDHITAGQALNVLRILRISSAFR---ATVSFVMNAPGA--RG
+KKDVVKIE 0
+Q8PXK6_1_92               0 -VQAIESGTVIDHIKSGQALNVLRILGISSAFR---ATISFVMNAPGA--GG
+KKDVVKIE 0
+Q9HHN3_1_93               0 -VSKIQAGTVIDHIPAGQALQVLQILGTNGASD---DQITVGMNVTSE-RHH
+RKDIVKIE 0
+Q58801_1_91               0 -VKKITNGTVIDHIDAGKALMVFKVLNVPKETS-----VMIAINVPSK-KKG
+KKDILKIE 0
+O26938_1_91               0 -VKPIKNGTVIDHITANRSLNVLNILGLPDGRS----KVTVAMNMDSS-QLG
+SKDIVKIE 0
+Q97B28_1_93               0 -ISKIKDGTVIDHIPSGKALRVLSILGIRDDVD---YTVSVGMHVPSS-KME
+YKDVIKIE 0
+Q9HKM3_1_93               0 -ISKIRDGTVIDHVPSGKGIRVIGVLGVHEDVN---YTVSLAIHVPSN-KMG
+FKDVIKIE 0
+Q9YBD5_1_95               0 -VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGY-RWRIAVVINAESS-KLG
+RKDILKIE 0
+Q7MX57_1_92               0 -VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDK----RITIGNNLRSR-SHG
+SKGVIKIE 0
+Q8A9S4_1_92               0 -VAALKNGTVIDHIPSEKLFTVVQLLGVEQMKCN----ITIGFNLDSK-KLG
+KKGIIKIA 0
+Q891I9_1_91               0 -ITSIKDGIVIDHIKSGYGIKIFNYLNLKNVEYS----VALIMNVFSS-KLG
+KKDIIKIA 0
+Q97FS4_1_90               0 -INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFP----TALIMNAISK-KNK
+AKDIIKIE 0
+P96111_1_98               0 GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGS
+FKGYISLP 0
+
+d4at1b1_0                 0 NTFLSEDQVDQLALYAPQATVNRIDNYEVVGKSRPSLP 0
+d4at1d1_1                 0 NTFLSEDQVDQLALYAPQATVNRIDNYEVVGKSRPSLP 0
+P00478_1_92               0 NTFLSEDQVDQLALYAPQATVNRIDNYEVVGKSRPSLP 0
+Q83IL8_1_92               0 NTFLSEEQVDQLALYAPQATVNRIDNYEVVGKSRPSLP 0
+P08421_1_92               0 NTFLTEEQVNQLALYAPQATVNRIDNYDVVGKSRPSLP 0
+Q8Z130_1_92               0 NTFLTDEQVNQLALYAPQATVNRIDNYDVVGKSRPSLP 0
+Q8ZB38_1_92               0 NTFLTEQQANQLAMYAPDATVNRIDNYEVVKKLTLSLP 0
+P19936_1_92               0 NTFLTEQQANQLAMYAPKATVNRIDNYEVVRKLTLSLP 0
+Q7MZ14_1_92               0 NTFLTEQQANQLAMYAPNATVNCIENYEVVKKLPINLP 0
+Q8K9H8_1_92               0 NTFLSDDQINQLAIYAPCATVNYIEKYNLVGKIFPSLP 0
+P57451_1_92               0 NTFLSDEQINQLAIYAPHATVNYINEYNLVRKVFPTLP 0
+Q9KP65_1_92               0 NVFISEAQANKLALYAPHATVNQIENYEVVKKLALQLP 0
+Q87LF7_1_92               0 NVFINEEQASKLALYAPHATVNQIENYEVVKKLALELP 0
+Q8DCF7_1_92               0 NVFINEEQASKLALYAPHATVNQIEDYQVVKKLALELP 0
+Q7MHF0_1_92               0 NVFINEEQASKLALYAPHATVNQIEDYQVVKKLALELP 0
+Q8D1W6_1_92               0 NVLLNEDQANQLSIYAPLATVNQIKNYIVIKKQKLKLP 0
+Q7P144_1_92               0 NVALTEEQANELALFAPKATVNVIDNFEVVKKHKLTLP 0
+P96175_1_92               0 NTEITKSQANQLALLAPNATVNIIENFKVTDKHSLALP 0
+Q9K1K9_1_92               0 GVCLDDKAADRLALFAPEAVVNTIDNFKVVQKRHLNLP 0
+Q9JWY6_1_92               0 GVCLDDKAADRLALFAPEAVVNTIDHFKVVQKRHLNLP 0
+Q970X3_1_91               0 NKEVDEKEANLITLIAPTATINIIRDYEVVEKKKLKIP 0
+Q9UX07_1_93               0 DRVIDEKEASLITLIAPSATINIIRDYVVTEKRHLEVP 0
+P74766_1_93               0 DKEISDTEANLITLIAPTATINIVREYEVVKKTKLEVP 0
+Q8ZTG2_1_93               0 GRELTPEEVNIISAVAPTATINIIRNFAVVKKFKVTPP 0
+O58452_1_94               0 GKFLSEEEVNKIALVAPTATVNIIRNYKVVEKFKVEVP 0
+Q8U374_1_94               0 GKFLSEEEVNKIALVAPTATVNIIREYKVVEKFKVEIP 0
+P77919_1_94               0 GRFLSEEEVNKIALVAPNATVNIIRDYKVVEKFKVEVP 0
+O30129_1_93               0 GMFIRDEELNKIALISPNATINLIRDYEIERKFKVSPP 0
+Q8TVB1_1_92               0 GKILSEEEANKVALVAPNATVNIVRDYSVAEKFQVKPP 0
+Q8THL3_1_92               0 GKELSVEELNRIALISPKATINIIRDFEVVQKNKVVLP 0
+Q8PXK6_1_92               0 GKELSVEELNRIALISPKATINIIRDFVVVQKNNVVLP 0
+Q9HHN3_1_93               0 GRELSQDEVDVLSLIAPDATINIVRDYEVDEKRRVDRP 0
+Q58801_1_91               0 GIELKKEDVDKISLISPDVTINIIRNGKVVEKLKPQIP 0
+O26938_1_91               0 NRELKPSEVDQIALIAPRATINIVRDYKIVEKAKVRL- 0
+Q97B28_1_93               0 NRSLDKNELDMISLTAPNATISIIKNYEISEKFKVELP 0
+Q9HKM3_1_93               0 NRFLDRNELDMISLIAPNATISIIKNYEISEKFQVELP 0
+Q9YBD5_1_95               0 GYKPRQRDLEVLGIIAPGATFNVIEDYKVVEKVKLKLP 0
+Q7MX57_1_92               0 DKTFEEEELNRIALIAPNVRLNIIRDYEVVEKRQVEVP 0
+Q8A9S4_1_92               0 DKFFCDEEINRISVVAPYVKLNIIRDYEVVEKKEVRMP 0
+Q891I9_1_91               0 NKEIDID-FTVLGLIDPTITINIIEDEKIKEKLNLELP 0
+Q97FS4_1_90               0 N--VMDLDLAVLGFLDPNITVNIIEDEKIRQKIQLKLP 0
+P96111_1_98               0 DRYLSKKEIKKLSAISPNTTVNIIKNSTVVEKYRIKLP 0
+
+
+  File: 55074.daf
+
+# TY   SCOP
+# XX
+# CL   Alpha and beta proteins (a+b)
+# XX
+# FO   Ferredoxin-like
+# XX
+# SF   Adenylyl and guanylyl cyclase catalytic domain
+# XX
+# FA   Adenylyl and guanylyl cyclase catalytic domain
+# XX
+# SI   55074
+# XX
+d1cs4a__0                 0 MMFHKIYIQKXHXDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+d1fx2a__1                 0 XXNNNRAPXKEPTDPVTLIFTDIESSTALWAAX----HPDLMPDAVAAHHRM
+VRSLIGR- 0
+Q04400_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+P40144_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+P30803_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+O95622_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+Q03343_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+O43306_1_189              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+Q01341_1_188              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+P30804_1_188              0 MMFHKIYIQK--HDNVSILFADIEGFTSLASQC----TAQELVMTLNELFAR
+FDKLAAE- 0
+Q99279_1_218              0 --NNNRAPKE-PTDPVTLIFTDIESSTALWAA-----HPDLMPDAVAAHHRM
+VRSLIGR- 0
+Q99280_6_216              0 ---------KEPTGPVTLIFTDIESSTALWAA-----HPDLMPDAVATHHRL
+IRSLITR- 0
+P26338_1_216              0 ----NNLAPKELTDPVTLIFTDIESSTALWAA-----HPELMPDAVATHHRL
+IRSLIGR- 0
+Q26721_1_206              0 --------------PVTLIFTDIESSTALWAA-----HPEVMPDAVATHHRL
+IRTLISK- 0
+Q99396_1_212              0 ---------KELADPVTLIFTDIESSTAQWAT-----QPELMPDAVATHHSM
+VRSLIEN- 0
+Q08828_1_186              0 --FHKIYIQR--HDNVSILFADIVGFTGLASQC----TAQELVKLLNELFGK
+FDELATE- 0
+P19754_1_186              0 --FHKIYIQR--HDNVSILFADIVGFTGLASQC----TAQELVKLLNELFGK
+FDELATE- 0
+P32870_1_186              0 --FHRIYIQK--HENVSILFADIVGFTVLSSQC----SAQELVRLLNELFGR
+FDQLAHD- 0
+Q26896_6_216              0 ---------KEFTDPVTLIFTDIESSTALWAA-----HPGMMADAVATHHRL
+IRSLIAL- 0
+P97490_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTL----SAQELVRMLNELFAR
+FDRLAHE- 0
+P40146_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTL----SAQELVRMLNELFAR
+FDRLAHE- 0
+P40145_1_186              0 --FHRIYIHR--YENVSILFADVKGFTNLSTTL----SAQELVRMLNELFAR
+FDRLAHE- 0
+Q8VHH7_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSAC----SAQELVKLLNELFAR
+FDKLAAK- 0
+P21932_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSAC----SAQELVKLLNELFAR
+FDKLAAK- 0
+O60266_1_186              0 --FNTMYMYR--HENVSILFADIVGFTQLSSAC----SAQELVKLLNELFAR
+FDKLAAK- 0
+Q27675_1_217              0 ---NNDAAPKDGDEPVTLLFTDIESSTALWAA-----LPQLMSDAIAAHHRV
+IRQLVKK- 0
+Q25263_1_217              0 ---NNDAAPKDGDEPVTLLFTDIESSTALWAA-----LPQLMSDAIAAHHRV
+IRQLVKK- 0
+Q91WF3_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASEC----SPKELVLMLNELFGK
+FDQIAKE- 0
+Q8NFM4_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASEC----SPKELVLMLNELFGK
+FDQIAKE- 0
+P26770_1_158              0 --FHSLYVKR--HQGVSVLYADIVGFTRLASEC----SPKELVLMLNELFGK
+FDQIAKE- 0
+Q08462_1_186              0 --FHNLYVKR--HTNVSILYADIVGFTRLASDC----SPGELVHMLNELFGK
+FDQIAKE- 0
+P26769_1_186              0 --FHNLYVKR--HTNVSILYADIVGFTRLASDC----SPGELVHMLNELFGK
+FDQIAKE- 0
+Q29450_1_186              0 --FHNLYVKR--HQNVSILYADIVGFTRLASDC----SPKELVVVLNELFGK
+FDQIAKA- 0
+P51829_1_186              0 --FHSLYVKR--HQNVSILYADIVGFTRLASDC----SPKELVVVLNELFGK
+FDQIAKA- 0
+P51828_1_186              0 --FHSLYVKR--HQNVSILYADIVGFTQLASDC----SPKELVVVLNELFGK
+FDQIAKA- 0
+P98999_1_150              0 -------------EQVSILFADIVGFTKMSANK----SAHALVGLLNDLFGR
+FDRLCEE- 0
+Q9DGG6_1_181              0 -------------EQVSILFADIVGFTKMSANK----SAHALVGLLNDLFGR
+FDRLCED- 0
+P51830_1_179              0 ---------------VSILFADIVGFTKMSANK----SAHALVGLLNDLFGR
+FDRLCEQ- 0
+
+
+  [Part of this file has been deleted for brevity]
+
+P40144_1_159              0 ---------------------- 0
+P30803_1_159              0 ---------------------- 0
+O95622_1_159              0 ---------------------- 0
+Q03343_1_159              0 ---------------------- 0
+Q01341_1_159              0 ---------------------- 0
+P30804_1_159              0 ---------------------- 0
+O43306_1_159              0 ---------------------- 0
+P97490_1_162              0 ---------------------- 0
+P40146_1_162              0 ---------------------- 0
+P40145_1_162              0 ---------------------- 0
+O30820_1_149              0 ---------------------- 0
+Q03101_1_149              0 ---------------------- 0
+P16065_1_143              0 ---------------------- 0
+P46197_1_168              0 ---------------------- 0
+P20594_1_168              0 ---------------------- 0
+P16067_1_168              0 ---------------------- 0
+P18293_1_168              0 ---------------------- 0
+P18910_1_168              0 ---------------------- 0
+P16066_1_168              0 ---------------------- 0
+P55202_1_154              0 ---------------------- 0
+Q07553_1_152              0 ---------------------- 0
+Q02846_1_152              0 ---------------------- 0
+P52785_1_150              0 ---------------------- 0
+P51840_1_150              0 ---------------------- 0
+O19179_1_150              0 ---------------------- 0
+P55203_1_151              0 ---------------------- 0
+P51842_1_152              0 ---------------------- 0
+P51841_1_152              0 ---------------------- 0
+O02740_1_162              0 ---------------------- 0
+P51839_1_163              0 ---------------------- 0
+P55204_1_150              0 ---------------------- 0
+P25092_1_150              0 ---------------------- 0
+P70106_1_150              0 ---------------------- 0
+P23897_1_150              0 ---------------------- 0
+P55205_1_154              0 ---------------------- 0
+Q09435_1_161              0 ---------------------- 0
+P22717_1_147              0 ---------------------- 0
+O75343_1_147              0 ---------------------- 0
+Q9WVI4_1_149              0 ---------------------- 0
+P33402_1_149              0 ---------------------- 0
+Q9ERL9_1_152              0 ---------------------- 0
+P19686_1_160              0 ---------------------- 0
+Q02108_1_160              0 ---------------------- 0
+P19687_1_161              0 ---------------------- 0
+Q07093_1_158              0 ---------------------- 0
+Q02153_1_165              0 ---------------------- 0
+P20595_1_165              0 ---------------------- 0
+P16068_1_165              0 ---------------------- 0
+P40137_1_139              0 ---------------------- 0
+P23466_1_154              0 ---------------------- 0
+
+
+  File: seqalign.log
+
+//
+/homes/user/test/qa/domainalign-keep/daf/54894.daf
+//
+/homes/user/test/qa/domainalign-keep/daf/55074.daf
+
+5.0 DATA FILES
+
+   SEQALIGN does not use a data file.
+
+6.0 USAGE
+
+  6.1 COMMAND LINE ARGUMENTS
+
+Extend alignments (DAF file) with sequences (DHF file).
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+   -mode               menu       [1] This option specifies the mode of
+                                  SEQALIGN operation. SEQALIGN takes as input
+                                  a directory of either i. single sequences,
+                                  ii. set of sequences (unaligned or aligned,
+                                  but typically aligned sequences within a
+                                  domain alignment file)). The user has to
+                                  specify which. (Values: 1 (Single
+                                  sequences); 2 (Multiple sequences (e.g.
+                                  sequence set or alignment)))
+*  -dhfinpath          dirlist    [./] This option specifies the location of
+                                  sequences, e.g. DHF files (domain hits
+                                  files) (input). SEQALIGN takes as input a
+                                  database of either i. single sequences, ii.
+                                  sets of unaligned sequences or iii. sets of
+                                  aligned sequences, e.g. a domain alignment
+                                  file. A 'domain alignment file' contains a
+                                  sequence alignment of domains belonging to
+                                  the same SCOP or CATH family. The file is in
+                                  clustal format annotated with domain family
+                                  classification information. The files
+                                  generated by using SCOPALIGN will contain a
+                                  structure-based sequence alignment of
+                                  domains of known structure only. Such
+                                  alignments can be extended with sequence
+                                  relatives (of unknown structure) by using
+                                  SEQALIGN.
+*  -dafinpath          dirlist    [./] This option specifies the location of
+                                  sequences, e.g. DAF files (domain alignment
+                                  files) (input). SEQALIGN takes as input a
+                                  database of either i. single sequences, ii.
+                                  sets of unaligned sequences or iii. sets of
+                                  aligned sequences, e.g. a domain alignment
+                                  file. A 'domain alignment file' contains a
+                                  sequence alignment of domains belonging to
+                                  the same SCOP or CATH family. The file is in
+                                  clustal format annotated with domain family
+                                  classification information. The files
+                                  generated by using SCOPALIGN will contain a
+                                  structure-based sequence alignment of
+                                  domains of known structure only. Such
+                                  alignments can be extended with sequence
+                                  relatives (of unknown structure) by using
+                                  SEQALIGN.
+  [-dhfindir]          directory  [./] This option specifies the location of
+                                  DHF files (domain hits files) (input). A
+                                  'domain hits file' contains database hits
+                                  (sequences) with domain classification
+                                  information, in the DHF format (FASTA or
+                                  EMBL-like). The hits are relatives to a SCOP
+                                  or CATH family and are found from a search
+                                  of a sequence database. Files containing
+                                  hits retrieved by PSIBLAST are generated by
+                                  using SEQSEARCH.
+   -amode              menu       [1] This option specifies which alignment
+                                  algorithm to use. (Values: 1 (CLUSTALW); 2
+                                  (TCOFFEE (not yet implemented)))
+  [-dafoutdir]         outdir     [./] This option specifies the location of
+                                  DAF files (domain alignment files) (output).
+                                  A 'domain alignment file' contains a
+                                  sequence alignment of domains belonging to
+                                  the same SCOP or CATH family. The file is in
+                                  clustal format annotated with domain family
+                                  classification information. The files
+                                  generated by using SCOPALIGN will contain a
+                                  structure-based sequence alignment of
+                                  domains of known structure only. Such
+                                  alignments can be extended with sequence
+                                  relatives (of unknown structure) by using
+                                  SEQALIGN.
+   -logfile            outfile    [seqalign.log] This option specifies the
+                                  name of log file for the build. The log file
+                                  contains messages about any errors arising
+                                  while SEQALIGN ran.
+
+   Additional (Optional) qualifiers:
+   -forcetype          boolean    [N] This option specifies whether to force
+                                  minimal domain classification data to be
+                                  written to the output file in cases where
+                                  singlet sequences were given as input file
+                                  and no classification data was available
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-dhfinpath" associated qualifiers
+   -extension          string     Default file extension
+
+   "-dafinpath" associated qualifiers
+   -extension          string     Default file extension
+
+   "-dhfindir" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-dafoutdir" associated qualifiers
+   -extension2         string     Default file extension
+
+   "-logfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+

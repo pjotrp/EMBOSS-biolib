@@ -1,0 +1,665 @@
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBASSY: VIENNA: vrnaplot
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+vrnaplot
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Plot vrnafold output
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+This is a port of the Vienna RNA package program RNAplot.
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+See the original documentation for the Vienna RNA package
+http://www.tbi.univie.ac.at/~ivo/RNA/
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with vrnaplot</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnaplot </b>
+Plot vrnafold output
+Vienna RNAfold output file: <b>../vrnafold-keep/rna1.vrnafold</b>
+Vienna RNAfold output file [rna1.vrnaplot]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Plot vrnafold output
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-structuresfile]    infile     Vienna RNAfold output file
+  [-outfile]           outfile    [*.vrnaplot] Vienna RNAfold output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -layout             menu       [naview] Layout (Values: radial (Simple
+                                  radial); naview (naview))
+   -optype             menu       [ps] Type (Values: ps (postscript); gml
+                                  (graph meta language); svg (scaleable vector
+                                  graphics); xrna (XRNA save file))
+   -pre                string     Pre-annotation (Any string)
+   -post               string     Post-annotation (Any string)
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-structuresfile]<br>(Parameter 1)</td>
+<td>infile</td>
+<td>Vienna RNAfold output file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>Vienna RNAfold output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.vrnaplot</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-layout</td>
+<td>list</td>
+<td>Layout</td>
+<td><table><tr><td>radial</td> <td><i>(Simple radial)</i></td></tr><tr><td>naview</td> <td><i>(naview)</i></td></tr></table></td>
+<td>naview</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-optype</td>
+<td>list</td>
+<td>Type</td>
+<td><table><tr><td>ps</td> <td><i>(postscript)</i></td></tr><tr><td>gml</td> <td><i>(graph meta language)</i></td></tr><tr><td>svg</td> <td><i>(scaleable vector graphics)</i></td></tr><tr><td>xrna</td> <td><i>(XRNA save file)</i></td></tr></table></td>
+<td>ps</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pre</td>
+<td>string</td>
+<td>Pre-annotation</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-post</td>
+<td>string</td>
+<td>Post-annotation</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>vrnaplot</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: ../vrnafold-keep/rna1.vrnafold</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA
+.(((..((....)).(((((........)))))..))).. ( -3.50)
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+#include file="inc/reportformats.ihtml"
+   -->
+
+<b>vrnaplot</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>Graphics File: rna1.vrnaplot</h3>
+<p><img src="vrnaplot.1.rna1.vrnaplot.gif" alt="[vrnaplot results]">
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+For details of Vienna RNA file formats, see the original documentation
+http://www.tbi.univie.ac.at/~ivo/RNA/
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/einverted.html">einverted</a></td>
+<td>Finds inverted repeats in nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="vrnaalifold.html">vrnaalifold</a></td>
+<td>RNA alignment folding</td>
+</tr>
+
+<tr>
+<td><a href="vrnaalifoldpf.html">vrnaalifoldpf</a></td>
+<td>RNA alignment folding with partition</td>
+</tr>
+
+<tr>
+<td><a href="vrnacofold.html">vrnacofold</a></td>
+<td>RNA cofolding</td>
+</tr>
+
+<tr>
+<td><a href="vrnacofoldconc.html">vrnacofoldconc</a></td>
+<td>RNA cofolding with concentrations</td>
+</tr>
+
+<tr>
+<td><a href="vrnacofoldpf.html">vrnacofoldpf</a></td>
+<td>RNA cofolding with partitioning</td>
+</tr>
+
+<tr>
+<td><a href="vrnadistance.html">vrnadistance</a></td>
+<td>RNA distances</td>
+</tr>
+
+<tr>
+<td><a href="vrnaduplex.html">vrnaduplex</a></td>
+<td>RNA duplex calculation</td>
+</tr>
+
+<tr>
+<td><a href="vrnaeval.html">vrnaeval</a></td>
+<td>RNA eval</td>
+</tr>
+
+<tr>
+<td><a href="vrnaevalpair.html">vrnaevalpair</a></td>
+<td>RNA eval with cofold</td>
+</tr>
+
+<tr>
+<td><a href="vrnafold.html">vrnafold</a></td>
+<td>Calculate secondary structures of RNAs</td>
+</tr>
+
+<tr>
+<td><a href="vrnafoldpf.html">vrnafoldpf</a></td>
+<td>Secondary structures of RNAs with partition</td>
+</tr>
+
+<tr>
+<td><a href="vrnaheat.html">vrnaheat</a></td>
+<td>RNA melting</td>
+</tr>
+
+<tr>
+<td><a href="vrnainverse.html">vrnainverse</a></td>
+<td>RNA sequences matching a structure</td>
+</tr>
+
+<tr>
+<td><a href="vrnalfold.html">vrnalfold</a></td>
+<td>Calculate locally stable secondary structures of RNAs</td>
+</tr>
+
+<tr>
+<td><a href="vrnasubopt.html">vrnasubopt</a></td>
+<td>Calculate RNA suboptimals</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+Peter Rice
+<br>
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+<H2>
+    History
+</H2>
+
+Converted (October 2005) by Alan Bleasby
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+<H2>
+    Comments
+</H2>
+
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,131 @@
+application: edamget 
+[
+  documentation: "Get EDAM ontology term(s) by id"
+  groups: "Display, Information"
+    relations: "EDAM:0000090 topic Database search and retrieval"
+    relations: "EDAM:0002224 operation Ontology search and retrieval"
+]
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+  string: id
+  [
+      default: ""
+      parameter: "Y"
+      information: "ID(s) of term(s) to retrieve"
+      help: "This is the unique identifier of the EDAM ontology term(s) (from the 'id:' field of the EMBOSS data file edam.obo). One or more may be specified and should be separated by a space.  The identifiers may be specified with our without the prefix 'EDAM:', e.g. both 'EDAM:0002223' and '0002223' are acceptable."
+      knowntype: "keywords"
+    relations: "EDAM:0001087 data Ontology term identifier"
+  ]
+
+
+endsection: input
+
+
+
+
+
+section: additional 
+[
+  information: "Additional section"
+  type: "page"
+]
+
+
+boolean: verbose
+  [
+    additional: "Y"
+    default: "Y"
+    information: "Verbose output"
+    help: "The default behaviour is to report the entire OBO term statement from the EDAM ontology.  If this option is unset, then output settings from the 'terse' or 'idonly' options will apply."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+boolean: terse
+  [
+    additional: "Y"
+    default: "N"
+    information: "Terse output"
+    help: "The default behaviour is to report the entire OBO term statement from the EDAM ontology.  If this option is set, then only the term id, name and namespace will be reported."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+boolean: idonly
+  [
+    additional: "Y"
+    default: "N"
+    information: "Output IDs only"
+    help: "The default behaviour is to report the entire OBO term statement from the EDAM ontology.  If this option is set, then only the term id will be reported.  Note that as a minimum, regardless of any settings, the ids are reported."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+list: format [
+      additional: "Y"
+      default: "O"
+      minimum: "1"
+      maximum: "1"
+      header: "Output format"
+      values: "O:OBO (plain text), H:HTML, X:XML (OBO-XML), J:JSON"
+      delimiter: ","
+      codedelimiter: ":"
+      information: "Format of output"
+      help: "By default output is in plain text (OBO) format. This option will change the format."
+    relations: "EDAM:0002129 data File format name"
+    ]
+
+endsection: additional
+
+
+
+
+
+section: advanced 
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+boolean: parents
+  [
+    default: "N"
+    information: "Retrieve parent terms"
+    help: "The default behaviour is to report a single term with the specified id.  This option will also return the parent(s) of that term, i.e. terms to which the specified term id are related via an is_a (class/subclass) relationship."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+boolean: children
+  [
+    default: "N"
+    information: "Retrieve child terms"
+    help: "The default behaviour is to report a single term with the specified id.  This option will also return the children of that term, i.e. terms which are related to the specified term via an is_a (class/subclass) relationship."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile 
+  [
+    additional: "Y"
+    default: "stdout"
+    knowntype: "edamget output"
+    relations: "EDAM:0002223 data Ontology metadata"
+  ]
+
+endsection: output
+
+

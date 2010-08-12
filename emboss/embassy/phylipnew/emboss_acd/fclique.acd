@@ -1,0 +1,134 @@
+application: fclique [
+  documentation: "Largest clique program"
+  groups: "Phylogeny:Discrete characters"
+  embassy: "phylipnew"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  discretestates: infile [
+    parameter: "Y"
+    characters: "01PB?"
+    knowntype: "discrete states"
+    information: "Phylip discrete states file"
+    relations:  "EDAM: PHYLIP discrete states file"                    
+  ]
+
+  properties: ancfile [
+    additional: "Y"
+    characters: "01"
+    length: "$(infile.discretelength)"
+    knowntype: "ancestral states"
+    nullok: "Y"
+    information: "Phylip ancestral states file (optional)"
+    relations:  "EDAM: PHYLIP discrete states file"                    
+  ]
+
+  properties: factorfile [
+    additional: "Y"
+    characters: ""
+    length: "$(infile.discretelength)"
+    knowntype: "multistate factors"
+    nullok: "Y"
+    information: "Phylip multistate factors file (optional)"
+    relations:  "EDAM: PHYLIP discrete states file"                    
+  ]
+
+  properties: weights [
+    additional: "Y"
+    characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    length: "$(infile.discretelength)"
+    knowntype: "Weights"
+    nullok: "Y"
+    information: "Phylip weights file (optional)"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: cliqmin [
+    additional: "Y"
+    default: "0"
+    minimum: "0"
+    information: "Minimum clique size"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(infile.discretesize)"
+    failrange: "N"
+    trueminimum: "Y"
+    default: "0"
+    information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "clique output"
+    information: "Phylip clique program output file"
+    relations:  "EDAM: PHYLIP cliques file"                            
+  ]
+
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: printcomp [
+    additional: "Y"
+    default: "N"
+    information: "Print out compatibility matrix"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: output

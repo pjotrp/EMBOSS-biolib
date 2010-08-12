@@ -1,0 +1,80 @@
+application: dbxreport [
+  groups: "Utils:Database indexing"
+  documentation: "Validate index and report internals for dbx databases"
+  gui: "yes"
+  batch: "no"
+  cpu: "medium"
+    relations: "EDAM:0000091 topic Database and file management"
+    relations: "EDAM:0000228 operation Database index analysis"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  string: dbname [
+    parameter: "Y"
+    maxlength: "19"
+    minlength: "2"
+    information: "Basename for index files"
+    knowntype: "emboss database name"
+    pattern: "[A-z][A-z0-9_]+"
+    relations: "EDAM:0001056 data Database name"
+  ]
+
+  directory: indexdir [
+    standard: "y"
+    default: "."
+    information: "Index directory"
+    knowntype: "emboss database index"
+    relations: "EDAM:0001049 data Directory name"
+  ]
+
+  list: idtype [
+    standard: "y"
+    information: "Index type"
+    values: "id:ID index; ac:Accession index; sv:Version/GI Index;
+             kw:Keyword index; de:Description index; tx:Taxonomy Index;
+             all:All index files"
+    maximum: "6"
+    minimum: "1"
+    default: "all"
+    relations: "EDAM:0001773 data Tool-specific parameter"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+boolean: fullreport [
+  information: "Write full details to debug file"
+  default: "N"
+    relations: "EDAM:0002135 data Toggle"
+]
+
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    standard: "y"
+    knowntype: "dbxreport output"
+    relations: "EDAM:0000955 data Database index"
+  ]
+
+endsection: output

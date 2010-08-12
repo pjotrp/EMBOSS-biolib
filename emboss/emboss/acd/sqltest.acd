@@ -1,0 +1,26 @@
+application: sqltest [
+  documentation: "Demonstration of SQL server access"
+  groups: "Test"
+  embassy: "myemboss"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000336 operation File debugging"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile  [
+    parameter: "Y"
+    knowntype: "sqltest output"
+  ]
+
+endsection: output

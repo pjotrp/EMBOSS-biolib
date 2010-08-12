@@ -1,0 +1,291 @@
+                                 crystalball
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Answers every drug discovery question about a sequence
+
+Description
+
+   Crystalball is an application invented by Scott Markel and Darryl Leon
+   in their book "Sequence Analysis in a Nutshell". They put the
+   description into Appendix D with the comment:
+
+   Here's a program we're working on. When it's finished we plan to donate
+   it to the EMBOSS package. It may take us a while, so be patient
+
+   It took just 30 minutes from seeing a draft of Appendix D to sending
+   Scott the ACD file and then the C source code.
+
+   Like Scott and Darryl, we put the program into an EMBASSY package
+   called "appendixd" in the hope that nobody takes it too seriously,
+   although we suspect the results are more accurate than one would
+   reasonably be entitled to expect.
+
+Algorithm
+
+   Scott and Darryl defined the ACD interface in the book, together with 3
+   of the responses.
+
+   We added the others in the same spirit.
+
+   No attempt is made to change the output when the input sequence
+   changes.
+
+Usage
+
+   Here is a sample session with crystalball
+
+
+% crystalball -competition -rdtime -rdcost -animalstudies -clinicaltrials -fdapr
+oblems -fdatime -profit -everythingelse
+Answers every drug discovery question about a sequence.
+Input sequence: tembl:x65923
+Output file [x65923.crystalball]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Answers every drug discovery question about a sequence.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-outfile]           outfile    [*.crystalball] Output file name
+
+   Additional (Optional) qualifiers:
+   -competition        boolean    Who else is working with this target?
+   -rdtime             boolean    Total research and development time to bring
+                                  a drug for this target to market.
+   -rdcost             boolean    Total cost of our research and development
+                                  effort.
+   -animalstudies      boolean    What will we learn from the animal studies?
+   -clinicaltrials     boolean    Detail all of the surprises we'll get from
+                                  the clinical trials.
+   -fdaproblems        boolean    List all of the issues the FDA will raise
+                                  with our paperwork.
+   -fdatime            boolean    How long will the FDA take to render a
+                                  decision?
+   -profit             boolean    How much will we make after the drug gets to
+                                  market?
+
+   Advanced (Unprompted) qualifiers:
+   -everythingelse     boolean    Tell us everything else we'd really like to
+                                  know now rather than later
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   crystalball reads any normal sequence USAs.
+
+  Input files for usage example
+
+   'tembl:x65923' is a sequence entry in the example nucleic acid database
+   'tembl'
+
+  Database entry: tembl:x65923
+
+ID   X65923; SV 1; linear; mRNA; STD; HUM; 518 BP.
+XX
+AC   X65923;
+XX
+DT   13-MAY-1992 (Rel. 31, Created)
+DT   18-APR-2005 (Rel. 83, Last updated, Version 11)
+XX
+DE   H.sapiens fau mRNA
+XX
+KW   fau gene.
+XX
+OS   Homo sapiens (human)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Euarchontoglires; Primates; Haplorrhini; Catarrhini; Hominidae;
+OC   Homo.
+XX
+RN   [1]
+RP   1-518
+RA   Michiels L.M.R.;
+RT   ;
+RL   Submitted (29-APR-1992) to the EMBL/GenBank/DDBJ databases.
+RL   L.M.R. Michiels, University of Antwerp, Dept of Biochemistry,
+RL   Universiteisplein 1, 2610 Wilrijk, BELGIUM
+XX
+RN   [2]
+RP   1-518
+RX   PUBMED; 8395683.
+RA   Michiels L., Van der Rauwelaert E., Van Hasselt F., Kas K., Merregaert J.;
+RT   "fau cDNA encodes a ubiquitin-like-S30 fusion protein and is expressed as
+RT   an antisense sequence in the Finkel-Biskis-Reilly murine sarcoma virus";
+RL   Oncogene 8(9):2537-2546(1993).
+XX
+DR   H-InvDB; HIT000322806.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..518
+FT                   /organism="Homo sapiens"
+FT                   /chromosome="11q"
+FT                   /map="13"
+FT                   /mol_type="mRNA"
+FT                   /clone_lib="cDNA"
+FT                   /clone="pUIA 631"
+FT                   /tissue_type="placenta"
+FT                   /db_xref="taxon:9606"
+FT   misc_feature    57..278
+FT                   /note="ubiquitin like part"
+FT   CDS             57..458
+FT                   /gene="fau"
+FT                   /db_xref="GDB:135476"
+FT                   /db_xref="GOA:P35544"
+FT                   /db_xref="GOA:P62861"
+FT                   /db_xref="HGNC:3597"
+FT                   /db_xref="InterPro:IPR000626"
+FT                   /db_xref="InterPro:IPR006846"
+FT                   /db_xref="InterPro:IPR019954"
+FT                   /db_xref="InterPro:IPR019955"
+FT                   /db_xref="InterPro:IPR019956"
+FT                   /db_xref="UniProtKB/Swiss-Prot:P35544"
+FT                   /db_xref="UniProtKB/Swiss-Prot:P62861"
+FT                   /protein_id="CAA46716.1"
+FT                   /translation="MQLFVRAQELHTFEVTGQETVAQIKAHVASLEGIAPEDQVVLLAG
+FT                   APLEDEATLGQCGVEALTTLEVAGRMLGGKVHGSLARAGKVRGQTPKVAKQEKKKKKTG
+FT                   RAKRRMQYNRRFVNVVPTFGKKKGPNANS"
+FT   misc_feature    98..102
+FT                   /note="nucleolar localization signal"
+FT   misc_feature    279..458
+FT                   /note="S30 part"
+FT   polyA_signal    484..489
+FT   polyA_site      509
+XX
+SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
+     ttcctctttc tcgactccat cttcgcggta gctgggaccg ccgttcagtc gccaatatgc        60
+     agctctttgt ccgcgcccag gagctacaca ccttcgaggt gaccggccag gaaacggtcg       120
+     cccagatcaa ggctcatgta gcctcactgg agggcattgc cccggaagat caagtcgtgc       180
+     tcctggcagg cgcgcccctg gaggatgagg ccactctggg ccagtgcggg gtggaggccc       240
+     tgactaccct ggaagtagca ggccgcatgc ttggaggtaa agttcatggt tccctggccc       300
+     gtgctggaaa agtgagaggt cagactccta aggtggccaa acaggagaag aagaagaaga       360
+     agacaggtcg ggctaagcgg cggatgcagt acaaccggcg ctttgtcaac gttgtgccca       420
+     cctttggcaa gaagaagggc cccaatgcca actcttaagt cttttgtaat tctggctttc       480
+     tctaataaaa aagccactta gttcagtcaa aaaaaaaa                               518
+//
+
+Output file format
+
+   crystalball outputs a plain text file with a one-line response to each
+   of the input options.
+
+  Output files for usage example
+
+  File: x65923.crystalball
+
+Drug discovery development time: 10-15 years
+Drug discovery development cost: $800 million
+Animal studies results: 'Animals are not like humans'
+Clinical trials surprises: Unfortunately, not another Viagra
+FDA issues: List not yet complete
+FDA time to decision: Waiting .........
+Profit: Not nearly as much as you'd like!
+The competition: Every EMBOSS user now knows as much as you!
+Everything else: Trust me, you really don't want to know just now!
+
+Data files
+
+Notes
+
+   None.
+
+References
+
+   Markel S and Leon D (2003) "Sequence Analysis in a Nutshell" O'Reilly
+   and Associates Inc. See "Appendix D"
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+                    Program name              Description
+                    ensembltest  Demonstration of the Ensembl API to be
+                    sqltest      Demonstration of SQL server access
+
+Author(s)
+
+   Peter            Rice
+   European         Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton,         Cambridge CB10 1SD, UK
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+                    Written (Feb 2003) - Peter Rice.
+
+Target users
+
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
+
+Comments

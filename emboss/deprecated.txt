@@ -1,0 +1,1275 @@
+#ajalign
+#ajarr
+ajChararrNewL ajChararrNewRes
+ajIntNewL ajIntNewRes
+ajUintNewL ajUintNewRes
+ajFloatNewL ajFloatNewRes
+ajDoubleNewL ajDoubleNewRes
+ajShortNewL ajShortNewRes
+ajLongNewL ajLongNewRes
+ajInt2dNewL ajInt2dNewRes
+ajInt2dNewLL ajInt2dNewRes2
+ajInt3dNewL ajInt3dNewRes
+ajUint2dNewL ajUint2dNewRes
+ajUint2dNewLL ajUint2dNewRes2
+ajUint3dNewL ajUint3dNewRes
+ajFloat2dNewL ajFloat2dNewRes
+ajFloat3dNewL ajFloat3dNewRes
+ajDouble2dNewL ajDouble2dNewRes
+ajDouble3dNewL ajDouble3dNewRes
+ajShort2dNewL ajShort2dNewRes
+ajShort3dNewL ajShort3dNewRes
+ajLong2dNewL ajLong2dNewRes
+ajLong3dNewL ajLong3dNewRes
+#ajassert
+#ajbase
+ajBaseProb ajBaseAlphaCompare
+ajAZToBin ajBaseAlphaToBin
+ajAZToBinC ajBaseAlphacharToBin
+ajBaseComp ajBaseAlphacharComp
+ajSeqBaseComp ajBaseComp
+ajBinToAZ ajBaseBinToAlpha
+ajBaseCodes ajBaseGetCodes
+ajBaseAa3ToAa1 =ajResidueFromTriplet 1,2 2,1
+ajBaseAa3ToAa1 @ajResidueFromTriplet
+ajBaseAa1ToAa3 ajResidueToTriplet
+ajIntToAZ ajBasecodeFromInt
+ajAZToInt ajBasecodeToInt
+#ajcall
+#ajcod
+ajCodNewCode ajCodNewCodenum
+ajCodDup ajCodNewCod
+ajCodCountTriplets ajCodSetTripletsS
+ajCodCalcCai ajCodCalcCaiSeq
+ajCodCalculateUsage ajCodCalcUsage
+ajCodAssCode ajCodSetCodenum
+ajCodAssDescC ajCodSetDescC
+ajCodAssDesc ajCodSetDescS
+ajCodAssDivisionC ajCodSetDivisionC
+ajCodAssDivision ajCodSetDivisionS
+ajCodAssNameC ajCodSetNameC
+ajCodAssName ajCodSetNameS
+ajCodAssNumcds ajCodSetNumcds
+ajCodAssNumcodon ajCodSetNumcodons
+ajCodAssReleaseC ajCodSetReleaseC
+ajCodAssRelease ajCodSetReleaseS
+ajCodAssSpeciesC ajCodSetSpeciesC
+ajCodAssSpecies ajCodSetSpeciesS
+#ajdan
+ajTm ajMeltTemp
+ajTm2 ajMeltTempSave
+ajProdTm ajMeltTempProd
+#ajdmx
+#ajdom
+#ajdomain
+#ajexcept
+#ajfeat
+ajFeatUfoWrite =ajFeattableWriteUfo 1,2,3 2,1,3
+ajFeatWrite ajFeattableWrite
+ajFeattableBegin ajFeattableGetBegin
+ajFeattableEnd ajFeattableGetEnd
+ajFeattableLen ajFeattableGetLen
+ajFeattableSize ajFeattableGetSize
+ajFeatGetNoteI ajFeatGetNoteSI
+ajFeatGetNote ajFeatGetNoteS
+ajFeatRead ajFeattableNewRead
+ajFeatUfoRead ajFeattableNewReadUfo
+ajFeatDefName ajFeattableSetDefname
+ajFeattableCopy ajFeattableNewFtable
+ajFeattableCopyLimit ajFeattableNewFtableLimit
+ajFeatCopy ajFeatNewFeat
+#ajfile
+ajDirNew ajDirNewPath
+ajDirNewS ajDirNewPathExt
+ajDirNewSS ajDirNewPathPreExt
+ajDirExt ajDirGetExt
+ajDirName ajDirGetPath
+ajDirOutNew -
+ajDirOutNewS -
+ajDirOutNewSS -
+ajFileNewF ajFileNewFromCfile
+ajFileNew -
+ajFileNewInC ajFileNewInNameC
+ajFileNewIn ajFileNewInNameS
+ajFileNewDC -
+ajFileNewDF =ajFileNewInNamePathS 1,2 2,1
+ajFileNewDF @ajFileNewInNamePathS
+ajFileNewInList ajFileNewListinList
+ajFileNewDirF ajFileNewListinDirPre
+ajFileNewDW ajFileNewListinPathWild
+ajFileNewDWE ajFileNewListinPathWildExclude
+ajFileNewOut ajFileNewOutNameS
+ajFileNewOutDir =ajFileNewOutNameDirS 1,2 2,1
+ajFileNewOutDir @ajFileNewOutNameDirS
+ajFileNewOutD =ajFileNewOutNamePathS 1,2 2,1
+ajFileNewOutD @ajFileNewOutNamePathS
+ajFileNewApp ajFileNewOutappendNameS
+ajFileReopen ajFileReopenName
+ajFileNext ajFileReopenNext
+ajFileTell ajFileResetPos
+ajFileUnbuffer ajFileSetUnbuffer
+ajFileFp ajFileGetFileptr
+ajFileName ajFileGetNameC
+ajFileNameS ajFileGetNameS
+ajFileGetName ajFileGetNameS
+ajFileGetApp ajFileIsAppend
+ajFileEof ajFileIsEof
+ajFileStderr ajFileIsStderr
+ajFileStdin ajFileIsStdin
+ajFileStdout ajFileIsStdout
+ajFileBuffNewF ajFilebuffNewFromCfile
+ajFileBuffNewFile ajFilebuffNewFromFile
+ajFileBuffNewS ajFilebuffNewLine
+ajFileBuffNewList ajFilebuffNewListinList
+ajFileBuffNewIn ajFilebuffNewNameS
+ajFileBuffNewDC =ajFileBuffNewNamePathC 1,2 2,1
+ajFileBuffNewDC @ajFileBuffNewNamePathC
+ajFileBuffNewDF =ajFilebuffNewNamePathS 1,2 2,1
+ajFileBuffNewDF @ajFilebuffNewNamePathS
+ajFileBuffNew ajFilebuffNewNofile
+ajFileBuffNewDW ajFilebuffNewPathWild
+ajFileBuffNewDWE ajFilebuffNewPathWildExclude
+ajFileBuffDel ajFilebuffDel
+ajFileBuffSetFile -
+ajFileBuffClear ajFilebuffClear
+ajFileBuffClearStore ajFilebuffClearStore
+ajFileBuffFix ajFilebuffFix
+ajFileBuffReset ajFilebuffReset
+ajFileBuffResetPos ajFilebuffResetPos
+ajFileBuffResetStore ajFilebuffResetStore
+ajFileBuffBuff ajFilebuffSetBuffered
+ajFileBuffNobuff ajFilebuffSetUnbuffered
+ajFileBuffStripHtmlPre ajFileBuffHtmlPre
+ajFileBuffStripHtml ajFilebuffHtmlStrip
+ajFileBuffLoadC ajFilebuffLoadC
+ajFileBuffLoadS ajFilebuffLoadS
+ajFileBuffLoad ajFilebuffLoadAll
+ajFileBuffFile ajFilebuffGetFile
+ajFileBuffSize ajFileValueBuffsize
+ajFileBuffFp ajFilebuffGetFileptr
+ajFileBuffIsBuffered ajFilebuffIsBuffered
+ajFileBuffEmpty ajFilebuffIsEmpty
+ajFileBuffEnd ajFilebuffIsEnded
+ajFileBuffEof ajFilebuffIsEof
+ajFileBuffTrace ajFilebuffTrace
+ajFileBuffTraceFull ajFilebuffTraceFull
+ajFileBuffPrint ajFilebuffTraceTitle
+ajOutfileNew ajOutfileNewNameS
+ajOutfileDel ajOutfileClose
+ajOutfileFile ajOutfileGetFile
+ajOutfileFp ajOutfileGetFileptr
+ajOutfileFormat ajOutfileGetFormat
+ajFileStat -
+ajFileNameValid ajFilenameExistsRead
+ajFileLength ajFilenameGetSize
+ajFileHasDir ajFilenameHasPath
+ajFileTestSkip -
+ajFileNameExtC ajFilenameReplaceExtC
+ajFileNameExt ajFilenameReplaceExtS
+ajFileNameDirSetC ajFilenameReplacePathC
+ajFileNameDirSet ajFilenameReplacePathS
+ajFileSetDir ajFilenameReplacePathS
+ajFileTempName -
+ajFileNameShorten ajFilenameTrimAll
+ajFileExtnTrim ajFilenameTrimExt
+ajFileNameTrim ajFilenameTrimPath
+ajFileDirTrim ajFilenameTrimPath
+ajFileDirExtnTrim ajFilenameTrimPathExt
+ajFileDirPath ajDirnameFillPath
+ajFileDirFix ajDirnameFix
+ajFileDir ajDirnameFixExists
+ajFileDirUp ajDirnameUp
+ajFileScan -
+ajDirScan -
+ajFileGetwd -
+#ajfiledata
+ajFileDataNewC -
+ajFileDataNew -
+ajFileDataDirNew -
+ajFileDataDirNewC -
+ajFileDataNewWrite -
+ajFilePathData -
+#ajfileio
+ajFileGets ajReadline
+ajFileReadAppend ajReadlineAppend
+ajFileGetsL ajReadlinePos
+ajFileGetsTrim ajReadlineTrim
+ajFileReadLine ajReadlineTrim
+ajFileGetsTrimL ajReadlineTrimPos
+ajFileRead =ajReadbinBinary 1,2,3,4 4,3,2,1
+ajFileRead @ajReadbinBinary
+ajFileOutHeader -
+ajFileWrite =ajWritebinBinary 1,2,3,4 1,4,3,2
+ajFileWrite @ajWritebinBinary
+ajFileWriteByte ajWritebinByte
+ajFileWriteInt2 ajWritebinInt2
+ajFileWriteInt4 ajWritebinInt4
+ajFileWriteStr ajWritebinStr
+ajFileBuffGet ajBuffreadLine
+ajFileBuffGetL ajBuffreadLinePos
+ajFileBuffGetStoreL ajBuffreadLinePosStore
+ajFileBuffGetStore ajBuffreadLineStore
+ajFileBuffGetTrim ajBuffreadLineTrim
+#ajfmt
+#ajindex
+#ajjava
+#ajlist
+ajListCopy ajListNewListref
+ajListNewArgs -
+ajListPushApp ajListPushAppend
+ajListPushList ajListPushlist
+ajListGarbageCollect =ajListPurge 1,2,3 1,3,2
+ajListGarbageCollect @ajListPurge
+ajListSort2 ajListSortTwo
+ajListSort3 ajListSortTwoThree
+ajListUnique2 ajListSortTwoUnique
+ajListUnique ajListSortUnique
+ajListPopEnd ajListPopLast
+ajListLength ajListGetLength
+ajListFind ajListMapfind
+ajListMapRead ajListMapread
+ajListFirst ajListPeekFirst
+ajListLast ajListPeekLast
+ajListToArray ajListToarray
+ajListNodesNew -
+ajListAppend -
+ajListDel ajListFree
+ajListIter ajListIterNew
+ajListIterBack ajListIterNewBack
+ajListIterRead ajListIterNewread
+ajListIterBackRead ajListIterNewreadBack
+ajListIterMore -
+ajListIterMoreBack -
+ajListIterBackDone ajListIterDoneBack
+ajListIterFree ajListIterDel
+ajListIterBackMore -
+ajListIterNext ajListIterGet
+ajListIterBackNext ajListIterGetBack
+ajListInsert ajListIterInsert
+ajListRemove ajListIterRemove
+ajListstrClone -
+ajListstrCopy ajListstrNewList
+ajListstrPushApp ajListstrPushAppend
+ajListstrPushList ajListstrPushlist
+ajListstrPopEnd ajListstrPopLast
+ajListstrLength ajListstrGetLength
+ajListstrFind ajListstrMapfind
+ajListstrMapRead ajListstrMapread
+ajListstrToArray ajListstrToarray
+ajListstrToArrayApp ajListstrToarrayAppend
+ajListstrNewArgs -
+ajListstrDel ajListstrFree
+ajListstrInsert ajListstrIterInsert
+ajListstrRemove ajListstrIterRemove
+#ajmath
+ajRoundF ajRoundFloat
+ajRecToPol ajCvtRecToPol
+ajPolToRec ajCvtPolToRec
+ajDegToRad ajCvtDegToRad
+ajRadToDeg ajCvtRadToDeg
+ajGaussProb ajCvtGaussToProb
+ajGeoMean ajMathGmean
+ajPosMod ajMathModulo
+ajRandomNumberD ajRandomDouble
+ajMathPos ajCvtSposToPos
+ajMathPosI ajCvtSposToPosStart
+#ajmatrices
+ajMatrixRead -
+ajMatrixfRead -
+ajMatrixSeqNum ajMatrixSeqIndex
+ajMatrixfSeqNum ajMatrixfSeqIndex
+ajMatrixArray ajMatrixGetMatrix
+ajMatrixfArray ajMatrixfGetMatrix
+ajMatrixSize ajMatrixGetSize
+ajMatrixfSize ajMatrixfGetSize
+ajMatrixCvt ajMatrixGetCvt
+ajMatrixfCvt ajMatrixfGetCvt
+ajMatrixChar -
+ajMatrixfChar -
+ajMatrixName ajMatrixGetName
+ajMatrixfName ajMatrixfGetName
+#ajmem
+ajMemCalloc0 ajMemCallocZero
+#ajmess
+ajMessErrorCount ajMessGetCountError
+ajMessCaughtMessage ajMessGetMessageC
+ajMessSysErrorText ajMessGetSysmessageC
+ajDebugFile ajMessGetDebugfile
+#ajnam
+ajNamGetenv ajNamGetenvS
+ajNamGetValue ajNamGetValusS
+ajNamRootInstall -
+ajNamRootPack -
+ajNamRootVersion -
+ajNamRoot -
+ajNamRootBase -
+#ajnexus
+#ajobo
+#ajpat
+#ajpdb
+#ajpdbio
+#ajphylo
+#ajrange
+ajRangeFile ajRangeNewFilename
+ajRangeFileLimits ajRangeNewFilenameLimits
+ajRangeCopy ajRangeNewRange
+ajRangeGet ajRangeNewString
+ajRangeGetLimits ajRangeNewStringLimits
+ajRangeNumber ajRangeGetSize
+ajRangeChange ajRangeElementSet
+ajRangeBegin ajRangeSetOffset
+ajRangeOverlapSingle -
+ajRangeOverlaps ajRangeCountOverlaps
+ajRangeOrdered ajRangeIsOrdered
+ajRangeDefault ajRangeIsWhole
+#ajreg
+#ajreport
+ajReportSetTags ajReportSetTagsS
+ajReportLists -
+ajReportSetHeader ajReportSetHeaderS
+ajReportAppendHeader ajReportAppendHeaderS
+ajReportSetSubHeader ajReportSetSubheaderS
+ajReportAppendSubHeaderC ajReportAppendSubheaderC
+ajReportAppendSubHeader ajReportAppendSubheaderS
+ajReportSetTail ajReportSetTailS
+ajReportAppendTail ajReportAppendTailS
+ajReportSetSubTailC ajReportSetSubtailC
+ajReportSetSubTail ajReportSetSubtailS
+ajReportAppendSubTailC ajReportAppendSubtailC
+ajReportAppendSubTail ajReportAppendSubtailS
+ajReportSeqName ajReportGetSeqnameSeq
+ajReportFileAdd ajReportAddFile
+#ajresource
+#ajseq
+ajSeqNewC ajSeqNewNameC
+ajSeqNewStr ajSeqNewNameS
+ajSeqNewRange ajSeqNewRangeS
+ajSeqNewRangeCI =ajSeqNewRangeC 1,2,3,4,5 1,3,4,5
+ajSeqNewRangeCI @ajSeqNewRangeC
+ajSeqNewL ajSeqNewRes
+ajSeqNewS ajSeqNewSeq
+ajSeqAssAccC ajSeqAssignAccC
+ajSeqAssAcc ajSeqAssignAccS
+ajSeqAssDescC ajSeqAssignDescC
+ajSeqAssDesc ajSeqAssignDescS
+ajSeqAssEntryC ajSeqAssignEntryC
+ajSeqAssEntry ajSeqAssignEntryS
+ajSeqAssFileC ajSeqAssignFileC
+ajSeqAssFile ajSeqAssignFileS
+ajSeqAssFullC ajSeqAssignFullC
+ajSeqAssFull ajSeqAssignFullS
+ajSeqAssGiC ajSeqAssignGiC
+ajSeqAssGi ajSeqAssignGiS
+ajSeqAssName ajSeqAssignNameS
+ajSeqAssNameC ajSeqAssignNameS
+ajSeqAssSeq ajSeqAssignSeqS
+ajSeqAssSeqC ajSeqAssignSeqC
+ajSeqAssSeqCI =ajSeqAssignSeqC 1,2,3 1,2
+ajSeqAssSeqCI @ajSeqAssignSeqC
+ajSeqAssSvC ajSeqAssignSvC
+ajSeqAssSv ajSeqAssignSvS
+ajSeqAssUfoC ajSeqAssignUfoC
+ajSeqAssUfo ajSeqAssignUfoS
+ajSeqAssUsaC ajSeqAssignUsaC
+ajSeqAssUsa ajSeqAssignUsaS
+ajSeqDefName =ajSeqSetName 1,2,ajFalse 1,2
+ajSeqDefName =ajSeqSetNameMulti 1,2,ajTrue 1,2
+ajSeqDefName @ajSeqSetName_or_@ajSeqSetNameMulti
+ajSeqSetRangeDir =ajSeqSetRange 1,2,3,ajFalse 1,2,3
+ajSeqSetRangeDir =ajSeqSetRangeRev 1,2,3,ajTrue 1,2,3
+ajSeqSetRangeDir @ajSeqSetRange_or_@ajSeqSetRangeRev
+ajSeqMod ajSeqSetUnique
+ajSeqReplace ajSeqAssignSeqS
+ajSeqReplaceC ajSeqAssignSeqC
+ajSeqMakeUsa -
+ajSeqMakeUsaS -
+ajSeqComplementOnly ajSeqComplement
+ajSeqCompOnly ajSeqComplement
+ajSeqToLower ajSeqFmtLower
+ajSeqToUpper ajSeqFmtUpper
+ajSeqFill ajSeqGapFill
+ajSeqReverse ajSeqReverseDo
+ajSeqRevOnly ajSeqReverseOnly
+ajSeqGetAcc ajSeqGetAccS
+ajSeqBegin ajSeqGetBegin
+ajSeqTrueBegin ajSeqGetBeginTrue
+ajSeqGetDesc ajSeqGetDescS
+ajSeqEnd ajSeqGetEnd
+ajSeqTrueEnd ajSeqGetEndTrue
+ajSeqGetEntry ajSeqGetEntryS
+ajSeqCopyFeat ajSeqGetFeatCopy
+ajSeqGetGi ajSeqGetGiS
+ajSeqLen ajSeqGetLen
+ajSeqTrueLen ajSeqGetLenTrue
+ajSeqName ajSeqGetNameC
+ajSeqGetName ajSeqGetNameS
+ajSeqOffend ajSeqGetOffend
+ajSeqOffset ajSeqGetOffset
+ajSeqGetReverse ajSeqGetRev
+ajSeqGetReversed ajSeqIsReversed
+ajSeqStr ajSeqGetSeqS
+ajSeqChar ajSeqGetSeqC
+ajSeqCharCopy ajSeqGetSeqCopyC
+ajSeqStrCopy ajSeqGetSeqCopyS
+ajSeqCharCopyL =ajSeqGetSeqCopyC 1,2 1,ajSeqGetLen[2]
+ajSeqCharCopyL @ajSeqGetSeqCopyC
+ajSeqGetSv ajSeqGetSvS
+ajSeqGetTax ajSeqGetTaxS
+ajSeqGetUsa ajSeqGetUsaS
+ajSeqRev ajSeqIsReversed
+ajSeqNum ajSeqConvertNum
+ajSeqCheckGcg ajSeqCalcCheckgcg
+ajSeqCount ajSeqCalcCount
+ajSeqPos =ajCvtSposToPos 1,2 'ajSeqGetLen[1]',2
+ajSeqPos @ajCvtSposToPos
+ajSeqPosI =ajCvtSposToPosStart 1,2,3 'ajSeqGetLen[1]',2,3
+ajSeqPosI @ajCvtSposToPosStart
+ajSeqPosII ajCvtSposToPosStart
+ajSeqTruePosI ajSeqCalcTrueposMin
+ajSeqTruePosII ajCvtSposToPosStart
+ajSeqTruePos ajSeqCalcTruepos
+ajSeqGapCount ajSeqCountGaps
+ajSeqTraceT ajSeqTraceTitle
+ajSeqallReverse -
+ajSeqallToLower -
+ajSeqallToUpper -
+ajSeqallBegin ajSeqallGetseqBegin
+ajSeqallEnd ajSeqallGetseqEnd
+ajSeqallLen ajSeqallGetseqLen
+ajSeqallGetNameSeq ajSeqallGetseqName
+ajSeqallGetRange ajSeqallGetseqRange
+ajSeqsetToLower ajSeqsetFmtLower
+ajSeqsetToUpper ajSeqsetFmtUpper
+ajSeqsetBegin ajSeqsetGetBegin
+ajSeqsetEnd ajSeqsetGetEnd
+ajSeqsetLen ajSeqsetGetLen
+ajSeqsetGetName ajSeqsetGetNameS
+ajSeqsetGetSeqArray ajSeqsetGetSeqarray
+ajSeqsetSize ajSeqsetGetSize
+ajSeqsetTotweight ajSeqsetGetTotweight
+ajSeqsetAcc ajSeqsetGetseqAccS
+ajSeqsetName ajSeqsetGetseqNameS
+ajSeqsetGetSeq ajSeqsetGetseqSeq
+ajSeqsetSeq ajSeqsetGetseqSeqC
+ajSeqsetWeight ajSeqsetGetseqWeight
+ajSeqNumS ajSeqstrConvertNum
+ajSeqCvtTrace ajSeqcvtTrace
+ajSeqCvtNewZero ajSeqcvtNewC
+ajSeqCvtNew ajSeqcvtNewEndC
+ajSeqCvtNewText ajSeqcvtNewNumberC
+ajSeqCvtNewZeroS ajSeqcvtNewStr
+ajSeqCvtNewZeroSS ajSeqcvtNewStrAsym
+ajSeqCvtDel ajSeqcvtDel
+ajSeqCvtK ajSeqcvtGetCodeK
+ajSeqCvtKS ajSeqcvtGetCodeS
+ajSeqCvtKSRow ajSeqcvtGetCodeS
+ajSeqCvtKSColumn ajSeqcvtGetCodeAsymS
+ajSeqCvtLen ajSeqcvtGetLen
+ajIsAccession ajSeqtestIsAccession
+ajIsSeqversion ajSeqtestIsSeqversion
+ajSeqMW ajSeqstrCalcMolwt
+ajSeqGapCountS ajSeqstrCountGaps
+ajSeqstrComplementOnly ajSeqstrComplement
+ajSeqCompOnlyStr ajSeqstrComplement
+ajSeqReverseStr ajSeqstrReverse
+ajSeqCrc ajSeqstrCalcCrc
+ajSeqGapStandardS -
+ajSeqCalcCrc -
+#ajseqabi
+#ajseqbam
+#ajseqread
+#ajseqtype
+#ajseqwrite
+ajSeqoutNewF ajSeqoutNewFile
+ajSeqWrite ajSeqoutWriteSeq
+ajSeqAllWrite ajSeqoutWriteSeq
+ajSeqsetWrite ajSeqoutWriteSet
+ajSeqWriteXyz =ajSeqoutDumpSwisslike 1,2,3 2,1,3
+ajSeqWriteXyz @ajSeqoutDumpSwisslike
+ajSssWriteXyz -
+ajSeqoutUsa ajSeqoutClearUsa
+ajSeqWriteClose ajSeqoutClose
+ajSeqFileNewOut ajSeqoutOpenFilename
+ajSeqOutSetFormatC ajSeqoutSetFormatC
+ajSeqOutSetFormat ajSeqoutSetFormatS
+ajSeqoutDefName =ajSeqoutSetNameDefaultS 1,2,3 1,3,2
+ajSeqoutDefName @ajSeqoutSetNameDefaultS
+ajSeqPrintOutFormat ajSeqoutPrintFormat
+ajSeqoutCount ajSeqoutGetBasecount
+ajSeqoutCheckGcg ajSeqoutGetCheckgcg
+ajSeqWriteExit ajSeqoutExit
+ajSeqOutFormatDefault ajSeqoutstrGetFormatDefault
+ajSeqFindOutFormat seqoutFindOutFormat
+ajSeqOutFormatSingle ajSeqoutstrIsFormatSingle
+#ajsort
+ajSortTwoIntIncI ajSorttwoIntIncI
+ajSortTwoUintIncI ajSorttwoUintIncI
+#ajsql
+#ajstr
+ajCharNew ajCharNewS
+ajCharNewL ajCharNewRes
+ajCharNewLS =ajStrNewResS 1,2 2,1
+ajCharNewLS @ajStrNewResS
+ajCharFree ajCharDel
+ajCharToLower ajCharFmtLower
+ajCharToUpper ajCharFmtUpper
+ajStrMatchCC ajCharMatchC
+ajStrMatchCaseCC ajCharMatchCaseC
+ajStrMatchWildCC ajCharMatchWildC
+ajStrMatchWildCO ajCharMatchWildS
+ajStrMatchWordCC ajCharMatchWildWordS
+ajStrPrefixCC ajCharPrefixC
+ajStrPrefixCO ajCharPrefixS
+ajStrPrefixCaseCC ajCharPrefixCaseC
+ajStrPrefixCaseCO ajCharPrefixCaseS
+ajStrSuffixCC ajCharSuffixC
+ajStrSuffixCO ajCharSuffixS
+ajStrCmpCaseCC ajCharCmpCase
+ajStrNCmpCaseCC ajCharCmpCaseLen
+ajStrCmpWildCC ajCharCmpWild
+ajStrTokCC ajCharParseC
+ajStrDup ajStrNewRef
+ajStrNewL ajStrNewRes
+ajStrNewCL ajStrNewResC
+ajStrNewCIL ajStrNewResLenC
+ajStrDelReuse ajStrDelStatic
+ajStrAssC ajStrAssignC
+ajStrAssK ajStrAssignK
+ajStrAssS ajStrAssignS
+ajStrAssI =ajStrAssignS 1,2,3 1,2
+ajStrAssI @ajStrAssignS
+ajStrSetC ajStrAssignEmptyC
+ajStrSet ajStrAssignEmptyS
+ajStrAssCI ajStrAssignLenC
+ajStrCopy ajStrAssignRef
+ajStrAssCL =ajStrAssignResC 1,2,3 1,3,2
+ajStrAssCL @ajStrAssignResC
+ajStrAssL =ajStrAssignResS 1,2,3 1,3,2
+ajStrAssL @ajStrAssignResS
+ajStrAssSubC ajStrAssignSubC
+ajStrAssSub ajStrAssignSubS
+ajStrAppC ajStrAppendC
+ajStrAppK ajStrAppendK
+ajStrApp ajStrAppendS
+ajStrAppKI ajStrAppendCountK
+ajStrAppCI ajStrAppendLenC
+ajStrAppSub ajStrAppendSubS
+ajStrInsert ajStrInsertS
+ajStrMask ajStrMaskRange
+ajStrReplaceS ajStrPasteS
+ajStrReplaceK ajStrPasteCountK
+ajStrReplaceC ajStrPasteMaxC
+ajStrReplace ajStrPasteMaxS
+ajStrUncomment ajStrCutComments
+ajStrUncommentStart ajStrCutCommentsStart
+ajStrTrim =ajStrCutStart 1,+ 1,2
+ajStrTrim =ajStrCutEnd 1,- 1,-2
+ajStrTrim @ajStrCutStart_or_@ajStrCutEnd
+ajStrCut ajStrCutRange
+ajStrSub ajStrKeepRange
+ajStrKeepC ajStrKeepSetC
+ajStrKeepAlphaC ajStrKeepSetAlphaC
+ajStrDegap ajStrRemoveGap
+ajStrRemoveNewline ajStrRemoveLastNewline
+ajStrRemoveCharsC ajStrRemoveSetC
+ajStrCleanWhite ajStrRemoveWhite
+ajStrClean ajStrRemoveWhiteExcess
+ajStrWildPrefix ajStrRemoveWild
+ajStrChomp ajStrTrimWhite
+ajStrChompC ajStrTrimC
+ajStrChop =ajStrCutEnd 1 1,'1'
+ajStrChop @ajStrCutEnd
+ajStrChompEnd ajStrTrimWhiteEnd
+ajStrTruncate ajStrTruncateLen
+ajStrSubstituteCC ajStrExchangeCC
+ajStrSubstituteKK ajStrExchangeKK
+ajStrSubstitute ajStrExchangeSS
+ajStrConvertCC ajStrExchangeSetCC
+ajStrConvert ajStrExchangeSetSS
+ajStrRev ajStrReverse
+ajStrCountC ajStrCalcCountC
+ajStrCountK ajStrCalcCountK
+ajStrParentheses ajStrHasParentheses
+ajStrIsSpace ajStrIsWhite
+ajStrChar =ajStrGetCharFirst 1,'0' 1
+ajStrChar =ajStrGetCharLast 1,'-1' 1
+ajStrChar =ajStrGetCharPos 1,2 1,2
+ajStrChar @ajStrGetCharFirst_or_@ajStrGetCharLast_or_@ajStrGetCharPos
+ajStrLen ajStrGetLen
+MAJSTRLEN MAJSTRGETLEN
+ajStrStr ajStrGetPtr
+MAJSTRSTR MAJSTRGETPTR
+ajStrSize ajStrGetRes
+MAJSTRSIZE MAJSTRGETRES
+ajStrRoom ajStrGetRoom
+ajStrRef ajStrGetUse
+MAJSTRREF MAJSTRGETUSE
+ajStrStrMod ajStrGetuniquePtr
+ajStrMod ajStrGetUniqueStr
+ajStrClear ajStrSetClear
+ajStrModL ajStrSetRes
+ajStrModMinL ajStrSetResRound
+ajStrFix ajStrSetValid
+ajStrFixI ajStrSetValidLen
+ajStrFromDoubleE ajStrFromDoubleExp
+ajStrBlock ajStrFmtBlock
+ajStrToLower ajStrFmtLower
+ajStrToLowerII ajStrFmtLowerSub
+ajStrQuote ajStrFmtQuote
+ajStrToTitle ajStrFmtTitle
+ajStrToUpper ajStrFmtUpper
+ajStrToUpperII ajStrFmtUpperII
+ajStrWrap ajStrFmtWrap
+ajStrWrapLeft ajStrFmtWrapLeft
+ajStrMatch ajStrMatchS
+ajStrMatchCase ajStrMatchCaseS
+ajStrMatchWild ajStrMatchWildS
+ajStrMatchWord ajStrMatchWildWordS
+ajStrPrefix ajStrPrefixS
+ajStrPrefixCase ajStrPrefixCaseS
+ajStrSuffix ajStrSuffixS
+ajStrNCmpC ajStrCmpLenC
+ajStrCmpO ajStrCmpS
+ajStrCmpCase ajStrCmpCaseS
+ajStrNCmpO ajStrCmpLenS
+ajStrCmpWild ajStrCmpWildS
+ajStrCmp ajStrVcmp
+ajStrFind ajStrFindS
+ajStrFindK ajStrFindAnyK
+ajStrFindCase ajStrFindCaseS
+ajStrRFindC ajStrFindlastC
+ajStrTokC ajStrParseC
+ajStrTokenCount ajStrParseCountC
+ajStrTokenCountR ajStrParseCountMultiC
+ajStrListToArray ajStrParseSplit
+ajStrTok ajStrParseWhite
+ajStrFill =ajStrAppendCountK 1,2,3 1,3,*
+ajStrFill @ajStrAppendCountK
+ajStrPos =ajCvtSposToPos 1,2 'ajStrGetLen[1]',2
+ajStrPos @ajCvtSposToPos
+ajStrPosI =ajCvtSposToPosStart 1,2,3 'ajStrGetLen[1]',2,3
+ajStrPosI @ajCvtSposToPosStart
+ajStrPosII ajCvtSposToPosStart
+ajCharPos =ajCvtSposToPos 1,2 'strlen[1]',2
+ajCharPos @ajCvtSposToPos
+ajStrIter ajStrIterNew
+ajStrIterBack ajStrIterNewBack
+ajStrIterFree ajStrIterDel
+ajStrIterBackDone ajStrIterDoneBack
+ajStrIterBackNext ajStrIterNextBack
+ajStrIterMore =ajStrIterDone 1 !1
+ajStrIterMore @ajStrIterDone
+ajStrIterMoreBack ajStrIterDoneBack
+ajStrTokenInit ajStrTokenNewC
+ajStrTokenClear ajStrTokenDel
+ajStrTokenAss ajStrTokenAssignC
+ajStrDelim =ajStrTokenNextFind 1,2,n 2,1
+ajStrDelim =ajStrTokenNextFindC 1,2,3 2,3,1
+ajStrDelim @ajStrTokenNextFind_or_@ajStrTokenNextFindC
+ajStrToken =ajStrTokenNextParse 1,2,n 2,1
+ajStrToken =ajStrTokenNextParseC 1,2,3 2,3,1
+ajStrToken @ajStrTokenNextParse_or_@ajStrTokenNextParseC
+ajStrTokenRest =ajStrTokenRestParse 1,2 2,1
+ajStrTokenRest @ajStrTokenRestParse
+ajStrNull -
+ajStrArrayDel -
+ajStrAss =ajStrAssignC 1,n 1,'""'
+ajStrAss =ajStrAssignRef 1,2 1,2
+ajStrAss @ajStrAssignC_or_@ajStrAssignRef
+ajStrCopyC =ajStrDel 1,n 1
+ajStrCopyC =ajStrAssignC 1,2 1,2
+ajStrCopyC @ajStrDel_or_@ajStrAssignC
+#ajsys
+ajSysArglistBuild ajSysArglistBuildS
+ajSysArglist ajSysArglistBuildS
+ajSysArgListFree ajSysArglistFree
+ajSysItoC ajSysCastItoC
+ajSysItoUC ajSysCastItouc
+ajSysFileUnlink ajSysFileUnlinkS
+ajSysUnlink ajSysFileUnlinkS
+ajSysWhich ajSysFileWhich
+ajSysWhichEnv ajSysFileWhichEnv
+ajSysFdopen ajSysFuncFdopen
+ajSysFgets ajSysFuncFgets
+ajSysFopen ajSysFuncFopen
+ajSysStrdup ajSysFuncStrdup
+ajSysStrtok ajSysFuncStrtok
+ajSysStrtokR ajSysFuncStrtokR
+ajSystemEnv ajSysExecEnvS
+ajSysSystemEnv ajSysExecEnvS
+ajSystemOut ajSysExecOutnameS
+ajSysSystemOut ajSysExecOutnameS
+ajSystem ajSysSystem
+ajSysSystem ajSysExecS
+ajSysBasename ajFilenameTrimPath
+ajSysIsDirectory -
+ajSysIsRegular -
+#ajtable
+ajTableNewL ajTableNewFunctionLen
+ajTableNew ajTableNewFunctionLen
+ajTableGet ajTableFetch
+ajTableKey ajTableFetchKey
+ajTableLength ajTableGetLength
+ajTableToarray ajTableToarrayKeysValues
+ajStrTableCmp ajTablestrCmp
+ajStrTableCmpCase ajTablestrCmpCase
+ajStrTableHash ajTablestrHash
+ajStrTableHashCase ajTablestrHashCase
+ajStrTablePrint ajTablestrPrint
+ajStrTableTrace ajTablestrTrace
+ajStrTableFree ajTablestrFree
+ajStrTableFreeKey ajTablestrFreeKey
+ajStrTableNewCaseC ajTablecharNewCaseLen
+ajStrTableNewCase ajTablestrNewCaseLen
+ajStrTableNewC ajTablecharNewLen
+ajStrTableNew ajTablestrNewLen
+ajStrTableCmpC ajTablecharCmp
+ajStrTableCmpCaseC ajTablecharCmpCase
+ajStrTableHashC ajTablecharHash
+ajStrTableHashCaseC ajTablecharHashCase
+ajStrTablePrintC ajTablecharPrint
+#ajtax
+#ajtime
+ajTimeSet ajTimeNewDayFmt
+ajTimeToday ajTimeNewToday
+ajTimeTodayF ajTimeNewTodayFmt
+ajTimeMake ajTimeGetTimetype
+ajTimeTodayRef ajTimeRefToday
+ajTimeTodayRefF ajTimeRefTodayFmt
+ajTimeLocal =ajTimeSetLocal 1,2 2,1
+ajTimeLocal @ajTimeSetLocal
+#ajtranslate
+ajTrnCodon -
+ajTrnRevCodon -
+ajTrnC ajTrnSeqC
+ajTrnRevC ajTrnSeqRevC
+ajTrnAltRevC ajTrnSeqAltRevC
+ajTrnStr ajTrnSeqS
+ajTrnAltRevStr ajTrnSeqAltRevStr
+ajTrnSeq ajTrnSeqSeq
+ajTrnRevSeq ajTrnSeqRevSeq
+ajTrnAltRevSeq ajTrnSeqAltRevSeq
+ajTrnCFrame ajTrnSeqFrameC
+ajTrnStrFrame ajTrnSeqFrameS
+ajTrnSeqFrame ajTrnSeqFrameSeq
+ajTrnCDangle ajTrnSeqDangleC
+ajTrnStrDangle ajTrnDangleS
+ajTrnStartStopC ajTrnCodonstrTypeC
+ajTrnStartStop ajTrnCodonstrTypeS
+ajTrnGetFileName ajTrnGetFilename
+#ajtree
+#ajutil
+ajUtilRevInt ajByteRevInt
+ajUtilRev2 ajByteRev2
+ajUtilRev4 ajByteRevLen4
+ajUtilRev8 ajByteRevLen8
+ajUtilRevLong ajByteRevLong
+ajUtilRevShort ajByteRevShort
+ajUtilRevUint ajByteRevUint
+ajUtilBigendian ajUtilGetBigendian
+ajUtilUid ajUtilGetUid
+ajLogInfo ajUtilLoginfo
+ajAcdGetCmdline ajUtilGetCmdline
+ajAcdGetInputs ajUtilGetInputs
+ajAcdProgramS -
+ajAcdGetProgram ajUtilGetProgram
+ajAcdProgram -
+#ajvector
+#samtoolsbam
+#samtoolsbam_aux
+#samtoolsbam_import
+#samtoolskstring
+#samtoolssam_header
+#template
+#ajgraph
+ajGraphClose ajGraphicsClose
+ajGraphCloseWin ajGraphicsClose
+ajGraphPlenv ajGraphicsPlenv
+ajGraphColourBack ajGraphicsResetBgcolour
+ajGraphColourFore ajGraphicsResetFgcolour
+ajGraphSetBackBlack ajGraphicsSetBgcolourBlack
+ajGraphSetBackWhite ajGraphicsSetBgcolourkWhite
+ajGraphSetCharScale ajGraphicsSetCharscale
+ajGraphSetCharSize ajGraphicsSetCharsize
+ajGraphSetDefCharSize ajGraphicsSetDefcharsize
+ajGraphSetDevice ajGraphicsSetDevice
+ajGraphSetFore ajGraphicsSetFgcolour
+ajGraphSetName ajGraphicsSetFilename
+ajGraphSetFillPat ajGraphicsSetFillpat
+ajGraphLabel ajGraphicsSetLabelsC
+ajGraphSetLineStyle ajGraphicsSetLinestyle
+ajGraphSetPage ajGraphicsSetPagesize
+ajGraphSetPenWidth ajGraphicsSetPenwidth
+ajGraphSetOri ajGraphicsSetPortrait
+ajGraphLabelYRight ajGraphicsSetRlabelC
+ajGraphGetBaseColourNuc ajGraphicsBasecolourNewNuc
+ajGraphGetBaseColourProt ajGraphicsBasecolourNewProt
+ajGraphGetBaseColour -
+ajGraphCheckColour ajGraphicsCheckColourS
+ajGraphGetColour ajGraphicsGetFgcolour
+ajGraphGetOut ajGraphicsGetParamsPage
+ajGraphGetCharSize ajGraphicsGetCharsize
+ajGraphPartCircle ajGraphicsDrawarcArc
+ajGraphRectangleOnCurve =ajGraphicsDrawarcRect 1,2,3,4,5,6 1,2,3,5,6,4
+ajGraphRectangleOnCurve @ajGraphicsDrawarcRect
+ajGraphFillRectangleOnCurve =ajGraphicsDrawarcRectFill 1,2,3,4,5,6 1,2,3,5,6,4
+ajGraphFillRectangleOnCurve @ajGraphicsDrawarcRectFill
+ajGraphDrawTextOnCurve ajGraphicsDrawarcTextJustify
+ajGraphHoriBars ajGraphicsDrawbarsHoriz
+ajGraphVertBars ajGraphicsDrawbarsVert
+ajGraphBox ajGraphicsDrawposBox
+ajGraphBoxFill ajGraphicsDrawposBoxFill
+ajGraphCircle ajGraphicsDrawposCircle
+ajGraphDia ajGraphicsDrawposDia
+ajGraphDiaFill ajGraphicsDrawposDiaFill
+ajGraphLine ajGraphicsDrawposLine
+ajGraphRect ajGraphicsDrawposRect
+ajGraphRectFill ajGraphicsDrawposRectFill
+ajGraphTextEnd ajGraphicsDrawposTextAtend
+ajGraphTextLine ajGraphicsDrawposTextAtlineJustify
+ajGraphTextMid ajGraphicsDrawposTextAtmid
+ajGraphTextStart ajGraphicsDrawposTextAtstart
+ajGraphText ajGraphicsDrawposTextJustify
+ajGraphTri ajGraphicsDrawposTri
+ajGraphTriFill ajGraphicsDrawposTriFill
+ajGraphDots =ajGraphicsDrawsetDots 1,2,3 3,1,2
+ajGraphDots @ajGraphicsDrawsetDots
+ajGraphLines =ajGraphicsDrawsetLines 1,2,3,4,5 5,1,2,3,4
+ajGraphLines @ajGraphicsDrawsetLines
+ajGraphPoly ajGraphicsDrawsetPoly
+ajGraphPolyFill ajGraphicsDrawsetPolyFill
+ajGraphSymbols ajGraphicsDrawsetSymbols
+ajGraphFitTextAtline ajGraphicsCalcCharsize
+ajComputeCoord ajGraphicsCalcCoord
+ajGraphDistPts ajGraphicsCalcDistance
+ajGraphArrayMaxMin ajGraphicsCalcRange
+ajGraphTextHeight ajGraphicsCalcTextheight
+ajGraphTextLength ajGraphicsCalcTextlengthC
+ajGraphNewPage ajGraphNewpage
+ajGraphOpen ajGraphOpenFlags
+ajGraphOpenPlot ajGraphOpenPlotset
+ajGraphSetTitlePlus ajGraphAppendTitle
+ajGraphSetDesc ajGraphSetDescS
+ajGraphSet ajGraphSetDevicetype
+ajGraphSetDir ajGraphSetOutdirS
+ajGraphSetOutC ajGraphSetOutfileC
+ajGraphSetOut ajGraphSetOutfileS
+ajGraphSetSubTitleC ajGraphSetSubtitleC
+ajGraphSetSubTitle ajGraphSetSubtitleS
+ajGraphSetTitle ajGraphSetTitleS
+ajGraphSetXTitleC ajGraphSetXlabelC
+ajGraphSetXTitle ajGraphSetXlabelS
+ajGraphSetYTitleC ajGraphSetYlabelC
+ajGraphSetYTitle ajGraphSetYlabelS
+ajGraphSetSubTitleDo ajGraphShowSubtitle
+ajGraphSetTitleDo ajGraphShowTitle
+ajGraphGetSubTitleC ajGraphGetSubtitleC
+ajGraphGetSubTitle ajGraphGetSubtitleS
+ajGraphGetTitle ajGraphGetTitleS
+ajGraphGetXTitleC ajGraphGetXlabelC
+ajGraphGetXTitle ajGraphGetXlabelS
+ajGraphGetYTitleC ajGraphGetYlabelC
+ajGraphGetYTitle ajGraphGetYlabelS
+ajGraphAddText ajGraphAddTextC
+ajGraphAddTextScale ajGraphAddTextScaleC
+ajGraphxySet ajGraphxySetDevicetype
+ajGraphxySetMaxMin ajGraphxySetMinmax
+ajGraphxyCheckMaxMin ajGraphxySetRanges
+ajGraphxySetXEnd ajGraphxySetXendF
+ajGraphxySetXRangeII ajGraphxySetXrangeII
+ajGraphxySetXStart ajGraphxySetXstartF
+ajGraphxySetYEnd ajGraphxySetYendF
+ajGraphxySetYRangeII ajGraphxySetYrangeII
+ajGraphxySetYStart ajGraphxySetYstartF
+ajGraphxySetGaps ajGraphxySetflagGaps
+ajGraphxySetOverLap ajGraphxySetflagOverlay
+ajGraphxySetCirclePoints ajGraphxyShowPointsCircle
+ajGraphxySetJoinPoints ajGraphxyShowPointsJoin
+ajGraphxySetYRight ajGraphxyShowRaxis
+ajGraphxySetXTop ajGraphxyShowUaxis
+ajGraphxySetXLabelTop ajGraphxyShowUnum
+ajGraphxySetXBottom ajGraphxyShowXaxis
+ajGraphxySetXGrid ajGraphxyShowXgrid
+ajGraphxySetXInvTicks ajGraphxyShowXinvert
+ajGraphxySetXLabel ajGraphxyShowXlabel
+ajGraphxySetXTick ajGraphxyShowXtick
+ajGraphxySetYLeft ajGraphxyShowYaxis
+ajGraphxySetYGrid ajGraphxyShowYgrid
+ajGraphxySetYInvTicks ajGraphxyShowYinvert
+ajGraphxySetYLabel ajGraphxyShowYlabel
+ajGraphxySetYLabelLeft ajGraphxyShowYnum
+ajGraphxySetYTick ajGrapxyhShowYtick
+ajGraphdataSetLineType ajGraphdataSetLinetype
+ajGraphdataSetMaxMin ajGraphdataSetMinmax
+ajGraphdataSetSubTitleC ajGraphdataSetSubtitleC
+ajGraphdataSetSubTitle ajGraphdataSetSubtitleS
+ajGraphdataSetTitle ajGraphdataSetTitleS
+ajGraphdataSetMaxima ajGraphdataSetTruescale
+ajGraphdataSetXTitleC ajGraphdataSetXlabelC
+ajGraphdataSetXTitle ajGraphdataSetXlabelS
+ajGraphdataSetYTitleC ajGraphdataSetYlabelC
+ajGraphdataSetYTitle ajGraphdataSetYlabelS
+ajGraphdataSetXY ajGraphdataAddXY
+ajGraphdataAddLine ajGraphdataAddposLine
+ajGraphdataAddRect ajGraphdataAddposRect
+ajGraphdataAddText ajGraphdataAddposTextC
+ajGraphdataAddTextScale ajGraphdataAddposTextScaleC
+ajGraphInfo ajGraphicsGetOutfiles
+ajGraphListDevices ajGraphicsListDevices
+ajGraphPrintType ajGraphicsPrintType
+ajGraphxyDumpDevices ajGraphicsxyDumpDevices
+ajGraphxyListDevices ajGraphicsxyListDevices
+#ajhist
+ajHistClose ajHistogramClose
+ajHistSetMark ajHistogramSetMark
+ajHistDelete ajHistDel
+ajHistSetBlackandWhite ajHistSetMono
+ajHistSetYAxisRightC ajHistSetYlabelC
+ajHistSetXAxisC ajHistSetXlabelC
+ajHistSetYAxisLeftC ajHistSetYlabelC
+ajHistSetColour ajHistSetmltiColour
+ajHistSetPattern ajHistSetmultiPattern
+ajHistSetMultiTitleC ajHistSetmultiTitleC
+ajHistSetMultiTitle ajHistSetmultiTitleS
+ajHistSetMultiXTitleC ajHistSetmultiXlabelC
+ajHistSetMultiXTitle ajHistSetmultiXlabelS
+ajHistSetMultiYTitleC ajHistSetmultiYlabelC
+ajHistSetMultiYTitle ajHistSetmultiYlabelS
+ajHistSetPtrToData ajHistDataAdd
+ajHistCopyData ajHistDataCopy
+#ajmart
+#ajseqdb
+#ajacd
+ajAcdGetBool ajAcdGetBoolean
+ajAcdGetDiscretestatesI =ajAcdGetDiscretestatesSingle 1,2 1
+ajAcdGetDiscretestatesI @ajAcdGetDiscretestatesSingle
+ajAcdGetFeat ajAcdGetFeatures
+ajAcdGetListI =ajAcdGetListSingle 1,2 1
+ajAcdGetListI @ajAcdGetListSingle
+ajAcdGetSelectI =ajAcdGetSelectSingle 1,2 1
+ajAcdGetSelectI @ajAcdGetSelectSingle
+ajAcdGetSeqsetallI =ajAcdGetSeqsetallSingle 1,2 1
+ajAcdGetSeqsetallI @ajAcdGetSeqsetallSingle
+ajAcdGetTreeI =ajAcdGetTreeSingle 1,2 1
+ajAcdGetTreeI @ajAcdGetTreeSingle
+ajAcdValue ajAcdGetValue
+ajAcdIsUserdefined ajAcdIsUserdefinedC
+ajAcdDebug -
+ajAcdDebugIsSet -
+ajAcdFilter -
+ajAcdStdout -
+ajGraphicsInit ajAcdGraphicsInit
+ajGraphInit ajAcdGraphicsInit
+ajGraphicsInitPV ajAcdGraphicsInitPV
+ajGraphInitPV ajAcdGraphicsInitPV
+#ensanalysis
+#ensassembly
+#ensassemblyexception
+#ensassemblymapper
+#ensattribute
+#ensbaseadaptor
+#enscache
+#enscoordsystem
+#ensdatabaseadaptor
+#ensdatabaseconnection
+#ensdatabaseentry
+#ensdensity
+#ensditag
+#ensexon
+#ensexternaldatabase
+#ensfeature
+#ensgene
+#ensgvindividual
+#ensgvpopulation
+#ensgvsample
+#ensintron
+#enskaryotype
+#ensmapper
+#ensmarker
+ensMarkeradaptorFetchAttributes -
+#ensmetacoordinate
+#ensmetainformation
+#ensmiscellaneous
+#ensprediction
+#ensprojectionsegment
+#ensqc
+#ensqcalignment
+#ensqcdatabase
+#ensqcsequence
+#ensregistry
+#ensrepeat
+#ensseqregion
+#enssequence
+#enssequenceedit
+#ensslice
+#ensstorable
+#enstable
+#enstranscript
+#enstranslation
+#ensutility
+#ensvariation
+#embaln
+embAlignPrintLocal -
+#embcom
+#embcons
+#embdata
+#embdbi
+#embdmx
+#embdomain
+#embest
+#embexit
+#embgroup
+#embiep
+embIepComp =embIepCompC 1,2,3 1,2,0,0,3
+embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
+#embindex
+#embinit
+#embmat
+#embmisc
+#embmol
+#embnmer
+#embpat
+#embpatlist
+#embpdb
+#embprop
+#embread
+#embshow
+#embsig
+#embword
+embWordMatchListAppend -
+#aaindexextract
+#abiview
+#acdc
+#acdgalaxy
+#acdlog
+#acdpretty
+#acdrelations
+#acdtable
+#acdtrace
+#acdvalid
+#acdxsd
+#ajtest
+#aligncopy
+#aligncopypair
+#antigenic
+#backtranambig
+#backtranseq
+#banana
+#biosed
+#btwisted
+#cai
+#chaos
+#charge
+#checktrans
+#chips
+#cirdna
+#codcmp
+#codcopy
+#coderet
+#complex
+#compseq
+#cons
+#consambig
+#corbatest
+#cpgplot
+#cpgreport
+#cusp
+#cutgextract
+#cutseq
+#dan
+#dbiblast
+#dbifasta
+#dbiflat
+#dbigcg
+#dbxfasta
+#dbxflat
+#dbxgcg
+#dbxreport
+#dbxstat
+#degapseq
+#density
+#descseq
+#diffseq
+#digest
+#distmat
+#domtesta
+#domtestb
+#domtestc
+#domtestd
+#dotmatcher
+#dotpath
+#dottup
+#dreg
+#edamclean
+#edialign
+#einverted
+#embossdata
+#embossversion
+#emma
+#emowse
+#ensembltest
+#entrails
+#entrailsbook
+#entrailshtml
+#entrailswiki
+#entret
+#epestfind
+#eprimer3
+#equicktandem
+#est2genome
+#etandem
+#extractalign
+#extractfeat
+#extractseq
+#featcopy
+#featreport
+#findkm
+#freak
+#fuzznuc
+#fuzzpro
+#fuzztran
+#garnier
+#geecee
+#getorf
+#helixturnhelix
+#histogramtest
+#hmoment
+#iep
+#infoalign
+#infobase
+#inforesidue
+#infoseq
+#intconv
+#isochore
+#jaspextract
+#jaspscan
+#jembossctl
+#lindna
+#listor
+#makenucseq
+#makeprotseq
+#marscan
+#martattributes
+#martdatasets
+#martfilters
+#martquery
+#martregistry
+#martseqs
+#maskambignuc
+#maskambigprot
+#maskfeat
+#maskseq
+#matcher
+#megamerger
+#merger
+#msbar
+#mwcontam
+#mwfilter
+#needle
+#needleall
+#newcoils
+#newcpgreport
+#newcpgseek
+#newseq
+#nohtml
+#noreturn
+#nospace
+#notab
+#notseq
+#nthseq
+#nthseqset
+#octanol
+#oddcomp
+#origsplitter
+#origunion
+#palindrome
+#pasteseq
+#patmatdb
+#patmatmotifs
+#patmattest
+#pepcoil
+#pepinfo
+#pepnet
+#pepstats
+#pepwheel
+#pepwindow
+#pepwindowall
+#plotcon
+#plotorf
+#polydot
+#preg
+#prettyplot
+#prettyseq
+#prima
+#primers
+#primersearch
+#printsextract
+#profit
+#prophecy
+#prophet
+#prosextract
+#pscan
+#psiphi
+#rebaseextract
+#recoder
+#redata
+#remap
+#restover
+#restrict
+#revseq
+#seealso
+#seqinfo
+#seqmatchall
+#seqret
+#seqretall
+#seqretallfeat
+#seqretset
+#seqretsetall
+#seqretsingle
+#seqretsplit
+#seqrettype
+#showalign
+#showdb
+#showfeat
+#showorf
+#showpep
+#showseq
+#shuffleseq
+#sigcleave
+#silent
+#sirna
+#sixpack
+#sizeseq
+#skipredundant
+#skipseq
+#splitsource
+#splitter
+#sqltest
+#stretcher
+#stssearch
+#supermatcher
+#syco
+#tcode
+#testplot
+#textsearch
+#tfextract
+#tfm
+#tfscan
+#tmap
+#tranalign
+#transeq
+#treetypedisplay
+#trimest
+#trimseq
+#trimspace
+#twofeat
+#union
+#vectorstrip
+#water
+#whichdb
+#wobble
+#wordcount
+#wordfinder
+#wordmatch
+#wossname
+#yank

@@ -1,0 +1,343 @@
+                                  esignalp
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Reports protein signal cleavage sites
+
+Description
+
+   SignalP 3.0 server predicts the presence and location of signal peptide
+   cleavage sites in amino acid sequences from different organisms:
+   Gram-positive prokaryotes, Gram-negative prokaryotes, and eukaryotes.
+   The method incorporates a prediction of cleavage sites and a signal
+   peptide/non-signal peptide prediction based on a combination of several
+   artificial neural networks and hidden Markov models.
+
+Usage
+
+   Here is a sample session with esignalp
+
+
+% esignalp
+Reports protein signal cleavage sites
+Input (aligned) sequence set: test.seq
+Organism
+       euk : euk
+     gramp : gram positive
+     gramn : gram negative
+Organism type to use [euk]:
+Algorithm method
+    nn+hmm : Neural net plus hmm
+        nn : Neural net
+       hmm : Hmm
+Method to use [nn+hmm]:
+Text output format
+      full : Full
+   summary : Summary
+     short : Short
+Output format [full]:
+Graphics mode
+      none : none
+       gif : gif
+       eps : eps
+   gif+eps : gif+eps
+        ps : ps
+Graphics output [none]:
+       1.0 : 1.0
+       1.1 : 1.1
+       2.0 : 2.0
+       3.0 : 3.0
+Signalp version weights [3.0]:
+Output file [test.esignalp]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Reports protein signal cleavage sites
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+   -type               menu       [euk] Organism type to use (Values: euk
+                                  (euk); gramp (gram positive); gramn (gram
+                                  negative))
+   -method             menu       [nn+hmm] Method to use (Values: nn+hmm
+                                  (Neural net plus hmm); nn (Neural net); hmm
+                                  (Hmm))
+   -format             menu       [full] Output format (Values: full (Full);
+                                  summary (Summary); short (Short))
+   -gmode              menu       [none] Graphics output (Values: none (none);
+                                  gif (gif); eps (eps); gif+eps (gif+eps); ps
+                                  (ps))
+   -synver             menu       [3.0] Signalp version weights (Values: 1.0
+                                  (1.0); 1.1 (1.1); 2.0 (2.0); 3.0 (3.0))
+  [-outfile]           outfile    [*.esignalp] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -truncate           integer    [0] Truncate sequence to n N-terminal
+                                  residues (0=off) (Integer 0 or more)
+   -keepall            boolean    [N] Keep all gnuplot files
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   esignalp reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: test.seq
+
+>14KD_DAUCA
+MGSKNSASVALFFTLNILFFALVSSTEKCPDPYKPKPKPTPKPTPTPYPSAGKCPRDALK
+LGVCADVLNL
+
+Output file format
+
+  Output files for usage example
+
+  File: test.esignalp
+
+*********************** SignalP 3.0 predictions ***********************
+Using neural networks (NN) and hidden Markov models (HMM) trained on eukaryotes
+
+----------------------------------------------------------------------
+>14KD_DAUCA
+
+SignalP-NN result:
+>14KD_DAUCA            length = 70
+
+# pos  aa    C       S       Y
+    1   M   0.008   0.666   0.000
+    2   G   0.008   0.759   0.000
+    3   S   0.008   0.594   0.000
+    4   K   0.008   0.583   0.000
+    5   N   0.008   0.652   0.000
+    6   S   0.008   0.700   0.000
+    7   A   0.008   0.662   0.000
+    8   S   0.008   0.861   0.000
+    9   V   0.008   0.859   0.000
+   10   A   0.008   0.891   0.000
+   11   L   0.008   0.895   0.000
+   12   F   0.011   0.628   0.000
+   13   F   0.008   0.916   0.000
+   14   T   0.008   0.922   0.000
+   15   L   0.009   0.837   0.000
+   16   N   0.008   0.910   0.000
+   17   I   0.009   0.969   0.024
+   18   L   0.009   0.982   0.038
+   19   F   0.010   0.965   0.051
+   20   F   0.013   0.958   0.067
+   21   A   0.028   0.925   0.110
+   22   L   0.049   0.906   0.158
+   23   V   0.026   0.925   0.123
+   24   S   0.023   0.919   0.121
+   25   S   0.049   0.924   0.188
+   26   T   0.681   0.826   0.731
+   27   E   0.304   0.350   0.511
+   28   K   0.054   0.291   0.214
+   29   C   0.178   0.070   0.381
+   30   P   0.029   0.041   0.150
+   31   D   0.063   0.032   0.211
+   32   P   0.009   0.017   0.077
+   33   Y   0.017   0.014   0.099
+   34   K   0.011   0.010   0.076
+   35   P   0.008   0.009   0.061
+   36   K   0.027   0.013   0.100
+   37   P   0.008   0.013   0.049
+   38   K   0.009   0.013   0.046
+   39   P   0.008   0.011   0.037
+   40   T   0.008   0.003   0.030
+
+
+  [Part of this file has been deleted for brevity]
+
+   26   T   0.704   0.281   0.000   0.001   0.281
+   27   E   0.280   0.001   0.000   0.000   0.001
+   28   K   0.000   0.001   0.000   0.000   0.001
+   29   C   0.000   0.001   0.000   0.000   0.001
+   30   P   0.000   0.001   0.000   0.000   0.001
+   31   D   0.001   0.000   0.000   0.000   0.000
+   32   P   0.000   0.000   0.000   0.000   0.000
+   33   Y   0.000   0.000   0.000   0.000   0.000
+   34   K   0.000   0.000   0.000   0.000   0.000
+   35   P   0.000   0.000   0.000   0.000   0.000
+   36   K   0.000   0.000   0.000   0.000   0.000
+   37   P   0.000   0.000   0.000   0.000   0.000
+   38   K   0.000   0.000   0.000   0.000   0.000
+   39   P   0.000   0.000   0.000   0.000   0.000
+   40   T   0.000   0.000   0.000   0.000   0.000
+   41   P   0.000   0.000   0.000   0.000   0.000
+   42   K   0.000   0.000   0.000   0.000   0.000
+   43   P   0.000   0.000   0.000   0.000   0.000
+   44   T   0.000   0.000   0.000   0.000   0.000
+   45   P   0.000   0.000   0.000   0.000   0.000
+   46   T   0.000   0.000   0.000   0.000   0.000
+   47   P   0.000   0.000   0.000   0.000   0.000
+   48   Y   0.000   0.000   0.000   0.000   0.000
+   49   P   0.000   0.000   0.000   0.000   0.000
+   50   S   0.000   0.000   0.000   0.000   0.000
+   51   A   0.000   0.000   0.000   0.000   0.000
+   52   G   0.000   0.000   0.000   0.000   0.000
+   53   K   0.000   0.000   0.000   0.000   0.000
+   54   C   0.000   0.000   0.000   0.000   0.000
+   55   P   0.000   0.000   0.000   0.000   0.000
+   56   R   0.000   0.000   0.000   0.000   0.000
+   57   D   0.000   0.000   0.000   0.000   0.000
+   58   A   0.000   0.000   0.000   0.000   0.000
+   59   L   0.000   0.000   0.000   0.000   0.000
+   60   K   0.000   0.000   0.000   0.000   0.000
+   61   L   0.000   0.000   0.000   0.000   0.000
+   62   G   0.000   0.000   0.000   0.000   0.000
+   63   V   0.000   0.000   0.000   0.000   0.000
+   64   C   0.000   0.000   0.000   0.000   0.000
+   65   A   0.000   0.000   0.000   0.000   0.000
+   66   D   0.000   0.000   0.000   0.000   0.000
+   67   V   0.000   0.000   0.000   0.000   0.000
+   68   L   0.000   0.000   0.000   0.000   0.000
+   69   N   0.000   0.000   0.000   0.000   0.000
+   70   L   0.000   0.000   0.000   0.000   0.000
+>14KD_DAUCA
+Prediction: Signal peptide
+Signal peptide probability: 0.990
+Signal anchor probability: 0.008
+Max cleavage site probability: 0.704 between pos. 25 and 26
+
+
+Data files
+
+   None.
+
+Notes
+
+   None.
+
+References
+
+   Locating proteins in the cell using TargetP, SignalP, and related tools
+   Olof Emanuelsson, So/ren Brunak, Gunnar von Heijne, Henrik Nielsen
+   Nature Protocols 2, 953-971 (2007).
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS wrapper for a program written by the CBS
+   group http://www.cbs.dtu.dk/index.shtml
+
+   The original CBS group application must be licensed and installed to
+   use this wrapper.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

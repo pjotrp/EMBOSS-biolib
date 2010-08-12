@@ -1,0 +1,37 @@
+<b>Here is a sample session with pdbplus</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>pdbplus </b>
+Add accessibility and secondary structure to a CCF file.
+Clean protein structure coordinates directories [./]: <b>../pdbparse-keep/</b>
+Pdb entry directory [./]: <b></b>
+File prefix of PDB files (if any): <b></b>
+Mode of operation
+         1 : Use STRIDE only
+         2 : Use NACCESS only
+         3 : Use STRIDE and NACCESS
+Select mode [1]: <b>3</b>
+Threshold size for SSEs (secondary structure elements) [4]: <b>4</b>
+Clean protein structure coordinates file output directory [./]: <b></b>
+Domainatrix log output file [pdbplus.log]: <b></b>
+Stride program log output file [stride.log]: <b></b>
+Naccess program log output file [naccess.log]: <b></b>
+
+Processing /homes/user/test/qa/pdbparse-keep/1cs4.ccf
+/shared/software/bin/stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1277988338.25929
+/shared/software/bin/naccess /homes/user/test/data/structure/1cs4.ent
+Processing /homes/user/test/qa/pdbparse-keep/1ii7.ccf
+/shared/software/bin/stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1277988338.25929
+/shared/software/bin/naccess /homes/user/test/data/structure/1ii7.ent
+Processing /homes/user/test/qa/pdbparse-keep/2hhb.ccf
+/shared/software/bin/stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1277988338.25929
+/shared/software/bin/naccess /homes/user/test/data/structure/2hhb.ent
+STRIDE  failures: 0
+NACCESS failures: 0
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

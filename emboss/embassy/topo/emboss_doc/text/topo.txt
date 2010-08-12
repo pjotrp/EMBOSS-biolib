@@ -1,0 +1,478 @@
+                                    topo
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+Description
+
+   TOPO creates an image of a transmembrane region but the user must give
+   the transmembrane regions for the sequence as it does not calculate
+   these.
+
+Usage
+
+   Here is a sample session with topo
+
+
+% topo tsw:aqp1_human -signa -prol=UM -cys=cg -gly=sr -acid=dr -basic=db -ohaa=d
+a -araa=dg -graph ps
+Draws an image of a transmembrane protein
+Transmembrane Sections: 18 35 49 67 94 115 136 156 165 184 211 232
+First membrane from the outside [Y]: n
+Signature Sections: 74 82 sy 189 189 hm 239 239 sa 157 157 sa 262 262 sa
+
+Created topo.ps
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Draws an image of a transmembrane protein
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-sequence]          sequence   Protein sequence filename and optional
+                                  format, or reference (input USA)
+   -sections           range      [(full sequence)] Examples of region
+                                  specifications are:
+                                  24-45, 56-78
+                                  1:45, 67=99;765..888
+                                  1,5,8,10,23,45,57,99
+   -[no]membrane       boolean    [Y] First membrane from the outside
+   -signature          toggle     [N] Are there any signature areas to be
+                                  marked
+*  -sigrange           range      [(full sequence)] Examples of ranges
+                                  specifications are:
+                                  10-10 CF, 56-78 SY\ 1:45 SR, 67=99
+                                  HY;765..888 SF
+                                  1,5,HG,8,10,HY,23,45,SR,57,99,UG
+   -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tek, tekt, none, data, xterm, png, gif, pdf,
+                                  svg, pdf, svg)
+
+   Additional (Optional) qualifiers:
+   -cyssymbol          menu       [CF] Code representing shape and colour for
+                                  cys
+                                  i.e. SR square red, HY hexagon yellow
+                                  CF circle NOfill, UG up arrow green (Values:
+                                  N (None); CF (circle); SF (square); HF
+                                  (hexagon); UF (up arrow); DF (down arrow); C
+                                  (black circle); CG (green circle); CR (red
+                                  circle); CB (blue circle); CA (aqua circle);
+                                  CM (magenta circle); CY (yellow circle); S
+                                  (black square); SG (green square); SR (red
+                                  square); SB (blue square); SA (aqua square);
+                                  SM (magenta square); SY (yellow square); H
+                                  (black hexagon); HG (green hexagon); HR (red
+                                  hexagon); HB (blue hexagon); HA (aqua
+                                  hexagon); HM (magenta hexagon); HY (yellow
+                                  hexagon); U (black up arrow); UG (green up
+                                  arrow); UR (red up arrow); UB (blue up
+                                  arrow); UA (aqua up arrow); UM (magenta up
+                                  arrow); UY (yellow up arrow); D (black down
+                                  arrow); DG (green down arrow); DR (red down
+                                  arrow); DB (blue down arrow); DA (aqua down
+                                  arrow); DM (magenta down arrow); DY (yellow
+                                  down arrow))
+   -glysymbol          menu       [CF] Symbol to display N-glycosylation sites
+                                  outside of membrane see cyssymbol for
+                                  examples (Values: N (None); CF (circle); SF
+                                  (square); HF (hexagon); UF (up arrow); DF
+                                  (down arrow); C (black circle); CG (green
+                                  circle); CR (red circle); CB (blue circle);
+                                  CA (aqua circle); CM (magenta circle); CY
+                                  (yellow circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -acidicaa           menu       [CF] Symbol to display acidic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -basicaa            menu       [CF] Symbol to display basic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -amineaa            menu       [CF] Symbol to display amine amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -ohaa               menu       [CF] Symbol to display OH- amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -araa               menu       [CF] Symbol to display aromatic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -proline            menu       [CF] Symbol to display prolines (Values: N
+                                  (None); CF (circle); SF (square); HF
+                                  (hexagon); UF (up arrow); DF (down arrow); C
+                                  (black circle); CG (green circle); CR (red
+                                  circle); CB (blue circle); CA (aqua circle);
+                                  CM (magenta circle); CY (yellow circle); S
+                                  (black square); SG (green square); SR (red
+                                  square); SB (blue square); SA (aqua square);
+                                  SM (magenta square); SY (yellow square); H
+                                  (black hexagon); HG (green hexagon); HR (red
+                                  hexagon); HB (blue hexagon); HA (aqua
+                                  hexagon); HM (magenta hexagon); HY (yellow
+                                  hexagon); U (black up arrow); UG (green up
+                                  arrow); UR (red up arrow); UB (blue up
+                                  arrow); UA (aqua up arrow); UM (magenta up
+                                  arrow); UY (yellow up arrow); D (black down
+                                  arrow); DG (green down arrow); DR (red down
+                                  arrow); DB (blue down arrow); DA (aqua down
+                                  arrow); DM (magenta down arrow); DY (yellow
+                                  down arrow))
+   -draft              boolean    [N] Is this a draft plot
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-graph" associated qualifiers
+   -gprompt            boolean    Graph prompting
+   -gdesc              string     Graph description
+   -gtitle             string     Graph title
+   -gsubtitle          string     Graph subtitle
+   -gxtitle            string     Graph x axis title
+   -gytitle            string     Graph y axis title
+   -goutfile           string     Output file for non interactive displays
+   -gdirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   Any sequence.
+
+  Input files for usage example
+
+   'tsw:aqp1_human' is a sequence entry in the example protein database
+   'tsw'
+
+  Database entry: tsw:aqp1_human
+
+ID   AQP1_HUMAN              Reviewed;         269 AA.
+AC   P29972; B5BU39; Q8TBI5; Q8TDC1;
+DT   01-APR-1993, integrated into UniProtKB/Swiss-Prot.
+DT   23-JAN-2007, sequence version 3.
+DT   15-JUN-2010, entry version 123.
+DE   RecName: Full=Aquaporin-1;
+DE            Short=AQP-1;
+DE   AltName: Full=Aquaporin-CHIP;
+DE   AltName: Full=Water channel protein for red blood cells and kidney proximal
+ tubule;
+DE   AltName: Full=Urine water channel;
+GN   Name=AQP1; Synonyms=CHIP28;
+OS   Homo sapiens (Human).
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+OC   Catarrhini; Hominidae; Homo.
+OX   NCBI_TaxID=9606;
+RN   [1]
+RP   NUCLEOTIDE SEQUENCE [MRNA], AND PARTIAL PROTEIN SEQUENCE.
+RX   MEDLINE=92107900; PubMed=1722319; DOI=10.1073/pnas.88.24.11110;
+RA   Preston G.M., Agre P.;
+RT   "Isolation of the cDNA for erythrocyte integral membrane protein of 28
+RT   kilodaltons: member of an ancient channel family.";
+RL   Proc. Natl. Acad. Sci. U.S.A. 88:11110-11114(1991).
+RN   [2]
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
+RX   MEDLINE=93340184; PubMed=8340403;
+RA   Moon C., Preston G.M., Griffin C.A., Jabs E.W., Agre P.;
+RT   "The human aquaporin-CHIP gene. Structure, organization, and
+RT   chromosomal localization.";
+RL   J. Biol. Chem. 268:15772-15778(1993).
+RN   [3]
+RP   NUCLEOTIDE SEQUENCE [MRNA].
+RC   TISSUE=Retinal pigment epithelium;
+RX   MEDLINE=96326579; PubMed=8703970; DOI=10.1016/0005-2736(96)00076-4;
+RA   Ruiz A.C., Bok D.;
+RT   "Characterization of the 3' UTR sequence encoded by the AQP-1 gene in
+RT   human retinal pigment epithelium.";
+RL   Biochim. Biophys. Acta 1282:174-178(1996).
+RN   [4]
+RP   NUCLEOTIDE SEQUENCE [MRNA].
+RC   TISSUE=Uterus;
+RX   MEDLINE=94290349; PubMed=7517253;
+RA   Li X., Yu H., Koide S.S.;
+RT   "The water channel gene in human uterus.";
+RL   Biochem. Mol. Biol. Int. 32:371-377(1994).
+RN   [5]
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANTS VAL-45 AND ASP-165.
+RG   SeattleSNPs variation discovery resource;
+RL   Submitted (MAR-2005) to the EMBL/GenBank/DDBJ databases.
+RN   [6]
+
+
+  [Part of this file has been deleted for brevity]
+
+FT   TRANSMEM    137    155       Helical; Name=Helix 4.
+FT   TOPO_DOM    156    166       Cytoplasmic.
+FT   TRANSMEM    167    183       Helical; Name=Helix 5.
+FT   TOPO_DOM    184    186       Extracellular.
+FT   INTRAMEM    187    192
+FT   INTRAMEM    193    200       Helical; Name=Helix E.
+FT   TOPO_DOM    201    207       Extracellular.
+FT   TRANSMEM    208    228       Helical; Name=Helix 6.
+FT   TOPO_DOM    229    269       Cytoplasmic.
+FT   MOTIF        76     78       NPA 1.
+FT   MOTIF       192    194       NPA 2.
+FT   COMPBIAS    159    162       Poly-Arg.
+FT   SITE         56     56       Substrate discrimination.
+FT   SITE        180    180       Substrate discrimination.
+FT   SITE        189    189       Hg(2+)-sensitive residue.
+FT   SITE        195    195       Substrate discrimination.
+FT   MOD_RES     246    246       Phosphothreonine (By similarity).
+FT   MOD_RES     247    247       Phosphoserine (By similarity).
+FT   MOD_RES     262    262       Phosphoserine.
+FT   CARBOHYD     42     42       N-linked (GlcNAc...).
+FT   CARBOHYD    205    205       N-linked (GlcNAc...) (Potential).
+FT   VARIANT      38     38       P -> L (in Co(A-B-) antigen; non
+FT                                functional AQP1; red cells show low
+FT                                osmotic water permeability).
+FT                                /FTId=VAR_013279.
+FT   VARIANT      45     45       A -> V (in Co(A-B+) antigen;
+FT                                dbSNP:rs28362692).
+FT                                /FTId=VAR_004400.
+FT   VARIANT     165    165       G -> D (in dbSNP:rs28362731).
+FT                                /FTId=VAR_022318.
+FT   CONFLICT     45     45       A -> T (in Ref. 9; AAH22486).
+FT   HELIX         8     35
+FT   STRAND       37     42
+FT   HELIX        48     65
+FT   STRAND       68     71
+FT   HELIX        76     83
+FT   HELIX        94    114
+FT   TURN        119    122
+FT   STRAND      132    135
+FT   HELIX       136    154
+FT   HELIX       166    182
+FT   TURN        183    185
+FT   HELIX       192    199
+FT   HELIX       207    227
+SQ   SEQUENCE   269 AA;  28526 MW;  BA204D82FB26352E CRC64;
+     MASEFKKKLF WRAVVAEFLA TTLFVFISIG SALGFKYPVG NNQTAVQDNV KVSLAFGLSI
+     ATLAQSVGHI SGAHLNPAVT LGLLLSCQIS IFRALMYIIA QCVGAIVATA ILSGITSSLT
+     GNSLGRNDLA DGVNSGQGLG IEIIGTLQLV LCVLATTDRR RRDLGGSAPL AIGLSVALGH
+     LLAIDYTGCG INPARSFGSA VITHNFSNHW IFWVGPFIGG ALAVLIYDFI LAPRSSDLTD
+     RVKVWTSGQV EEYDLDADDI NSRVEMKPK
+//
+
+Output file format
+
+  Output files for usage example
+
+  Graphics File: topo.ps
+
+   [topo results]
+
+Data files
+
+Notes
+
+   As you can see the lists above the are alot of options to choose for
+   the displays of acidic, basic amino acids etc. This can be explained
+   simply as :-
+
+   One letter codes are black filled shaped EXCEPT for "N" which means
+   NONE (no shape).
+
+   For two letter codes the first letter is the shape and the second the
+   colour except for "F" which means NO FILL.
+
+   For the signatures you need to input sets of start position, end
+   position and code. For the example given these are 74 82 sy 189 189 hm
+   239 239 sa 157 157 sa 262 262 sa
+So residues 74 to 82 will have Yellow Squares (sy).
+   residue 189 (i.e. 189 to 189) will have a Magenta Hexagon. (hm)
+
+References
+
+Warnings
+
+Diagnostics
+
+Exit status
+
+Known bugs
+
+See also
+
+   Program name     Description
+   garnier          Predicts protein secondary structure using GOR method
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   hmoment          Calculate and plot hydrophobic moment for protein sequence(s)
+   pepcoil          Predicts coiled coil regions in protein sequences
+   pepnet           Draw a helical net for a protein sequence
+   pepwheel         Draw a helical wheel diagram for a protein sequence
+   tmap             Predict and plot transmembrane segments in protein sequences
+
+Author(s)
+
+   This program is an EMBOSS conversion of a Fortran program written by
+   Susan Jean Johns, VADMS Center, Biochemistry/Biophysics Department at
+   WSU.
+
+   This application was modified for inclusion in EMBOSS by Ian Longden
+   formerly at:
+   Informatics Division, The Sanger Centre, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge, CB10 1SA, UK.
+
+   Changes to the functionality in version 2 have been ported to the
+   EMBOSS version.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

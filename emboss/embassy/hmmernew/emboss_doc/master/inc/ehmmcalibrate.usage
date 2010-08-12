@@ -1,0 +1,79 @@
+<b>Here is a sample session with ehmmcalibrate</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmcalibrate ../ehmmbuild-ex-keep/globin.hmm globino.hmm -seed 1 </b>
+Calibrate HMM search statistics
+
+hmmcalibrate -- calibrate HMM search statistics
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:                 ../ehmmbuild-ex-keep/globin.hmm
+Length distribution mean: 350
+Length distribution s.d.: 350
+Number of samples:        5000
+random seed:              1
+histogram(s) saved to:    [not saved]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+HMM    : globins50
+mu     :   -35.959286
+lambda :     0.267496
+max    :    -8.753000
+//
+
+/shared/software/bin/hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex-keep/globin.hmm
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmcalibrate ../ehmmbuild-ex4-keep/myhmms myhmmso -seed 1 </b>
+Calibrate HMM search statistics
+
+hmmcalibrate -- calibrate HMM search statistics
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:                 ../ehmmbuild-ex4-keep/myhmms
+Length distribution mean: 350
+Length distribution s.d.: 350
+Number of samples:        5000
+random seed:              1
+histogram(s) saved to:    [not saved]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+HMM    : rrm
+mu     :   -45.860321
+lambda :     0.213107
+max    :   -13.804000
+//
+HMM    : fn3
+mu     :   -44.960484
+lambda :     0.229546
+max    :   -12.242000
+//
+HMM    : pkinase
+mu     :  -193.864685
+lambda :     0.143557
+max    :  -157.132004
+//
+
+/shared/software/bin/hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex4-keep/myhmms
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.2">Go to the input files for this example</a><br><a href="#output.2">Go to the output files for this example</a><p><p>

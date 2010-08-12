@@ -1,0 +1,1980 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: fprotpars
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+fprotpars
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Protein parsimony algorithm
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+Estimates phylogenies from protein sequences (input using the standard
+one-letter code for amino acids) using the parsimony method, in a
+variant which counts only those nucleotide changes that change the
+amino acid, on the assumption that silent changes are more easily
+accomplished.
+
+
+<H2>
+    Algorithm
+</H2>
+
+This program infers an unrooted phylogeny from protein sequences,
+using a new method intermediate between the approaches of Eck and
+Dayhoff (1966) and Fitch (1971). Eck and Dayhoff (1966) allowed any
+amino acid to change to any other, and counted the number of such
+changes needed to evolve the protein sequences on each given
+phylogeny. This has the problem that it allows replacements which are
+not consistent with the genetic code, counting them equally with
+replacements that are consistent. Fitch, on the other hand, counted
+the minimum number of nucleotide substitutions that would be needed to
+achieve the given protein sequences. This counts silent changes
+equally with those that change the amino acid.
+
+<p>
+The present method insists that any changes of amino acid be
+consistent with the genetic code so that, for example, lysine is
+allowed to change to methionine but not to proline. However, changes
+between two amino acids via a third are allowed and counted as two
+changes if each of the two replacements is individually allowed. This
+sometimes allows changes that at first sight you would think should be
+outlawed. Thus we can change from phenylalanine to glutamine via
+leucine in two steps total. Consulting the genetic code, you will find
+that there is a leucine codon one step away from a phenylalanine
+codon, and a leucine codon one step away from glutamine. But they are
+not the same leucine codon. It actually takes three base substitutions
+to get from either of the phenylalanine codons TTT and TTC to either
+of the glutamine codons CAA or CAG. Why then does this program count
+only two? The answer is that recent DNA sequence comparisons seem to
+show that synonymous changes are considerably faster and easier than
+ones that change the amino acid. We are assuming that, in effect,
+synonymous changes occur so much more readily that they need not be
+counted. Thus, in the chain of changes TTT (Phe) --> CTT (Leu) --> CTA
+(Leu) --> CAA (Glu), the middle one is not counted because it does not
+change the amino acid (leucine).
+
+<p>
+To maintain consistency with the genetic code, it is necessary for the
+program internally to treat serine as two separate states (ser1 and
+ser2) since the two groups of serine codons are not adjacent in the
+code. Changes to the state "deletion" are counted as three steps to
+prevent the algorithm from assuming unnecessary deletions. The state
+"unknown" is simply taken to mean that the amino acid, which has not
+been determined, will in each part of a tree that is evaluated be
+assumed be whichever one causes the fewest steps.
+
+<p>
+The assumptions of this method (which has not been described in the
+literature), are thus something like this:
+
+
+<p>
+Change in different sites is independent.  Change in different
+lineages is independent.  The probability of a base substitution that
+changes the amino acid sequence is small over the lengths of time
+involved in a branch of the phylogeny.  The expected amounts of change
+in different branches of the phylogeny do not vary by so much that two
+changes in a high-rate branch are more probable than one change in a
+low-rate branch.  The expected amounts of change do not vary enough
+among sites that two changes in one site are more probable than one
+change in another.  The probability of a base change that is
+synonymous is much higher than the probability of a change that is not
+synonymous.  That these are the assumptions of parsimony methods has
+been documented in a series of papers of mine: (1973a, 1978b, 1979,
+1981b, 1983b, 1988b). For an opposing view arguing that the parsimony
+methods make no substantive assumptions such as these, see the works
+by Farris (1983) and Sober (1983a, 1983b, 1988), but also read the
+exchange between Felsenstein and Sober (1986).
+
+<p>
+The input for the program is fairly standard. The first line contains
+the number of species and the number of amino acid positions (counting
+any stop codons that you want to include).
+
+<p>
+Next come the species data. Each sequence starts on a new line, has a
+ten-character species name that must be blank-filled to be of that
+length, followed immediately by the species data in the one-letter
+code. The sequences must either be in the "interleaved" or
+"sequential" formats described in the Molecular Sequence Programs
+document. The I option selects between them. The sequences can have
+internal blanks in the sequence but there must be no extra blanks at
+the end of the terminated line. Note that a blank is not a valid
+symbol for a deletion.
+
+<p>
+The protein sequences are given by the one-letter code used by
+described in the Molecular Sequence Programs documentation file. Note
+that if two polypeptide chains are being used that are of different
+length owing to one terminating before the other, they should be coded
+as (say)
+
+<p>
+<pre>
+             HIINMA*????
+             HIPNMGVWABT
+</pre>
+
+<p>
+since after the stop codon we do not definitely know that there has
+been a deletion, and do not know what amino acid would have been
+there. If DNA studies tell us that there is DNA sequence in that
+region, then we could use "X" rather than "?". Note that "X" means an
+unknown amino acid, but definitely an amino acid, while "?" could mean
+either that or a deletion. The distinction is often significant in
+regions where there are deletions: one may want to encode a six-base
+deletion as "-?????" since that way the program will only count one
+deletion, not six deletion events, when the deletion arises. However,
+if there are overlapping deletions it may not be so easy to know what
+coding is correct.
+
+<p>
+One will usually want to use "?" after a stop codon, if one does not
+know what amino acid is there. If the DNA sequence has been observed
+there, one probably ought to resist putting in the amino acids that
+this DNA would code for, and one should use "X" instead, because under
+the assumptions implicit in this parsimony method, changes to any
+noncoding sequence are much easier than changes in a coding region
+that change the amino acid, so that they shouldn't be counted anyway!
+
+<p>
+The form of this information is the standard one described in the main
+documentation file. For the U option the tree provided must be a
+rooted bifurcating tree, with the root placed anywhere you want, since
+that root placement does not affect anything.
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with fprotpars</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fprotpars </b>
+Protein parsimony algorithm
+Input (aligned) protein sequence set(s): <b>protpars.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
+
+
+Adding species:
+   1. Alpha     
+   2. Beta      
+   3. Gamma     
+   4. Delta     
+   5. Epsilon   
+
+Doing global rearrangements
+  !---------!
+   .........
+   .........
+
+Output written to file "protpars.fprotpars"
+
+Trees also written onto file "protpars.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fprotpars -njumble 3 -seed 3 -printdata -ancseq -whichcode m -stepbox -outgrno 2  -thresh -threshold 3 </b>
+Protein parsimony algorithm
+Input (aligned) protein sequence set(s): <b>protpars.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
+
+
+Adding species:
+   1. Delta     
+   2. Epsilon   
+   3. Alpha     
+   4. Beta      
+   5. Gamma     
+
+Doing global rearrangements
+  !---------!
+   .........
+   .........
+
+
+Adding species:
+   1. Beta      
+   2. Epsilon   
+   3. Delta     
+   4. Alpha     
+   5. Gamma     
+
+Doing global rearrangements
+  !---------!
+   .........
+
+
+Adding species:
+   1. Epsilon   
+   2. Alpha     
+   3. Gamma     
+   4. Delta     
+   5. Beta      
+
+Doing global rearrangements
+  !---------!
+   .........
+
+Output written to file "protpars.fprotpars"
+
+Trees also written onto file "protpars.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.2">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 3</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fprotpars -njumble 3 -seed 3 </b>
+Protein parsimony algorithm
+Input (aligned) protein sequence set(s): <b>protpars2.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars2.fprotpars]: <b></b>
+
+Data set # 1:
+
+
+Adding species:
+   1. Delta     
+   2. Epsilon   
+   3. Alpha     
+   4. Beta      
+   5. Gamma     
+
+Doing global rearrangements
+  !---------!
+   .........
+   .........
+
+
+Adding species:
+   1. Beta      
+   2. Epsilon   
+   3. Delta     
+   4. Alpha     
+   5. Gamma     
+
+Doing global rearrangements
+  !---------!
+   .........
+
+
+Adding species:
+   1. Epsilon   
+   2. Alpha     
+   3. Gamma     
+   4. Delta     
+   5. Beta      
+
+Doing global rearrangements
+  !---------!
+   .........
+
+Output written to file "protpars2.fprotpars"
+
+Trees also written onto file "protpars2.treefile"
+Data set # 2:
+
+
+Adding species:
+   1. Gamma     
+   2. Delta     
+   3. Epsilon   
+   4. Beta      
+   5. Alpha     
+
+Doing global rearrangements
+  !---------!
+   .........
+   .........
+
+
+Adding species:
+   1. Alpha     
+   2. Delta     
+   3. Epsilon   
+   4. Gamma     
+   5. Beta      
+
+Doing global rearrangements
+  !---------!
+   .........
+
+
+Adding species:
+   1. Epsilon   
+   2. Beta      
+   3. Gamma     
+   4. Alpha     
+   5. Delta     
+
+Doing global rearrangements
+  !---------!
+   .........
+
+Output written to file "protpars2.fprotpars"
+
+Trees also written onto file "protpars2.treefile"
+Data set # 3:
+
+
+Adding species:
+   1. Delta     
+   2. Beta      
+   3. Gamma     
+   4. Alpha     
+   5. Epsilon   
+
+Doing global rearrangements
+  !---------!
+   .........
+   .........
+
+
+Adding species:
+   1. Gamma     
+   2. Delta     
+   3. Beta      
+   4. Epsilon   
+   5. Alpha     
+
+Doing global rearrangements
+  !---------!
+   .........
+
+
+Adding species:
+   1. Epsilon   
+   2. Alpha     
+   3. Gamma     
+   4. Delta     
+   5. Beta      
+
+Doing global rearrangements
+  !---------!
+   .........
+
+Output written to file "protpars2.fprotpars"
+
+Trees also written onto file "protpars2.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.3">Go to the input files for this example</a><br><a href="#output.3">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 4</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fprotpars -option </b>
+Protein parsimony algorithm
+Input (aligned) protein sequence set(s): <b>protpars.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip weights file (optional): <b>protparswts.dat</b>
+Number of times to randomise [0]: <b></b>
+Species number to use as outgroup [0]: <b></b>
+Use threshold parsimony [N]: <b></b>
+Genetic codes
+         U : Universal
+         M : Mitochondrial
+         V : Vertebrate mitochondrial
+         F : Fly mitochondrial
+         Y : Yeast mitochondrial
+Use which genetic code [Universal]: <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
+Write out trees to tree file [Y]: <b></b>
+Phylip tree output file (optional) [protpars.treefile]: <b></b>
+Print data at start of run [N]: <b></b>
+Print indications of progress of run [Y]: <b></b>
+Print out tree [Y]: <b></b>
+Print steps at each site [N]: <b></b>
+Print sequences at all nodes of tree [N]: <b></b>
+
+
+Weights set # 1:
+
+
+Adding species:
+   1. Delta     
+   2. Alpha     
+   3. Gamma     
+   4. Epsilon   
+   5. Beta      
+
+Doing global rearrangements
+  !---------!
+   .........
+   .........
+
+Output written to file "protpars.fprotpars"
+
+Trees also written onto file "protpars.treefile"
+
+Weights set # 2:
+
+
+Adding species:
+   1. Epsilon   
+   2. Alpha     
+   3. Delta     
+   4. Gamma     
+   5. Beta      
+
+Doing global rearrangements
+  !---------!
+   .........
+   .........
+
+Output written to file "protpars.fprotpars"
+
+Trees also written onto file "protpars.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.4">Go to the input files for this example</a><br><a href="#output.4">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Protein parsimony algorithm
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqsetall  File containing one or more sequence
+                                  alignments
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fprotpars] Phylip protpars program output
+                                  file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -weights            properties Phylip weights file (optional)
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 1.000 or more)
+   -whichcode          menu       [Universal] Use which genetic code (Values:
+                                  U (Universal); M (Mitochondrial); V
+                                  (Vertebrate mitochondrial); F (Fly
+                                  mitochondrial); Y (Yeast mitochondrial))
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    [*.fprotpars] Phylip tree output file
+                                  (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -stepbox            boolean    [N] Print steps at each site
+   -ancseq             boolean    [N] Print sequences at all nodes of tree
+*  -[no]dotdiff        boolean    [Y] Use dot differencing to display results
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>seqsetall</td>
+<td>File containing one or more sequence alignments</td>
+<td>Readable sets of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-intreefile]<br>(Parameter 2)</td>
+<td>tree</td>
+<td>Phylip tree file (optional)</td>
+<td>Phylogenetic tree</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>outfile</td>
+<td>Phylip protpars program output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.fprotpars</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-weights</td>
+<td>properties</td>
+<td>Phylip weights file (optional)</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-njumble</td>
+<td>integer</td>
+<td>Number of times to randomise</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-seed</td>
+<td>integer</td>
+<td>Random number seed between 1 and 32767 (must be odd)</td>
+<td>Integer from 1 to 32767</td>
+<td>1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-outgrno</td>
+<td>integer</td>
+<td>Species number to use as outgroup</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-thresh</td>
+<td>toggle</td>
+<td>Use threshold parsimony</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-threshold</td>
+<td>float</td>
+<td>Threshold value</td>
+<td>Number 1.000 or more</td>
+<td>1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-whichcode</td>
+<td>list</td>
+<td>Use which genetic code</td>
+<td><table><tr><td>U</td> <td><i>(Universal)</i></td></tr><tr><td>M</td> <td><i>(Mitochondrial)</i></td></tr><tr><td>V</td> <td><i>(Vertebrate mitochondrial)</i></td></tr><tr><td>F</td> <td><i>(Fly mitochondrial)</i></td></tr><tr><td>Y</td> <td><i>(Yeast mitochondrial)</i></td></tr></table></td>
+<td>Universal</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]trout</td>
+<td>toggle</td>
+<td>Write out trees to tree file</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-outtreefile</td>
+<td>outfile</td>
+<td>Phylip tree output file (optional)</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.fprotpars</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-printdata</td>
+<td>boolean</td>
+<td>Print data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]progress</td>
+<td>boolean</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]treeprint</td>
+<td>boolean</td>
+<td>Print out tree</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-stepbox</td>
+<td>boolean</td>
+<td>Print steps at each site</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ancseq</td>
+<td>boolean</td>
+<td>Print sequences at all nodes of tree</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]dotdiff</td>
+<td>boolean</td>
+<td>Use dot differencing to display results</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-sequence" associated seqsetall qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sbegin1<br>-sbegin_sequence</td>
+<td>integer</td>
+<td>Start of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -send1<br>-send_sequence</td>
+<td>integer</td>
+<td>End of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sreverse1<br>-sreverse_sequence</td>
+<td>boolean</td>
+<td>Reverse (if DNA)</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sask1<br>-sask_sequence</td>
+<td>boolean</td>
+<td>Ask for begin/end/reverse</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -snucleotide1<br>-snucleotide_sequence</td>
+<td>boolean</td>
+<td>Sequence is nucleotide</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sprotein1<br>-sprotein_sequence</td>
+<td>boolean</td>
+<td>Sequence is protein</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -slower1<br>-slower_sequence</td>
+<td>boolean</td>
+<td>Make lower case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -supper1<br>-supper_sequence</td>
+<td>boolean</td>
+<td>Make upper case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sformat1<br>-sformat_sequence</td>
+<td>string</td>
+<td>Input sequence format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sdbname1<br>-sdbname_sequence</td>
+<td>string</td>
+<td>Database name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sid1<br>-sid_sequence</td>
+<td>string</td>
+<td>Entryname</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ufo1<br>-ufo_sequence</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fformat1<br>-fformat_sequence</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fopenfile1<br>-fopenfile_sequence</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory3<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outtreefile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>fprotpars</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: protpars.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+     5    10
+Alpha     ABCDEFGHIK
+Beta      AB--EFGHIK
+Gamma     ?BCDSFG*??
+Delta     CIKDEFGHIK
+Epsilon   DIKDEFGHIK
+</pre>
+</td></tr></table><p>
+
+<a name="input.3"></a>
+<h3>Input files for usage example 3</h3>
+<p><h3>File: protpars2.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+    5    10
+Alpha     AABBCCCFHK 
+Beta      AABB---FHK 
+Gamma     ??BBCCCF*? 
+Delta     CCIIKKKFHK 
+Epsilon   DDIIKKKFHK 
+    5    10
+Alpha     AADDEGGIIK 
+Beta      AA--EGGIIK 
+Gamma     ??DDSGG??? 
+Delta     CCDDEGGIIK 
+Epsilon   DDDDEGGIIK 
+    5    10
+Alpha     AACDDDEGHI 
+Beta      AA----EGHI 
+Gamma     ??CDDDSG*? 
+Delta     CCKDDDEGHI 
+Epsilon   DDKDDDEGHI 
+</pre>
+</td></tr></table><p>
+
+<a name="input.4"></a>
+<h3>Input files for usage example 4</h3>
+<p><h3>File: protparswts.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+1111100000
+0000011111
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>fprotpars</b> output is standard: if option 1 is toggled on, the
+data is printed out, with the convention that "." means "the same as
+in the first species". Then comes a list of equally parsimonious
+trees, and (if option 2 is toggled on) a table of the number of
+changes of state required in each position. If option 5 is toggled on,
+a table is printed out after each tree, showing for each branch
+whether there are known to be changes in the branch, and what the
+states are inferred to have been at the top end of the branch. This is
+a reconstruction of the ancestral sequences in the tree. If you choose
+option 5, a menu item "." appears which gives you the opportunity to
+turn off dot-differencing so that complete ancestral sequences are
+shown. If the inferred state is a "?" there will be multiple
+equally-parsimonious assignments of states; the user must work these
+out for themselves by hand. If option 6 is left in its default state
+the trees found will be written to a tree file, so that they are
+available to be used in other programs. If the program finds multiple
+trees tied for best, all of these are written out onto the output tree
+file. Each is followed by a numerical weight in square brackets (such
+as [0.25000]). This is needed when we use the trees to make a
+consensus tree of the results of bootstrapping or jackknifing, to
+avoid overrepresenting replicates that find many tied trees.
+
+If the U (User Tree) option is used and more than one tree is
+supplied, the program also performs a statistical test of each of
+these trees against the best tree. This test, which is a version of
+the test proposed by Alan Templeton (1983) and evaluated in a test
+case by me (1985a). It is closely parallel to a test using log
+likelihood differences due to Kishino and Hasegawa (1989), and uses
+the mean and variance of step differences between trees, taken across
+positions. If the mean is more than 1.96 standard deviations different
+then the trees are declared significantly different. The program
+prints out a table of the steps for each tree, the differences of each
+from the best one, the variance of that quantity as determined by the
+step differences at individual positions, and a conclusion as to
+whether that tree is or is not significantly worse than the best one.
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: protpars.fprotpars</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Protein parsimony algorithm, version 3.69
+
+
+
+     3 trees in all found
+
+
+
+
+     +--------Gamma     
+     !  
+  +--2     +--Epsilon   
+  !  !  +--4  
+  !  +--3  +--Delta     
+  1     !  
+  !     +-----Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     16.000
+
+
+
+
+           +--Epsilon   
+        +--4  
+     +--3  +--Delta     
+     !  !  
+  +--2  +-----Gamma     
+  !  !  
+  1  +--------Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     16.000
+
+
+
+
+           +--Epsilon   
+     +-----4  
+     !     +--Delta     
+  +--3  
+  !  !     +--Gamma     
+  1  +-----2  
+  !        +--Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     16.000
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: protpars.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+((Gamma,((Epsilon,Delta),Beta)),Alpha)[0.3333];
+((((Epsilon,Delta),Gamma),Beta),Alpha)[0.3333];
+(((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.3333];
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: protpars.fprotpars</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Protein parsimony algorithm, version 3.69
+
+ 5 species,  10  sites
+
+
+Name          Sequences
+----          ---------
+
+Alpha        ABCDEFGHIK 
+Beta         ..--...... 
+Gamma        ?...S..*?? 
+Delta        CIK....... 
+Epsilon      DIK....... 
+
+
+
+
+     3 trees in all found
+
+
+
+
+  +-----------Beta      
+  !  
+  1  +--------Gamma     
+  !  !  
+  +--2     +--Epsilon   
+     !  +--4  
+     +--3  +--Delta     
+        !  
+        +-----Alpha     
+
+  remember: (although rooted by outgroup) this is an unrooted tree!
+
+
+requires a total of     14.000
+
+steps in each position:
+         0   1   2   3   4   5   6   7   8   9
+     *-----------------------------------------
+    0!       3   1   5   3   2   0   0   2   0
+   10!   0                                    
+
+From    To     Any Steps?    State at upper node
+                             ( . means same as in the node below it on tree)
+
+
+root     1                AN??EFGHIK 
+  1   Beta        maybe   .B--...... 
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+
+root     1                AN??EFGHIK 
+  1   Beta        maybe   .B--...... 
+  1      2        maybe   ..CD...... 
+  2      3        maybe   ?......... 
+  3      4         yes    .IK....... 
+  4   Epsilon     maybe   D......... 
+  4   Delta        yes    C......... 
+  3   Gamma        yes    ?B..S..*?? 
+  2   Alpha       maybe   .B........ 
+
+
+
+
+
+  +-----------Beta      
+  !  
+  1        +--Epsilon   
+  !  +-----4  
+  !  !     +--Delta     
+  +--3  
+     !     +--Gamma     
+     +-----2  
+           +--Alpha     
+
+  remember: (although rooted by outgroup) this is an unrooted tree!
+
+
+requires a total of     14.000
+
+steps in each position:
+         0   1   2   3   4   5   6   7   8   9
+     *-----------------------------------------
+    0!       3   1   5   3   2   0   0   2   0
+   10!   0                                    
+
+From    To     Any Steps?    State at upper node
+                             ( . means same as in the node below it on tree)
+
+
+root     1                AN??EFGHIK 
+  1   Beta        maybe   .B--...... 
+  1      3         yes    ..?D...... 
+  3      4         yes    ?IK....... 
+  4   Epsilon     maybe   D......... 
+  4   Delta        yes    C......... 
+  3      2         yes    ..C....... 
+  2   Gamma        yes    ?B..S..*?? 
+  2   Alpha       maybe   .B........ 
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: protpars.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(Beta,(Gamma,((Epsilon,Delta),Alpha)))[0.3333];
+(Beta,(((Epsilon,Delta),Gamma),Alpha))[0.3333];
+(Beta,((Epsilon,Delta),(Gamma,Alpha)))[0.3333];
+</pre>
+</td></tr></table><p>
+
+<a name="output.3"></a>
+<h3>Output files for usage example 3</h3>
+<p><h3>File: protpars2.fprotpars</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Protein parsimony algorithm, version 3.69
+
+
+Data set # 1:
+
+
+     3 trees in all found
+
+
+
+
+     +--------Gamma     
+     !  
+  +--2     +--Epsilon   
+  !  !  +--4  
+  !  +--3  +--Delta     
+  1     !  
+  !     +-----Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     25.000
+
+
+
+
+           +--Epsilon   
+        +--4  
+     +--3  +--Delta     
+     !  !  
+  +--2  +-----Gamma     
+  !  !  
+  1  +--------Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     25.000
+
+
+
+
+           +--Epsilon   
+     +-----4  
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+     +--------Gamma     
+  +--2  
+  !  !  +-----Epsilon   
+  !  +--4  
+  1     !  +--Delta     
+  !     +--3  
+  !        +--Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     24.000
+
+
+
+
+           +--Epsilon   
+        +--4  
+     +--3  +--Delta     
+     !  !  
+  +--2  +-----Gamma     
+  !  !  
+  1  +--------Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     24.000
+
+
+
+
+           +--Epsilon   
+     +-----4  
+     !     +--Delta     
+  +--3  
+  !  !     +--Gamma     
+  1  +-----2  
+  !        +--Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     24.000
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: protpars2.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+((Gamma,((Epsilon,Delta),Beta)),Alpha)[0.3333];
+((((Epsilon,Delta),Gamma),Beta),Alpha)[0.3333];
+(((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.3333];
+((Gamma,(Delta,(Epsilon,Beta))),Alpha)[0.0667];
+(((Epsilon,Gamma),(Delta,Beta)),Alpha)[0.0667];
+((Gamma,((Epsilon,Delta),Beta)),Alpha)[0.0667];
+((Epsilon,(Gamma,(Delta,Beta))),Alpha)[0.0667];
+((Gamma,(Epsilon,(Delta,Beta))),Alpha)[0.0667];
+(((Delta,Gamma),(Epsilon,Beta)),Alpha)[0.0667];
+(((Delta,(Epsilon,Gamma)),Beta),Alpha)[0.0667];
+((((Epsilon,Delta),Gamma),Beta),Alpha)[0.0667];
+((Epsilon,((Delta,Gamma),Beta)),Alpha)[0.0667];
+(((Epsilon,(Delta,Gamma)),Beta),Alpha)[0.0667];
+((Delta,(Gamma,(Epsilon,Beta))),Alpha)[0.0667];
+((Delta,((Epsilon,Gamma),Beta)),Alpha)[0.0667];
+(((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.0667];
+((Delta,(Epsilon,(Gamma,Beta))),Alpha)[0.0667];
+((Epsilon,(Delta,(Gamma,Beta))),Alpha)[0.0667];
+((Gamma,(Delta,(Epsilon,Beta))),Alpha)[0.2000];
+((Gamma,((Epsilon,Delta),Beta)),Alpha)[0.2000];
+((Gamma,(Epsilon,(Delta,Beta))),Alpha)[0.2000];
+((((Epsilon,Delta),Gamma),Beta),Alpha)[0.2000];
+(((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.2000];
+</pre>
+</td></tr></table><p>
+
+<a name="output.4"></a>
+<h3>Output files for usage example 4</h3>
+<p><h3>File: protpars.fprotpars</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Protein parsimony algorithm, version 3.69
+
+
+
+
+Weights set # 1:
+
+
+     3 trees in all found
+
+
+
+
+     +--------Gamma     
+     !  
+  +--2     +--Epsilon   
+  !  !  +--4  
+  !  +--3  +--Delta     
+  1     !  
+  !     +-----Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     14.000
+
+
+
+
+           +--Epsilon   
+        +--4  
+     +--3  +--Delta     
+     !  !  
+  +--2  +-----Gamma     
+  !  !  
+  1  +--------Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     14.000
+
+
+
+
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+           +--Epsilon   
+     +-----4  
+     !     +--Delta     
+  +--3  
+  !  !     +--Gamma     
+  1  +-----2  
+  !        +--Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of      2.000
+
+
+
+
+     +--------Delta     
+  +--3  
+  !  !  +-----Epsilon   
+  !  +--4  
+  1     !  +--Gamma     
+  !     +--2  
+  !        +--Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of      2.000
+
+
+
+
+     +--------Epsilon   
+  +--4  
+  !  !  +-----Delta     
+  !  +--3  
+  1     !  +--Gamma     
+  !     +--2  
+  !        +--Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of      2.000
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: protpars.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+((Gamma,((Epsilon,Delta),Beta)),Alpha)[0.3333];
+((((Epsilon,Delta),Gamma),Beta),Alpha)[0.3333];
+(((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.3333];
+((Gamma,(Delta,(Epsilon,Beta))),Alpha)[0.0667];
+(((Epsilon,Gamma),(Delta,Beta)),Alpha)[0.0667];
+((Gamma,((Epsilon,Delta),Beta)),Alpha)[0.0667];
+((Epsilon,(Gamma,(Delta,Beta))),Alpha)[0.0667];
+((Gamma,(Epsilon,(Delta,Beta))),Alpha)[0.0667];
+(((Delta,Gamma),(Epsilon,Beta)),Alpha)[0.0667];
+(((Delta,(Epsilon,Gamma)),Beta),Alpha)[0.0667];
+((((Epsilon,Delta),Gamma),Beta),Alpha)[0.0667];
+((Epsilon,((Delta,Gamma),Beta)),Alpha)[0.0667];
+(((Epsilon,(Delta,Gamma)),Beta),Alpha)[0.0667];
+((Delta,(Gamma,(Epsilon,Beta))),Alpha)[0.0667];
+((Delta,((Epsilon,Gamma),Beta)),Alpha)[0.0667];
+(((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.0667];
+((Delta,(Epsilon,(Gamma,Beta))),Alpha)[0.0667];
+((Epsilon,(Delta,(Gamma,Beta))),Alpha)[0.0667];
+</pre>
+</td></tr></table><p>
+
+
+
+<H2>
+    Data files
+</H2>
+
+None
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/distmat.html">distmat</a></td>
+<td>Create a distance matrix from a multiple sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednacomp.html">ednacomp</a></td>
+<td>DNA compatibility algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednadist.html">ednadist</a></td>
+<td>Nucleic acid sequence Distance Matrix program</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednainvar.html">ednainvar</a></td>
+<td>Nucleic acid sequence Invariants method</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednaml.html">ednaml</a></td>
+<td>Phylogenies from nucleic acid Maximum Likelihood</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednamlk.html">ednamlk</a></td>
+<td>Phylogenies from nucleic acid Maximum Likelihood with clock</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednapars.html">ednapars</a></td>
+<td>DNA parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednapenny.html">ednapenny</a></td>
+<td>Penny algorithm for DNA</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/eprotdist.html">eprotdist</a></td>
+<td>Protein distance algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/eprotpars.html">eprotpars</a></td>
+<td>Protein parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/erestml.html">erestml</a></td>
+<td>Restriction site Maximum Likelihood method</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/eseqboot.html">eseqboot</a></td>
+<td>Bootstrapped sequences algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdiscboot.html">fdiscboot</a></td>
+<td>Bootstrapped discrete sites algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdnacomp.html">fdnacomp</a></td>
+<td>DNA compatibility algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdnadist.html">fdnadist</a></td>
+<td>Nucleic acid sequence Distance Matrix program</td>
+</tr>
+
+<tr>
+<td><a href="fdnainvar.html">fdnainvar</a></td>
+<td>Nucleic acid sequence Invariants method</td>
+</tr>
+
+<tr>
+<td><a href="fdnaml.html">fdnaml</a></td>
+<td>Estimates nucleotide phylogeny by maximum likelihood</td>
+</tr>
+
+<tr>
+<td><a href="fdnamlk.html">fdnamlk</a></td>
+<td>Estimates nucleotide phylogeny by maximum likelihood</td>
+</tr>
+
+<tr>
+<td><a href="fdnamove.html">fdnamove</a></td>
+<td>Interactive DNA parsimony</td>
+</tr>
+
+<tr>
+<td><a href="fdnapars.html">fdnapars</a></td>
+<td>DNA parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdnapenny.html">fdnapenny</a></td>
+<td>Penny algorithm for DNA</td>
+</tr>
+
+<tr>
+<td><a href="fdolmove.html">fdolmove</a></td>
+<td>Interactive Dollo or Polymorphism Parsimony</td>
+</tr>
+
+<tr>
+<td><a href="ffreqboot.html">ffreqboot</a></td>
+<td>Bootstrapped genetic frequencies algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fproml.html">fproml</a></td>
+<td>Protein phylogeny by maximum likelihood</td>
+</tr>
+
+<tr>
+<td><a href="fpromlk.html">fpromlk</a></td>
+<td>Protein phylogeny by maximum likelihood</td>
+</tr>
+
+<tr>
+<td><a href="fprotdist.html">fprotdist</a></td>
+<td>Protein distance algorithm</td>
+</tr>
+
+<tr>
+<td><a href="frestboot.html">frestboot</a></td>
+<td>Bootstrapped restriction sites algorithm</td>
+</tr>
+
+<tr>
+<td><a href="frestdist.html">frestdist</a></td>
+<td>Distance matrix from restriction sites or fragments</td>
+</tr>
+
+<tr>
+<td><a href="frestml.html">frestml</a></td>
+<td>Restriction site maximum Likelihood method</td>
+</tr>
+
+<tr>
+<td><a href="fseqboot.html">fseqboot</a></td>
+<td>Bootstrapped sequences algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fseqbootall.html">fseqbootall</a></td>
+<td>Bootstrapped sequences algorithm</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS conversion of a program written by Joe
+Felsenstein as part of his PHYLIP package.
+
+<p>
+Please report all bugs to the EMBOSS bug team  (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+<H2>
+    History
+</H2>
+
+Written (2004) - Joe Felsenstein, University of Washington.
+<p>
+Converted (August 2004) to an EMBASSY program by the EMBOSS team.
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,62 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: s13421.ohmmsearch</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Query HMM: GLB2_MORMR||
+  [HMM has been calibrated; E-values are empirical estimates]
+
+Scores for complete sequences (score includes all domains):
+Sequence Description                                    Score    E-value  N 
+-------- -----------                                    -----    ------- ---
+S13421   GLOBIN - BRINE SHRIMP                           12.7      0.089   1
+
+Parsed for domains:
+Sequence Domain  seq-f seq-t    hmm-f hmm-t      score  E-value
+-------- ------- ----- -----    ----- -----      -----  -------
+S13421     1/1     303   347 ..     1    45 [.    12.7    0.089
+
+Alignments of top-scoring domains:
+S13421: domain 1 of 1, from 303 to 347: score 12.7, E = 0.089
+                CS    PIVDSGSVSPLSDAEKNKIRAAWDIVYKNYEKNGVDILVKFFTGT  
+                RF    PIVDSGSVSPLSDAEKNKIRAAWDIVYKNYEKNGVDILVKFFTGT  
+                   *-&gt;vlstaeeklvkaswgkkvnvaeeggeellrrlfvsppttktffsh&lt;-
+                      +ls  e+ ++++ wgk+ ++ +e+g + +  lf  +p+   +f +  
+      S13421   303    GLSGLEKNAILSTWGKVRGNLQEVGKATFGKLFTAHPEYQQMFRF   347  
+
+                CS  
+                RF  
+                   *
+                    
+      S13421     -   -    
+
+
+Histogram of all scores:
+score    obs    exp  (one = represents 1 sequences)
+-----    ---    ---
+   12      1      0|=                                                          
+
+
+% Statistical details of theoretical EVD fit:
+              mu =    -7.9790
+          lambda =     0.6465
+chi-sq statistic =     0.0000
+  P(chi-square)  =          0
+
+Total sequences searched: 1
+
+Whole sequence top hits:
+tophits_s report:
+     Total hits:           1
+     Satisfying E cutoff:  1
+     Total memory:         19K
+
+Domain top hits:
+tophits_s report:
+     Total hits:           1
+     Satisfying E cutoff:  1
+     Total memory:         19K
+</pre>
+</td></tr></table><p>

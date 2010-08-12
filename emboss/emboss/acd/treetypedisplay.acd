@@ -1,0 +1,18 @@
+application: treetypedisplay [
+  documentation: "Test of graphics"
+  groups: "Test"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000336 operation File debugging"
+]
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  graph: graph [
+    standard: "Y"
+    relations: "EDAM:0002142 data EMBOSS graph"
+  ]
+
+endsection: output

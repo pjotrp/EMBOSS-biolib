@@ -1,0 +1,158 @@
+application: infoseq [
+  documentation: "Display basic information about sequences"
+  groups: "Information"
+    relations: "EDAM:0000155 topic Sequence retrieval"
+    relations: "EDAM:0000229 operation Sequence description"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "gapany"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: columns [
+    default: "Y"
+    information: "Print information in neat, aligned columns."
+    help: "Set this option on (Y) to print the sequence information
+           into neat, aligned columns in the output file. Alternatively,
+           leave it unset (N), in which case the information records will be
+           delimited by a character, which you may specify by using the
+           -delimiter option. In other words, if -columns is set on, the
+           -delimiter option is overriden."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  string: delimiter [
+    default: "|"
+    information: "Delimiter of records in text output file"
+    help: "This string, which is usually a single character only, is
+           used to delimit individual records in the text output file. It
+           could be a space character, a tab character, a pipe character or
+           any other character or string."
+    knowntype: "output delimiter"
+    relations: "EDAM:0002152 data Rendering parameter"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    additional: "Y"
+    default: "stdout"
+    knowntype: "infoseq output"
+    help: "If you enter the name of a file here then this program will
+           write the sequence details into that file."
+    relations: "EDAM:0000855 data Sequence annotation"
+  ]
+
+  boolean: html [
+    additional: "Y"
+    default: "N"
+    information: "Format output as an HTML table"
+    outputmodifier: "Y"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: only [
+    default: "N"
+    information: "Display the specified columns"
+    help: "This is a way of shortening the command line if you only
+           want a few things to be displayed. Instead of specifying: \
+           '-nohead -noname -noacc -notype -nopgc -nodesc' \
+           to get only the length output, you can specify \
+           '-only -length'"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: heading [
+    default: "Y"
+    information: "Display column headings"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: usa [
+    default: "@(!$(only))"
+    information: "Display the USA of the sequence"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: database [
+    default: "@(!$(only))"
+    information: "Display 'database' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: name [
+    default: "@(!$(only))"
+    information: "Display 'name' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: accession [
+    default: "@(!$(only))"
+    information: "Display 'accession' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: gi [
+    default: "N"
+    information: "Display 'GI' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: seqversion [
+    default: "N"
+    information: "Display 'version' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: type [
+    default: "@(!$(only))"
+    information: "Display 'type' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: length [
+    default: "@(!$(only))"
+    information: "Display 'length' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: pgc [
+    default: "@(!$(only))"
+    information: "Display 'percent GC content' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: organism [
+    default: "@(!$(only))"
+    information: "Display 'organism' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: description [
+    default: "@(!$(only))"
+    information: "Display 'description' column"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: output

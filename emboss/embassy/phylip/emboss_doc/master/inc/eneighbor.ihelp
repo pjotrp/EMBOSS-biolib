@@ -1,0 +1,53 @@
+Phylogenies from distance matrix by N-J or UPGMA method
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-infile]            infile     Phylip neighbor program input file
+*  -datasets           integer    [0] How many data sets (Any integer value)
+   -[no]nj             toggle     [Y] Neighbor-joining
+*  -og                 toggle     [N] Outgroup root
+*  -outgnum            integer    [0] Number of the outgroup (Any integer
+                                  value)
+*  -randseed           integer    [0] Random number seed (must be odd) (Any
+                                  integer value)
+  [-outfile]           outfile    [eneighbor.outfile] Phylip neighbor program
+                                  output file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [eneighbor.treefile] Phylip tree output file
+
+   Additional (Optional) qualifiers:
+   -lt                 boolean    [N] Lower-triangular data matrix
+   -ut                 boolean    [N] Upper-triangular data matrix
+   -[no]sr             boolean    [Y] Subreplicates
+   -multsets           toggle     [N] Analyze multiple data sets
+   -random             toggle     [N] Randomize input order of species
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -[no]drawtree       boolean    [Y] Draw tree
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-treefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

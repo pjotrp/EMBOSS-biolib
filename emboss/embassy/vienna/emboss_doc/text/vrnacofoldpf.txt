@@ -1,0 +1,251 @@
+                                vrnacofoldpf
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   RNA cofolding with partitioning
+
+Description
+
+   This is a port of the Vienna RNA package program RNAcofold.
+
+   The original program has additional inputs and produces different
+   outputs, depending on the options selected. In the EMBASSY
+   implementation it is split into vrnacofold vrnacofoldconc and
+   vrnacofoldpf
+
+Algorithm
+
+   See the original documentation for the Vienna RNA package
+   http://www.tbi.univie.ac.at/~ivo/RNA/
+
+Usage
+
+   Here is a sample session with vrnacofoldpf
+
+
+% vrnacofoldpf
+RNA cofolding with partitioning
+Input nucleotide sequence: cofold-red.fasta
+Second nucleotide sequence: cofold-blue.fasta
+Vienna RNAfold output file [red.vrnacofoldpf]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+RNA cofolding with partitioning
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-asequence]         sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
+  [-bsequence]         sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.vrnacofoldpf] Vienna RNAfold output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -aconstraintfile    infile     Vienna RNA structure constraints file
+                                  (optional)
+   -bconstraintfile    infile     Second vienna RNA structure constraints file
+                                  (optional)
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -scale              float      [1.07] Estimate of ensemble free energy (Any
+                                  numeric value)
+   -dangles            menu       [1] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
+   -paired             boolean    [N] Calculate probabilities of base pairing
+   -ssoutfile          outfile    [*.vrnacofoldpf] Vienna structure postscript
+                                  output file
+   -dotoutfile         outfile    [*.vrnacofoldpf] Vienna dotplot postscript
+                                  output file
+
+   Associated qualifiers:
+
+   "-asequence" associated qualifiers
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-bsequence" associated qualifiers
+   -sbegin2            integer    Start of the sequence to be used
+   -send2              integer    End of the sequence to be used
+   -sreverse2          boolean    Reverse (if DNA)
+   -sask2              boolean    Ask for begin/end/reverse
+   -snucleotide2       boolean    Sequence is nucleotide
+   -sprotein2          boolean    Sequence is protein
+   -slower2            boolean    Make lower case
+   -supper2            boolean    Make upper case
+   -sformat2           string     Input sequence format
+   -sdbname2           string     Database name
+   -sid2               string     Entryname
+   -ufo2               string     UFO features
+   -fformat2           string     Features format
+   -fopenfile2         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   "-ssoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-dotoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   vrnacofoldpf reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: cofold-red.fasta
+
+>red
+AUGAAGAUGA
+
+  File: cofold-blue.fasta
+
+>blue
+CUGUCUGUCUUGAGACA
+
+Output file format
+
+   vrnacofoldpf outputs a graph to the specified graphics device. outputs
+   a report format file. The default format is ...
+
+  Output files for usage example
+
+  File: red.vrnacofoldpf
+
+AUGAAGAUGA&CUGUCUGUCUUGAGACA
+....((((..&..))))(((....))). ( -4.40)
+....((((,.&..)))}(((....))). [ -5.88]
+ frequency of mfe structure in ensemble 0.279848 , delta G binding= -1.57
+
+  Graphics File: red.ps
+
+   [vrnacofoldpf results]
+
+  Graphics File: red.ssps
+
+   [vrnacofoldpf results]
+
+Data files
+
+   For details of Vienna RNA file formats, see the original documentation
+   http://www.tbi.univie.ac.at/~ivo/RNA/
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+                     Program name                       Description
+                    einverted      Finds inverted repeats in nucleotide sequences
+                    vrnaalifold    RNA alignment folding
+                    vrnaalifoldpf  RNA alignment folding with partition
+                    vrnacofold     RNA cofolding
+   vrnacofoldconc   RNA cofolding with concentrations
+                    vrnadistance   RNA distances
+                    vrnaduplex     RNA duplex calculation
+                    vrnaeval       RNA eval
+                    vrnaevalpair   RNA eval with cofold
+                    vrnafold       Calculate secondary structures of RNAs
+                    vrnafoldpf     Secondary structures of RNAs with partition
+                    vrnaheat       RNA melting
+                    vrnainverse    RNA sequences matching a structure
+                    vrnalfold      Calculate locally stable secondary structures of RNAs
+                    vrnaplot       Plot vrnafold output
+                    vrnasubopt     Calculate RNA suboptimals
+
+Author(s)
+
+                    This program is an EMBOSS conversion of a program written by Ivo
+                    Hofacker as part of his VIENNA package.
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+                    Converted (October 2005) by Alan Bleasby
+
+Target users
+
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
+
+Comments

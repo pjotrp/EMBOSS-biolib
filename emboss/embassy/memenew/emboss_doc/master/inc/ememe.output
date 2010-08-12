@@ -1,0 +1,400 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>Graphics File: help.gif</h3>
+<p><img src="ememe.1.help.gif" alt="[ememe results]">
+<p><h3>Graphics File: logo1.eps</h3>
+<p><img src="ememe.1.logo1.e.gif" alt="[ememe results]">
+<p><h3>Graphics File: logo1.png</h3>
+<p><img src="ememe.1.logo1.png" alt="[ememe results]">
+<p><h3>Graphics File: logo_rc1.eps</h3>
+<p><img src="ememe.1.logo_rc1.e.gif" alt="[ememe results]">
+<p><h3>Graphics File: logo_rc1.png</h3>
+<p><img src="ememe.1.logo_rc1.png" alt="[ememe results]">
+<p><h3>File: meme.html</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+&lt;title&gt;MEME&lt;/title&gt;
+&lt;style type="text/css"&gt;
+        /* The following is the content of meme.css */
+        body { background-color:white; font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif;}
+
+        div.help {
+          display:inline-block;
+          margin:0px;
+          padding:0px;
+          width:12px;
+          height:13px;
+          background-image: url("help.gif");
+          background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAANAQMAAACn5x0BAAAAAXNSR0IArs4c6QAAAAZQTFRFAAAAnp6eqp814gAAAAF0Uk5TAEDm2GYAAAABYktHRACIBR1IAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH2gMJBQgGYqhNZQAAACZJREFUCNdj+P+BoUGAoV+AYeYEEGoWYGgTYGgRAAm2gRGQ8f8DAOnhC2lYnqs6AAAAAElFTkSuQmCC");
+        }
+        
+        p.spaced { line-height: 1.8em;}
+        
+        p.pad { padding-left: 30px; padding-top: 5px; padding-bottom: 10px;}
+
+        td.jump { font-size: 13px; color: #ffffff; background-color: #00666a;
+          font-family: Georgia, "Times New Roman", Times, serif;}
+
+        a.jump { margin: 15px 0 0; font-style: normal; font-variant: small-caps;
+          font-weight: bolder; font-family: Georgia, "Times New Roman", Times, serif;}
+
+        h2.mainh {font-size: 1.5em; font-style: normal; margin: 15px 0 0;
+          font-variant: small-caps; font-family: Georgia, "Times New Roman", Times, serif;}
+
+        h2.line {border-bottom: 1px solid #CCCCCC; font-size: 1.5em; font-style: normal;
+          margin: 15px 0 0; padding-bottom: 3px; font-variant: small-caps;
+          font-family: Georgia, "Times New Roman", Times, serif;}
+
+        h4 {border-bottom: 1px solid #CCCCCC; font-size: 1.2em; font-style: normal;
+          margin: 10px 0 0; padding-bottom: 3px; font-family: Georgia, "Times New Roman", Times, serif;}
+
+        h5 {margin: 0px}
+
+        a.help { font-size: 9px; font-style: normal; text-transform: uppercase;
+          font-family: Georgia, "Times New Roman", Times, serif;}
+
+        div.pad { padding-left: 30px; padding-top: 5px; padding-bottom: 10px;}
+        
+        div.pad1 { margin: 10px 5px;}
+
+        div.pad2 { margin: 25px 5px 5px;}
+        h2.pad2 { padding: 25px 5px 5px;}
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+              For use with &lt;a href="http://blocks.fhcrc.org/blocks"&gt;BLOCKS tools&lt;/a&gt;.
+            &lt;/dd&gt;
+&lt;dt&gt;
+&lt;a name="format_FASTA_doc"&gt;&lt;/a&gt;FASTA Format&lt;/dt&gt;
+&lt;dd&gt;
+              The FASTA format as described &lt;a href="http://meme.nbcr.net/meme/doc/fasta-format.html"&gt;here&lt;/a&gt;.
+            &lt;/dd&gt;
+&lt;dt&gt;
+&lt;a name="format_raw_doc"&gt;&lt;/a&gt;Raw Format&lt;/dt&gt;
+&lt;dd&gt;
+              Just the sites of the sequences that contributed to the motif. One site per line.
+            &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;a name="sites_doc"&gt;&lt;/a&gt;&lt;h5 class="doc"&gt;Sites&lt;/h5&gt;
+&lt;div class="doc"&gt;&lt;p&gt;
+            MEME displays the occurrences (sites) of the motif in the training set. The sites are shown aligned with each other, and the ten sequence
+            positions preceding and following each site are also shown. Each site is identified by the name of the sequence where it occurs,
+            the strand (if both strands of DNA sequences are being used), and the position in the sequence where the site begins.  When the DNA strand
+            is specified, '+' means the sequence in the training set, and '-' means the reverse complement of the training set sequence.
+            (For '-' strands, the 'start' position is actually the position on the &lt;b&gt;positive&lt;/b&gt; strand where the site ends.) The sites are &lt;b&gt;listed 
+              in order of increasing statistical significance&lt;/b&gt; (&lt;i&gt;p&lt;/i&gt;-value).  The &lt;i&gt;p&lt;/i&gt;-value of a site is computed from the the match score of 
+            the site with the &lt;a href="#format_PSSM_doc"&gt;position specific scoring matrix&lt;/a&gt; for the motif. The &lt;i&gt;p&lt;/i&gt;-value gives the probability of a 
+            random string (generated from the background letter frequencies) having the same match score or higher. (This is referred to as the 
+            &lt;b&gt;position &lt;i&gt;p&lt;/i&gt;-value&lt;/b&gt; by the MAST algorithm.)
+          &lt;/p&gt;&lt;/div&gt;
+&lt;a name="diagrams_doc"&gt;&lt;/a&gt;&lt;h5 class="doc"&gt;Block Diagrams&lt;/h5&gt;
+&lt;div class="doc"&gt;&lt;p&gt;
+            The occurrences of the motif in the training set sequences are shown as coloured blocks on a line. One diagram is printed for each
+            sequence showing all the sites contributating to that motif in that sequence. The sequences are &lt;b&gt;listed in the same order as in the input&lt;/b&gt; 
+            to make it easier to compare multiple block diagrams. Additionally the best &lt;i&gt;p&lt;/i&gt;-value for the sequence/motif combination is
+            listed though this may not be in ascending order as with the sites. The &lt;i&gt;p&lt;/i&gt;-value of an occurrence is the probability of a single
+            random subsequence the length of the motif, generated according to the 0-order background model, having a score at least as high as 
+            the score of the occurrence. When the DNA strand is specified '+', it means the motif appears from left to right on the sequence, and '-' 
+            means the motif appears from right to left on the complementary strand. A sequence position scale is shown at the end of each table of 
+            block diagrams. 
+          &lt;/p&gt;&lt;/div&gt;
+&lt;a name="combined_doc"&gt;&lt;/a&gt;&lt;h5&gt;Combined Block Diagrams&lt;/h5&gt;
+&lt;div class="doc"&gt;
+&lt;p&gt;
+            The motif occurrences shown in the motif summary &lt;b&gt;may not be exactly the same as those reported in each motif section&lt;/b&gt; because 
+            only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that don't overlap other, more significant motif occurrences are shown. 
+          &lt;/p&gt;
+&lt;p&gt;
+            See the documentation for &lt;a href="http://meme.nbcr.net/meme/mast-output.html"&gt;MAST output&lt;/a&gt; for the definition of position and
+            combined &lt;em&gt;p&lt;/em&gt;-values.
+          &lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;/form&gt;&lt;/body&gt;
+&lt;/html&gt;
+</td></tr></table><p>
+<p><h3>File: meme.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;ce1cg
+TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGT
+TTTTTTGATCGTTTTCACAAAAATGGAAGTCCACAGTCTTGACAG
+&gt;ara
+GACAAAAACGCGTAACAAAAGTGTCTATAATCACGGCAGAAAAGTCCACATTGATTATTT
+GCACGGCGTCACACTTTGCTATGCCATAGCATTTTTATCCATAAG
+&gt;bglr1
+ACAAATCCCAATAACTTAATTATTGGGATTTGTTATATATAACTTTATAAATTCCTAAAA
+TTACACAAAGTTAATAACTGTGAGCATGGTCATATTTTTATCAAT
+&gt;crp
+CACAAAGCGAAAGCTATGCTAAAACAGTCAGGATGCTACAGTAATACATTGATGTACTGC
+ATGTATGCAAAGGACGTCACATTACCGTGCAGTACAGTTGATAGC
+&gt;cya
+ACGGTGCTACACTTGTATGTAGCGCATCTTTCTTTACGGTCAATCAGCAAGGTGTTAAAT
+TGATCACGTTTTAGACCATTTTTTCGTCGTGAAACTAAAAAAACC
+&gt;deop2
+AGTGAATTATTTGAACCAGATCGCATTACAGTGATGCAAACTTGTAAGTAGATTTCCTTA
+ATTGTGATGTGTATCGAAGTGTGTTGCGGAGTAGATGTTAGAATA
+&gt;gale
+GCGCATAAAAAACGGCTAAATTCTTGTGTAAACGATTCCACTAATTTATTCCATGTCACA
+CTTTTCGCATCTTTGTTATGCTATGGTTATTTCATACCATAAGCC
+&gt;ilv
+GCTCCGGCGGGGTTTTTTGTTATCTGCAATTCAGTACAAAACGTGATCAACCCCTCAATT
+TTCCCTTTGCTGAAAAATTTTCCATTGTCTCCCCTGTAAAGCTGT
+&gt;lac
+AACGCAATTAATGTGAGTTAGCTCACTCATTAGGCACCCCAGGCTTTACACTTTATGCTT
+CCGGCTCGTATGTTGTGTGGAATTGTGAGCGGATAACAATTTCAC
+&gt;male
+ACATTACCGCCAATTCTGTAACAGAGATCACACAAAGCGACGGTGGGGCGTAGGGGCAAG
+GAGGATGGAAAGAGGTTGCCGTATAAAGAAACTAGAGTCCGTTTA
+&gt;malk
+GGAGGAGGCGGGAGGATGAGAACACGGCTTCTGTGAACTAAACCGAGGTCATGTAAGGAA
+TTTCGTGATGTTGCTTGCAAAAATCGTGGCGATTTTATGTGCGCA
+&gt;malt
+GATCAGCGTCGTTTTAGGTGAGTTGTTAATAAAGATTTGGAATTGTGACACAGTGCAAAT
+TCAGACACATAAAAAAACGTCATCGCTTGCATTAGAAAGGTTTCT
+&gt;ompa
+GCTGACAAAAAAGATTAAACATACCTTATACAAGACTTTTTTTTCATATGCCTGACGGAG
+TTCACACTTGTAAGTTTTCAACTACGTTGTAGACTTTACATCGCC
+&gt;tnaa
+TTTTTTAAACATTAAAATTCTTACGTAATTTATAATCTTTAAAAAAAGCATTTAATATTG
+CTCCCCGAACGATTGTGATTCGATTCACATTTAAACAATTTCAGA
+&gt;uxu1
+CCCATGAGAGTGAAATTGTTGTGATGTGGTTAACCCAATTAGAATTCGGGATTGACATGT
+CTTACCAAAAGGTAGAACTTATACGCCATCTCATCCGATGCAAGC
+&gt;pbr322
+CTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCACCATATGCGGTGTGA
+AATACCGCACAGATGCGTAAGGAGAAAATACCGCATCAGGCGCTC
+&gt;trn9cat
+CTGTGACGGAAGATCACTTCGCAGAATAAATAAATCCTGGTGTCCCTGTTGATACCGGGA
+AGCCCTGGGCCAACTTTTGGCGAAAATGAGACGTTGATCGGCACG
+&gt;tdc
+GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTG
+GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
+</pre>
+</td></tr></table><p>
+<p><h3>File: meme.txt</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.4.0 (Release date: Tue Apr 27 10:09:30 EST 2010)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= ./meme.fasta
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+ce1cg                    1.0000    105  ara                      1.0000    105  
+bglr1                    1.0000    105  crp                      1.0000    105  
+cya                      1.0000    105  deop2                    1.0000    105  
+gale                     1.0000    105  ilv                      1.0000    105  
+lac                      1.0000    105  male                     1.0000    105  
+malk                     1.0000    105  malt                     1.0000    105  
+ompa                     1.0000    105  tnaa                     1.0000    105  
+uxu1                     1.0000    105  pbr322                   1.0000    105  
+trn9cat                  1.0000    105  tdc                      1.0000    105  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+--------------------------------------------------------------------------------
+TGTGA[ACT][CAG][GT][AGT][GC][TAC]TCAC
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.29 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+ce1cg                            1.74e-03  63_[1(1.91e-05)]_27
+ara                              4.00e-03  57_[1(4.41e-05)]_33
+bglr1                            7.85e-03  78_[1(8.66e-05)]_12
+crp                              4.37e-03  65_[1(4.81e-05)]_25
+cya                              3.66e-03  52_[1(4.03e-05)]_38
+deop2                            5.47e-04  9_[1(6.01e-06)]_81
+gale                             9.45e-04  26_[1(1.04e-05)]_64
+ilv                              2.54e-02  105
+lac                              5.39e-05  11_[1(5.92e-07)]_79
+male                             2.12e-04  16_[1(2.33e-06)]_74
+malk                             1.35e-02  105
+malt                             2.55e-03  43_[1(2.80e-05)]_47
+ompa                             1.42e-03  50_[1(1.57e-05)]_40
+tnaa                             2.11e-03  73_[1(2.32e-05)]_17
+uxu1                             3.35e-03  19_[1(3.69e-05)]_71
+pbr322                           2.12e-04  55_[1(2.33e-06)]_35
+trn9cat                          5.08e-02  105
+tdc                              1.57e-03  80_[1(1.73e-05)]_10
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+<p><h3>File: meme.xml</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&lt;?xml version='1.0' encoding='UTF-8' standalone='yes'?&gt;
+&lt;!-- Document definition --&gt;
+&lt;!DOCTYPE MEME[
+&lt;!ELEMENT MEME (
+  training_set,
+  model, 
+  motifs, 
+  scanned_sites_summary?
+)&gt;
+&lt;!ATTLIST MEME 
+  version CDATA #REQUIRED
+  release CDATA #REQUIRED
+&gt;
+&lt;!-- Training-set elements --&gt;
+&lt;!ELEMENT training_set (alphabet, ambigs, sequence+, letter_frequencies)&gt;
+&lt;!ATTLIST training_set datafile CDATA #REQUIRED length CDATA #REQUIRED&gt;
+&lt;!ELEMENT alphabet (letter+)&gt;
+&lt;!ATTLIST alphabet id (amino-acid|nucleotide) #REQUIRED
+                   length CDATA #REQUIRED&gt;
+&lt;!ELEMENT ambigs (letter+)&gt;
+&lt;!ELEMENT letter EMPTY&gt;
+&lt;!ATTLIST letter id ID #REQUIRED&gt;
+&lt;!ATTLIST letter symbol CDATA #REQUIRED&gt;
+&lt;!ELEMENT sequence EMPTY&gt;
+&lt;!ATTLIST sequence id ID #REQUIRED
+                   name CDATA #REQUIRED
+                   length CDATA #REQUIRED
+                   weight CDATA #REQUIRED
+&gt;
+&lt;!ELEMENT letter_frequencies (alphabet_array)&gt;
+
+&lt;!-- Model elements --&gt;
+&lt;!ELEMENT model (
+  command_line,
+  host,
+  type,
+  nmotifs,
+  evalue_threshold,
+  object_function,
+  min_width,
+  max_width,
+  minic,
+  wg,
+  ws,
+  endgaps,
+  minsites,
+  maxsites,
+  wnsites,
+  prob,
+  spmap,
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+&lt;letter_ref letter_id="letter_G"/&gt;
+&lt;letter_ref letter_id="letter_T"/&gt;
+&lt;letter_ref letter_id="letter_T"/&gt;
+&lt;letter_ref letter_id="letter_G"/&gt;
+&lt;letter_ref letter_id="letter_A"/&gt;
+&lt;letter_ref letter_id="letter_T"/&gt;
+&lt;letter_ref letter_id="letter_C"/&gt;
+&lt;letter_ref letter_id="letter_G"/&gt;
+&lt;letter_ref letter_id="letter_G"/&gt;
+&lt;/site&gt;
+&lt;right_flank&gt;CACG&lt;/right_flank&gt;
+&lt;/contributing_site&gt;
+&lt;/contributing_sites&gt;
+&lt;/motif&gt;
+&lt;/motifs&gt;
+&lt;scanned_sites_summary p_thresh="0.0001"&gt;
+&lt;scanned_sites sequence_id="sequence_0" pvalue="1.74e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="63" pvalue="1.91e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_1" pvalue="4.00e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="57" pvalue="4.41e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_2" pvalue="7.85e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="78" pvalue="8.66e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_3" pvalue="4.37e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="65" pvalue="4.81e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_4" pvalue="3.66e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="52" pvalue="4.03e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_5" pvalue="5.47e-04" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="9" pvalue="6.01e-06"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_6" pvalue="9.45e-04" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="26" pvalue="1.04e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_7" pvalue="2.54e-02" num_sites="0"&gt;&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_8" pvalue="5.39e-05" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="11" pvalue="5.92e-07"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_9" pvalue="2.12e-04" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="16" pvalue="2.33e-06"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_10" pvalue="1.35e-02" num_sites="0"&gt;&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_11" pvalue="2.55e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="43" pvalue="2.80e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_12" pvalue="1.42e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="50" pvalue="1.57e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_13" pvalue="2.11e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="73" pvalue="2.32e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_14" pvalue="3.35e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="19" pvalue="3.69e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_15" pvalue="2.12e-04" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="55" pvalue="2.33e-06"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_16" pvalue="5.08e-02" num_sites="0"&gt;&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_17" pvalue="1.57e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="80" pvalue="1.73e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;/scanned_sites_summary&gt;
+&lt;/MEME&gt;
+</pre>
+</td></tr></table><p>

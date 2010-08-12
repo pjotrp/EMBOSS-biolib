@@ -1,0 +1,55 @@
+Restriction site maximum Likelihood method
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-data]              discretestates File containing one or more sets of
+                                  restriction data
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.frestml] Phylip restml program output
+                                  file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -weights            properties Weights file
+   -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]allsites       boolean    [Y] All sites detected
+*  -lengths            boolean    [N] Use lengths from user trees
+   -sitelength         integer    [6] Site length (Integer from 1 to 8)
+*  -global             boolean    [N] Global rearrangements
+*  -[no]rough          boolean    [Y] Speedier but rougher analysis
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    [*.frestml] Phylip tree output file
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

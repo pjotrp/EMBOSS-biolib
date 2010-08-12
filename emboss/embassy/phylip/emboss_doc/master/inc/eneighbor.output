@@ -1,0 +1,55 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: eneighbor.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+   7 Populations
+
+ Neighbor-joining method
+
+ Negative branch lengths allowed
+
+
+  +--------Orang     
+  !  
+  !  +----Gorilla   
+--5--4  
+  !  !  +----Chimp     
+  !  +--3  
+  !     +---Human     
+  !  
+  !               +---------------------------Bovine    
+  !  +------------1  
+  +--2            +----------------------Mouse     
+     !  
+     +----------Gibbon    
+
+
+remember: this is an unrooted tree!
+
+Between        And            Length
+-------        ---            ------
+   5          Orang             0.28469
+   5             4              0.02696
+   4          Gorilla           0.15393
+   4             3              0.03982
+   3          Chimp             0.15167
+   3          Human             0.11753
+   5             2              0.04648
+   2             1              0.42027
+   1          Bovine            0.91769
+   1          Mouse             0.76891
+   2          Gibbon            0.35793
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: eneighbor.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(Orang:0.28469,(Gorilla:0.15393,(Chimp:0.15167,Human:0.11753):0.03982):0.02696,((Bovine:0.91769,
+Mouse:0.76891):0.42027,Gibbon:0.35793):0.04648);
+</pre>
+</td></tr></table><p>

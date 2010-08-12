@@ -1,0 +1,1172 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-project</td>
+<td>string</td>
+<td>Default is mira. Defines the project name for this assembly. The project name automatically influences the name of input and output files or directories. E.g. in the default setting, the file names for the output of the assembly in FASTA format would be mira_out.fasta and mira_out.fasta.qual. Setting the project name to 'MyProject' would generate MyProject_out.fasta and MyProject_out.fasta.qual.</td>
+<td>Any string</td>
+<td>mira</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-paramsfile</td>
+<td>infile</td>
+<td>Loads parameters from the filename given. Allows a maximum of 10 levels of recursion, i.e. a -params option appearing within a file that loads other parameter files</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-setparam</td>
+<td>list</td>
+<td>Sets parameters suited for loading sequences from FASTA, PHD or CAF files. The default is not to specify the type of input file.</td>
+<td><table><tr><td>unspecified</td> <td><i>(Unspecified)</i></td></tr><tr><td>fasta</td> <td><i>(Fasta)</i></td></tr><tr><td>phd</td> <td><i>(PHD)</i></td></tr><tr><td>caf</td> <td><i>(CAF)</i></td></tr></table></td>
+<td>unspecified</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-expdir</td>
+<td>directory</td>
+<td>Defines the directory where mira should search for experiment files (EXP).</td>
+<td>Directory</td>
+<td>.</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-scfdir</td>
+<td>directory</td>
+<td>Defines the directory where mira should search for SCF files</td>
+<td>Directory</td>
+<td>.</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-feifile</td>
+<td>infile</td>
+<td>Defines the file of filenames where the names of the EXP files of a project are located.</td>
+<td>Input file</td>
+<td>mira_in.fofn</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-fpifile</td>
+<td>infile</td>
+<td>Defines the file of filenames where the names of the PHD files of a project are located.</td>
+<td>Input file</td>
+<td>mira_in.fofn</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pifile</td>
+<td>infile</td>
+<td>Defines the PHD file to load sequences of a project from.</td>
+<td>Input file</td>
+<td>mira_in.phd</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-faifile</td>
+<td>infile</td>
+<td>Defines the FASTA file to load sequences of a project from.</td>
+<td>Input file</td>
+<td>mira_in.fasta</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-fqifile</td>
+<td>infile</td>
+<td>Defines the fasta file to load base qualities of a project from. Although the order of reads in the quality file does not need to be the same as in the fasta or fofn projects (although it saves a bit of time if they are).</td>
+<td>Input file</td>
+<td>mira_in.fasta.qual</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-cifile</td>
+<td>infile</td>
+<td>Defines the file to load a CAF project from. Filename must end with '.caf'.</td>
+<td>Input file</td>
+<td>mira_in.caf</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-sdifile</td>
+<td>infile</td>
+<td>Defines the file to load straindata from. Only used in EST projects (miraEST).</td>
+<td>Input file</td>
+<td>mira_straindata_in.txt</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-xtiifile</td>
+<td>infile</td>
+<td>Defines the file to load a trace info file in XML format from. This can be used both when merging XML data to loaded files or when loading a project from an XML trace info file.</td>
+<td>Input file</td>
+<td>mira_xmltraceinfo_in.xml</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-genome</td>
+<td>list</td>
+<td>Quality grades of de-novo genome assembly. Draft is quick-and-dirty, suited to get a first look on approximate coverage of a running project. Should not be used for anything else. Normal is the default parameter set of mira that is able to tackle most genomes. A bit slower than the draft version, but includes such options as read extension and vector remnant clipping. Accurate is still slower than the normal mode but should be used for genomes that pose a problem to the normal mode.</td>
+<td><table><tr><td>draft</td> <td><i>(Draft)</i></td></tr><tr><td>normal</td> <td><i>(Normal)</i></td></tr><tr><td>accurate</td> <td><i>(Accurate)</i></td></tr></table></td>
+<td>normal</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mapping</td>
+<td>list</td>
+<td>Work like the -genome switches except they are to be used when performing mapping assemblies against given backbone sequences.</td>
+<td><table><tr><td>draft</td> <td><i>(Draft)</i></td></tr><tr><td>normal</td> <td><i>(Normal)</i></td></tr><tr><td>accurate</td> <td><i>(Accurate)</i></td></tr></table></td>
+<td>normal</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-clipping</td>
+<td>list</td>
+<td>Three clipping grade modifiers, from light clipping when working with well preprocessed sequences to heavy clipping when the sequences that are being assembled had only sloppy or no preprocessing. Note 1 - the light version is already included in the -genome and -mapping switches. Note 2 - it is recommended that you perform a thorough preprocessing (clipping sequencing vector stretches, clipping of low quality bases, tagging standard repeats etc.) before assembling sequences. The clipping routines of mira are more optimised to cope with the last remnants of wrongly preprocessed sequences than with sequences having had no pre-processing at all.</td>
+<td><table><tr><td>light</td> <td><i>(Light)</i></td></tr><tr><td>medium</td> <td><i>(Medium)</i></td></tr><tr><td>heavy</td> <td><i>(Heavy)</i></td></tr></table></td>
+<td>medium</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-highlyrepetitive</td>
+<td>boolean</td>
+<td>A modifier switch for genome data that is deemed to be highly repetitive. The assemblies will run slower due to more iterative cycles that give mira a chance to resolve nasty repeats.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-highqualitydata</td>
+<td>boolean</td>
+<td>A modifier switch when the sequences that are used are of exceptional quality. mira will then bump up a few quality parameters which should lead to less false positives in the repeat and SNP detection routines.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-estmode</td>
+<td>boolean</td>
+<td>Switches mira to a good initial preset for assembling EST data. Note that this is not needed (and even counterproductive) when used with miraEST.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-horrid</td>
+<td>boolean</td>
+<td>Sets a number of parameters useful when dealing with really horrid data sets. Useful means that parameters are chosen to so that time and memory consumption do not explode beyond all hope of the program returning. Note that MIRA will return in most cases useful assemblies with this switch, but these might not be as optimised as with normal operation. The definition of 'horrid' is a bit flexible, for example, (a) a genomic projects with more than 2.000 reads that all seem to align partly to each other but have different repetitive structures or (b) EST clusters with a few thousand almost similar reads.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-borg</td>
+<td>boolean</td>
+<td>Sets several parameters to have mira try to assemble as many reads as possible. Will probably slow down the assembly process and use more memory. 'We are MIRA of borg. You will be assembled, resistance is futile!'</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-lj</td>
+<td>list</td>
+<td>Defines whether to load and assemble EXP files from a file of filenames ('mira_in.fofn'), load and assemble FASTA sequences ('mira_in.fasta') and their qualities ('mira_in.fasta.qual'), load and assemble sequences or qualities from a phd file ('mira_in.phd') or to load a project from a CAF file ('mira_in.caf') and assemble or eventually reassemble it. N.B. fofnphd is not currently available.</td>
+<td><table><tr><td>fofnexp</td> <td><i>(EXP files from a file of filenames)</i></td></tr><tr><td>fasta</td> <td><i>(Load and assemble FASTA)</i></td></tr><tr><td>caf</td> <td><i>(Load and assemble CAF)</i></td></tr><tr><td>phd</td> <td><i>(Load and assemble PHD)</i></td></tr><tr><td>fofnphd</td> <td><i>(PHD files from a file of filenames)</i></td></tr></table></td>
+<td>fofnexp</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-fo</td>
+<td>boolean</td>
+<td>If set to 'Y', the project will not be assembled and no assembly output files will be produced. Instead, the project files will only be loaded. This switch is useful for checking consistency of input files.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mxti</td>
+<td>boolean</td>
+<td>Some file formats above (FASTA, PHD or even CAF and EXP) possibly don't contain all the info necessary or useful for each read of an assembly. Should additional information, such as like clipping positions etc., be available in a XML trace info file in NCBI format (see File formats), then set this option to 'Y' and it will be merged to the data loaded. Please note, quality clippings given here will override quality clippings loaded earlier or performed by mira. Minimum clippings will still be made by the program, though.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-rns</td>
+<td>list</td>
+<td>Defines the centre naming scheme for read suffixes. Currently, only Sanger Institute and TIGR naming schemes are supported out of the box. How to choose? Please read the documentation available at the different centres or ask your sequence provider. In a nutshell, the Sanger scheme is 'somename.[pqsfrw][12][bckdeflmnpt][a|b|c|...' (e.g. U13a08f10.p1ca), TIGR scheme is 'somenameTF*|TR*|TA*' (e.g. GCPBN02TF or GCPDL68TABRPT103A58B).</td>
+<td><table><tr><td>sanger</td> <td><i>(Sanger)</i></td></tr><tr><td>tigr</td> <td><i>(TIGR)</i></td></tr></table></td>
+<td>sanger</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-eq</td>
+<td>list</td>
+<td>Defines the source format for reading qualities from external sources. Normally takes effect only when these are not present in the format of the load_job project (EXP and FASTA can have them, CAF and PHD must have them).</td>
+<td><table><tr><td>none</td> <td><i>(None)</i></td></tr><tr><td>SCF</td> <td><i>(SCF)</i></td></tr></table></td>
+<td>SCF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-eqo</td>
+<td>boolean</td>
+<td>Only takes effect when 'lj' is fofnexp. Defines whether or not the qualities from the external source override the possibly loaded qualities from the load job project. This might be of use in case some post-processing software fiddles around with the quality values of the input file but one wants to have the original ones.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]droeqe</td>
+<td>boolean</td>
+<td>Should there be a major mismatch between the external quality source and the sequence (e.g. the base sequence read from a SCF file does not match the originally read base sequence), should the read be excluded from assembly or not. If not, it will use the qualities it had before trying to load the external qualities (either default qualities or the ones loaded from the original source).</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]uti</td>
+<td>boolean</td>
+<td>Two reads sequenced from the same clone template form a read pair with a known minimum and maximum distance. This feature will definitively help for contigs containing lots of repeats. Set this to 'Y' if your data contains information on insert sizes. Information on insert sizes can be given via the SI tag in EXP files (for each read pair individually), or for the whole project using dismin and dismax</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ess</td>
+<td>integer</td>
+<td>Controls the starting step of the EST assembly and is therefore only useful in miraEST. EST assembly is a three step process, each with different settings to the assembly engine, with the result of each step being saved to disk. If results of previous steps are present in a directory, one can easily 'play around' with different setting for subsequent steps by reusing the results of the previous steps and directly starting with step two or three.</td>
+<td>Integer from 1 to 4</td>
+<td>1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]ps</td>
+<td>boolean</td>
+<td>Controls whether date and time are printed out during the assembly. Suppressing it isn't useful in normal operation, only when debugging or benchmarking.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-lsd</td>
+<td>boolean</td>
+<td>Straindata is a key value file, one read per line. First the name of the read, then the strain name of the organism the read comes from. It is used by the program to differentiate different types of SNPs appearing in organisms and classifying them.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-lb</td>
+<td>boolean</td>
+<td>A backbone is a sequence (or a previous assembly) that is used as a template for the current assembly. The current assembly process will first assemble reads to loaded backbone contigs before creating new contigs. This feature is helpful for assembling against previous (and already possibly edited) assembly iterations, or to make a comparative assembly of two very closely related organisms. Please read 'very closely related' as in 'only SNP mutations or short indels present'.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-sbuip</td>
+<td>integer</td>
+<td>When assembling against backbones, this parameter defines the pass iteration (see nop) from which on the backbones will be really used. In the passes preceding this number, the non-backbone reads will be assembled together as if no backbones existed. This allows mira to correctly spot repetitive stretches that differ by single bases and tag them accordingly. Rule of thumb - if backbones belong to the same strain as the reads to assemble, set to 1. If backbones are a different strain, then set sbuib to 1 lower than nop (example - nop 4 and sbuip 3).</td>
+<td>Integer 1 or more</td>
+<td>3</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bsn</td>
+<td>string</td>
+<td>Defines the name of the strain that the backbone sequences have.</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bft</td>
+<td>list</td>
+<td>Defines the filetype of the backbone file given. Currently (2.8.1 ) only FASTA, CAF and GBF files are supported. When GBF (GenBank files, also named .gbk) files are loaded, the features within these files are automatically transformed into Staden-compatible tags and get passed through the assembly.</td>
+<td><table><tr><td>fasta</td> <td><i>(Fasta)</i></td></tr><tr><td>caf</td> <td><i>(CAF)</i></td></tr><tr><td>gbf</td> <td><i>(GenBank)</i></td></tr></table></td>
+<td>fasta</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-brl</td>
+<td>integer</td>
+<td>Parameter for the internal sectioning size of the backbone. Extremely repetitive sequences may require reducing the default value, but the default value should work well in 99.9% of all cases.</td>
+<td>Integer from 1000 to 3000</td>
+<td>2500</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bbq</td>
+<td>integer</td>
+<td>Defines the default quality that the backbone sequences have if they came without quality values in their files (like in GBF format or when FASTA is used without .qual files). A value of -1 causes mira to use the same default quality for backbones as for reads.</td>
+<td>Integer from -1 to 100</td>
+<td>-1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]abnc</td>
+<td>boolean</td>
+<td>The standard mode of the assembler is to assemble available reads to a backbone and make new contigs with the remaining reads. If this option is set to 'N', the reads that cannot be assembled into existing contigs are put as singlets into the assembly, not forming new contigs.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mrl</td>
+<td>integer</td>
+<td>Minimum length that reads must have to be considered for the assembly. Shorter sequences will be filtered out at the beginning of the process and won't be present in the final project.</td>
+<td>Integer 20 or more</td>
+<td>40</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-nop</td>
+<td>integer</td>
+<td>Defines how many iterations of the whole assembly process are done. Rule of thumb - for quick and dirty assembly use 1 (not recommended). For assembly using read extensions and / or automatic contig editing (-ure and -ace) use at least 2. The recommended setting is 3 or higher, as some knowledge generated by the assembler can be used only from the third iteration on. More than 3 passes might be useful for projects containing many repetitive elements. See also -rbl and -mr for parameters that affect the assembly and disentanglement of possible repeats.</td>
+<td>Integer 1 or more</td>
+<td>3</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]sep</td>
+<td>boolean</td>
+<td>Defines whether the skim algorithm (and with it also the recalculation of Smith-Waterman alignments) is called in between each main pass. If set to 'N', skimming is done only when needed by the workflow, either when read extensions are searched for (-ure) or when possible vector leftovers are to be clipped (-pvc). Setting this option to 'Y' is highly recommended, setting it to 'N' is only for quick and dirty assemblies.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-rbl</td>
+<td>integer</td>
+<td>Defines the maximum number of times a contig can be rebuilt during main assembly passes (-nop) if misassemblies, due to possible repeats, are found.</td>
+<td>Integer 1 or more</td>
+<td>2</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]sd</td>
+<td>boolean</td>
+<td>Default is 'Y' for mira and 'N' for miraEST. A spoiler can be either a chimeric read or it is a read with long parts of unclipped vector sequence still included (that was too long for the -pvc vector leftover clipping routines). A spoiler typically prevents contigs being joined; MIRA will cut them back so that they present no more harm to the assembly. Recommended for assemblies of mid-to-high coverage genomic assemblies; not recommended for assemblies of ESTs as one might lose splice variants with that. A minimum number of two assembly passes (-nop) must be run for this option to take effect.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]sdlpo</td>
+<td>boolean</td>
+<td>Defines whether the spoiler detection algorithms are run only for the last pass or for all passes (-nop). Takes effect only if spoiler detection (-sd) is on.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bdq</td>
+<td>integer</td>
+<td>Defines the default base quality of reads that have no quality read from a file.</td>
+<td>Integer 0 or more</td>
+<td>10</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]ugpf</td>
+<td>boolean</td>
+<td>MIRA has two different pathfinder algorithms it chooses from to find its way through the (more or less) complete set of possible sequence overlaps; a genomic and an EST pathfinder. The genomic looks a bit into the future of the assembly and tries to stay on safe grounds using a maximum of information already present in the contig that is being built. The EST version, on the contrary, will directly jump at the complex cases posed by very similar repetitive sequences and try to solve those first; it is willing to fall down to brute force when really bad cases (such as coverage with thousands of sequences) are encountered. Generally, the genomic pathfinder will also work quite well with EST sequences (but might get slowed down a lot in pathological cases), while the EST algorithm does not work so well on genomes. If in doubt, leaveas 'Y' for genome projects and set to 'N' for EST projects.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]uess</td>
+<td>boolean</td>
+<td>Another important switch if you plan to assemble non-normalised EST libraries, where some ESTs may reach coverages of several hundreds or thousands of reads. This switch lets MIRA save a lot of computational time when aligning those extremely high coverage areas (but only there), at the expense of some accuracy.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-esspd</td>
+<td>integer</td>
+<td>Defines the number of potential partners a read must have for MIRA switching into emergency search stop mode for that read.</td>
+<td>Integer 1 or more</td>
+<td>500</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-umcbt</td>
+<td>boolean</td>
+<td>Defines whether there is an upper limit of time to be used to build one contig. Set this to 'Y' in EST assemblies where you think that extremely high coverages occur. Less useful for assembly of genomic sequences.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bts</td>
+<td>integer</td>
+<td>Depending on -umcbt above, this number defines the time in seconds alloted to building one contig.</td>
+<td>Integer 1 or more</td>
+<td>10000</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]ure</td>
+<td>boolean</td>
+<td>Defines whether there is an upper limit of time to be used to build one contig. Set this to 'Y' in EST assemblies where you think that extremely high coverages occur. Less useful for assembly of genomic sequences.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-rewl</td>
+<td>integer</td>
+<td>Only takes effect when -ure is set to 'Y'. The read extension routines use a sliding window approach on Smith-Waterman alignments. This parameter defines the window length.</td>
+<td>Integer 1 or more</td>
+<td>30</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-rewme</td>
+<td>integer</td>
+<td>Only takes effect when -ure is set to 'Y'. The read extension routines use a sliding window approach on Smith-Waterman alignments. This parameter defines the number maximum number of errors (disagreements) between two alignments in the given window.</td>
+<td>Integer 1 or more</td>
+<td>2</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-feip</td>
+<td>integer</td>
+<td>Only takes effect when -ure is set to 'Y'. The read extension routines can be called before assembly and/or after each assembly pass (see -nop). This parameter defines the first pass in which the read extension routines are called. The default of 0 tells mira to extend the reads the first time before the first assembly pass.</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-leip</td>
+<td>integer</td>
+<td>Only takes effect when -ure is set to 'Y'. The read extension routines can be called before assembly and/or after each assembly pass (see -nop). This parameter defines the last pass in which the read extension routines are called. The default of 0 tells mira to extend the reads the last time before the first assembly pass.</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-tpae</td>
+<td>boolean</td>
+<td>This option is useful in EST assembly. Poly-AT stretches at the end of reads that were not correctly masked or clipped in pre-processing steps from external programs get tagged here. The assembler will not use these stretches for critical operations. Additionally, the tags do provide a good visual anchor when looking at the assembly with different programs.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pbwl</td>
+<td>integer</td>
+<td>Only takes effect when -tpae is set to 'Y'. Defines the window length within which all bases (except the maximum number of errors allowed) must be either A or T to be considered a polybase stretch.</td>
+<td>Integer 1 or more</td>
+<td>7</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pbwme</td>
+<td>integer</td>
+<td>Only takes effect when -tpae is set to 'Y. Defines the maximum number of errors allowed in a given window length such that a stretch is considered to be a polybase stretch. The distribution of these errors is not important.</td>
+<td>Integer 1 or more</td>
+<td>2</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pbwgd</td>
+<td>integer</td>
+<td>Only takes effect when -tpae is set to 'Y'. Defines the number of bases from the end of a sequence (if masked, from the end of the masked area) within which a polybase stretch is looked for without finding one.</td>
+<td>Integer 1 or more</td>
+<td>9</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]pvc</td>
+<td>boolean</td>
+<td>Mira will try to identify possible sequencing vector relicts present at the start of a sequence and clip them away. These relicts are usually a few bases long and were not correctly removed from the sequence in data pre-processing steps of external programs. You might want to turn off this option if you know (or think) that your data contains a lot of repeats and the option below to fine tune the clipping behaviour does not give the expected results.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pvcmla</td>
+<td>integer</td>
+<td>The clipping of possible vector relicts option works quite well. Unfortunately the bounds of repeats or differences in EST splice variants sometimes show the same alignment behaviour as possible sequencing vector relicts and could therefore also be clipped. To stop the vector clipping from mistakenly clipping repetitive regions or EST splice variants, this option puts an upper bound to the number of bases a potential clip is allowed to have. If the number of bases is below or equal to this threshold then the bases are clipped. If the number of bases exceeds the threshold then the clip is NOT performed. Setting the value to 0 turns off the threshold i.e. clips are then always performed if a potential vector is found.</td>
+<td>Integer 0 or more</td>
+<td>18</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-qc</td>
+<td>boolean</td>
+<td>Default is 'N', but is automatically set to 'Y' when using the setparam options 'fasta' or 'phd' (can be turned off again by subsequent options afterwards). This will let mira perform its own quality clipping before sequences are entered into the assembly. The clip function performed is a sequence end window quality clip with back iteration to get a maximum number of bases as useful sequence. Note that the bases clipped away here can still be used afterwards if there is enough evidence supporting their correctness when the option -ure is turned on.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-qcmq</td>
+<td>integer</td>
+<td>This is the minimum quality required of bases in a window in order to be accepted. Please be cautious and don't use extreme values here, because then the clipping will be too lax or too harsh. Values below 15 and higher than 35 are disallowed.</td>
+<td>Integer from 15 to 35</td>
+<td>20</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-qcwl</td>
+<td>integer</td>
+<td>This is the length of a window in bases for the quality clip.</td>
+<td>Integer 10 or more</td>
+<td>30</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]mbc</td>
+<td>boolean</td>
+<td>This will let mira perform a 'clipping' of bases that were masked out (replaced with the character X). It is generally not a good idea to use mask bases to remove unwanted portions of a sequence; the EXP file format and the NCBI traceinfo format have excellent possibilities to circumvent this. But because a lot of pre-processing software is built around cross_match, scylla- and phrap-style base masking, the need arised for mira to be able to handle this too. mira will look at the start and end of each sequence to see whether there are masked bases that should be 'clipped'.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mbcgs</td>
+<td>integer</td>
+<td>While performing the clip of masked bases, mira will look if it can merge larger chunks of masked bases that are a maximum of -mbcgs apart.</td>
+<td>Integer 0 or more</td>
+<td>20</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mbcmfg</td>
+<td>integer</td>
+<td>While performing the clip of masked bases at the start of a sequence, mira will allow up to this number of unmasked bases in front of a masked stretch.</td>
+<td>Integer 0 or more</td>
+<td>40</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mbcmeg</td>
+<td>integer</td>
+<td>While performing the clip of masked bases at the end of a sequence, mira will allow up to this number of unmasked bases behind a masked stretch.</td>
+<td>Integer 0 or more</td>
+<td>60</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]emlc</td>
+<td>boolean</td>
+<td>If on, ensures a minimum left clip on each read according to the parameters in -mlcr & -smlc</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mlcr</td>
+<td>integer</td>
+<td>If -emlc is 'Y', checks whether there is a left clip whose length is at least the size specified here.</td>
+<td>Integer 0 or more</td>
+<td>25</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-smlc</td>
+<td>integer</td>
+<td>If -emlc is 'Y' and the actual left clip is &lt; -mlcr, then set the left clip of read to the value given here.</td>
+<td>Integer 0 or more</td>
+<td>30</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bph</td>
+<td>integer</td>
+<td>Default is 14 on 32 bit systems and 16 on 64 bit systems. Controls the number of consecutive bases n which are used as a word hash. The higher the value the faster the search. The lower the value the more weak matches are found. Values below 10 are not recommended.</td>
+<td>Integer 1 or more</td>
+<td>14</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-hss</td>
+<td>integer</td>
+<td>This is a parameter controlling the stepping increments with which hashes are generated. This allows for a more fine-grained search as matches are now found with at least n+s (see -bph) equal bases instead of the SSAHA 2n. The higher the value the faster the search. The lower the value the more weak matches are found.</td>
+<td>Integer 1 or more</td>
+<td>4</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pr</td>
+<td>integer</td>
+<td>Controls the relative percentage of exact word matches in an approximate overlap that has to be reached to accept the overlap as a possible match. Increasing this number will decrease the number of possible alignments that have to be checked by Smith-Waterman later on in the assembly, but it might also lead to the rejection of weaker overlaps (i.e. overlaps that contain a higher number of mismatches).</td>
+<td>Integer 1 or more</td>
+<td>50</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mhpr</td>
+<td>integer</td>
+<td>Controls the maximum number of possible hits one read can maximally transport to the Smith-Waterman alignment phase. If more potential hits are found, only the best ones are taken. This is an important option for tackling projects that contain extreme assembly conditions. For example, 5000 reads that are all very similar would generate around 40 to 50 million possible alignments (forward and reverse complement). Setting this parameter to 200 reduces the number of alignments to check to around 1.5-2 million. As the assembly increases in passes (-nop), different combinations of possible hits will be checked, always the probably best ones first. So the accuracy of the assembly should only suffer when lowering this number too much.</td>
+<td>Integer 1 or more</td>
+<td>200</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bip</td>
+<td>integer</td>
+<td>The banded Smith-Waterman alignment uses this percentage number to compute the bandwidth it has to use when computing the alignment matrix. E.g. expected overlap is 150 bases, bip=10 -&gt; the banded SW will compute a band of 15 bases to each side of the expected alignment diagonal, thus allowing up to 15 unbalanced inserts / deletes in the alignment. INCREASING AND DECREASING THIS NUMBER - increasing will find more non-optimal alignments but will also increase SW runtime between linear and ^2, decreasing will work the other way round (it might miss a few bad alignments but gain speed).</td>
+<td>Integer from 1 to 100</td>
+<td>15</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bmin</td>
+<td>integer</td>
+<td>Minimum bandwidth in bases to each side.</td>
+<td>Integer 1 or more</td>
+<td>25</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bmax</td>
+<td>integer</td>
+<td>Maximum bandwidth in bases to each side.</td>
+<td>Integer 1 or more</td>
+<td>50</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mo</td>
+<td>integer</td>
+<td>Minimum number of overlapping bases needed in an alignment of two sequences to be accepted.</td>
+<td>Integer 1 or more</td>
+<td>15</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ms</td>
+<td>integer</td>
+<td>Describes the minimum score of an overlap to be taken into account for assembly. mira uses a default scoring scheme for SW align. Each match counts 1, a match with an N counts 0, each mismatch with a non-N base -1 and each gap -2. Use a bigger score to weed out a number of chance matches, a lower score to perhaps find the single (short) alignment that might join two contigs together (at the expense of computing time and memory).</td>
+<td>Integer 1 or more</td>
+<td>15</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mrs</td>
+<td>integer</td>
+<td>Describes the min percentage of matching between two reads to be considered for assembly. Increasing this number will save memory but one might lose possible alignments. A maximum of 80 is probably sensible here. Decreasing below 55 will probably make memory and time consumption explode.</td>
+<td>Integer from 1 to 100</td>
+<td>65</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-egp</td>
+<td>boolean</td>
+<td>Defines whether or not to increase penalties applied to alignments containing long gaps. Setting this to 'Y' might help in projects with frequent repeats. On the other hand, it is definitively disturbing when assembling very long reads containing multiple long indels in the called base sequence ... although this should not happen in the first place and is a sure sign for problems lying ahead. When in doubt, set it to 'Y' for EST projects and de-novo genome assembly, set it to 'N' for assembly of closely related strains (assembly against a backbone). When set to 'N', it is recommended to have -amgb and -amgbemc both set to 'Y'.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-egpl</td>
+<td>list</td>
+<td>Has no effect if extra_gap_penalty is off. Defines an extra penalty applied to 'long' gaps. There are these predefined levels - 1. low - use this if you expect your base caller frequently misses two or more bases. 2. medium - use this if your base caller is expected to frequently miss one to two bases. 3. high - use this if your base caller does not frequently miss more than one base. For some stages of the EST assembly process, a special value 'est' is used.</td>
+<td><table><tr><td>low</td> <td><i>(Low)</i></td></tr><tr><td>medium</td> <td><i>(Medium)</i></td></tr><tr><td>high</td> <td><i>(High)</i></td></tr><tr><td>est</td> <td><i>(EST split splices)</i></td></tr></table></td>
+<td>low</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-megpp</td>
+<td>integer</td>
+<td>Has no effect if extra_gap_penalty is off. Defines the maximum extra penalty in percent applied to 'long' gaps.</td>
+<td>Integer from 1 to 100</td>
+<td>100</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-np</td>
+<td>string</td>
+<td>Contigs will have this string prepended to their names.</td>
+<td>Any string</td>
+<td>mira</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-an</td>
+<td>list</td>
+<td>When adding reads to a contig, dangerous regions can get an extra integrity check. none = no extra check. text = check is only text-based. signal = check is signal based, if the SCF trace is not available, fallback is 'text'. For the time being, only regions tagged as ALUS or REPT in the experiment file are considered dangerous.</td>
+<td><table><tr><td>none</td> <td><i>(None)</i></td></tr><tr><td>text</td> <td><i>(Text)</i></td></tr><tr><td>signal</td> <td><i>(Signal)</i></td></tr></table></td>
+<td>signal</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-rodirs</td>
+<td>integer</td>
+<td>When adding reads to a contig, reject the reads if the drop in the quality of the consensus is &gt; the given value in %. Lower values mean stricter checking. This value is doubled should a read be entered that has a template partner (a read pair) at the right distance.</td>
+<td>Integer from 1 to 100</td>
+<td>15</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-dmer</td>
+<td>integer</td>
+<td>When adding reads to a contig, reject the reads if the error in zones known as dangerous exceeds the given value in %. Lower values mean stricter checking in these danger zones. For the time being, only regions tagged as ALUS or REPT in the experiment file are considered dangerous.</td>
+<td>Integer from 1 to 100</td>
+<td>1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]mr</td>
+<td>boolean</td>
+<td>One of the most important switches in MIRA. If set to 'Y', MIRA will try to resolve misassemblies due to repeats by identifying single base stretch differences and tag those critical bases as RMB (Repeat Marker Base, weak or strong). This switch is also needed when MIRA is run in EST mode to identify possible inter-, intra- and intra-and-interorganism SNPs.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-asir</td>
+<td>boolean</td>
+<td>Only takes effect when -mr is set to 'Y', effect is also dependent on the fact whether strain data (see -lsd) is present or not. Usually, mira will mark bases that differentiate between repeats, when a conflict occurs between reads that belong to one strain. If the conflict occurs between reads belonging to different strains they are marked as SNP. However, if this switch is set to 'Y',= then conflicts within a strain are also marked as SNP. This switch is mainly used in assemblies of ESTs; it should not be set for genomic assembly.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mrpg</td>
+<td>integer</td>
+<td>Only takes effect when -mr is set to 'Y'. This defines the minimum number of reads in a group that are needed for the RMB (Repeat Marker Bases) or SNP detection routines to be triggered. A group is defined by the reads carrying the same nucleotide for a given position, i.e., an assembly with mrpg=2 will need at least two times two reads with the same nucleotide (having at least a quality as defined in -mgqrt) to be recognised as repeat marker or a SNP. Setting this to a low number increases sensitivity, but might produce a few false positives, resulting in reads being thrown out of contigs because of falsely identified possible repeat markers (or wrongly recognised as SNP).</td>
+<td>Integer 2 or more</td>
+<td>2</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mgqrt</td>
+<td>integer</td>
+<td>Only takes effect when -mr is set to 'Y'. This defines the minimum quality of a group of bases to be taken into account as potential repeat marker. The lower the number, the more sensitive you get, but lowering below 25 is not recommended as a lot of wrongly called bases can have a quality approaching this value and you'd end up with a lot of false positives. The higher the overall coverage of your project the better, and the higher you can set this number. A value of 35 will probably remove all false positives, a value of 40 will probably never show false positives.</td>
+<td>Integer 25 or more</td>
+<td>30</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-emea</td>
+<td>integer</td>
+<td>Only takes effect when -mr is set to 'Y'. Using the end of sequences of Sanger type shotgun sequencing is always a bit risky, as wrongly called bases tend to crowd there or some sequencing vector relicts hang around. It is even more risky to use these stretches for detecting possible repeats, so one can define an exclusion area where the bases are not used when determining whether a mismatch is due to repeats or not.</td>
+<td>Integer 0 or more</td>
+<td>15</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]amgb</td>
+<td>boolean</td>
+<td>Determines whether columns containing gap bases (indels) are also tagged.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]amgbemc</td>
+<td>boolean</td>
+<td>Only takes effect when -amgb is set to 'Y'. Determines whether multiple columns containing gap bases (indels) are also tagged.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]amgbnbs</td>
+<td>boolean</td>
+<td>Only takes effect when -amgb is set to 'Y'. Determines whether, for both tagging columns containing gap bases, both strands need to have a gap. Setting this to 'N' is not recommended except when working in desperately low coverage situations.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-dismin</td>
+<td>integer</td>
+<td>The minimum distance that read pairs may be apart. There is an additional error margin of 10% subtracted from this value during internal computations.</td>
+<td>Integer 0 or more</td>
+<td>500</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-dismax</td>
+<td>integer</td>
+<td>The maximum distance that read pairs may be apart. There is an additional error margin of 10% added to this value during internal computations.</td>
+<td>Integer 0 or more</td>
+<td>5000</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ace</td>
+<td>boolean</td>
+<td>Once contigs have been build, mira can call a built-in version of the automatic contig editor EdIt. EdIt will try to resolve discrepancies in the contig by performing trace analysis and correct even hard to resolve errors. This option is always useful, but especially in conjunction with -nop and -ure. Notice: the current development version has a memory leak in the editor, therefore the option is not automatically turned on.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]sem</td>
+<td>boolean</td>
+<td>If set to 'Y' the automatic editor will not take error hypotheses with a low probability into account, even if all the requirements to make an edit are fulfilled.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ct</td>
+<td>integer</td>
+<td>The higher this value, the more strict the automatic editor will apply its internal rule set. Going below 40 is not recommended.</td>
+<td>Integer from 1 to 100</td>
+<td>50</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]orc</td>
+<td>boolean</td>
+<td>Output CAF results</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]org</td>
+<td>boolean</td>
+<td>Output GAP4 results</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]orf</td>
+<td>boolean</td>
+<td>Output FASTA results</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ora</td>
+<td>boolean</td>
+<td>Output ACE results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]ort</td>
+<td>boolean</td>
+<td>Output TXT results</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]ors</td>
+<td>boolean</td>
+<td>Output TCS results</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-orh</td>
+<td>boolean</td>
+<td>Output HTML results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-otc</td>
+<td>boolean</td>
+<td>Output temporary CAF results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-otg</td>
+<td>boolean</td>
+<td>Output temporary GAP4 results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-otf</td>
+<td>boolean</td>
+<td>Output temporary FASTA results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ota</td>
+<td>boolean</td>
+<td>Output temporary ACE results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ott</td>
+<td>boolean</td>
+<td>Output temporary TXT results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ots</td>
+<td>boolean</td>
+<td>Output temporary TCS results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-oth</td>
+<td>boolean</td>
+<td>Output temporary HTML results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-oetc</td>
+<td>boolean</td>
+<td>Output extra temporary CAF results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-oetg</td>
+<td>boolean</td>
+<td>Output extra temporary GAP4 results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-oetf</td>
+<td>boolean</td>
+<td>Output extra temporary FASTA results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-oeta</td>
+<td>boolean</td>
+<td>Output extra temporary ACE results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-oett</td>
+<td>boolean</td>
+<td>Output extra temporary TXT results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-oeth</td>
+<td>boolean</td>
+<td>Output extra temporary HTML results</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-tcpl</td>
+<td>integer</td>
+<td>When producing an output in text format (-ort|ott|oett), this parameter defines how many bases each line of an alignment should contain.</td>
+<td>Integer 1 or more</td>
+<td>60</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-hcpl</td>
+<td>integer</td>
+<td>When producing an output in text format (-orh|oth|oeth), this parameter defines how many bases each line of an alignment should contain.</td>
+<td>Integer 1 or more</td>
+<td>60</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-gapfda</td>
+<td>string</td>
+<td>Defines the extension of the directory where mira will write the result of an assembly ready to import into the Staden package (GAP4) in Direct Assembly format. The name of the directory will then be &lt;projectname&gt;_.&lt;extension&gt;</td>
+<td>Any string</td>
+<td>gap4da</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-log</td>
+<td>string</td>
+<td>Defines the directory where mira will write some log files to. Note that the name of the actual project will be prepended.</td>
+<td>Any string</td>
+<td>miralog</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-co</td>
+<td>string</td>
+<td>Defines the file in CAF format to save an assembled project to. Filename must end with '.caf'.</td>
+<td>Any string</td>
+<td>mira_out.caf</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-expdir" associated directory qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-scfdir" associated directory qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -extension</td>
+<td>string</td>
+<td>Default file extension</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>

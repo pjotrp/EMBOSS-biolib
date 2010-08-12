@@ -1,0 +1,47 @@
+Distance matrix from restriction sites or fragments
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-data]              discretestates File containing one or more sets of
+                                  restriction data
+  [-outfile]           outfile    [*.frestdist] Phylip restdist program output
+                                  file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -[no]restsites      boolean    [Y] Restriction sites (put N if you want
+                                  restriction fragments)
+   -neili              boolean    [N] Use original Nei/Li model (default uses
+                                  modified Nei/Li model)
+*  -gamma              boolean    [N] Gama distributed rates among sites
+*  -gammacoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+   -ttratio            float      [2.0] Transition/transversion ratio (Number
+                                  0.001 or more)
+   -sitelength         integer    [6] Site length (Integer 1 or more)
+   -lower              boolean    [N] Lower triangular distance matrix
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

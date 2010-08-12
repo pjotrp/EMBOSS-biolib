@@ -1,0 +1,285 @@
+                                    eprop
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Reports propeptide cleavage sites in proteins
+
+Description
+
+   ProP 1.0 server predicts arginine and lysine propeptide cleavage sites
+   in eukaryotic protein sequences using an ensemble of neural networks.
+   Furin-specific prediction is the default. It is also possible to
+   perform a general proprotein convertase (PC) prediction.
+
+Usage
+
+   Here is a sample session with eprop
+
+
+% eprop
+Reports propeptide cleavage sites in proteins
+Input (aligned) sequence set: EDA_HUMAN.fsa
+Output file [eda_human.eprop]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Reports propeptide cleavage sites in proteins
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.eprop] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -plot               boolean    [N] Produce graphics
+   -pcprediction       boolean    [N] Perform proprotein convertase prediction
+   -signalp            boolean    [N] Include signal peptide cleavage site
+                                  prediction
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   eprop reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: EDA_HUMAN.fsa
+
+>EDA_HUMAN   Q92838 Ectodysplasin A (Ectodermal dysplasia protein) (EDA protein)
+. - Homo sapiens (Human).
+MGYPEVERRELLPAAAPRERGSQGCGCGGAPARAGEGNSCLLFLGFFGLSLALHLLTLCC
+YLELRSELRRERGAESRLGGSGTPGTSGTLSSLGGLDPDSPITSHLGQPSPKQQPLEPGE
+AALHSDSQDGHQMALLNFFFPDEKPYSEEESRRVRRNKRSKSNEGADGPVKNKKKGKKAG
+PPGPNGPPGPPGPPGPQGPPGIPGIPGIPGTTVMGPPGPPGPPGPQGPPGLQGPSGAADK
+AGTRENQPAVVHLQGQGSAIQVKNDLSGGVLNDWSRITMNPKVFKLHPRSGELEVLVDGT
+YFIYSQVEVYYINFTDFASYEVVVDEKPFLQCTRSIETGKTNYNTCYTAGVCLLKARQKI
+AVKMVHADISINMSKHTTFFGAIRLGEAPAS
+
+Output file format
+
+  Output files for usage example
+
+  File: eda_human.eprop
+
+
+
+         ##### ProP v.1.0b ProPeptide Cleavage Site Prediction #####
+
+
+         ##### Furin-type cleavage site prediction (Arginine/Lysine residues) ##
+###
+
+
+  391 EDA_HUMAN
+MGYPEVERRELLPAAAPRERGSQGCGCGGAPARAGEGNSCLLFLGFFGLSLALHLLTLCCYLELRSELRRERGAESRLGG
+      80
+SGTPGTSGTLSSLGGLDPDSPITSHLGQPSPKQQPLEPGEAALHSDSQDGHQMALLNFFFPDEKPYSEEESRRVRRNKRS
+     160
+KSNEGADGPVKNKKKGKKAGPPGPNGPPGPPGPPGPQGPPGIPGIPGIPGTTVMGPPGPPGPPGPQGPPGLQGPSGAADK
+     240
+AGTRENQPAVVHLQGQGSAIQVKNDLSGGVLNDWSRITMNPKVFKLHPRSGELEVLVDGTYFIYSQVEVYYINFTDFASY
+     320
+EVVVDEKPFLQCTRSIETGKTNYNTCYTAGVCLLKARQKIAVKMVHADISINMSKHTTFFGAIRLGEAPAS
+     400
+................................................................................
+      80
+..............................................................................P.
+     160
+................................................................................
+     240
+................................................................................
+     320
+.......................................................................
+     400
+
+Propeptide cleavage sites predicted:    Arg(R)/Lys(K): 1
+
+
+
+
+Name           Pos    Context     Score  Pred
+____________________________v_________________
+EDA_HUMAN        8    GYPEVER|RE  0.057    .
+EDA_HUMAN        9    YPEVERR|EL  0.128    .
+EDA_HUMAN       18    LPAAAPR|ER  0.135    .
+EDA_HUMAN       20    AAAPRER|GS  0.102    .
+EDA_HUMAN       33    CGGAPAR|AG  0.090    .
+EDA_HUMAN       65    CCYLELR|SE  0.089    .
+EDA_HUMAN       69    ELRSELR|RE  0.081    .
+EDA_HUMAN       70    LRSELRR|ER  0.195    .
+EDA_HUMAN       72    SELRRER|GA  0.293    .
+EDA_HUMAN       77    ERGAESR|LG  0.112    .
+EDA_HUMAN      112    LGQPSPK|QQ  0.064    .
+EDA_HUMAN      144    FFFPDEK|PY  0.060    .
+EDA_HUMAN      152    YSEEESR|RV  0.096    .
+EDA_HUMAN      153    SEEESRR|VR  0.114    .
+EDA_HUMAN      155    EESRRVR|RN  0.204    .
+EDA_HUMAN      156    ESRRVRR|NK  0.482    .
+EDA_HUMAN      158    RRVRRNK|RS  0.182    .
+EDA_HUMAN      159    RVRRNKR|SK  0.819 *ProP*
+EDA_HUMAN      161    RRNKRSK|SN  0.131    .
+EDA_HUMAN      171    GADGPVK|NK  0.060    .
+EDA_HUMAN      173    DGPVKNK|KK  0.066    .
+EDA_HUMAN      174    GPVKNKK|KG  0.119    .
+EDA_HUMAN      175    PVKNKKK|GK  0.156    .
+EDA_HUMAN      177    KNKKKGK|KA  0.116    .
+EDA_HUMAN      178    NKKKGKK|AG  0.120    .
+EDA_HUMAN      240    PSGAADK|AG  0.060    .
+EDA_HUMAN      244    ADKAGTR|EN  0.082    .
+EDA_HUMAN      263    GSAIQVK|ND  0.066    .
+EDA_HUMAN      276    VLNDWSR|IT  0.077    .
+EDA_HUMAN      282    RITMNPK|VF  0.057    .
+EDA_HUMAN      285    MNPKVFK|LH  0.064    .
+EDA_HUMAN      289    VFKLHPR|SG  0.116    .
+EDA_HUMAN      327    EVVVDEK|PF  0.060    .
+EDA_HUMAN      334    PFLQCTR|SI  0.152    .
+EDA_HUMAN      340    RSIETGK|TN  0.061    .
+EDA_HUMAN      355    AGVCLLK|AR  0.059    .
+EDA_HUMAN      357    VCLLKAR|QK  0.099    .
+EDA_HUMAN      359    LLKARQK|IA  0.073    .
+EDA_HUMAN      363    RQKIAVK|MV  0.078    .
+EDA_HUMAN      375    ISINMSK|HT  0.067    .
+EDA_HUMAN      384    TFFGAIR|LG  0.076    .
+____________________________^_________________
+
+
+
+
+
+Data files
+
+   None.
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS wrapper for a program written by the CBS
+   group http://www.cbs.dtu.dk/index.shtml
+
+   The original CBS group application must be licensed and installed to
+   use this wrapper.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

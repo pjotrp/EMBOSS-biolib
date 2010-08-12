@@ -1,0 +1,75 @@
+application: seqrettype [
+  documentation: "Reads and writes (returns) sequences"
+  groups: "Edit"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000155 topic Sequence retrieval"
+    relations: "EDAM:0001813 operation Sequence retrieval"
+    relations: "EDAM:0002121 operation Sequence file handling"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  boolean: feature [
+    information: "Use feature information"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  list: type [
+    default: "any"
+    delimiter: ";"
+    values: "any:any valid sequence; dna:DNA sequence; rna:RNA
+             sequence; puredna:DNA, bases ACGT only; purerna:RNA, bases ACGU
+             only; nucleotide:nucleotide sequence; purenucleotide:nucleotide,
+             bases ACGTU only; gapnucleotide:nucleotide, bases ACGTU with
+             gaps; gapdna:DNA sequence with gaps; gaprna:RNA sequence with
+             gaps; protein:protein sequence; proteinstandard:protein sequence
+             with no selenocysteine; gapprotein:protein sequence with gaps;
+             gapprotein:protein sequence with gaps but no selenocysteine;
+             pureprotein:protein sequence without BZ U or X;
+             stopprotein:protein sequence with a possible stop;
+             stopproteinstandard:protein sequence with a possible stop but no
+             selenocysteine; gapany:any valid sequence with gaps"
+    information: "Sequence type"
+    relations: "EDAM:0001110 data EMBOSS sequence type"
+  ]
+
+  seqall: sequence [
+    parameter: "Y"
+    features: "$(feature)"
+    type: "$(type)"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: firstonly [
+    information: "Read one sequence and stop"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutall: outseq [
+    parameter: "Y"
+    features: "$(feature)"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: output

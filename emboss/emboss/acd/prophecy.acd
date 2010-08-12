@@ -1,0 +1,109 @@
+application: prophecy [
+  documentation: "Create frequency matrix or profile from a multiple alignment"
+  groups: "Nucleic:Profiles, Protein:Profiles"
+    relations: "EDAM:0000188 topic Sequence profiles"
+    relations: "EDAM:0000296 operation Sequence profile generation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "gapany"
+    aligned: "Y"
+    minseqs: "2"
+    relations: "EDAM:0000863 data Sequence alignment"
+  ]
+
+  list: type [
+    standard: "Y"
+    default: "F"
+    minimum: "1"
+    maximum: "1"
+    values: "F:Frequency,G:Gribskov,H:Henikoff"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Profile type"
+    information: "Select type"
+    button: "Y"
+    relations: "EDAM:0002130 data Sequence profile type"
+  ]
+
+  matrixf: datafile [
+    standard: "@($(type) != F)"
+    information: "Scoring matrix"
+    default: "@($(type) = G: Epprofile H: EBLOSUM62 F: EBLOSUM62)"
+    protein: "$(acdprotein)"
+    expected: "'Epprofile' for Gribskov type, or EBLOSUM62"
+    relations: "EDAM:0001447 data Comparison matrix (floats)"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  string: name [
+    standard: "Y"
+    default: "mymatrix"
+    information: "Enter a name for the profile"
+    knowntype: "name"
+    relations: "EDAM:0002150 data Sequence profile name"
+  ]
+
+  section: profiletypesection [
+    information: "Profile type specific options"
+    type: "frame"
+  ]
+
+    integer: threshold [
+      standard: "@($(type) == F)"
+      default: "75"
+      minimum: "1"
+      maximum: "100"
+      information: "Enter threshold reporting percentage"
+    relations: "EDAM:0002146 data Threshold"
+    ]
+
+  endsection: profiletypesection
+
+  section: gapsection [
+    information: "Gap options"
+    type: "frame"
+  ]
+
+    float: open [
+      standard: "@($(type) != F)"
+      information: "Gap opening penalty"
+      default: "3.0"
+    relations: "EDAM:0001397 data Gap opening penalty"
+    ]
+
+    float: extension [
+      standard: "@($(type) != F)"
+      information: "Gap extension penalty"
+      default: "0.3"
+    relations: "EDAM:0001398 data Gap extension penalty"
+    ]
+
+  endsection: gapsection
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "prophecy output"
+    relations: "EDAM:0001354 data Sequence profile"
+  ]
+
+endsection: output

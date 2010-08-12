@@ -1,0 +1,205 @@
+                                  vrnaeval
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   RNA eval
+
+Description
+
+   This is a port of the Vienna RNA package program RNAeval.
+
+   The original program has additional inputs and produces different
+   outputs, depending on the options selected. In the EMBASSY
+   implementation it is split into vrnaeval and vrnaevalpair
+
+Algorithm
+
+   See the original documentation for the Vienna RNA package
+   http://www.tbi.univie.ac.at/~ivo/RNA/
+
+Usage
+
+   Here is a sample session with vrnaeval
+
+
+% vrnaeval
+RNA eval
+Input nucleotide sequence: evalrna.fasta
+Vienna RNA structure constraints file: eval1.con
+Vienna RNAeval output file [eval.vrnaeval]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+RNA eval
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
+  [-constraintfile]    infile     Vienna RNA structure constraints file
+  [-outfile]           outfile    [*.vrnaeval] Vienna RNAeval output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]convert        boolean    [Y] Convert T to U
+   -[no]tetraloop      boolean    [Y] Stabilising energies for tetra-loops
+   -circular           boolean    [N] Circular RNA
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -dangles            menu       [1] Method (Values: 0 (No stabilising
+                                  energies for dangling ends); 1 (Use
+                                  stabilising energies for dangling ends); 2
+                                  (Dangling energies as in a partition
+                                  function 3:Allow coaxial stacking of
+                                  adjacent helices))
+   -logml              boolean    [N] Use log scale for multiloop energies
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   vrnaeval reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: evalrna.fasta
+
+>eval
+GGGGCCCCC
+
+  File: eval1.con
+
+(...)....
+
+Output file format
+
+   vrnaeval outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
+
+  Output files for usage example
+
+  File: eval.vrnaeval
+
+GGGGCCCCC
+(...).... (  4.90)
+
+Data files
+
+   For details of Vienna RNA file formats, see the original documentation
+   http://www.tbi.univie.ac.at/~ivo/RNA/
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+                     Program name                       Description
+                    einverted      Finds inverted repeats in nucleotide sequences
+                    vrnaalifold    RNA alignment folding
+                    vrnaalifoldpf  RNA alignment folding with partition
+                    vrnacofold     RNA cofolding
+   vrnacofoldconc   RNA cofolding with concentrations
+                    vrnacofoldpf   RNA cofolding with partitioning
+                    vrnadistance   RNA distances
+                    vrnaduplex     RNA duplex calculation
+                    vrnaevalpair   RNA eval with cofold
+                    vrnafold       Calculate secondary structures of RNAs
+                    vrnafoldpf     Secondary structures of RNAs with partition
+                    vrnaheat       RNA melting
+                    vrnainverse    RNA sequences matching a structure
+                    vrnalfold      Calculate locally stable secondary structures of RNAs
+                    vrnaplot       Plot vrnafold output
+                    vrnasubopt     Calculate RNA suboptimals
+
+Author(s)
+
+                    This program is an EMBOSS conversion of a program written by Ivo
+                    Hofacker as part of his VIENNA package.
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+                    Converted (October 2005) by Alan Bleasby
+
+Target users
+
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
+
+Comments

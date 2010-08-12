@@ -1,0 +1,99 @@
+application: wordmatch [
+  documentation: "Finds regions of identity (exact matches) of two sequences"
+  groups: "Alignment:Local"
+    relations: "EDAM:0000159 topic Sequence comparison"
+    relations: "EDAM:0000288 operation Sequence word comparison"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: asequence [
+    parameter: "Y"
+    aligned: "N"  
+    type: "any"                                         
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+  seqall: bsequence [
+    parameter: "Y"
+    type: "@($(acdprotein) ? stopprotein : nucleotide)"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: wordsize [
+    standard: "Y"
+    default: "4"
+    minimum: "2"
+    information: "Word size"
+    relations: "EDAM:0001250 data Word size"
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  toggle: dumpalign [
+    default: "Y"
+    additional: "Y"
+    information: "Dump matches as alignments"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+  
+  align: outfile [
+    parameter: "Y"
+    nullok: "@(!$(dumpalign))"
+    aformat: "match"
+    minseqs: "2"
+    relations: "EDAM:0001381 data Pairwise sequence alignment"
+  ]
+ 
+  outfile: logfile [
+    additional: "Y"
+    default: "wordmatch.log"
+    knowntype: "wordmatch log"
+    information: "Wordmatch log output file"
+    help: "Statistics on distribution of kmers and matches"
+    relations: "EDAM:0001678 data Tool log"
+  ]
+  
+  toggle: dumpfeat [
+    default: "Y"
+    additional: "Y"
+    information: "Dump matches as feature files"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  featout: aoutfeat [
+    parameter: "Y"
+    nullok: "@(!$(dumpfeat))"
+    ofname: "$(asequence.name)"
+    offormat: "gff"
+    relations: "EDAM:0001270 data Sequence feature table"
+  ]
+
+  featout: boutfeat [
+    parameter: "Y"
+    ofname: "$(bsequence.name)"
+    offormat: "gff"
+    nullok: "@(!$(dumpfeat))"
+    relations: "EDAM:0001270 data Sequence feature table"
+  ]
+ 
+endsection: output

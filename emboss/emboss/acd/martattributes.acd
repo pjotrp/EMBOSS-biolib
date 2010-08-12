@@ -1,0 +1,61 @@
+application: martattributes [
+  documentation: "Return attributes from a mart dataset from a mart host"
+  groups: "Edit"
+    relations: "EDAM:0000088 topic Literature and documentation"
+    relations: "EDAM:0000516 operation Database information retrieval"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  string: dataset [
+    standard: "Y"
+    default: "oanatinus_gene_ensembl"
+    information: "Dataset name"
+    relations: "EDAM:0002099 data Name"
+  ]
+
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+# Note that it is coincidental that the mart host is also the
+# registry host. The following must refer to the mart host
+
+  string: host [
+    default: "www.biomart.org"
+    information: "Mart host location"
+    relations: "EDAM:0001047 data URI"
+  ]
+
+  string: path [
+    default: "/biomart/martservice"
+    information: "Mart path on mart host"
+    relations: "EDAM:0001049 data Directory name"
+  ]
+
+  integer: port [
+    default: "80"
+    information: "Mart port on mart host"
+    relations: "EDAM:0001773 data Tool-specific parameter"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    relations: "EDAM:0000957 data Database metadata"
+  ]
+
+endsection: output

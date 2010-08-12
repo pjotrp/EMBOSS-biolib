@@ -1,0 +1,34 @@
+application: cusp [
+  documentation: "Create a codon usage table from nucleotide sequence(s)"
+  groups: "Nucleic:Codon usage"
+    relations: "EDAM:0000107 topic Codon usage"
+    relations: "EDAM:0000284 operation Codon usage table generation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "DNA"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "cusp output"
+    relations: "EDAM:0001597 data Codon usage table"
+  ]
+
+endsection: output

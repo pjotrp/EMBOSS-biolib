@@ -1,0 +1,77 @@
+Protein distance algorithm
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     File containing sequences
+   -method             menu       [Pam] Choose the method to use (Values: Pam
+                                  (Dayhoff PAM matrix); Kim (Kimura formula);
+                                  Cat (Categories model))
+  [-outfile]           outfile    [eprotdist.outfile] Phylip protdist program
+                                  output file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+*  -categ              menu       [G] Choose the category to use (Values: G
+                                  (George/Hunt/Barker (Cys), (Met Val Leu
+                                  Ileu), (Gly Ala Ser Thr Pro)); C (Chemical
+                                  (Cys Met), (Val Leu Ileu Gly Ala Ser Thr),
+                                  (Pro)); H (Hall (Cys), (Met Val Leu Ileu),
+                                  (Gly Ala Ser Thr), (Pro)))
+*  -gencode            menu       [U] Which genetic code (Values: U
+                                  (Universal); M (Mitochondrial); V
+                                  (Vertebrate mitochondrial); F (Fly
+                                  mitochondrial); Y (Yeast mitochondrial))
+*  -prob               float      [0.457] Prob change category (1.0=easy)
+                                  (Number from 0.000 to 1.000)
+*  -tranrate           float      [2.0] Transition/transversion ratio (Number
+                                  0.000 or more)
+*  -[no]basefrequency  toggle     [Y] Use empirical base frequencies
+*  -freqa              float      [0.25] Frequency for A (Number from 0.000 to
+                                  1.000)
+*  -freqc              float      [0.25] Frequency for C (Number from 0.000 to
+                                  1.000)
+*  -freqg              float      [0.25] Frequency for G (Number from 0.000 to
+                                  1.000)
+*  -freqt              float      [0.25] Frequency for T/U (Number from 0.000
+                                  to 1.000)
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

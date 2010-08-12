@@ -1,0 +1,370 @@
+Multiple EM for Motif Elicitation
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-dataset]           seqset     User must provide the full filename of a set
+                                  of sequences, not an indirect reference,
+                                  e.g. a USA is NOT acceptable.
+  [-outdir]            outdir     [.] MEME program output file output
+                                  directory
+
+   Additional (Optional) qualifiers:
+   -bfile              infile     The name of the file containing the
+                                  background model for sequences. The
+                                  background model is the model of random
+                                  sequences used by MEME. The background model
+                                  is used by MEME 1) during EM as the 'null
+                                  model', 2) for calculating the log
+                                  likelihood ratio of a motif, 3) for
+                                  calculating the significance (E-value) of a
+                                  motif, and, 4) for creating the
+                                  position-specific scoring matrix (log-odds
+                                  matrix). See application documentation for
+                                  more information.
+   -plibfile           infile     The name of the file containing the
+                                  Dirichlet prior in the format of file
+                                  prior30.plib
+   -mod                selection  [zoops] If you know how occurrences of
+                                  motifs are distributed in the training set
+                                  sequences, you can specify it with these
+                                  options. The default distribution of motif
+                                  occurrences is assumed to be zero or one
+                                  occurrence per sequence. oops : One
+                                  Occurrence Per Sequence. MEME assumes that
+                                  each sequence in the dataset contains
+                                  exactly one occurrence of each motif. This
+                                  option is the fastest and most sensitive but
+                                  the motifs returned by MEME may be 'blurry'
+                                  if any of the sequences is missing them.
+                                  zoops : Zero or One Occurrence Per Sequence.
+                                  MEME assumes that each sequence may contain
+                                  at most one occurrence of each motif. This
+                                  option is useful when you suspect that some
+                                  motifs may be missing from some of the
+                                  sequences. In that case, the motifs found
+                                  will be more accurate than using the first
+                                  option. This option takes more computer time
+                                  than the first option (about twice as much)
+                                  and is slightly less sensitive to weak
+                                  motifs present in all of the sequences. anr
+                                  : Any Number of Repetitions. MEME assumes
+                                  each sequence may contain any number of
+                                  non-overlapping occurrences of each motif.
+                                  This option is useful when you suspect that
+                                  motifs repeat multiple times within a single
+                                  sequence. In that case, the motifs found
+                                  will be much more accurate than using one of
+                                  the other options. This option can also be
+                                  used to discover repeats within a single
+                                  sequence. This option takes the much more
+                                  computer time than the first option (about
+                                  ten times as much) and is somewhat less
+                                  sensitive to weak motifs which do not repeat
+                                  within a single sequence than the other two
+                                  options.
+   -nmotifs            integer    [1] The number of *different* motifs to
+                                  search for. MEME will search for and output
+                                  <n> motifs. (Any integer value)
+   -text               boolean    [N] Default output is in HTML
+   -prior              selection  [dirichlet] The prior distribution on the
+                                  model parameters. dirichlet: Simple
+                                  Dirichlet prior. This is the default for
+                                  -dna and -alph. It is based on the
+                                  non-redundant database letter frequencies.
+                                  dmix: Mixture of Dirichlets prior. This is
+                                  the default for -protein. mega: Extremely
+                                  low variance dmix; variance is scaled
+                                  inversely with the size of the dataset.
+                                  megap: Mega for all but last iteration of
+                                  EM; dmix on last iteration. addone: Add +1
+                                  to each observed count.
+   -evt                float      [-1] Quit looking for motifs if E-value
+                                  exceeds this value. Has an extremely high
+                                  default so by default MEME never quits
+                                  before -nmotifs <n> have been found. A value
+                                  of -1 here is a shorthand for infinity.
+                                  (Any numeric value)
+   -nsites             integer    [-1] These switches are ignored if mod =
+                                  oops. The (expected) number of occurrences
+                                  of each motif. If a value for -nsites is
+                                  specified, only that number of occurrences
+                                  is tried. Otherwise, numbers of occurrences
+                                  between -minsites and -maxsites are tried as
+                                  initial guesses for the number of motif
+                                  occurrences. If a value is not specified for
+                                  -minsites and maxsites then the default
+                                  hardcoded into MEME, as opposed to the
+                                  default value given in the ACD file, is
+                                  used. The hardcoded default value of
+                                  -minsites is equal to sqrt(number
+                                  sequences). The hardcoded default value of
+                                  -maxsites is equal to the number of
+                                  sequences (zoops) or MIN(5* num.sequences,
+                                  50) (anr). A value of -1 here represents
+                                  nsites being unspecified. (Any integer
+                                  value)
+   -minsites           integer    [-1] These switches are ignored if mod =
+                                  oops. The (expected) number of occurrences
+                                  of each motif. If a value for -nsites is
+                                  specified, only that number of occurrences
+                                  is tried. Otherwise, numbers of occurrences
+                                  between -minsites and -maxsites are tried as
+                                  initial guesses for the number of motif
+                                  occurrences. If a value is not specified for
+                                  -minsites and maxsites then the default
+                                  hardcoded into MEME, as opposed to the
+                                  default value given in the ACD file, is
+                                  used. The hardcoded default value of
+                                  -minsites is equal to sqrt(number
+                                  sequences). The hardcoded default value of
+                                  -maxsites is equal to the number of
+                                  sequences (zoops) or MIN(5 * num.sequences,
+                                  50) (anr). A value of -1 here represents
+                                  minsites being unspecified. (Any integer
+                                  value)
+   -maxsites           integer    [-1] These switches are ignored if mod =
+                                  oops. The (expected) number of occurrences
+                                  of each motif. If a value for -nsites is
+                                  specified, only that number of occurrences
+                                  is tried. Otherwise, numbers of occurrences
+                                  between -minsites and -maxsites are tried as
+                                  initial guesses for the number of motif
+                                  occurrences. If a value is not specified for
+                                  -minsites and maxsites then the default
+                                  hardcoded into MEME, as opposed to the
+                                  default value given in the ACD file, is
+                                  used. The hardcoded default value of
+                                  -minsites is equal to sqrt(number
+                                  sequences). The hardcoded default value of
+                                  -maxsites is equal to the number of
+                                  sequences (zoops) or MIN(5 * num.sequences,
+                                  50) (anr). A value of -1 here represents
+                                  maxsites being unspecified. (Any integer
+                                  value)
+   -wnsites            float      [0.8] The weight of the prior on nsites.
+                                  This controls how strong the bias towards
+                                  motifs with exactly nsites sites (or between
+                                  minsites and maxsites sites) is. It is a
+                                  number in the range [0..1). The larger it
+                                  is, the stronger the bias towards motifs
+                                  with exactly nsites occurrences is. (Any
+                                  numeric value)
+   -w                  integer    [-1] The width of the motif(s) to search
+                                  for. If -w is given, only that width is
+                                  tried. Otherwise, widths between -minw and
+                                  -maxw are tried. Note: if width is less than
+                                  the length of the shortest sequence in the
+                                  dataset, width is reset by MEME to that
+                                  value. A value of -1 here represents -w
+                                  being unspecified. (Any integer value)
+   -minw               integer    [8] The width of the motif(s) to search for.
+                                  If -w is given, only that width is tried.
+                                  Otherwise, widths between -minw and -maxw
+                                  are tried. Note: if width is less than the
+                                  length of the shortest sequence in the
+                                  dataset, width is reset by MEME to that
+                                  value. (Any integer value)
+   -maxw               integer    [50] The width of the motif(s) to search
+                                  for. If -w is given, only that width is
+                                  tried. Otherwise, widths between -minw and
+                                  -maxw are tried. Note: if width is less than
+                                  the length of the shortest sequence in the
+                                  dataset, width is reset by MEME to that
+                                  value. (Any integer value)
+   -nomatrim           boolean    [N] The -nomatrim, -wg, -ws and -noendgaps
+                                  switches control trimming (shortening) of
+                                  motifs using the multiple alignment method.
+                                  Specifying -nomatrim causes MEME to skip
+                                  this and causes the other switches to be
+                                  ignored. The pairwise alignment is
+                                  controlled by the switches -wg (gap cost),
+                                  -ws (space cost) and -noendgaps (do not
+                                  penalize endgaps). See application
+                                  documentation for further information.
+   -wg                 integer    [11] The -nomatrim, -wg, -ws and -noendgaps
+                                  switches control trimming (shortening) of
+                                  motifs using the multiple alignment method.
+                                  Specifying -nomatrim causes MEME to skip
+                                  this and causes the other switches to be
+                                  ignored. The pairwise alignment is
+                                  controlled by the switches -wg (gap cost),
+                                  -ws (space cost) and -noendgaps (do not
+                                  penalize endgaps). See application
+                                  documentation for further information. (Any
+                                  integer value)
+   -ws                 integer    [1] The -nomatrim, -wg, -ws and -noendgaps
+                                  switches control trimming (shortening) of
+                                  motifs using the multiple alignment method.
+                                  Specifying -nomatrim causes MEME to skip
+                                  this and causes the other switches to be
+                                  ignored. The pairwise alignment is
+                                  controlled by the switches -wg (gap cost),
+                                  -ws (space cost) and -noendgaps (do not
+                                  penalize endgaps). See application
+                                  documentation for further information. (Any
+                                  integer value)
+   -noendgaps          boolean    [N] The -nomatrim, -wg, -ws and -noendgaps
+                                  switches control trimming (shortening) of
+                                  motifs using the multiple alignment method.
+                                  Specifying -nomatrim causes MEME to skip
+                                  this and causes the other switches to be
+                                  ignored. The pairwise alignment is
+                                  controlled by the switches -wg (gap cost),
+                                  -ws (space cost) and -noendgaps (do not
+                                  penalise endgaps). See application
+                                  documentation for further information.
+   -revcomp            boolean    [N] Motif occurrences may be on the given
+                                  DNA strand or on its reverse complement. The
+                                  default is to look for DNA motifs only on
+                                  the strand given in the training set.
+   -pal                boolean    [N] Choosing -pal causes MEME to look for
+                                  palindromes in DNA datasets. MEME averages
+                                  the letter frequencies in corresponding
+                                  columns of the motif (PSPM) together. For
+                                  instance, if the width of the motif is 10,
+                                  columns 1 and 10, 2 and 9, 3 and 8, etc.,
+                                  are averaged together. The averaging
+                                  combines the frequency of A in one column
+                                  with T in the other, and the frequency of C
+                                  in one column with G in the other.
+   -[no]nostatus       boolean    [Y] Set this option to prevent progress
+                                  reports to the terminal.
+
+   Advanced (Unprompted) qualifiers:
+   -maxiter            integer    [50] The number of iterations of EM to run
+                                  from any starting point. EM is run for <n>
+                                  iterations or until convergence (see
+                                  -distance, below) from each starting point.
+                                  (Any integer value)
+   -distance           float      [0.001] The convergence criterion. MEME
+                                  stops iterating EM when the change in the
+                                  motif frequency matrix is less than <a>.
+                                  (Change is the euclidean distance between
+                                  two successive frequency matrices.) (Any
+                                  numeric value)
+   -b                  float      [-1.0] The strength of the prior on model
+                                  parameters. A value of 0 means use intrinsic
+                                  strength of prior if prior = dmix. The
+                                  default values are 0.01 if prior = dirichlet
+                                  or 0 if prior = dmix. These defaults are
+                                  hardcoded into MEME (the value of the
+                                  default in the ACD file is not used). A
+                                  value of -1 here represents -b being
+                                  unspecified. (Any numeric value)
+   -spfuzz             float      [-1.0] The fuzziness of the mapping.
+                                  Possible values are greater than 0. Meaning
+                                  depends on -spmap, see below. See the
+                                  application documentation for more
+                                  information. A value of -1.0 here represents
+                                  -spfuzz being unspecified. (Any numeric
+                                  value)
+   -spmap              selection  [default] The type of mapping function to
+                                  use. uni: Use prior when converting a
+                                  substring to an estimate of theta. Default
+                                  -spfuzz <a>: 0.5. pam: Use columns of PAM
+                                  <a> matrix when converting a substring to an
+                                  estimate of theta. Default -spfuzz <a>: 120
+                                  (PAM 120). See the application
+                                  documentation for more information.
+   -cons               string     Override the sampling of starting points and
+                                  just use a starting point derived from
+                                  <string>. This is useful when an actual
+                                  occurrence of a motif is known and can be
+                                  used as the starting point for finding the
+                                  motif. See the application documentation for
+                                  more information. (Any string)
+   -maxsize            integer    [-1] Maximum dataset size in characters (-1
+                                  = use meme default). (Any integer value)
+   -p                  integer    [0] Only values of >0 will be applied. The
+                                  -p <np> argument causes a version of MEME
+                                  compiled for a parallel CPU architecture to
+                                  be run. (By placing <np> in quotes you may
+                                  pass installation specific switches to the
+                                  'mpirun' command. The number of processors
+                                  to run on must be the first argument
+                                  following -p). (Any integer value)
+   -time               integer    [0] Only values of more than 0 will be
+                                  applied. (Any integer value)
+   -sf                 string     Print <sf> as name of sequence file (Any
+                                  string)
+   -heapsize           integer    [64] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information. (Any
+                                  integer value)
+   -xbranch            boolean    [N] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information.
+   -wbranch            boolean    [N] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information.
+   -bfactor            integer    [3] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information. (Any
+                                  integer value)
+
+   Associated qualifiers:
+
+   "-dataset" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outdir" associated qualifiers
+   -extension2         string     Default file extension
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

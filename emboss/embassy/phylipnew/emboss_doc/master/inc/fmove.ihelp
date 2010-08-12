@@ -1,0 +1,48 @@
+Interactive mixed method parsimony
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-infile]            discretestates File containing data set
+  [-intreefile]        tree       Phylip tree file (optional)
+
+   Additional (Optional) qualifiers:
+   -weights            properties Weights file
+   -ancfile            properties Ancestral states file
+   -factorfile         properties Factors file
+   -method             menu       [Wagner] Choose the method to use (Values: w
+                                  (Wagner); c (Camin-Sokal); m (Mixed))
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -threshold          float      [$(infile.discretesize)] Threshold value
+                                  (Number 0.000 or more)
+   -initialtree        menu       [Arbitary] Initial tree (Values: a
+                                  (Arbitary); u (User); s (Specify))
+   -screenwidth        integer    [80] Width of terminal screen in characters
+                                  (Any integer value)
+   -screenlines        integer    [24] Number of lines on screen (Any integer
+                                  value)
+   -outtreefile        outfile    [*.fmove] Phylip tree output file (optional)
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

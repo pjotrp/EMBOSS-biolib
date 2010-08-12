@@ -1,0 +1,57 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: erestml.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Restriction site Maximum Likelihood method, version 3.57c
+
+
+  Recognition sequences all 6 bases long
+
+Sites absent from all species are assumed to have been omitted
+
+
+
+
+      +Epsilon   
+  +---3  
+  !   +Delta     
+  !  
+  !  +-----Gamma     
+--2--1  
+  !  +Beta      
+  !  
+  +Alpha     
+
+
+remember: this is an unrooted tree!
+
+Ln Likelihood =   -40.35857
+
+Examined   15 trees
+ 
+ Between        And            Length      Approx. Confidence Limits
+ -------        ---            ------      ------- ---------- ------
+   2             3            0.05855     (  0.05681,     0.06030) **
+   3          Epsilon         0.00005     (  0.00000,     0.00010)
+   3          Delta           0.01458     (  0.01374,     0.01543) **
+   2             1            0.00002     (     zero,     0.00006)
+   1          Gamma           0.11430     (  0.11177,     0.11683) **
+   1          Beta            0.00008     (  0.00002,     0.00014)
+   2          Alpha           0.02468     (  0.02357,     0.02578) **
+
+     *  = significantly positive, P &lt; 0.05
+     ** = significantly positive, P &lt; 0.01
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: erestml.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+((Epsilon:0.00005,Delta:0.01458):0.05855,(Gamma:0.11430,
+Beta:0.00008):0.00002,Alpha:0.02468);
+</pre>
+</td></tr></table><p>

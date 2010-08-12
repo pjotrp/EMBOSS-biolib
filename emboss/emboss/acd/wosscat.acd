@@ -1,0 +1,156 @@
+application: wosscat [
+  documentation: "Find programs by general category"
+  groups: "Information"
+    relations: "EDAM:0000088 topic Literature and documentation"
+    relations: "EDAM:0000515 operation Tool information retrieval"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  string: keyword
+  [
+      default: ""
+      parameter: "Y"
+      information: "Keyword(s) to search for application category"
+      help: "This search is over the 'relations:' attribute values from the ACD file application definitions.  This is the annotation of the application's classification (category), taken from the EDAM ontology 'topic' namespace (http://edamontology.sourceforge.net/)."
+      knowntype: "keywords"
+    relations: "EDAM:0000968 data Keyword"
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  boolean: allmatch [
+    additional: "Y"
+    default: "Y"
+    information: "Match all words in the search string"
+    help: "By default, all words in the search string must match. This
+           option searches for a match to any words in the search string."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: emboss [
+    default: "Y"
+    information: "Search the EMBOSS programs"
+    help: "If you use this option then EMBOSS program documentation
+           will be searched. If this option is set to be false, then only the
+           EMBASSY programs will be searched (if the -embassy option is
+           true). EMBASSY programs are not strictly part of EMBOSS, but use
+           the same code libraries and share the same look and feel, but are
+           generally developed by people who wish the programs to be outside
+           of the GNU Public Licence scheme"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: embassy [
+    default: "Y"
+    information: "Search the EMBASSY programs"
+    help: "If you use this option then EMBASSY program documentation
+           will be searched. If this option is set to be false, then only the
+           EMBOSS programs will be searched (if the -emboss option is true).
+           EMBASSY programs are not strictly part of EMBOSS, but use the
+           same code libraries and share the same look and feel, but are
+           generally developed by people who wish the programs to be outside
+           of the GNU Public Licence scheme"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  string: showembassy [
+    default: ""
+    information: "Show programs in one EMBASSY package"
+    help: "If you use this option then this EMBASSY package program
+           documentation will be searched. EMBASSY programs are not strictly
+           part of EMBOSS, but use the same code libraries and share the same
+           look and feel, but are generally developed by people who wish the
+           programs to be outside of the GNU Public Licence scheme"
+    knowntype: "embassy package"
+    relations: "EDAM:0001195 data EMBASSY package name"
+  ]
+
+
+  boolean: gui [
+    default: "N"
+    information: "Only report those applications that can run
+                  in a GUI"
+    help: "This option is intended to help those who are designing
+           Graphical User Interfaces to the EMBOSS applications. Some EMBOSS
+           programs are inappropriate for running in a GUI, these include
+           other menu programs and interactive editors. This option allows
+           you to only report those programs that can be run from a GUI"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+boolean: sens
+  [
+    default: "N"
+    information: "Increase sensitivity of search"
+    help: "wosscat reports on applications whose category matches the supplied keywords.  Categories are taken from the 'relations:' attribute of the application definition from the ACD file and are term names from the EDAM ontology 'topic' namespace (http://edamontology.sourceforge.net/). By default, the keywords are matched against the EDAM term names only.  This option also matches the keywords against the EDAM term definitions and will therefore (typically) report more matches."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+boolean: more
+  [
+    default: "Y"
+    information: "Include subclasses of hits"
+    help: "wosscat reports on applications whose category matches the supplied keywords.  Categories are taken from the 'relations:' attribute of the application definition from the ACD file and are term names from the EDAM ontology 'topic' namespace (http://edamontology.sourceforge.net/). By default, the output includes all matching applications.  This option will also include applications which, according to the ACD file annotation and EDAM, are specialisations (EDAM sub-classes) of the matched categories.   It will therefore (typically) report more matches."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    additional: "Y"
+    default: "stdout"
+    knowntype: "wosscat output"
+    relations: "EDAM:0000958 data Tool metadata"
+  ]
+
+  section: htmlsection [
+    information: "Html section"
+    type: "frame"
+  ]
+
+    boolean: html [
+      additional: "Y"
+      default: "N"
+      information: "Format the output for HTML"
+      help: "If you are sending the output to a file, this will format
+             it for displaying as a table in a WWW document."
+      outputmodifier: "Y"
+    relations: "EDAM:0002135 data Toggle"
+    ]
+
+  endsection: htmlsection
+
+  boolean: alphabetic [
+    additional: "Y"
+    default: "N"
+    information: "Output an alphabetic list of programs"
+    help: "If you use this option, then you will get a single list of
+           the program names and descriptions instead of the programs being
+           listed in their functional groups."
+    outputmodifier: "Y"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: output

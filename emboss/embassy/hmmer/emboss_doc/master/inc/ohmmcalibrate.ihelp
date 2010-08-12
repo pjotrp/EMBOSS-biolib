@@ -1,0 +1,49 @@
+Calibrate a hidden Markov model
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-infile]            infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmcalibrate] HMMER hmmcalibrate program
+                                  output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -cpu                integer    [0] Number of CPUs (Any integer value)
+   -fixed              integer    [0] Length fix for random sequences (Integer
+                                  0 or more)
+   -mean               float      [350.] Mean length of synthetic sequences
+                                  (Any numeric value)
+   -num                integer    [5000] Number of synthetic sequences (Any
+                                  integer value)
+   -pvm                boolean    [N] Run on parallel virtual machines
+   -sd                 float      [350.] Standard deviation of syntheic
+                                  sequences (Any numeric value)
+   -seed               integer    [0] Random seed (Integer 0 or more)
+   -histogramfile      outfile    [*.ohmmcalibrate] HMMER histogram output
+                                  file (optional)
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-histogramfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

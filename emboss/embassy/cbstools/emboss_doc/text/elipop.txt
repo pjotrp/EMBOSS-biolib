@@ -1,0 +1,211 @@
+                                   elipop
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Prediction of lipoproteins
+
+Description
+
+   The LipoP 1.0 server produces predictions of lipoproteins and
+   discriminates between lipoprotein signal peptides, other signal
+   peptides and n-terminal membrane helices in Gram negative bacteria.
+
+Usage
+
+   Here is a sample session with elipop
+
+
+% elipop
+Prediction of lipoproteins
+Input (aligned) sequence set: 5h2a_crigr.fsa
+Output file [5h2a_crigr.elipop]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Prediction of lipoproteins
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.elipop] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -plot               boolean    [N] Produce graphics
+   -short              boolean    [N] Short output
+   -html               boolean    [N] Html output
+   -format             boolean    [N] Run LipoPformat script
+   -cutoff             integer    [-3] Log-odds cutoff (Any integer value)
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   elipop reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: 5h2a_crigr.fsa
+
+>5H2A_CRIGR you can have comments after the ID
+MEILCEDNTSLSSIPNSLMQVDGDSGLYRNDFNSRDANSSDASNWTIDGENRTNLSFEGYLPPTCLSILHL
+QEKNWSALLTAVVIILTIAGNILVIMAVSLEKKLQNATNYFLMSLAIADMLLGFLVMPVSMLTILYGYRWP
+LPSKLCAVWIYLDVLFSTASIMHLCAISLDRYVAIQNPIHHSRFNSRTKAFLKIIAVWTISVGVSMPIPVF
+GLQDDSKVFKQGSCLLADDNFVLIGSFVAFFIPLTIMVITYFLTIKSLQKEATLCVSDLSTRAKLASFSFL
+PQSSLSSEKLFQRSIHREPGSYTGRRTMQSISNEQKACKVLGIVFFLFVVMWCPFFITNIMAVICKESCNE
+HVIGALLNVFVWIGYLSSAVNPLVYTLFNKTYRSAFSRYIQCQYKENRKPLQLILVNTIPALAYKSSQLQA
+GQNKDSKEDAEPTDNDCSMVTLGKQQSEETCTDNINTVNEKVSCV
+
+Output file format
+
+   elipop outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
+
+  Output files for usage example
+
+  File: 5h2a_crigr.elipop
+
+# 5H2A_CRIGR you can have comments after the ID
+# len 70
+# lett A:2 C:2 D:7 E:4 F:2 G:4 H:1 I:4 K:0 L:8 M:2 N:8 P:3 Q:1 R:3 S:11 T:4 V:1
+W:1 Y:2
+5H2A_CRIGR      LipoP1.0        SEQUENCE        1       70      0       +
+.       #you can have comments after the ID
+5H2A_CRIGR      LipoP1.0:Signal CYT     1       1       -0.200913       +
+0       #M
+
+Data files
+
+   None.
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS wrapper for a program written by the CBS
+   group http://www.cbs.dtu.dk/index.shtml
+
+   The original CBS group application must be licensed and installed to
+   use this wrapper.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

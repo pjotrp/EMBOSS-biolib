@@ -1,0 +1,118 @@
+Motif detection
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqall     Sequence(s) filename and optional format, or
+                                  reference (input USA)
+   -model              menu       [zoops] Model to use (Values: oops (Oops
+                                  Distribution); zoops (Zoops Distribution);
+                                  tcm (TCM Distribution))
+   -nmotifs            integer    [1] Maximum number of motifs to find (Any
+                                  integer value)
+  [-outfile]           outfile    [*.omeme] MEME program output file
+
+   Additional (Optional) qualifiers:
+   -ntype              menu       [pair] Method to use (Values: pair (Pairwise
+                                  method); blend (Blending method))
+   -protein            boolean    [N] Assume sequences are proteins
+   -nucleic            boolean    [N] Assume sequences are DNA
+   -palindromes        boolean    [N] Allow palindromes
+   -ponly              boolean    [N] Force palindromes
+   -[no]shorten        boolean    [Y] Allow motifs shorter than MINW
+   -nsites             float      [0.] Expected number of sites for each motif
+                                  (Any numeric value)
+   -minsites           float      [0.] Minimum number of sites for each motif
+                                  (Any numeric value)
+   -maxsites           float      [0.] Maximum number of sites for each motif
+                                  (Any numeric value)
+   -w                  integer    [0] Starting motif width to try (Any integer
+                                  value)
+   -minw               integer    [8] Minimum starting motif width to try (Any
+                                  integer value)
+   -maxw               integer    [57] Maximum starting motif width to try
+                                  (Any integer value)
+   -prior              menu       [dirichlet] Prior to use (Values: dirichlet
+                                  (Dirichlet prior); dmix (dmix prior); mega
+                                  (mega prior); megap (megap prior); addone
+                                  (addone prior))
+   -[no]brief          boolean    [Y] Don't print documentation
+   -b                  float      [-1.0] Strength of the prior (Any numeric
+                                  value)
+   -spmap              menu       [uni] Mapping start (Values: uni (uni map
+                                  type); pam (pam map type))
+   -spfuzz             float      [-1.0] Fuzziness of sequence to theta
+                                  mapping (Any numeric value)
+   -maxiter            integer    [50] Maximum EM iterations to run (Any
+                                  integer value)
+   -distance           float      [1e-3] EM convergence criterion (Any numeric
+                                  value)
+   -cons               string     Consensus sequence to start EM from (Any
+                                  string)
+   -chi                float      [1.0] Cutoff for p-value (Any numeric value)
+   -adj                menu       [root] Type (Values: none (no LRT); bon (bon
+                                  LRT); root (root LRT))
+   -maxsize            integer    [100000] Maximum dataset size in characters
+                                  (Any integer value)
+   -page               integer    [80] Width of page (Any integer value)
+   -status             boolean    [N] Print progress reports
+   -v                  boolean    [N] Verbose mode
+   -cfive              boolean    [N] Use 5' to 3' complementary strand as
+                                  well
+   -cthree             boolean    [N] Use 3' to 5' complementary strand as
+                                  well
+   -wthree             boolean    [N] Use 3' to 5' main strand as well
+   -prob               float      [1.0] Starting point confidence level (Any
+                                  numeric value)
+   -seed               integer    [0] Seed for random numbers in sampling (Any
+                                  integer value)
+   -seqfrac            float      [1.0] Fraction of sequences to use (Any
+                                  numeric value)
+   -[no]align          boolean    [Y] Print aligned motif occurrences
+   -trace              boolean    [N] Trace starting points
+   -allprint           boolean    [N] Print all debugging information
+   -wprint             boolean    [N] Print erasure matrix
+   -zprint             boolean    [N] Print missing information matrix
+   -llprint            boolean    [N] Print log likelihood during EM
+   -startsprint        boolean    [N] Print starting points
+   -fastaprint         boolean    [N] Print sites in FASTA format
+   -timer              integer    [0] Timer type (Any integer value)
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

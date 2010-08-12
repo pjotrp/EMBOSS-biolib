@@ -1,0 +1,68 @@
+Align single sequence with an HMM
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-seqall]            seqall     Sequence(s) filename and optional format, or
+                                  reference (input USA)
+  [-hmmfile]           infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmpfam] HMMER hmmpfam program output
+                                  file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -nucleic            boolean    [N] Force nucleic comparison
+   -nalign             integer    [100] Number of alignments (Any integer
+                                  value)
+   -evalue             float      [10.] E-value cutoff (Any numeric value)
+   -hitcut             float      [-1000000.] Hit score cutoff (Any numeric
+                                  value)
+   -dbsize             integer    [59021] Calc E-value for DB size n (Any
+                                  integer value)
+   -cpu                integer    [0] Number of CPUs (Any integer value)
+   -dome               float      [1000000.] E-value domain cutoff (Any
+                                  numeric value)
+   -domt               float      [-1000000.] Hit score domain cutoff (Any
+                                  numeric value)
+   -forward            boolean    [N] Use forward algorithm
+   -nulltwo            boolean    [N] Turn off second null model
+   -pvm                boolean    [N] Use parallel virtual machine
+   -xnu                boolean    [N] Use XNU filtering
+
+   Associated qualifiers:
+
+   "-seqall" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

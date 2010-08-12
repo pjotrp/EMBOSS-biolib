@@ -1,0 +1,438 @@
+                                    meme
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Motif detection
+
+Description
+
+   EMBASSY MEME is a port of the original meme v3.0.1 applications written
+   by Timothy Bailey.
+
+Algorithm
+
+   Please read the file README distributed with the original MEME.
+
+Usage
+
+   Here is a sample session with omeme
+
+
+% omeme -protein
+Motif detection
+Input sequence(s): memepep.dat
+Motif Distribution
+      oops : Oops Distribution
+     zoops : Zoops Distribution
+       tcm : TCM Distribution
+Model to use [zoops]:
+Maximum number of motifs to find [1]: 3
+MEME program output file [carp_rhich.omeme]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Motif detection
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqall     Sequence(s) filename and optional format, or
+                                  reference (input USA)
+   -model              menu       [zoops] Model to use (Values: oops (Oops
+                                  Distribution); zoops (Zoops Distribution);
+                                  tcm (TCM Distribution))
+   -nmotifs            integer    [1] Maximum number of motifs to find (Any
+                                  integer value)
+  [-outfile]           outfile    [*.omeme] MEME program output file
+
+   Additional (Optional) qualifiers:
+   -ntype              menu       [pair] Method to use (Values: pair (Pairwise
+                                  method); blend (Blending method))
+   -protein            boolean    [N] Assume sequences are proteins
+   -nucleic            boolean    [N] Assume sequences are DNA
+   -palindromes        boolean    [N] Allow palindromes
+   -ponly              boolean    [N] Force palindromes
+   -[no]shorten        boolean    [Y] Allow motifs shorter than MINW
+   -nsites             float      [0.] Expected number of sites for each motif
+                                  (Any numeric value)
+   -minsites           float      [0.] Minimum number of sites for each motif
+                                  (Any numeric value)
+   -maxsites           float      [0.] Maximum number of sites for each motif
+                                  (Any numeric value)
+   -w                  integer    [0] Starting motif width to try (Any integer
+                                  value)
+   -minw               integer    [8] Minimum starting motif width to try (Any
+                                  integer value)
+   -maxw               integer    [57] Maximum starting motif width to try
+                                  (Any integer value)
+   -prior              menu       [dirichlet] Prior to use (Values: dirichlet
+                                  (Dirichlet prior); dmix (dmix prior); mega
+                                  (mega prior); megap (megap prior); addone
+                                  (addone prior))
+   -[no]brief          boolean    [Y] Don't print documentation
+   -b                  float      [-1.0] Strength of the prior (Any numeric
+                                  value)
+   -spmap              menu       [uni] Mapping start (Values: uni (uni map
+                                  type); pam (pam map type))
+   -spfuzz             float      [-1.0] Fuzziness of sequence to theta
+                                  mapping (Any numeric value)
+   -maxiter            integer    [50] Maximum EM iterations to run (Any
+                                  integer value)
+   -distance           float      [1e-3] EM convergence criterion (Any numeric
+                                  value)
+   -cons               string     Consensus sequence to start EM from (Any
+                                  string)
+   -chi                float      [1.0] Cutoff for p-value (Any numeric value)
+   -adj                menu       [root] Type (Values: none (no LRT); bon (bon
+                                  LRT); root (root LRT))
+   -maxsize            integer    [100000] Maximum dataset size in characters
+                                  (Any integer value)
+   -page               integer    [80] Width of page (Any integer value)
+   -status             boolean    [N] Print progress reports
+   -v                  boolean    [N] Verbose mode
+   -cfive              boolean    [N] Use 5' to 3' complementary strand as
+                                  well
+   -cthree             boolean    [N] Use 3' to 5' complementary strand as
+                                  well
+   -wthree             boolean    [N] Use 3' to 5' main strand as well
+   -prob               float      [1.0] Starting point confidence level (Any
+                                  numeric value)
+   -seed               integer    [0] Seed for random numbers in sampling (Any
+                                  integer value)
+   -seqfrac            float      [1.0] Fraction of sequences to use (Any
+                                  numeric value)
+   -[no]align          boolean    [Y] Print aligned motif occurrences
+   -trace              boolean    [N] Trace starting points
+   -allprint           boolean    [N] Print all debugging information
+   -wprint             boolean    [N] Print erasure matrix
+   -zprint             boolean    [N] Print missing information matrix
+   -llprint            boolean    [N] Print log likelihood during EM
+   -startsprint        boolean    [N] Print starting points
+   -fastaprint         boolean    [N] Print sites in FASTA format
+   -timer              integer    [0] Timer type (Any integer value)
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   meme reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: memepep.dat
+
+>CARP_RHICH P06026 RHIZOPUSPEPSIN PRECURSOR (EC 3.4.23.21)
+MKFTLISSCIAIAALAVAVDAAPGEKKISIPLAKNPNYKPSAKNAIQKAIAKYNKHKINT
+STGGIVPDAGVGTVPMTDYGNDVEYYGQVTIGTPGKKFNLDFDTGSSDLWIASTLCTNCG
+SRQTKYDPKQSSTYQADGRTWSISYGDGSSASGILAKDNVNLGGLLIKGQTIELAKREAA
+SFANGPNDGLLGLGFDTITTVRGVKTPMDNLISQGLISRPIFGVYLGKASNGGGGEYIFG
+GYDSTKFKGSLTTVPIDNSRGWWGITVDRATVGTSTVASSFDGILDTGTTLLILPNNVAA
+SVARAYGASDNGDGTYTISCDTSRFKPLVFSINGASFQVSPDSLVFEEYQGQCIAGFGYG
+NFDFAIIGDTFLKNNYVVFNQGVPEVQIAPVAQ
+>CARP_YEAST P07267 SACCHAROPEPSIN PRECURSOR (EC 3.4.23.25) (ASPARTATE PROTEASE)
+MFSLKALLPLALLLVSANQVAAKVHKAKIYKHELSDEMKEVTFEQHLAHLGQKYLTQFEK
+ANPEVVFSREHPFFTEGGHDVPLTNYLNAQYYTDITLGTPPQNFKVILDTGSSNLWVPSN
+ECGSLACFLHSKYDHEASSSYKANGTEFAIQYGTGSLEGYISQDTLSIGDLTIPKQDFAE
+ATSEPGLTFAFGKFDGILGLGYDTISVDKVVPPFYNAIQQDLLDEKRFAFYLGDTSKDTE
+NGGEATFGGIDESKFKGDITWLPVRRKAYWEVKFEGIGLGDEYAELESHGAAIDTGTSLI
+TLPSGLAEMINAEIGAKKGWTGQYTLDCNTRDNLPDLIFNFNGYNFTIGPYDYTLEVSGS
+CISAITPMDFPEPVGPLAIVGDAFLRKYYSIYDLGNNAVGLAKAI
+>CATD_HUMAN P07339 CATHEPSIN D PRECURSOR (EC 3.4.23.5)
+MQPSSLLPLALCLLAAPASALVRIPLHKFTSIRRTMSEVGGSVEDLIAKGPVSKYSQAVP
+AVTEGPIPEVLKNYMDAQYYGEIGIGTPPQCFTVVFDTGSSNLWVPSIHCKLLDIACWIH
+HKYNSDKSSTYVKNGTSFDIHYGSGSLSGYLSQDTVSVPCQSASSASALGGVKVERQVFG
+EATKQPGITFIAAKFDGILGMAYPRISVNNVLPVFDNLMQQKLVDQNIFSFYLSRDPDAQ
+PGGELMLGGTDSKYYKGSLSYLNVTRKAYWQVHLDQVEVASGLTLCKEGCEAIVDTGTSL
+MVGPVDEVRELQKAIGAVPLIQGEYMIPCEKVSTLPAITLKLGGKGYKLSPEDYTLKVSQ
+AGKTLCLSGFMGMDIPPPSGPLWILGDVFIGRYYTVFDRDNNRVGFAEAARL
+>CHYM_BOVIN P00794 PROCHYMOSIN A AND B PRECURSORS (EC 3.4.23.4) (PREPRORENNIN)
+MRCLVVLLAVFALSQGTEITRIPLYKGKSLRKALKEHGLLEDFLQKQQYGISSKYSGFGE
+VASVPLTNYLDSQYFGKIYLGTPPQEFTVLFDTGSSDFWVPSIYCKSNACKNHQRFDPRK
+SSTFQNLGKPLSIHYGTGSMQGILGYDTVTVSNIVDIQQTVGLSTQEPGDVFTYAEFDGI
+LGMAYPSLASEYSIPVFDNMMNRHLVAQDLFSVYMDRNGQESMLTLGAIDPSYYTGSLHW
+VPVTVQQYWQFTVDSVTISGVVVACEGGCQAILDTGTSKLVGPSSDILNIQQAIGATQNQ
+YGEFDIDCDNLSYMPTVVFEINGKMYPLTPSAYTSQDQGFCTSGFQSENHSQKWILGDVF
+IREYYSVFDRANNLVGLAKAI
+>PEPA_ASPAW P17946 ASPERGILLOPEPSIN A PRECURSOR (EC 3.4.23.18)
+MVVFSKTAALVLGLSSAVSAAPAPTRKGFTINQIARPANKTRTINLPGMYARSLAKFGGT
+VPQSVKEAASKGSAVTTPQNNDEEYLTPVTVGKSTLHLDFDTGSADLWVFSDELPSSEQT
+GHDLYTPSSSATKLSGYTWDISYGDGSSASGDVYRDTVTVGGVTTNKQAVEAASKISSEF
+VQNTANDGLLGLAFSSINTVQPKAQTTFFDTVKSQLDSPLFAVQLKHDAPGVYDFGYIDD
+SKYTGSITYTDADSSQGYWGFSTDGYSIGDGSSSSSGFSAIADTGTTLILLDDEIVSAYY
+EQVSGASGETEAGGYVFSCSTNPPDFTVVIGDYKAVVPGKYINYAPISTGSSTCFGGIQS
+NSGLGLSILGDVFLKSQYVVFNSEGPKLGFAAQA
+
+Output file format
+
+   meme outputs a graph to the specified graphics device. outputs a report
+   format file. The default format is ...
+
+  Output files for usage example
+
+  File: carp_rhich.omeme
+
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 2.3.1 (Release date: 2000/11/05 21:47:56)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://www.sdsc.edu/MEME.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://www.sdsc.edu/MEME.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= ../../data/memepep.dat (deleted by web version of MEME)
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name           Weight Length  Sequence name           Weight Length
+-------------           ------ ------  -------------           ------ ------
+CARP_RHICH              1.0000    393  CARP_YEAST              1.0000    405
+CATD_HUMAN              1.0000    412  CHYM_BOVIN              1.0000    381
+PEPA_ASPAW              1.0000    394
+********************************************************************************
+
+
+
+********************************************************************************
+MOTIF  1                width =   8     sites =  5.0
+********************************************************************************
+Simplified     A  55:2::2:
+motif letter-  C  :22:::::
+probability    D  ::::::::
+matrix         E  ::::::::
+               F  ::::::::
+               G  ::::::::
+               H  ::::332:
+               I  2::2::::
+
+
+  [Part of this file has been deleted for brevity]
+
+letter-probability matrix: alength= 20 w= 16 n= 1910
+ 0.345527  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.178967
+ 0.009902  0.010727  0.335557  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.842714
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.176047
+ 0.009749  0.515285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.177394  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.844888  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.005447
+ 0.012194  0.003027  0.841956  0.010390  0.006714  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.005447
+ 0.178861  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.176568  0.510727  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.840047  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.342714
+ 0.009749  0.515285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.178221  0.003738  0.009380
+ 0.343082  0.015285  0.003844  0.007680  0.008446  0.006793  0.341983  0.012300
+ 0.009902  0.010727  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.177057  0.006714  0.011555  0.003738  0.009380
+ 0.176415  0.015285  0.003844  0.174346  0.008446  0.006793  0.175316  0.178967
+ 0.009902  0.010727  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.174346  0.008446  0.173459  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.505447
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.838780
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.345634
+ 0.176568  0.344060  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.006714  0.011555  0.003738  0.176047
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.677394  0.002224  0.005447
+ 0.012194  0.003027  0.008623  0.010390  0.673381  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.007680  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.172114
+ 0.012194  0.003027  0.508623  0.010390  0.006714  0.011555  0.003738  0.009380
+ 0.009749  0.015285  0.003844  0.341013  0.008446  0.006793  0.008650  0.012300
+ 0.009902  0.010727  0.002224  0.005447
+
+Stopped because nmotifs = 3 reached.
+
+
+********************************************************************************
+DEBUG INFORMATION
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+model:  mod=         zoops    nmotifs=         3    chi=             1
+width:  minw=            8    maxw=           57    shorten=       yes
+lambda: minsites=        0    maxsites=        5
+theta:  prob=            1    spmap=         uni    spfuzz=        0.5
+em:     prior=   dirichlet    b=               1    maxiter=        50
+        distance=    0.001
+data:   n=            1985    N=               5
+strands:    w53
+sample: seed=            0    seqfrac=         1
+LRT:    adj=          root
+Letter frequencies:
+A 0.074 C 0.014 D 0.061 E 0.039 F 0.048 G 0.100 H 0.013 I 0.058 K 0.052
+L 0.084 M 0.014 N 0.040 P 0.048 Q 0.042 R 0.021 S 0.094 T 0.072 V 0.069
+W 0.010 Y 0.049
+Non-redundant database letter frequencies:
+A 0.073 C 0.018 D 0.052 E 0.062 F 0.040 G 0.069 H 0.022 I 0.056 K 0.058
+L 0.092 M 0.023 N 0.046 P 0.051 Q 0.041 R 0.052 S 0.074 T 0.059 V 0.064
+W 0.013 Y 0.033
+Effective length of alphabet = 20
+Entropy of dataset (bits) =     -4.1
+
+meme -protein
+********************************************************************************
+
+
+Data files
+
+   None
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS conversion of a program written by Thomas L.
+   Bailey as part of the MEME package.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.

@@ -1,0 +1,260 @@
+                                  fdrawtree
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Plots an unrooted tree diagram
+
+Description
+
+   Plots unrooted phylogenies, cladograms, circular trees and phenograms
+   in a wide variety of user-controllable formats. The program is
+   interactive and allows previewing of the tree on PC, Macintosh, or X
+   Windows screens, or on Tektronix or Digital graphics terminals. Final
+   output can be to a file formatted for one of the drawing programs, for
+   a ray-tracing or VRML browser, or one at can be sent to a laser printer
+   (such as Postscript or PCL-compatible printers), on graphics screens or
+   terminals, on pen plotters or on dot matrix printers capable of
+   graphics.
+
+   Similar to DRAWGRAM but plots unrooted phylogenies.
+
+Algorithm
+
+   DRAWTREE interactively plots an unrooted tree diagram, with many
+   options including orientation of tree and branches, label sizes and
+   angles, margin sizes. Particularly if you can use your computer screen
+   to preview the plot, you can very effectively adjust the details of the
+   plotting to get just the kind of plot you want.
+
+   To understand the working of DRAWGRAM and DRAWTREE, you should first
+   read the Tree Drawing Programs web page in this documentation.
+
+   As with DRAWGRAM, to run DRAWTREE you need a compiled copy of the
+   program, a font file, and a tree file. The tree file has a default name
+   of intree. The font file has a default name of "fontfile". If there is
+   no file of that name, the program will ask you for the name of a font
+   file (we provide ones that have the names font1 through font6). Once
+   you decide on a favorite one of these, you could make a copy of it and
+   call it fontfile, and it will then be used by default. Note that the
+   program will get confused if the input tree file has the number of
+   trees on the first line of the file, so that number may have to be
+   removed.
+
+Usage
+
+   Here is a sample session with fdrawtree
+
+
+% fdrawtree -previewer n
+Plots an unrooted tree diagram
+Phylip tree file: drawgram.tree
+Phylip drawtree output file [drawgram.fdrawtree]:
+
+DRAWTREE from PHYLIP version 3.69
+Reading tree ...
+Tree has been read.
+Loading the font ...
+Font loaded.
+
+Writing plot file ...
+
+Plot written to file "drawgram.fdrawtree"
+
+Done.
+
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Plots an unrooted tree diagram
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-intreefile]        tree       Phylip tree file
+  [-plotfile]          outfile    [*.fdrawtree] Phylip drawtree output file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -plotter            menu       [l] Plotter or printer the tree will be
+                                  drawn on (Values: l (Postscript printer file
+                                  format); m (PICT format (for drawing
+                                  programs)); j (HP Laserjet 75 dpi PCL file
+                                  format); s (HP Laserjet 150 dpi PCL file
+                                  format); y (HP Laserjet 300 dpi PCL file
+                                  format); w (MS-Windows Bitmap); f (FIG 2.0
+                                  drawing program format); a (Idraw drawing
+                                  program format); z (VRML Virtual Reality
+                                  Markup Language file); n (PCX 640x350 file
+                                  format (for drawing programs)); p (PCX
+                                  800x600 file format (for drawing programs));
+                                  q (PCX 1024x768 file format (for drawing
+                                  programs)); k (TeKtronix 4010 graphics
+                                  terminal); x (X Bitmap format); v (POVRAY 3D
+                                  rendering program file); r (Rayshade 3D
+                                  rendering program file); h (Hewlett-Packard
+                                  pen plotter (HPGL file format)); d (DEC
+                                  ReGIS graphics (VT240 terminal)); e (Epson
+                                  MX-80 dot-matrix printer); c
+                                  (Prowriter/Imagewriter dot-matrix printer);
+                                  t (Toshiba 24-pin dot-matrix printer); o
+                                  (Okidata dot-matrix printer); b (Houston
+                                  Instruments plotter); u (other (one you have
+                                  inserted code for)))
+   -previewer          menu       [x] Previewing device (Values: n (Will not
+                                  be previewed); I i (MSDOS graphics screen
+                                  m:Macintosh screens); x (X Windows display);
+                                  w (MS Windows display); k (TeKtronix 4010
+                                  graphics terminal); d (DEC ReGIS graphics
+                                  (VT240 terminal)); o (Other (one you have
+                                  inserted code for)))
+   -iterate            menu       [e] Iterate to improve tree (Values: n (No);
+                                  e (Equal-Daylight algorithm); b (n-Body
+                                  algorithm))
+   -lengths            boolean    [N] Use branch lengths from user trees
+   -labeldirection     menu       [m] Label direction (Values: a (along); f
+                                  (fixed); r (radial); m (middle))
+   -treeangle          float      [90.0] Angle the tree is to be plotted
+                                  (Number from -360.000 to 360.000)
+   -arc                float      [360] Degrees the arc should occupy (Number
+                                  from 0.000 to 360.000)
+*  -labelrotation      float      [90.0] Angle of labels (0 degrees is
+                                  horizontal for a tree growing vertically)
+                                  (Number from 0.000 to 360.000)
+   -[no]rescaled       toggle     [Y] Automatically rescale branch lengths
+*  -bscale             float      [1.0] Centimeters per unit branch length
+                                  (Any numeric value)
+   -treedepth          float      [0.53] Depth of tree as fraction of its
+                                  breadth (Number from 0.100 to 100.000)
+*  -xmargin            float      [1.65] Horizontal margin (cm) (Number 0.100
+                                  or more)
+*  -ymargin            float      [2.16] Vertical margin (cm) (Number 0.100 or
+                                  more)
+*  -xrayshade          float      [1.65] Horizontal margin (pixels) (Number
+                                  0.100 or more)
+*  -yrayshade          float      [2.16] Vertical margin (pixels) (Number
+                                  0.100 or more)
+   -paperx             float      [20.63750] Paper width (Any numeric value)
+   -papery             float      [26.98750] Paper height (Number 0.100 or
+                                  more)
+   -pagesheight        float      [1] Number of trees across height of page
+                                  (Number 1.000 or more)
+   -pageswidth         float      [1] Number of trees across width of page
+                                  (Number 1.000 or more)
+   -hpmargin           float      [0.41275] Horizontal overlap (cm) (Number
+                                  0.001 or more)
+   -vpmargin           float      [0.53975] Vertical overlap (cm) (Number
+                                  0.001 or more)
+
+   Advanced (Unprompted) qualifiers:
+   -fontfile           string     [font1] Fontfile name (Any string)
+
+   Associated qualifiers:
+
+   "-plotfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   fdrawtree input ...
+
+  Input files for usage example
+
+  File: drawgram.tree
+
+(Delta,(Epsilon,(Gamma,(Beta,Alpha))));
+
+Output file format
+
+   fdrawtree outputs ...
+
+  Output files for usage example
+
+  Graphics File: drawgram.fdrawtree
+
+   [fdrawtree results]
+
+Data files
+
+   The font file has a default name of "fontfile". If there is no file of
+   that name, the program will ask you for the name of a font file (we
+   provide ones that have the names font1 through font6). Once you decide
+   on a favorite one of these, you could make a copy of it and call it
+   fontfile, and it will then be used by default.
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+                    Program name                       Description
+                    fdrawgram    Plots a cladogram- or phenogram-like rooted tree diagram
+                    fretree      Interactive tree rearrangement
+
+Author(s)
+
+                    This program is an EMBOSS conversion of a program written by Joe
+                    Felsenstein as part of his PHYLIP package.
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+                    Written (2004) - Joe Felsenstein, University of Washington.
+
+                    Converted (August 2004) to an EMBASSY program by the EMBOSS team.
+
+Target users
+
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.

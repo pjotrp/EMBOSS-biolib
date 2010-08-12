@@ -1,0 +1,12 @@
+.deps
+Makefile
+Makefile.in
+.libs
+rocplot
+siggenlig
+siggen
+rocon
+libgen
+sigscan
+matgen3d
+sigscanlig

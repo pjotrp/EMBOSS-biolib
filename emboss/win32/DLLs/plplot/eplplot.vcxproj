@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>eplplot</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+    <TargetName>eplplot</TargetName>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\Release\</OutDir>
+    <IntDir>Release\</IntDir>
+    <TargetName>eplplot</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;PLPLOT_EXPORTS;BUILD_DIR="..\..\data";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <AdditionalIncludeDirectories>..\..\plplot</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>NotSet</SubSystem>
+      <OutputFile>$(OutDir)eplplot.dll</OutputFile>
+      <AdditionalLibraryDirectories>..\Debug;..\..\plplot\lib\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bgd.lib;libharu.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>$(OutDir)eplplot.pdb</ProgramDatabaseFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)eplplot.lib</ImportLibrary>
+      <ModuleDefinitionFile>eplplot.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;PLPLOT_EXPORTS;BUILD_DIR="..\..\data";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <AdditionalIncludeDirectories>..\..\plplot</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>NotSet</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)eplplot.dll</OutputFile>
+      <AdditionalLibraryDirectories>..\Release;..\..\plplot\lib\Release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bgd.lib;libharu.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)eplplot.lib</ImportLibrary>
+      <ModuleDefinitionFile>eplplot.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\plplot\data.c" />
+    <ClCompile Include="..\..\plplot\gd.c" />
+    <ClCompile Include="..\..\plplot\hpgl.c" />
+    <ClCompile Include="..\..\plplot\null.c" />
+    <ClCompile Include="..\..\plplot\pbm.c" />
+    <ClCompile Include="..\..\plplot\pdf.c" />
+    <ClCompile Include="..\..\plplot\pdfutils.c" />
+    <ClCompile Include="..\..\plplot\plargs.c" />
+    <ClCompile Include="..\..\plplot\plbox.c" />
+    <ClCompile Include="..\..\plplot\plbuf.c" />
+    <ClCompile Include="..\..\plplot\plconsole.cpp" />
+    <ClCompile Include="..\..\plplot\plcont.c" />
+    <ClCompile Include="..\..\plplot\plcore.c" />
+    <ClCompile Include="..\..\plplot\plctrl.c" />
+    <ClCompile Include="..\..\plplot\plcvt.c" />
+    <ClCompile Include="..\..\plplot\pldtik.c" />
+    <ClCompile Include="..\..\plplot\plfill.c" />
+    <ClCompile Include="..\..\plplot\plhist.c" />
+    <ClCompile Include="..\..\plplot\plimage.c" />
+    <ClCompile Include="..\..\plplot\plline.c" />
+    <ClCompile Include="..\..\plplot\plmap.c" />
+    <ClCompile Include="..\..\plplot\plmeta.c" />
+    <ClCompile Include="..\..\plplot\plot3d.c" />
+    <ClCompile Include="..\..\plplot\plpage.c" />
+    <ClCompile Include="..\..\plplot\plsdef.c" />
+    <ClCompile Include="..\..\plplot\plshade.c" />
+    <ClCompile Include="..\..\plplot\plstdio.c" />
+    <ClCompile Include="..\..\plplot\plstripc.c" />
+    <ClCompile Include="..\..\plplot\plstub.cpp" />
+    <ClCompile Include="..\..\plplot\plsym.c" />
+    <ClCompile Include="..\..\plplot\pltick.c" />
+    <ClCompile Include="..\..\plplot\plvect.c" />
+    <ClCompile Include="..\..\plplot\plvpor.c" />
+    <ClCompile Include="..\..\plplot\plwind.c" />
+    <ClCompile Include="..\..\plplot\ps.c" />
+    <ClCompile Include="..\..\plplot\svg.c" />
+    <ClCompile Include="..\..\plplot\win3.cpp" />
+    <ClCompile Include="..\..\plplot\xfig.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\plplot\disptab.h" />
+    <ClInclude Include="..\..\plplot\drivers.h" />
+    <ClInclude Include="..\..\plplot\entities.h" />
+    <ClInclude Include="..\..\plplot\gd.h" />
+    <ClInclude Include="..\..\plplot\gdcache.h" />
+    <ClInclude Include="..\..\plplot\gdfontg.h" />
+    <ClInclude Include="..\..\plplot\gdfontl.h" />
+    <ClInclude Include="..\..\plplot\gdfontmb.h" />
+    <ClInclude Include="..\..\plplot\gdfonts.h" />
+    <ClInclude Include="..\..\plplot\gdfontt.h" />
+    <ClInclude Include="..\..\plplot\gdfx.h" />
+    <ClInclude Include="..\..\plplot\gdhelpers.h" />
+    <ClInclude Include="..\..\plplot\gd_io.h" />
+    <ClInclude Include="..\..\plplot\hpdf.h" />
+    <ClInclude Include="..\..\plplot\hpdf_annotation.h" />
+    <ClInclude Include="..\..\plplot\hpdf_catalog.h" />
+    <ClInclude Include="..\..\plplot\hpdf_conf.h" />
+    <ClInclude Include="..\..\plplot\hpdf_config.h" />
+    <ClInclude Include="..\..\plplot\hpdf_consts.h" />
+    <ClInclude Include="..\..\plplot\hpdf_destination.h" />
+    <ClInclude Include="..\..\plplot\hpdf_doc.h" />
+    <ClInclude Include="..\..\plplot\hpdf_encoder.h" />
+    <ClInclude Include="..\..\plplot\hpdf_encrypt.h" />
+    <ClInclude Include="..\..\plplot\hpdf_encryptdict.h" />
+    <ClInclude Include="..\..\plplot\hpdf_error.h" />
+    <ClInclude Include="..\..\plplot\hpdf_ext_gstate.h" />
+    <ClInclude Include="..\..\plplot\hpdf_font.h" />
+    <ClInclude Include="..\..\plplot\hpdf_fontdef.h" />
+    <ClInclude Include="..\..\plplot\hpdf_gstate.h" />
+    <ClInclude Include="..\..\plplot\hpdf_image.h" />
+    <ClInclude Include="..\..\plplot\hpdf_info.h" />
+    <ClInclude Include="..\..\plplot\hpdf_list.h" />
+    <ClInclude Include="..\..\plplot\hpdf_mmgr.h" />
+    <ClInclude Include="..\..\plplot\hpdf_objects.h" />
+    <ClInclude Include="..\..\plplot\hpdf_outline.h" />
+    <ClInclude Include="..\..\plplot\hpdf_pages.h" />
+    <ClInclude Include="..\..\plplot\hpdf_page_label.h" />
+    <ClInclude Include="..\..\plplot\hpdf_streams.h" />
+    <ClInclude Include="..\..\plplot\hpdf_types.h" />
+    <ClInclude Include="..\..\plplot\hpdf_u3d.h" />
+    <ClInclude Include="..\..\plplot\hpdf_utils.h" />
+    <ClInclude Include="..\..\plplot\hpdf_version.h" />
+    <ClInclude Include="..\..\plplot\jisx0208.h" />
+    <ClInclude Include="..\..\plplot\metadefs.h" />
+    <ClInclude Include="..\..\plplot\pdf.h" />
+    <ClInclude Include="..\..\plplot\plConfig.h" />
+    <ClInclude Include="..\..\plplot\plcore.h" />
+    <ClInclude Include="..\..\plplot\pldebug.h" />
+    <ClInclude Include="..\..\plplot\plDevs.h" />
+    <ClInclude Include="..\..\plplot\pldll.h" />
+    <ClInclude Include="..\..\plplot\plevent.h" />
+    <ClInclude Include="..\..\plplot\plfci-type1.h" />
+    <ClInclude Include="..\..\plplot\plfreetype.h" />
+    <ClInclude Include="..\..\plplot\plhershey-unicode.h" />
+    <ClInclude Include="..\..\plplot\plplot.h" />
+    <ClInclude Include="..\..\plplot\plplotP.h" />
+    <ClInclude Include="..\..\plplot\plstrm.h" />
+    <ClInclude Include="..\..\plplot\plunicode-type1.h" />
+    <ClInclude Include="..\..\plplot\plxwd.h" />
+    <ClInclude Include="..\..\plplot\ps.h" />
+    <ClInclude Include="..\..\plplot\resource.h" />
+    <ClInclude Include="..\..\plplot\wbmp.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,54 @@
+Align sequences with an HMM
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-hmmfile]           infile     HMMER hidden markov model file
+  [-sequences]         seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.ohmmalign] HMMER hmmalign program output
+                                  file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -mapalifile         infile     HMMER alignment file (optional)
+   -withalifile        infile     HMMER heuristic alignment file (optional)
+   -matchonly          boolean    [N] Only show match state alignment symbols
+
+   Associated qualifiers:
+
+   "-sequences" associated qualifiers
+   -sbegin2            integer    Start of each sequence to be used
+   -send2              integer    End of each sequence to be used
+   -sreverse2          boolean    Reverse (if DNA)
+   -sask2              boolean    Ask for begin/end/reverse
+   -snucleotide2       boolean    Sequence is nucleotide
+   -sprotein2          boolean    Sequence is protein
+   -slower2            boolean    Make lower case
+   -supper2            boolean    Make upper case
+   -sformat2           string     Input sequence format
+   -sdbname2           string     Database name
+   -sid2               string     Entryname
+   -ufo2               string     UFO features
+   -fformat2           string     Features format
+   -fopenfile2         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

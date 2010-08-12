@@ -1,0 +1,49 @@
+Largest clique program
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-infile]            discretestates Phylip discrete states file
+  [-outfile]           outfile    [*.fclique] Phylip clique program output
+                                  file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -ancfile            properties Phylip ancestral states file (optional)
+   -factorfile         properties Phylip multistate factors file (optional)
+   -weights            properties Phylip weights file (optional)
+   -cliqmin            integer    [0] Minimum clique size (Integer 0 or more)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    [*.fclique] Phylip tree output file
+                                  (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -printcomp          boolean    [N] Print out compatibility matrix
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

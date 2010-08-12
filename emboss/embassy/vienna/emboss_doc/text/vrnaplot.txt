@@ -1,0 +1,170 @@
+                                  vrnaplot
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Plot vrnafold output
+
+Description
+
+   This is a port of the Vienna RNA package program RNAplot.
+
+Algorithm
+
+   See the original documentation for the Vienna RNA package
+   http://www.tbi.univie.ac.at/~ivo/RNA/
+
+Usage
+
+   Here is a sample session with vrnaplot
+
+
+% vrnaplot
+Plot vrnafold output
+Vienna RNAfold output file: ../vrnafold-keep/rna1.vrnafold
+Vienna RNAfold output file [rna1.vrnaplot]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Plot vrnafold output
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-structuresfile]    infile     Vienna RNAfold output file
+  [-outfile]           outfile    [*.vrnaplot] Vienna RNAfold output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -layout             menu       [naview] Layout (Values: radial (Simple
+                                  radial); naview (naview))
+   -optype             menu       [ps] Type (Values: ps (postscript); gml
+                                  (graph meta language); svg (scaleable vector
+                                  graphics); xrna (XRNA save file))
+   -pre                string     Pre-annotation (Any string)
+   -post               string     Post-annotation (Any string)
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   vrnaplot reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: ../vrnafold-keep/rna1.vrnafold
+
+CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA
+.(((..((....)).(((((........)))))..))).. ( -3.50)
+
+Output file format
+
+   vrnaplot outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
+
+  Output files for usage example
+
+  Graphics File: rna1.vrnaplot
+
+   [vrnaplot results]
+
+Data files
+
+   For details of Vienna RNA file formats, see the original documentation
+   http://www.tbi.univie.ac.at/~ivo/RNA/
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+                     Program name                       Description
+                    einverted      Finds inverted repeats in nucleotide sequences
+                    vrnaalifold    RNA alignment folding
+                    vrnaalifoldpf  RNA alignment folding with partition
+                    vrnacofold     RNA cofolding
+   vrnacofoldconc   RNA cofolding with concentrations
+                    vrnacofoldpf   RNA cofolding with partitioning
+                    vrnadistance   RNA distances
+                    vrnaduplex     RNA duplex calculation
+                    vrnaeval       RNA eval
+                    vrnaevalpair   RNA eval with cofold
+                    vrnafold       Calculate secondary structures of RNAs
+                    vrnafoldpf     Secondary structures of RNAs with partition
+                    vrnaheat       RNA melting
+                    vrnainverse    RNA sequences matching a structure
+                    vrnalfold      Calculate locally stable secondary structures of RNAs
+                    vrnasubopt     Calculate RNA suboptimals
+
+Author(s)
+
+   Peter            Rice
+   European         Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton,         Cambridge CB10 1SD, UK
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+                    Converted (October 2005) by Alan Bleasby
+
+Target users
+
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
+
+Comments

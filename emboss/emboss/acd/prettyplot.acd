@@ -1,0 +1,271 @@
+application: prettyplot [
+  documentation: "Draw a sequence alignment with pretty formatting"
+  groups: "Alignment:Multiple, Display"
+    relations: "EDAM:0000182 topic Sequence alignment"
+    relations: "EDAM:0000091 topic Database and file management"
+    relations: "EDAM:0000562 operation Sequence alignment reformatting"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequences [
+    parameter: "Y"
+    type: "gapany"
+    aligned: "Y"
+    relations: "EDAM:0000863 data Sequence alignment"
+  ]
+
+  matrix: matrixfile [
+    additional: "Y"
+    information: "Matrix file"
+    protein: "$(acdprotein)"
+    help: "This is the scoring matrix file used when comparing
+           sequences. By default it is the file 'EBLOSUM62' (for proteins) or
+           the file 'EDNAFULL' (for nucleic sequences). These files are
+           found in the 'data' directory of the EMBOSS installation."
+    relations: "EDAM:0001446 data Comparison matrix (integers)"
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: residuesperline [
+    additional: "Y"
+    default: "50"
+    information: "Number of residues to be displayed on each
+                  line"
+    help: "The number of residues to be displayed on each line"
+    relations: "EDAM:0001249 data Sequence length"
+  ]
+
+  integer: resbreak [
+    additional: "Y"
+    minimum: "1"
+    maximum: "$(residuesperline)"
+    failrange: "N"
+    trueminimum: "Y"
+    information: "Residues before a space"
+    default: "$(residuesperline)"
+    expected: "Same as -residuesperline to give no breaks"
+    relations: "EDAM:0001249 data Sequence length"
+  ]
+
+  boolean: ccolours [
+    additional: "Y"
+    default: "Y"
+    information: "Colour residues by their consensus value."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  string: cidentity [
+    additional: "Y"
+    information: "Colour to display identical residues (RED)"
+    default: "RED"
+    knowntype: "plot colour"
+    relations: "EDAM:0002151 data Colour"
+  ]
+
+  string: csimilarity [
+    additional: "Y"
+    information: "Colour to display similar residues (GREEN)"
+    default: "GREEN"
+    knowntype: "plot colour"
+    relations: "EDAM:0002151 data Colour"
+  ]
+
+  string: cother [
+    additional: "Y"
+    information: "Colour to display other residues (BLACK)"
+    default: "BLACK"
+    knowntype: "plot colour"
+    relations: "EDAM:0002151 data Colour"
+  ]
+
+  boolean: docolour [
+    additional: "Y"
+    information: "Colour residues by table oily, amide etc."
+    default: "N"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  string: shade [
+    additional: "Y"
+    information: "Shading"
+    help: "Set to BPLW for normal shading \
+           (black, pale, light, white) \
+           so for pair = 1.5,1.0,0.5 and shade = BPLW \
+           Residues score Colour \
+           1.5 or over... BLACK (B) \
+           1.0 to 1.5 ... BROWN (P) \
+           0.5 to 1.0 ... WHEAT (L) \
+           under 0.5 .... WHITE (W) \
+           The only four letters allowed are BPLW, in any order."
+    default: ""
+    maxlength: "4"
+    minlength: "0"
+    knowntype: "plot shading"
+    pattern: "^([BPLW]{4})?$"
+    relations: "EDAM:0002152 data Rendering parameter"
+  ]
+
+  array: pair [
+    additional: "Y"
+    information: "Values to represent identical similar
+                  related"
+    default: "1.5,1.0,0.5"
+    minimum: "0.0"
+    size: "3"
+    sumtest: "N"
+    knowntype: "threshold identity similar related"
+    relations: "EDAM:0002152 data Rendering parameter"
+  ]
+
+  integer: identity [
+    additional: "Y"
+    information: "Only match those which are identical in all
+                  sequences."
+    default: "0"
+    minimum: "0"
+    relations: "EDAM:0002152 data Rendering parameter"
+  ]
+
+  boolean: box [
+    additional: "Y"
+    information: "Display prettyboxes"
+    default: "Y"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: boxcol [
+    additional: "Y"
+    information: "Colour the background in the boxes"
+    default: "N"
+    relations: "EDAM:0002151 data Colour"
+  ]
+
+  string: boxuse [
+    additional: "Y"
+    information: "Colour to be used for background. (GREY)"
+    default: "GREY"
+    knowntype: "plot colour"
+    relations: "EDAM:0002151 data Colour"
+  ]
+
+  boolean: name [
+    additional: "Y"
+    information: "Display the sequence names"
+    default: "Y"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  integer: maxnamelen [
+    additional: "Y"
+    information: "Margin size for the sequence name."
+    default: "10"
+    relations: "EDAM:0002152 data Rendering parameter"
+  ]
+
+  boolean: number [
+    additional: "Y"
+    information: "Display the residue number"
+    default: "Y"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: listoptions [
+    additional: "Y"
+    information: "Display the date and options used"
+    default: "Y"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  float: plurality [
+    additional: "Y"
+    information: "Plurality check value (totweight/2)"
+    default: "@( $(sequences.totweight) / 2)"
+    expected: "Half the total sequence weighting"
+    relations: "EDAM:0001773 data Tool-specific parameter"
+  ]
+
+  section: consensussection [
+    information: "Consensus section"
+    type: "frame"
+  ]
+
+    boolean: consensus [
+      additional: "Y"
+      information: "Display the consensus"
+      default: "N"
+    relations: "EDAM:0002135 data Toggle"
+    ]
+
+    boolean: collision [
+      additional: "Y"
+      information: "Allow collisions in calculating consensus"
+      default: "Y"
+    relations: "EDAM:0002135 data Toggle"
+    ]
+
+    list: alternative [
+      additional: "Y"
+      information: "Use alternative collisions routine"
+      values: "0:Normal collision check. (default); 1:Compares
+               identical scores with the max score found. So if any other
+               residue matches the identical score then a collision has
+               occurred.; 2:If another residue has a greater than or equal to
+               matching score and these do not match then a collision has
+               occurred.; 3:Checks all those not in the current consensus.If
+               any of these give a top score for matching or identical scores
+               then a collision has occured."
+      help: "Values are 0:Normal collision check. (default) \
+             1:Compares identical scores with the max score found. So if any
+             other residue matches the identical score then a collision has
+             occurred. \
+             2:If another residue has a greater than or equal to matching
+             score and these do not match then a collision has occurred. \
+             3:Checks all those not in the current consensus.If any of these
+             give a top score for matching or identical scores then a
+             collision has occured."
+      default: "0"
+      minimum: "1"
+      maximum: "1"
+    relations: "EDAM:0001773 data Tool-specific parameter"
+    ]
+
+  endsection: consensussection
+
+  integer: showscore [
+    additional: "Y"
+    information: "Print residue scores"
+    default: "-1"
+    relations: "EDAM:0002152 data Rendering parameter"
+  ]
+
+  boolean: portrait [
+    additional: "Y"
+    information: "Set page to Portrait"
+    default: "N"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  graph: graph [
+    standard: "Y"
+    gdesc: "Pretty plot"
+    relations: "EDAM:0001711 data Sequence alignment image"
+  ]
+
+endsection: output

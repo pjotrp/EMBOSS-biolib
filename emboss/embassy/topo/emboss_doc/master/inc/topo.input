@@ -1,0 +1,116 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tsw:aqp1_human' is a sequence entry in the example protein database 'tsw'
+<p>
+<p><h3>Database entry: tsw:aqp1_human</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   AQP1_HUMAN              Reviewed;         269 AA.
+AC   P29972; B5BU39; Q8TBI5; Q8TDC1;
+DT   01-APR-1993, integrated into UniProtKB/Swiss-Prot.
+DT   23-JAN-2007, sequence version 3.
+DT   15-JUN-2010, entry version 123.
+DE   RecName: Full=Aquaporin-1;
+DE            Short=AQP-1;
+DE   AltName: Full=Aquaporin-CHIP;
+DE   AltName: Full=Water channel protein for red blood cells and kidney proximal tubule;
+DE   AltName: Full=Urine water channel;
+GN   Name=AQP1; Synonyms=CHIP28;
+OS   Homo sapiens (Human).
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+OC   Catarrhini; Hominidae; Homo.
+OX   NCBI_TaxID=9606;
+RN   [1]
+RP   NUCLEOTIDE SEQUENCE [MRNA], AND PARTIAL PROTEIN SEQUENCE.
+RX   MEDLINE=92107900; PubMed=1722319; DOI=10.1073/pnas.88.24.11110;
+RA   Preston G.M., Agre P.;
+RT   "Isolation of the cDNA for erythrocyte integral membrane protein of 28
+RT   kilodaltons: member of an ancient channel family.";
+RL   Proc. Natl. Acad. Sci. U.S.A. 88:11110-11114(1991).
+RN   [2]
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
+RX   MEDLINE=93340184; PubMed=8340403;
+RA   Moon C., Preston G.M., Griffin C.A., Jabs E.W., Agre P.;
+RT   "The human aquaporin-CHIP gene. Structure, organization, and
+RT   chromosomal localization.";
+RL   J. Biol. Chem. 268:15772-15778(1993).
+RN   [3]
+RP   NUCLEOTIDE SEQUENCE [MRNA].
+RC   TISSUE=Retinal pigment epithelium;
+RX   MEDLINE=96326579; PubMed=8703970; DOI=10.1016/0005-2736(96)00076-4;
+RA   Ruiz A.C., Bok D.;
+RT   "Characterization of the 3' UTR sequence encoded by the AQP-1 gene in
+RT   human retinal pigment epithelium.";
+RL   Biochim. Biophys. Acta 1282:174-178(1996).
+RN   [4]
+RP   NUCLEOTIDE SEQUENCE [MRNA].
+RC   TISSUE=Uterus;
+RX   MEDLINE=94290349; PubMed=7517253;
+RA   Li X., Yu H., Koide S.S.;
+RT   "The water channel gene in human uterus.";
+RL   Biochem. Mol. Biol. Int. 32:371-377(1994).
+RN   [5]
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANTS VAL-45 AND ASP-165.
+RG   SeattleSNPs variation discovery resource;
+RL   Submitted (MAR-2005) to the EMBL/GenBank/DDBJ databases.
+RN   [6]
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+FT   TRANSMEM    137    155       Helical; Name=Helix 4.
+FT   TOPO_DOM    156    166       Cytoplasmic.
+FT   TRANSMEM    167    183       Helical; Name=Helix 5.
+FT   TOPO_DOM    184    186       Extracellular.
+FT   INTRAMEM    187    192
+FT   INTRAMEM    193    200       Helical; Name=Helix E.
+FT   TOPO_DOM    201    207       Extracellular.
+FT   TRANSMEM    208    228       Helical; Name=Helix 6.
+FT   TOPO_DOM    229    269       Cytoplasmic.
+FT   MOTIF        76     78       NPA 1.
+FT   MOTIF       192    194       NPA 2.
+FT   COMPBIAS    159    162       Poly-Arg.
+FT   SITE         56     56       Substrate discrimination.
+FT   SITE        180    180       Substrate discrimination.
+FT   SITE        189    189       Hg(2+)-sensitive residue.
+FT   SITE        195    195       Substrate discrimination.
+FT   MOD_RES     246    246       Phosphothreonine (By similarity).
+FT   MOD_RES     247    247       Phosphoserine (By similarity).
+FT   MOD_RES     262    262       Phosphoserine.
+FT   CARBOHYD     42     42       N-linked (GlcNAc...).
+FT   CARBOHYD    205    205       N-linked (GlcNAc...) (Potential).
+FT   VARIANT      38     38       P -&gt; L (in Co(A-B-) antigen; non
+FT                                functional AQP1; red cells show low
+FT                                osmotic water permeability).
+FT                                /FTId=VAR_013279.
+FT   VARIANT      45     45       A -&gt; V (in Co(A-B+) antigen;
+FT                                dbSNP:rs28362692).
+FT                                /FTId=VAR_004400.
+FT   VARIANT     165    165       G -&gt; D (in dbSNP:rs28362731).
+FT                                /FTId=VAR_022318.
+FT   CONFLICT     45     45       A -&gt; T (in Ref. 9; AAH22486).
+FT   HELIX         8     35
+FT   STRAND       37     42
+FT   HELIX        48     65
+FT   STRAND       68     71
+FT   HELIX        76     83
+FT   HELIX        94    114
+FT   TURN        119    122
+FT   STRAND      132    135
+FT   HELIX       136    154
+FT   HELIX       166    182
+FT   TURN        183    185
+FT   HELIX       192    199
+FT   HELIX       207    227
+SQ   SEQUENCE   269 AA;  28526 MW;  BA204D82FB26352E CRC64;
+     MASEFKKKLF WRAVVAEFLA TTLFVFISIG SALGFKYPVG NNQTAVQDNV KVSLAFGLSI
+     ATLAQSVGHI SGAHLNPAVT LGLLLSCQIS IFRALMYIIA QCVGAIVATA ILSGITSSLT
+     GNSLGRNDLA DGVNSGQGLG IEIIGTLQLV LCVLATTDRR RRDLGGSAPL AIGLSVALGH
+     LLAIDYTGCG INPARSFGSA VITHNFSNHW IFWVGPFIGG ALAVLIYDFI LAPRSSDLTD
+     RVKVWTSGQV EEYDLDADDI NSRVEMKPK
+//
+</pre>
+</td></tr></table><p>

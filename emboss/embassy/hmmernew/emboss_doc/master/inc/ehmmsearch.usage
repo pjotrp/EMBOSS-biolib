@@ -1,0 +1,16 @@
+<b>Here is a sample session with ehmmsearch</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmsearch ../ehmmcalibrate-ex-keep/globino.hmm Artemia.fa globino.ehmmsearch -a 100 </b>
+Search a sequence database with a profile HMM
+
+
+/shared/software/bin/hmmsearch -A 100 -E 10.000000 -T -1000000.000000 -Z 0 --domE 1000000.000000 --domT -1000000.000000  ../ehmmcalibrate-ex-keep/globino.hmm ../../data/hmmnew/Artemia.fa > globino.ehmmsearch
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

@@ -1,0 +1,83 @@
+application: syco [
+  documentation: "Draw synonymous codon usage statistic plot for a
+                  nucleotide sequence"
+  groups: "Nucleic:Codon usage, Nucleic:Gene finding"
+    relations: "EDAM:0000109 topic Gene finding"
+    relations: "EDAM:0000436 operation Coding region prediction"
+    relations: "EDAM:0000286 operation Codon usage analysis"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "DNA"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+  codon: cfile [
+    standard: "Y"
+    help: "Codon usage file"
+    relations: "EDAM:0001597 data Codon usage table"
+  ]
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: window [
+    default: "30"
+    information: "Averaging window"
+    relations: "EDAM:0001251 data Window size"
+  ]
+
+  boolean: uncommon [
+    default: "N"
+    information: "Show common codon usage"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  float: minimum [
+    default: ".15"
+    minimum: "0.0"
+    maximum: ".99"
+    information: "Minimum value for a common codon"
+    relations: "EDAM:0001773 data Tool-specific parameter"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  toggle: plot [
+    information: "Produce plot"
+    default: "Y"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  xygraph: graph [
+    standard: "$(plot)"
+    multiple: "3"
+    gdesc: "Gribskov Codon Plot"
+    relations: "EDAM:0001600 data Synonymous codon usage statictic plot"
+  ]
+
+  outfile: outfile [
+    standard: "@(!$(plot))"
+    knowntype: "syco output"
+    nullok: "$(plot)"
+    nulldefault: "$(plot)"
+    relations: "EDAM:0001600 data Synonymous codon usage statictic plot"
+  ]
+
+endsection: output

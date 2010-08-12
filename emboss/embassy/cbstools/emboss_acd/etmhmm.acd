@@ -1,0 +1,72 @@
+application: etmhmm [
+  documentation: "Reports transmembrane helices"
+  groups: "Protein:Motifs"
+  embassy: "cbstools"
+  external: "tmhmm CBStools website http://www.cbs.dtu.dk/services/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+    aligned: "Y"
+    relations: "EDAM: Sequence alignment data"                             
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: html [
+    default: "N"
+    information: "Produce html output"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: short [
+    default: "N"
+    information: "Produce short output"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: plot [
+    default: "N"
+    information: "Produce graphical output"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: one [
+    default: "N"
+    information: "Use version 1 model file"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "etmhmm output"
+    relations:  "EDAM:Transmembrane region report"                         
+  ]
+
+endsection: output

@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D79BD1FA-CBBE-45BE-B73F-0018A25678E2}</ProjectGuid>
+    <RootNamespace>core</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ajax</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ajax</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/D "HAVE_JAVA" /I "%JAVA_HOME%\include" /I "%JAVA_HOME%\include\win32" %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre;..\..\..\ajax\zlib;..\..\..\ajax\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libmysql.lib;eexpat.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)ajax.dll</OutputFile>
+      <AdditionalLibraryDirectories>..\..\Debug;..\..\..\mysql\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>ajaxdll.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)ajax.pdb</ProgramDatabaseFile>
+      <SubSystem>NotSet</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)ajax.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/D "HAVE_JAVA" /I "%JAVA_HOME%\include" /I "%JAVA_HOME%\include\win32" %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\..\..\mysql\include\mysql;..\..\..\mysql\include;..\..\..\ajax\pcre;..\..\..\ajax\zlib;..\..\..\ajax\expat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;AJAXDLL_EXPORTS;PLD_png;HAVE_MEMMOVE;HAVE_MYSQL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libmysql.lib;eexpat.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)ajax.dll</OutputFile>
+      <AdditionalLibraryDirectories>..\..\Release;..\..\..\mysql\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>ajaxdll.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>NotSet</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)ajax.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\ajax\core\ajalign.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajarr.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajassert.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajbase.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajcall.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajcod.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajdan.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajdmx.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajdom.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajdomain.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajexcept.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajfeat.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajfile.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajfiledata.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajfileio.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajfmt.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajindex.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajjava.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajlist.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajmath.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajmatrices.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajmem.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajmess.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajnam.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajnexus.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajobo.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajpat.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajpdb.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajpdbio.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajphylo.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajrange.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajreg.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajreport.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajresource.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajseq.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajseqabi.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajseqbam.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajseqread.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajseqtype.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajseqwrite.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajsort.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajsql.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajstr.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajsys.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajtable.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajtax.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajtime.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajtranslate.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajtree.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajutil.c" />
+    <ClCompile Include="..\..\..\ajax\core\ajvector.c" />
+    <ClCompile Include="..\..\..\ajax\core\dirent_w32.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\ajax\core\ajalign.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajarch.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajarr.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajassert.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajax.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajbase.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajcall.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajcod.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajdan.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajdefine.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajdmx.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajdom.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajdomain.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajexcept.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajfeat.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajfeatdata.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajfile.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajfiledata.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajfileio.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajfmt.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajindex.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajjava.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajlist.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajmath.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajmatrices.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajmem.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajmess.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajnam.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajnexus.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajobo.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajpat.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajpdb.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajpdbio.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajphylo.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajrange.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajreg.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajreport.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajresource.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajseq.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajseqabi.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajseqbam.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajseqdata.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajseqread.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajseqtype.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajseqwrite.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajsort.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajsql.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajstr.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajsys.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajtable.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajtax.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajtime.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajtranslate.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajtree.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajutil.h" />
+    <ClInclude Include="..\..\..\ajax\core\ajvector.h" />
+    <ClInclude Include="..\..\..\ajax\core\dirent_w32.h" />
+    <ClInclude Include="..\..\..\ajax\core\win32.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\expat\expat.vcxproj">
+      <Project>{dc2ed7d4-6dfc-40b0-b736-02db80fb876d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\pcre\pcre.vcxproj">
+      <Project>{131e6282-fae3-4b71-a6af-e2e84a88d0c4}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib\zlib.vcxproj">
+      <Project>{42eac41c-0f19-4602-bf72-95d89fbed565}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

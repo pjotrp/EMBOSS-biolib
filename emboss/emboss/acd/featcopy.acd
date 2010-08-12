@@ -1,0 +1,33 @@
+application: featcopy [
+  documentation: "Reads and writes a feature table"
+  groups: "Edit"
+    relations: "EDAM:0000160 topic Sequence features"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000254 operation Sequence feature table extraction"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  features: features [
+    parameter: "Y"
+    type: "any"
+    relations: "EDAM:0001270 data Sequence feature table"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  featout: outfeat [
+    parameter: "Y"
+    type: "$(features.type)"
+    relations: "EDAM:0001270 data Sequence feature table"
+  ]
+
+endsection: output

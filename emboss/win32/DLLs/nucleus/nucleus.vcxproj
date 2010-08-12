@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3605EF7B-263A-4BF8-895F-E8F7DF1669F7}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\ajax\core;..\..\ajax\pcre;..\..\ajax\graphics;..\..\ajax\ensembl;..\..\ajax\ajaxdb;..\..\ajax\acd;..\..\plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_MEMMOVE;WIN32;_DEBUG;_WINDOWS;_USRDLL;NUCLEUS_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>eplplot.lib;ajaxdb.lib;ajax.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)nucleus.dll</OutputFile>
+      <AdditionalLibraryDirectories>..\Debug;../plplot/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>nucleusdll.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)nucleus.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)nucleus.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\ajax\core;..\..\ajax\pcre;..\..\ajax\graphics;..\..\ajax\ensembl;..\..\ajax\ajaxdb;..\..\ajax\acd;..\..\plplot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_MEMMOVE;WIN32;NDEBUG;_WINDOWS;_USRDLL;NUCLEUS_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>eplplot.lib;ajaxdb.lib;ajax.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)nucleus.dll</OutputFile>
+      <AdditionalLibraryDirectories>..\Release;../plplot/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>nucleusdll.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)nucleus.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\nucleus\embaln.c" />
+    <ClCompile Include="..\..\nucleus\embcom.c" />
+    <ClCompile Include="..\..\nucleus\embcons.c" />
+    <ClCompile Include="..\..\nucleus\embdata.c" />
+    <ClCompile Include="..\..\nucleus\embdbi.c" />
+    <ClCompile Include="..\..\nucleus\embdmx.c" />
+    <ClCompile Include="..\..\nucleus\embdomain.c" />
+    <ClCompile Include="..\..\nucleus\embest.c" />
+    <ClCompile Include="..\..\nucleus\embexit.c" />
+    <ClCompile Include="..\..\nucleus\embgroup.c" />
+    <ClCompile Include="..\..\nucleus\embiep.c" />
+    <ClCompile Include="..\..\nucleus\embindex.c" />
+    <ClCompile Include="..\..\nucleus\embinit.c" />
+    <ClCompile Include="..\..\nucleus\embmat.c" />
+    <ClCompile Include="..\..\nucleus\embmisc.c" />
+    <ClCompile Include="..\..\nucleus\embmol.c" />
+    <ClCompile Include="..\..\nucleus\embnmer.c" />
+    <ClCompile Include="..\..\nucleus\embpat.c" />
+    <ClCompile Include="..\..\nucleus\embpatlist.c" />
+    <ClCompile Include="..\..\nucleus\embpdb.c" />
+    <ClCompile Include="..\..\nucleus\embprop.c" />
+    <ClCompile Include="..\..\nucleus\embread.c" />
+    <ClCompile Include="..\..\nucleus\embshow.c" />
+    <ClCompile Include="..\..\nucleus\embsig.c" />
+    <ClCompile Include="..\..\nucleus\embword.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\nucleus\embaln.h" />
+    <ClInclude Include="..\..\nucleus\embcom.h" />
+    <ClInclude Include="..\..\nucleus\embcons.h" />
+    <ClInclude Include="..\..\nucleus\embdata.h" />
+    <ClInclude Include="..\..\nucleus\embdbi.h" />
+    <ClInclude Include="..\..\nucleus\embdmx.h" />
+    <ClInclude Include="..\..\nucleus\embdomain.h" />
+    <ClInclude Include="..\..\nucleus\embest.h" />
+    <ClInclude Include="..\..\nucleus\embexit.h" />
+    <ClInclude Include="..\..\nucleus\embgroup.h" />
+    <ClInclude Include="..\..\nucleus\embiep.h" />
+    <ClInclude Include="..\..\nucleus\embindex.h" />
+    <ClInclude Include="..\..\nucleus\embinit.h" />
+    <ClInclude Include="..\..\nucleus\embmat.h" />
+    <ClInclude Include="..\..\nucleus\embmisc.h" />
+    <ClInclude Include="..\..\nucleus\embmol.h" />
+    <ClInclude Include="..\..\nucleus\embnmer.h" />
+    <ClInclude Include="..\..\nucleus\emboss.h" />
+    <ClInclude Include="..\..\nucleus\embpat.h" />
+    <ClInclude Include="..\..\nucleus\embpatlist.h" />
+    <ClInclude Include="..\..\nucleus\embpdb.h" />
+    <ClInclude Include="..\..\nucleus\embprop.h" />
+    <ClInclude Include="..\..\nucleus\embread.h" />
+    <ClInclude Include="..\..\nucleus\embshow.h" />
+    <ClInclude Include="..\..\nucleus\embsig.h" />
+    <ClInclude Include="..\..\nucleus\embword.h" />
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="resource2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="nucleusdll.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ajax\acd\acd.vcxproj">
+      <Project>{65966d24-b001-4220-b915-4c35a6c9ac3e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\ajax\ajaxdb\ajaxdb.vcxproj">
+      <Project>{6e8d0f09-af9d-4587-9daa-482cef110448}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\ajax\core\core.vcxproj">
+      <Project>{d79bd1fa-cbbe-45be-b73f-0018a25678e2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\ajax\ensembl\ensembl.vcxproj">
+      <Project>{24921c7d-68a3-4be8-b9e2-ec5d6d10234e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\ajax\expat\expat.vcxproj">
+      <Project>{dc2ed7d4-6dfc-40b0-b736-02db80fb876d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\ajax\graphics\ajaxg.vcxproj">
+      <Project>{0af44082-e707-4ee0-a02e-d7e77ca1862d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\ajax\pcre\pcre.vcxproj">
+      <Project>{131e6282-fae3-4b71-a6af-e2e84a88d0c4}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

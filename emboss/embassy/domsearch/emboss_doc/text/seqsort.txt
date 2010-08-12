@@ -1,0 +1,311 @@
+                            SEQSORT documentation
+
+
+
+CONTENTS
+
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
+
+1.0 SUMMARY
+
+   Remove ambiguous classified sequences from DHF files
+
+2.0 INPUTS & OUTPUTS
+
+   SEQSORT reads a directory of DHF files (domain hits files) where each
+   file contains hits to a single SCOP family, compares, processes and
+   collates the hits and writes a directory of DHF files which contain
+   only those hits that could be uniquely assigned to a SCOP family.
+   Optionally, two further files of hits are written: (i) a domain
+   families file, of ALL hits from the input files that could be uniquely
+   assigned to a SCOP family and (ii) a domain ambiguities file, of hits
+   from ALL the input files that are of ambiguous family assignment and
+   are assigned as relatives to a SCOP superfamily or fold instead.
+   The path for the domain hits files (input and output) and the names of
+   the output files are specified by the user. The file extension of the
+   DHF files are set in the ACD file.
+
+3.0 INPUT FILE FORMAT
+
+   The format of the domain hits file is described in SEQSEARCH
+   documentation.
+
+4.0 OUTPUT FILE FORMAT
+
+   The format of the domain hits file is described in SEQSEARCH
+   documentation.
+   The domain families file and domain ambiguities file also use the DHF
+   format. Whereas normally a DHF file contains hits for a single node
+   from SCOP or CATH, the families and ambiguities files may contain
+   domains from multiple different families (domain families file), or
+   superfamilies or folds (ambiguities file). Domains of the same node
+   (e.g. family) will be grouped together in blocks, i.e. all hits for
+   domain A, then all hits for domain B and so on (see Figure 1).
+
+  Output files for usage example
+
+  File: fam.dhf
+
+> Q9YBD5^.^1^95^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^56.10^0.000e+00^9.000e-
+12
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFNV
+IEDYKVVEKVKLKLP
+> Q97FS4^.^1^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^43.40^0.000e+00^6.000e-
+08
+INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDEK
+IRQKIQLKLP
+> Q7MX57^.^1^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^73.80^0.000e+00^5.000e-
+17
+VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEEEELNRIALIAPNVRLNIIRD
+YEVVEKRQVEVP
+> P96111^.^1^98^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^43.00^0.000e+00^9.000e-
+08
+GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLPDRYLSKKEIKKLSAISPNTT
+VNIIKNSTVVEKYRIKLP
+> Q08462^.^1^167^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^46.20^0.000e+00^4.000e-08
+DCVCVMFASIPDFKEFYTESDVNKEGLECLRLLNEIIADFDDLLSKPKFSGVEKIKTIGSTYMAATGLSAVPSQEHSQEP
+ERQYMHIGTMVEFAFALVGKLDAINKHSFNDFKLRVGINHGPVIAGVIGAQKPQYDIWGNTVNVASRMDSTGVLDKIQVT
+EETSLVL
+> Q03101^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^65.80^0.000e+00^4.000e-14
+NNACVFFLDIAGFTRFSSIHSPEQVIQVLIKIFNSMDLLCAKHGIEKIKTIGDAYMATCGIFPKCDDIRHNTYKMLGFAM
+DVLEFIPKEMSFHLGLQVRVGIHCGPVISGVISGYAKPHFDVWGDTVNVASRMESTGIAGQIHVSDRVY
+> Q02153^.^1^165^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^68.90^0.000e+00^4.000e-15
+HKRPVPAKRYDNVTILFSGIVGFNAFCSKHASGEGAMKIVNLLNDLYTRFDTLTDSRKNPFVYKVETVGDKYMTVSGLPE
+PCIHHARSICHLALDMMEIAGQVQVDGESVQITIGIHTGEVVTGVIGQRMPRYCLFGNTVNLTSRTETTGEKGKINVSEY
+TYRCL
+> P46197^.^1^168^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^78.50^0.000e+00^7.000e-18
+VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAIIDNFDVYKVETIGDAYMVVSGLPGRNGQRHAPEIA
+RMALALLDAVSSFRIRHRPHDQLRLRIGVHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGQALKIHVSSTTKDALDE
+LGCFQLEL
+> P40137^.^1^139^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^48.50^0.000e+00^6.000e-09
+VTLLFADIRDFTSLSERLRPEQVVTLLNEYYGRMVEVVFRHGGTLDKFIGDALMVYFGAPIADPAHARRGVQCALDMVQE
+LETVNALRSARGEPCLRIGVGVHTGPAVLGNIGSATRRLEYTAIGDTVNLASRIESLTK
+> P23466^.^1^154^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^50.80^0.000e+00^1.000e-09
+PTGNVAIVFTDIKNSTFLWELFPDAMRAAIKTHNDIMRRQLRIYGGYEVKTEGDAFMVAFPTPTSALVWCLSVQLKLLEA
+EWPEEITSIQDGCLITDNSGTKVYLGLSVRMGVHWGCPVPEIDLVTQRMDYLGPVVNKAARVSGVADGGQITLS
+> O30820^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^75.40^0.000e+00^6.000e-17
+DEASVLFADIVGFTERASSTAPADLVRFLDRLYSAFDELVDQHGLEKIKVSGDSYMVVSGVPRPRPDHTQALADFALDMT
+NVAAQLKDPRGNPVPLRVGLATGPVVAGVVGSRRFFYDVWGDAVNVASRMESTDSVGQIQVPDEVYERL
+
+  File: oth.dhf
+
+
+  File: 54894.dhf
+
+> Q9YBD5^.^1^95^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^56.10^0.000e+00^9.000e-
+12
+VRKIRSGVVIDHIPPGRAFTMLKALGLLPPRGYRWRIAVVINAESSKLGRKDILKIEGYKPRQRDLEVLGIIAPGATFNV
+IEDYKVVEKVKLKLP
+> Q97FS4^.^1^90^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^43.40^0.000e+00^6.000e-
+08
+INSIKNGIVIDHIKAGHGIKIYNYLKLGEAEFPTALIMNAISKKNKAKDIIKIENVMDLDLAVLGFLDPNITVNIIEDEK
+IRQKIQLKLP
+> Q7MX57^.^1^92^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^73.80^0.000e+00^5.000e-
+17
+VAAIRNGIVIDHIPPTKLFKVATLLQLDDLDKRITIGNNLRSRSHGSKGVIKIEDKTFEEEELNRIALIAPNVRLNIIRD
+YEVVEKRQVEVP
+> P96111^.^1^98^SCOP^.^54894^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^A
+spartate carbamoyltransferase, Regulatory-chain, N-terminal domain^Aspartate car
+bamoyltransferase, Regulatory-chain, N-terminal domain^.^43.00^0.000e+00^9.000e-
+08
+GIKPIENGTVIDHIAKGKTPEEIYSTILKIRKILRLYDVDSADGIFRSSDGSFKGYISLPDRYLSKKEIKKLSAISPNTT
+VNIIKNSTVVEKYRIKLP
+
+  File: 55074.dhf
+
+> Q08462^.^1^167^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^46.20^0.000e+00^4.000e-08
+DCVCVMFASIPDFKEFYTESDVNKEGLECLRLLNEIIADFDDLLSKPKFSGVEKIKTIGSTYMAATGLSAVPSQEHSQEP
+ERQYMHIGTMVEFAFALVGKLDAINKHSFNDFKLRVGINHGPVIAGVIGAQKPQYDIWGNTVNVASRMDSTGVLDKIQVT
+EETSLVL
+> Q03101^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^65.80^0.000e+00^4.000e-14
+NNACVFFLDIAGFTRFSSIHSPEQVIQVLIKIFNSMDLLCAKHGIEKIKTIGDAYMATCGIFPKCDDIRHNTYKMLGFAM
+DVLEFIPKEMSFHLGLQVRVGIHCGPVISGVISGYAKPHFDVWGDTVNVASRMESTGIAGQIHVSDRVY
+> Q02153^.^1^165^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^68.90^0.000e+00^4.000e-15
+HKRPVPAKRYDNVTILFSGIVGFNAFCSKHASGEGAMKIVNLLNDLYTRFDTLTDSRKNPFVYKVETVGDKYMTVSGLPE
+PCIHHARSICHLALDMMEIAGQVQVDGESVQITIGIHTGEVVTGVIGQRMPRYCLFGNTVNLTSRTETTGEKGKINVSEY
+TYRCL
+> P46197^.^1^168^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^78.50^0.000e+00^7.000e-18
+VQAEAFDSVTIYFSDIVGFTALSAESTPMQVVTLLNDLYTCFDAIIDNFDVYKVETIGDAYMVVSGLPGRNGQRHAPEIA
+RMALALLDAVSSFRIRHRPHDQLRLRIGVHTGPVCAGVVGLKMPRYCLFGDTVNTASRMESNGQALKIHVSSTTKDALDE
+LGCFQLEL
+> P40137^.^1^139^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^48.50^0.000e+00^6.000e-09
+VTLLFADIRDFTSLSERLRPEQVVTLLNEYYGRMVEVVFRHGGTLDKFIGDALMVYFGAPIADPAHARRGVQCALDMVQE
+LETVNALRSARGEPCLRIGVGVHTGPAVLGNIGSATRRLEYTAIGDTVNLASRIESLTK
+> P23466^.^1^154^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^50.80^0.000e+00^1.000e-09
+PTGNVAIVFTDIKNSTFLWELFPDAMRAAIKTHNDIMRRQLRIYGGYEVKTEGDAFMVAFPTPTSALVWCLSVQLKLLEA
+EWPEEITSIQDGCLITDNSGTKVYLGLSVRMGVHWGCPVPEIDLVTQRMDYLGPVVNKAARVSGVADGGQITLS
+> O30820^.^1^149^SCOP^.^55074^Alpha and beta proteins (a+b)^.^.^Ferredoxin-like^
+Adenylyl and guanylyl cyclase catalytic domain^Adenylyl and guanylyl cyclase cat
+alytic domain^.^75.40^0.000e+00^6.000e-17
+DEASVLFADIVGFTERASSTAPADLVRFLDRLYSAFDELVDQHGLEKIKVSGDSYMVVSGVPRPRPDHTQALADFALDMT
+NVAAQLKDPRGNPVPLRVGLATGPVVAGVVGSRRFFYDVWGDAVNVASRMESTDSVGQIQVPDEVYERL
+
+5.0 DATA FILES
+
+   None.
+
+6.0 USAGE
+
+  6.1 COMMAND LINE ARGUMENTS
+
+Remove ambiguous classified sequences from DHF files.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-dhfindir]          directory  [./] This option specifies the location of
+                                  DHF files (domain hits files) (input). A
+                                  'domain hits file' contains database hits
+                                  (sequences) with domain classification
+                                  information, in the DHF format (FASTA or
+                                  EMBL-like). The hits are relatives to a SCOP
+                                  or CATH family and are found from a search
+                                  of a sequence database. Files containing
+                                  hits retrieved by PSIBLAST are generated by
+                                  using SEQSEARCH.
+   -overlap            integer    [10] This option specifies the number of
+                                  overlapping residues required for merging of
+                                  two hits. Each family is also processed so
+                                  that ovlerapping hits (hits with identical
+                                  accesssion number that overlap by at least a
+                                  user-defined number of residues) are
+                                  replaced by a hit that is produced from
+                                  merging the two overlapping hits. (Any
+                                  integer value)
+   -dofamilies         toggle     [N] This option specifies to write a domain
+                                  families file. If this option is set a
+                                  domain families file is written.
+   -doambiguities      toggle     [N] This option specifies whether to write a
+                                  domain ambiguities file. If this option is
+                                  set a domain ambiguities file is written.
+  [-dhfoutdir]         outdir     [./] This option specifies the location of
+                                  DHF files (domain hits files) (output). A
+                                  'domain hits file' contains database hits
+                                  (sequences) with domain classification
+                                  information, in the DHF format (FASTA or
+                                  EMBL-like). The hits are relatives to a SCOP
+                                  or CATH family and are found from a search
+                                  of a sequence database. Files containing
+                                  hits retrieved by PSIBLAST are generated by
+                                  using SEQSEARCH.
+*  -hitsfile           outfile    [fam.dhf] This option specifies the name of
+                                  domain families file (output). A 'domain
+                                  families file' contains sequence relatives
+                                  (hits) for each of a number of different
+                                  SCOP or CATH families found from searching a
+                                  sequence database, e.g. by using SEQSEARCH
+                                  (psiblast). The file contains the collated
+                                  search results for the indvidual families;
+                                  only those hits of unambiguous family
+                                  assignment are included. Hits of ambiguous
+                                  family assignment are assigned as relatives
+                                  to a SCOP or CATH superfamily or fold
+                                  instead and are collated into a 'domain
+                                  ambiguities file'. The domain families and
+                                  ambiguities files are generated by using
+                                  SEQSORT and use the same format as a DHF
+                                  file (domain hits file).
+*  -ambigfile          outfile    [oth.dhf] This option specifies the name of
+                                  domain ambiguities file (output). A 'domain
+                                  families file' contains sequence relatives
+                                  (hits) for each of a number of different
+                                  SCOP or CATH families found from searching a
+                                  sequence database, e.g. by using SEQSEARCH
+                                  (psiblast). The file contains the collated
+                                  search results for the indvidual families;
+                                  only those hits of unambiguous family
+                                  assignment are included. Hits of ambiguous
+                                  family assignment are assigned as relatives
+                                  to a SCOP or CATH superfamily or fold
+                                  instead and are collated into a 'domain
+                                  ambiguities file'. The domain families and
+                                  ambiguities files are generated by using
+                                  SEQSORT and use the same format as a DHF
+                                  file (domain hits file).
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-dhfindir" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-dhfoutdir" associated qualifiers
+   -extension2         string     Default file extension
+
+   "-hitsfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-ambigfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+

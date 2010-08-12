@@ -1,0 +1,45 @@
+RNA distances
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-structuresfile]    infile     Vienna RNA structures file
+  [-outfile]           outfile    [*.vrnadistance] Vienna RNAfold output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -distance           menu       [f] Distance types to calculate (Values: f
+                                  (Full (tree)); h (HIT (tree)); w (Weighted
+                                  coarse (tree)); c (Coarse (tree)); F (Full
+                                  (string)); H (HIT (string)); W (Weighted
+                                  coarse (string)); C (Coarse (string)); P
+                                  (Base pair distance))
+   -compare            menu       [p] Distance types to calculate (Values: p
+                                  (Pairwise); m (Distance matrix between all
+                                  structures); f (Compare all structures to
+                                  the first one); c (Compare continuously))
+   -schapiro           boolean    [N] Use cost matrix for comparing coarse
+                                  structures
+   -doalignment        boolean    [N] Alignment showing matching substructures
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

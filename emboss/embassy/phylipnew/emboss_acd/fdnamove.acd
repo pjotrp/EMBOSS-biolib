@@ -1,0 +1,112 @@
+application: fdnamove [
+  documentation: "Interactive DNA parsimony"
+  groups: "Phylogeny:Molecular sequence"
+  embassy: "phylipnew"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqsetall: sequence [
+    parameter: "Y"
+    type: "gapdnaphylo"
+    aligned: "Y"
+    relations: "EDAM: DNA sequence record"                                 
+  ]
+
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+  properties: weights [
+    additional: "Y"
+    characters: "01"
+    information: "Phylip weights file (optional)"
+    length: "$(sequence.length)"
+    size: ""
+    help: "Weights file - ignore sites with weight zero"
+    nullok: "Y"
+    relations: "EDAM: PHYLIP phylogenetic property values file"            
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(sequence.count)"
+    failrange: "N"
+    trueminimum: "Y"
+    default: "0"
+    information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  toggle: thresh [
+    additional: "Y"
+    default: "N"
+    information: "Use threshold parsimony"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: threshold [
+    additional: "$(thresh)"
+    minimum: "1"
+    information: "Threshold value"
+    default: "1"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  list: initialtree [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Initial tree"
+    values: "a:Arbitary; u:User; s:Specify"
+    information: "Initial tree"
+    default: "Arbitary"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  integer: screenwidth [
+    additional: "Y"
+    default: "80"
+    information: "Width of terminal screen in characters"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: screenlines [
+    additional: "Y"
+    default: "24"
+    information: "Number of lines on screen"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outtreefile [
+    additional: "Y"
+    extension: "treefile"
+    knowntype: "newick tree"
+    information: "Phylip tree output file (optional)"
+    nullok: "Y"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+endsection: output

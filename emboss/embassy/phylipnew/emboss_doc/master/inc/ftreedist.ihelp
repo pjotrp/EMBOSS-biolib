@@ -1,0 +1,46 @@
+Distances between trees
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-intreefile]        tree       Phylip tree file
+  [-outfile]           outfile    [*.ftreedist] Phylip treedist program output
+                                  file
+
+   Additional (Optional) qualifiers:
+   -dtype              menu       [b] Distance type (Values: s (Symmetric
+                                  difference); b (Branch score distance))
+   -pairing            menu       [a] Tree pairing method (Values: a
+                                  (Distances between adjacent pairs in tree
+                                  file); p (Distances between all possible
+                                  pairs in tree file))
+   -style              menu       [v] Distances output option (Values: f (Full
+                                  matrix); v (Verbose, one pair per line); s
+                                  (Sparse, one pair per line))
+   -noroot             boolean    [N] Trees to be treated as rooted
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]progress       boolean    [Y] Print indications of progress of run
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

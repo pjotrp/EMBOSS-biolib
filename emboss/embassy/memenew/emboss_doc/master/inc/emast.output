@@ -1,0 +1,172 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: ex1.out</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MAST&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
+  TD.invisible { color: '#D5F0FF'; }
+  TD.c0 { background: aqua; color: black; }
+  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
+  TD.c1 { background: blue; color: white; }
+  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
+  TD.c2 { background: red; color: white; }
+  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
+  TD.c3 { background: fuchsia; color: black; }
+  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
+  TD.c4 { background: yellow; color: black; }
+  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
+  TD.c5 { background: lime; color: black; }
+  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
+  TD.c6 { background: teal; color: white; }
+  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+  TD.c7 { background: #444444; color: white; }
+  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
+  TD.c8 { background: green; color: white; }
+  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
+  TD.c9 { background: silver; color: black; }
+  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
+  TD.c10 { background: purple; color: white; }
+  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
+  TD.c11 { background: olive; color: black; }
+  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
+  TD.c12 { background: navy; color: white; }
+  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
+  TD.c13 { background: maroon; color: white; }
+  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
+  TD.c14 { background: black; color: white; }
+  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
+  TD.c15 { background: white; color: black; }
+  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
+  B.red { color: red; }
+  TD.red { color: red; }
+  TH.red { color: red; }
+  B.blue { color: blue; }
+  TD.blue { color: blue; }
+  TH.blue { color: blue; }
+  B.orange { color: orange; }
+  TD.orange { color: orange; }
+  TH.orange { color: orange; }
+  B.green { color: green; }
+  TD.green { color: green; }
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+
+&lt;HR&gt;
+&lt;A NAME=a17&gt;&lt;/A&gt;ilv &lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDD88'&gt;&lt;A HREF='#s17'&gt;S&lt;/A&gt;
+  &lt;TD BGCOLOR='#DDFFDD'&gt;&lt;A HREF='#d17'&gt;D&lt;/A&gt;
+  &lt;TD BGCOLOR='#FFFFFF'&gt;&lt;A HREF='#bh'&gt;?&lt;/A&gt;&lt;/TABLE&gt;&lt;BR CLEAR=LEFT&gt;
+  &lt;BR&gt;
+  LENGTH = 105  COMBINED P-VALUE = 6.93e-02  E-VALUE =      1.2&lt;BR&gt;
+  DIAGRAM: 105&lt;PRE&gt;
+
+
+&lt;/PRE&gt;
+
+&lt;HR&gt;
+&lt;A NAME=a18&gt;&lt;/A&gt;trn9cat &lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDD88'&gt;&lt;A HREF='#s18'&gt;S&lt;/A&gt;
+  &lt;TD BGCOLOR='#DDFFDD'&gt;&lt;A HREF='#d18'&gt;D&lt;/A&gt;
+  &lt;TD BGCOLOR='#FFFFFF'&gt;&lt;A HREF='#bh'&gt;?&lt;/A&gt;&lt;/TABLE&gt;&lt;BR CLEAR=LEFT&gt;
+  &lt;BR&gt;
+  LENGTH = 105  COMBINED P-VALUE = 2.42e-01  E-VALUE =      4.4&lt;BR&gt;
+  DIAGRAM: 105&lt;PRE&gt;&lt;/PRE&gt;
+
+&lt;A NAME=debug&gt;&lt;/A&gt;&lt;HR&gt;&lt;CENTER&gt;&lt;H3&gt;Debugging Information&lt;/H3&gt;&lt;/CENTER&gt;&lt;HR&gt;
+&lt;PRE&gt;
+
+
+CPU: emboss4.ebi.ac.uk
+Time 0.000000 secs.
+
+mast ../../data/memenew/ex1.html -ev 10.000000 -mt 0.000100
+&lt;/PRE&gt;
+&lt;A NAME=bh&gt;&lt;/A&gt;
+&lt;A NAME=sbh&gt;&lt;/A&gt;
+&lt;A NAME=dbh&gt;&lt;/A&gt;
+&lt;A NAME=abh&gt;&lt;/A&gt;
+&lt;HR&gt;&lt;CENTER&gt;&lt;H3&gt;Button Help&lt;/H3&gt;&lt;/CENTER&gt;&lt;HR&gt;
+&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF='#bh'&gt;E&lt;/A&gt;&lt;/TABLE&gt;Links to Entrez database at &lt;A HREF='http://www.ncbi.nlm.nih.gov'&gt;NCBI&lt;/A&gt; &lt;BR CLEAR=LEFT&gt;
+&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDD88'&gt;&lt;A HREF='#sbh'&gt;S&lt;/A&gt;&lt;/TABLE&gt;Links to sequence scores (&lt;A HREF='#sec_i'&gt;section I&lt;/A&gt;) &lt;BR CLEAR=LEFT&gt;
+&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDFFDD'&gt;&lt;A HREF='#dbh'&gt;D&lt;/A&gt;&lt;/TABLE&gt;Links to motif diagrams (&lt;A HREF='#sec_ii'&gt;section II&lt;/A&gt;) &lt;BR CLEAR=LEFT&gt;
+&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#FFDDDD'&gt;&lt;A HREF='#abh'&gt;A&lt;/A&gt;&lt;/TABLE&gt;Links to sequence/motif annotated alignments (&lt;A HREF='#sec_iii'&gt;section III&lt;/A&gt;) &lt;BR CLEAR=LEFT&gt;
+&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#FFFFFF'&gt;&lt;A HREF='#bh'&gt;?&lt;/A&gt;&lt;/TABLE&gt;This information &lt;BR CLEAR=LEFT&gt;
+
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF='#top_buttons'&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+</pre>
+</td></tr></table><p>
+<p><h3>File: crp0.s</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;ce1cg
+TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGTTTTTTTGATCGTTTTCACAA
+AAATGGAAGTCCACAGTCTTGACAG
+&gt;ara
+GACAAAAACGCGTAACAAAAGTGTCTATAATCACGGCAGAAAAGTCCACATTGATTATTTGCACGGCGTCACACTTTGCT
+ATGCCATAGCATTTTTATCCATAAG
+&gt;bglr1
+ACAAATCCCAATAACTTAATTATTGGGATTTGTTATATATAACTTTATAAATTCCTAAAATTACACAAAGTTAATAACTG
+TGAGCATGGTCATATTTTTATCAAT
+&gt;crp
+CACAAAGCGAAAGCTATGCTAAAACAGTCAGGATGCTACAGTAATACATTGATGTACTGCATGTATGCAAAGGACGTCAC
+ATTACCGTGCAGTACAGTTGATAGC
+&gt;cya
+ACGGTGCTACACTTGTATGTAGCGCATCTTTCTTTACGGTCAATCAGCAAGGTGTTAAATTGATCACGTTTTAGACCATT
+TTTTCGTCGTGAAACTAAAAAAACC
+&gt;deop2
+AGTGAATTATTTGAACCAGATCGCATTACAGTGATGCAAACTTGTAAGTAGATTTCCTTAATTGTGATGTGTATCGAAGT
+GTGTTGCGGAGTAGATGTTAGAATA
+&gt;gale
+GCGCATAAAAAACGGCTAAATTCTTGTGTAAACGATTCCACTAATTTATTCCATGTCACACTTTTCGCATCTTTGTTATG
+CTATGGTTATTTCATACCATAAGCC
+&gt;ilv
+GCTCCGGCGGGGTTTTTTGTTATCTGCAATTCAGTACAAAACGTGATCAACCCCTCAATTTTCCCTTTGCTGAAAAATTT
+TCCATTGTCTCCCCTGTAAAGCTGT
+&gt;lac
+AACGCAATTAATGTGAGTTAGCTCACTCATTAGGCACCCCAGGCTTTACACTTTATGCTTCCGGCTCGTATGTTGTGTGG
+AATTGTGAGCGGATAACAATTTCAC
+&gt;male
+ACATTACCGCCAATTCTGTAACAGAGATCACACAAAGCGACGGTGGGGCGTAGGGGCAAGGAGGATGGAAAGAGGTTGCC
+GTATAAAGAAACTAGAGTCCGTTTA
+&gt;malk
+GGAGGAGGCGGGAGGATGAGAACACGGCTTCTGTGAACTAAACCGAGGTCATGTAAGGAATTTCGTGATGTTGCTTGCAA
+AAATCGTGGCGATTTTATGTGCGCA
+&gt;malt
+GATCAGCGTCGTTTTAGGTGAGTTGTTAATAAAGATTTGGAATTGTGACACAGTGCAAATTCAGACACATAAAAAAACGT
+CATCGCTTGCATTAGAAAGGTTTCT
+&gt;ompa
+GCTGACAAAAAAGATTAAACATACCTTATACAAGACTTTTTTTTCATATGCCTGACGGAGTTCACACTTGTAAGTTTTCA
+ACTACGTTGTAGACTTTACATCGCC
+&gt;tnaa
+TTTTTTAAACATTAAAATTCTTACGTAATTTATAATCTTTAAAAAAAGCATTTAATATTGCTCCCCGAACGATTGTGATT
+CGATTCACATTTAAACAATTTCAGA
+&gt;uxu1
+CCCATGAGAGTGAAATTGTTGTGATGTGGTTAACCCAATTAGAATTCGGGATTGACATGTCTTACCAAAAGGTAGAACTT
+ATACGCCATCTCATCCGATGCAAGC
+&gt;pbr322
+CTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCACCATATGCGGTGTGAAATACCGCACAGATGCGTAA
+GGAGAAAATACCGCATCAGGCGCTC
+&gt;trn9cat
+CTGTGACGGAAGATCACTTCGCAGAATAAATAAATCCTGGTGTCCCTGTTGATACCGGGAAGCCCTGGGCCAACTTTTGG
+CGAAAATGAGACGTTGATCGGCACG
+&gt;tdc
+GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTGGAAAGTATTGAAAGTTAATT
+TGTGAGTGGTCGCACATATCCTGTT
+</pre>
+</td></tr></table><p>

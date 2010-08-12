@@ -1,0 +1,2419 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: ehmmbuild
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+ehmmbuild
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Build a profile HMM from an alignment
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+EMBASSY HMMER is a suite of application wrappers to the original hmmer v2.3.2 applications written by Sean Eddy. hmmer v2.3.2 must be installed on the same system as EMBOSS and the location of the hmmer executables must be defined in your path for EMBASSY HMMER to work.
+
+<p><b>Usage:</b>
+<br>ehmmbuild [options] alignfile hmmfile 
+<p>Important note: the alignfile (input) and hmmfile (output) parameters are specified in the reverse order in the original HMMER. 
+
+<p>hmmbuild reads a multiple sequence alignment file <alignfile>, builds a new profile HMM, and saves the HMM to file <hmmfile>. By default, the model is confgured to find one or more nonoverlapping alignments to the complete model: multiple global alignments with respect to the model, and local with respect to the sequence. This is analogous to the behavior of the hmmls program of HMMER 1. To confgure the model for multiple local alignments with respect to the model and local with respect to the sequence, a la the old program hmmfs, use the -f (fragment) option. More rarely, you may want to confgure the model for a single global alignment (global with respect to both model and sequence), using the -g option; or to confgure the model for a single local/local alignment (a la standard Smith/Waterman, or the old hmmsw program), use the -s option.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+
+Please read the Userguide.pdf distributed with the original HMMER and included in the EMBASSY HMMER distribution under the DOCS directory. 
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with ehmmbuild</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmbuild globins50.msf globin.hmm -nhmm globins50 -strategy D </b>
+Build a profile HMM from an alignment.
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Alignment file:                    ../../data/hmmnew/globins50.msf
+File format:                       MSF
+Search algorithm configuration:    Multiple domain (hmmls)
+Model construction strategy:       MAP (gapmax hint: 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Sequence weighting method:         G/S/C tree weights
+New HMM file:                      globin.hmm [appending]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Alignment:           #1
+Number of sequences: 50
+Number of columns:   308
+
+Determining effective sequence number    ... done. [2]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [globins50]
+
+Constructed a profile HMM (length 143)
+Average score:      189.04 bits
+Minimum score:      -17.62 bits
+Maximum score:      234.09 bits
+Std. deviation:      53.18 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done.
+//
+
+
+/shared/software/bin/hmmbuild -n globins50  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  globin.hmm ../../data/hmmnew/globins50.msf
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmbuild rrm.sto myhmms -nhmm rrm -strategy D </b>
+Build a profile HMM from an alignment.
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Alignment file:                    ../../data/hmmnew/rrm.sto
+File format:                       Stockholm
+Search algorithm configuration:    Multiple domain (hmmls)
+Model construction strategy:       MAP (gapmax hint: 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Sequence weighting method:         G/S/C tree weights
+New HMM file:                      myhmms [appending]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Alignment:           #1
+Number of sequences: 90
+Number of columns:   104
+
+Determining effective sequence number    ... done. [88]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [rrm]
+
+Constructed a profile HMM (length 77)
+Average score:       75.37 bits
+Minimum score:       26.86 bits
+Maximum score:      119.83 bits
+Std. deviation:      21.78 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done.
+//
+
+
+/shared/software/bin/hmmbuild -n rrm  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/rrm.sto
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.2">Go to the input files for this example</a><br><a href="#output.2">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 3</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmbuild fn3.sto myhmms -nhmm fn3 -strategy D </b>
+Build a profile HMM from an alignment.
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Alignment file:                    ../../data/hmmnew/fn3.sto
+File format:                       Stockholm
+Search algorithm configuration:    Multiple domain (hmmls)
+Model construction strategy:       MAP (gapmax hint: 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Sequence weighting method:         G/S/C tree weights
+New HMM file:                      myhmms [appending]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Alignment:           fn3
+Number of sequences: 108
+Number of columns:   119
+
+Determining effective sequence number    ... done. [108]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [fn3]
+
+Constructed a profile HMM (length 84)
+Average score:       67.54 bits
+Minimum score:       27.53 bits
+Maximum score:      105.77 bits
+Std. deviation:      17.07 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done.
+//
+
+
+/shared/software/bin/hmmbuild -n fn3  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/fn3.sto
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.3">Go to the input files for this example</a><br><a href="#output.3">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 4</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmbuild pkinase.sto myhmms -nhmm pkinase -strategy D </b>
+Build a profile HMM from an alignment.
+
+hmmbuild - build a hidden Markov model from an alignment
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Alignment file:                    ../../data/hmmnew/pkinase.sto
+File format:                       Stockholm
+Search algorithm configuration:    Multiple domain (hmmls)
+Model construction strategy:       MAP (gapmax hint: 0.50)
+Null model used:                   (default)
+Prior used:                        (default)
+Sequence weighting method:         G/S/C tree weights
+New HMM file:                      myhmms [appending]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Alignment:           pkinase
+Number of sequences: 67
+Number of columns:   471
+
+Determining effective sequence number    ... done. [67]
+Weighting sequences heuristically        ... done.
+Constructing model architecture          ... done.
+Converting counts to probabilities       ... done.
+Setting model name, etc.                 ... done. [pkinase]
+
+Constructed a profile HMM (length 294)
+Average score:      312.79 bits
+Minimum score:      176.48 bits
+Maximum score:      390.44 bits
+Std. deviation:      44.60 bits
+
+Finalizing model configuration           ... done.
+Saving model to file                     ... done.
+//
+
+
+/shared/software/bin/hmmbuild -n pkinase  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/pkinase.sto
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.4">Go to the input files for this example</a><br><a href="#output.4">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+Where possible, the same command-line qualifier names and parameter order is used as in the original hmmer.  There are however several unavoidable differences and these are clearly documented in the "Notes" section below.
+<p>More or less all options documented as "expert" in the original hmmer user guide are given in ACD as "advanced" options (-options must be specified on the command-line in order to be prompted for a value for them).  
+<p>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Build a profile HMM from an alignment.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-alignfile]         seqset     (Aligned) protein sequence set filename and
+                                  optional format, or reference (input USA)
+   -nhmm               string     Name for this HMM. The name can be any
+                                  string of non-whitespace characters (e.g.
+                                  one 'word'). There is no length limit (at
+                                  least not one imposed by HMMER; your shell
+                                  will complain about command line lengths
+                                  frst). (Any word)
+   -strategy           menu       [D] All alignments are local with respect to
+                                  the sequence and are configured to be local
+                                  (fragmentary) or global with respect to the
+                                  HMM. The model is also configured to find a
+                                  single or multiple domains (matches) to a
+                                  sequence. The options for configuring the
+                                  model are as follows: (D): The default
+                                  setting. Multiple domains per sequence,
+                                  global alignments with respect to the HMM.
+                                  (F): Multiple domains per sequence, local
+                                  alignments with respect to the HMM.
+                                  Analogous to the old hmmfs program of HMMER
+                                  1. (G) Single domain per sequence, global
+                                  alignment with respect to the HMM. Analogous
+                                  to the old hmms program of HMMER 1. (S)
+                                  Single domain per sequence, local alignments
+                                  with respect to the HMM. Analogous to the
+                                  old hmmsw program of HMMER 1. (Values: D
+                                  (global-multidomain); F (local-multidomain);
+                                  G (global-singledomain); S
+                                  (local-singledomain))
+  [-hmmfile]           outfile    [*.ehmmbuild] HMMER hidden markov model
+                                  output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -prior              infile     Read a Dirichlet prior from file, replacing
+                                  the default mixture Dirichlet. The format of
+                                  prior files is documented in the User's
+                                  Guide, and an example is given in the Demos
+                                  directory of the HMMER distribution.
+   -null               infile     Read a null model from file. The default for
+                                  protein is to use average amino acid
+                                  frequencies from Swissprot 34 and p1 =
+                                  350/351; for nucleic acid, the default is to
+                                  use 0.25 for each base and p1 = 1000/1001.
+                                  For documentation of the format of the null
+                                  model file and further explanation of how
+                                  the null model is used, see the User's
+                                  Guide.
+   -pam                infile     Apply a heuristic PAM- (substitution
+                                  matrix-) based prior on match emission
+                                  probabilities instead of the default mixture
+                                  Dirichlet. The substitution matrix is read
+                                  from file. See -pamwgt. The default
+                                  Dirichlet state transition prior and insert
+                                  emission prior are unaffected. Therefore in
+                                  principle you could combine -prior with -pam
+                                  but this isn't recommended, as it hasn't
+                                  been tested. ( -pam itself hasn't been
+                                  tested much!)
+   -pamwgt             float      [20.0] Controls the weight <x> on a
+                                  PAM-based prior. Only has effect if -pam
+                                  option is also in use. <x> is a positive
+                                  real number, 20.0 by default. <x> is the
+                                  number of 'pseudocounts' contriubuted by the
+                                  heuristic prior. Very high values of <x>
+                                  can force a scoring system that is entirely
+                                  driven by the substitution matrix, making
+                                  HMMER somewhat approximate Gribskov
+                                  profiles. (Any numeric value)
+   -pbswitch           integer    [1000] For alignments with a very large
+                                  number of sequences, the GSC, BLOSUM, and
+                                  Voronoi weighting schemes are slow; they're
+                                  O(N^2) for N sequences. Henikoff
+                                  position-based weights (PB weights) are more
+                                  effcient. At or above a certain threshold
+                                  sequence number <n> hmmbuild will switch
+                                  from GSC, BLOSUM, or Voronoi weights to PB
+                                  weights. To disable this switching behavior
+                                  (at the cost of compute time, set <n> to be
+                                  something larger than the number of
+                                  sequences in your alignment. <n> is a
+                                  positive integer; the default is 1000. (Any
+                                  integer value)
+   -archpri            float      [0.85] The value of the 'architecture prior'
+                                  used by MAP architecture construction. This
+                                  value is a probability between 0 and 1.
+                                  This parameter governs a geometric prior
+                                  distribution over model lengths. As
+                                  'archpri' increases, longer models are
+                                  favored a priori. As 'archpri' decreases, it
+                                  takes more residue conservation in a column
+                                  to make a column a 'consensus' match column
+                                  in the model architecture. The 0.85 default
+                                  has been chosen empirically as a reasonable
+                                  setting. (Any numeric value)
+   -binary             boolean    [N] Write the HMM to file in HMMER binary
+                                  format instead of readable ASCII text.
+   -fast               boolean    [N] Quickly and heuristically determine the
+                                  architecture of the model by assigning all
+                                  columns with more than a certain fraction of
+                                  gap characters to insert states. By default
+                                  this fraction is 0.5, and it can be changed
+                                  using the --gapmax option. The default
+                                  construction algorithm is a maximum a
+                                  posteriori (MAP) algorithm, which is slower.
+   -gapmax             float      [0.5] Controls the -fast model construction
+                                  algorithm, but if -fast is not being used,
+                                  has no effect. If a column has more than a
+                                  fraction <x> of gap symbols in it, it gets
+                                  assigned to an insert column. <x> is a
+                                  frequency from 0 to 1, and by default is set
+                                  to 0.5. Higher values of <x> mean more
+                                  columns get assigned to consensus, and
+                                  models get longer; smaller values of <x>
+                                  mean fewer columns get assigned to
+                                  consensus, and models get smaller. (Any
+                                  numeric value)
+   -hand               boolean    [N] Specify the architecture of the model by
+                                  hand: the alignment file must be in SELEX
+                                  or Stockholm format, and the reference
+                                  annotation line (RF in SELEX, GC RF in
+                                  Stockholm) is used to specify the
+                                  architecture. Any column marked with a
+                                  non-gap symbol (such as an 'x', for
+                                  instance) is assigned as a consensus (match)
+                                  column in the model.
+   -sidlevel           float      [0.62] Controls both the determination of
+                                  effective sequence number and the behavior
+                                  of the -wblosum weighting option. The
+                                  sequence alignment is clustered by percent
+                                  identity, and the number of clusters at a
+                                  cutoff threshold of <x> is used to determine
+                                  the effective sequence number. Higher
+                                  values of <x> give more clusters and higher
+                                  effective sequence numbers; lower values of
+                                  <x> give fewer clusters and lower effective
+                                  sequence numbers. <x> is a fraction from 0
+                                  to 1, and by default is set to 0.62
+                                  (corresponding to the clustering level used
+                                  in constructing the BLOSUM62 substitution
+                                  matrix). (Any numeric value)
+   -noeff              boolean    [N] Turn off the effective sequence number
+                                  calculation, and use the true number of
+                                  sequences instead. This will usually reduce
+                                  the sensitivity of the final model (so don't
+                                  do it without good reason!)
+   -swentry            float      [0.5] Controls the total probability that is
+                                  distributed to local entries into the
+                                  model, versus starting at the beginning of
+                                  the model as in a global alignment. <x> is a
+                                  probability from 0 to 1, and by default is
+                                  set to 0.5. Higher values of <x> mean that
+                                  hits that are fragments on their left (N or
+                                  5'-terminal) side will be penalized less,
+                                  but complete global alignments will be
+                                  penalized more. Lower values of <x> mean
+                                  that fragments on the left will be penalized
+                                  more, and global alignments on this side
+                                  will be favored. This option only affects
+                                  the confgurations that allow local
+                                  alignments, e.g. -s and -f; unless one of
+                                  these options is also activated, this option
+                                  has no effect. You have independent control
+                                  over local/global alignment behavior for
+                                  the N/C (5'/3') termini of your target
+                                  sequences using --swentry and --swexit. (Any
+                                  numeric value)
+   -swexit             float      [0.5] Controls the total probability that is
+                                  distributed to local exits from the model,
+                                  versus ending an alignment at the end of the
+                                  model as in a global alignment. <x> is a
+                                  probability from 0 to 1, and by default is
+                                  set to 0.5. Higher values of <x> mean that
+                                  hits that are fragments on their right (C or
+                                  3'-terminal) side will be penalized less,
+                                  but complete global alignments will be
+                                  penalized more. Lower values of <x> mean
+                                  that fragments on the right will be
+                                  penalized more, and global alignments on
+                                  this side will be favored. This option only
+                                  affects the confgurations that allow local
+                                  alignments, e.g. -s and -f; unless one of
+                                  these options is also activated, this option
+                                  has no effect. You have independent control
+                                  over local/global alignment behavior for
+                                  the N/C (5'/3') termini of your target
+                                  sequences using -swentry and -swexit. (Any
+                                  numeric value)
+   -verbosity          boolean    [N] Print more possibly useful stuff, such
+                                  as the individual scores for each sequence
+                                  in the alignment.
+   -weighting          menu       [G] Values (B)(-wblosum in HMMER) Use the
+                                  BLOSUM filtering algorithm to weight the
+                                  sequences. Cluster the sequences at a given
+                                  percentage identity (see -idlevel); assign
+                                  each cluster a total weight of 1.0,
+                                  distributed equally amongst the members of
+                                  that cluster. (G)(-wgsc in HMMER) Use the
+                                  Gerstein/Sonnhammer/Chothia ad hoc sequence
+                                  weighting algorithm. This is the default.
+                                  (K)(-wme in HMMER) Use the Krogh/Mitchison
+                                  maximum entropy algorithm to 'weight' the
+                                  sequences. This supercedes the
+                                  Eddy/Mitchison/Durbin maximum discrimination
+                                  algorithm, which gives almost identical
+                                  weights but is less robust. ME weighting
+                                  seems to give a marginal increase in
+                                  sensitivity over the default GSC weights,
+                                  but takes a fair amount of time. (W) (-wpb
+                                  in HMMER) Use the Henikoff position-based
+                                  weighting scheme. (V) (-wvoronoi in HMMER)
+                                  Use the Sibbald/Argos Voronoi sequence
+                                  weighting algorithm in place of the default
+                                  GSC weighting. (N) (-wnone in HMMER) Turn
+                                  off all sequence weighting. (Values: B
+                                  (Blosum); G (Gerstein/Sonnhammer/Chothia); K
+                                  (Krogh/Mitchison); W (Henikoff); V
+                                  (Sibbald/Argos Voronoi); N (None))
+   -o                  outfile    [*.ehmmbuild] Re-save the starting alignment
+                                  to file, in Stockholm format. The columns
+                                  which were assigned to match states will be
+                                  marked with x's in an RF annotation line. If
+                                  either the -hand or -fast construction
+                                  options were chosen, the alignment may have
+                                  been slightly altered to be compatible with
+                                  Plan 7 transitions, so saving the final
+                                  alignment and comparing to the starting
+                                  alignment can let you view these
+                                  alterations. See the User's Guide for more
+                                  information on this arcane side effect.
+   -cfile              outfile    [*.ehmmbuild] Save the observed emission and
+                                  transition counts to file after the
+                                  architecture has been determined (e.g. after
+                                  residues/gaps have been assigned to match,
+                                  delete, and insert states). This option is
+                                  used in HMMER development for generating
+                                  data files useful for training new Dirichlet
+                                  priors. The format of count files is
+                                  documented in the User's Guide.
+
+   Associated qualifiers:
+
+   "-alignfile" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-hmmfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-o" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-cfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-alignfile]<br>(Parameter 1)</td>
+<td>seqset</td>
+<td>(Aligned) protein sequence set filename and optional format, or reference (input USA)</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-nhmm</td>
+<td>string</td>
+<td>Name for this HMM. The name can be any string of non-whitespace characters (e.g. one 'word'). There is no length limit (at least not one imposed by HMMER; your shell will complain about command line lengths frst).</td>
+<td>Any word</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-strategy</td>
+<td>list</td>
+<td>All alignments are local with respect to the sequence and are configured to be local (fragmentary) or global with respect to the HMM. The model is also configured to find a single or multiple domains (matches) to a sequence. The options for configuring the model are as follows: (D): The default setting. Multiple domains per sequence, global alignments with respect to the HMM. (F): Multiple domains per sequence, local alignments with respect to the HMM. Analogous to the old hmmfs program of HMMER 1. (G) Single domain per sequence, global alignment with respect to the HMM. Analogous to the old hmms program of HMMER 1. (S) Single domain per sequence, local alignments with respect to the HMM. Analogous to the old hmmsw program of HMMER 1.</td>
+<td><table><tr><td>D</td> <td><i>(global-multidomain)</i></td></tr><tr><td>F</td> <td><i>(local-multidomain)</i></td></tr><tr><td>G</td> <td><i>(global-singledomain)</i></td></tr><tr><td>S</td> <td><i>(local-singledomain)</i></td></tr></table></td>
+<td>D</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-hmmfile]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>HMMER hidden markov model output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ehmmbuild</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-prior</td>
+<td>infile</td>
+<td>Read a Dirichlet prior from file, replacing the default mixture Dirichlet. The format of prior files is documented in the User's Guide, and an example is given in the Demos directory of the HMMER distribution.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-null</td>
+<td>infile</td>
+<td>Read a null model from file. The default for protein is to use average amino acid frequencies from Swissprot 34 and p1 = 350/351; for nucleic acid, the default is to use 0.25 for each base and p1 = 1000/1001. For documentation of the format of the null model file and further explanation of how the null model is used, see the User's Guide.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pam</td>
+<td>infile</td>
+<td>Apply a heuristic PAM- (substitution matrix-) based prior on match emission probabilities instead of the default mixture Dirichlet. The substitution matrix is read from file. See -pamwgt. The default Dirichlet state transition prior and insert emission prior are unaffected. Therefore in principle you could combine -prior with -pam but this isn't recommended, as it hasn't been tested. ( -pam itself hasn't been tested much!)</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pamwgt</td>
+<td>float</td>
+<td>Controls the weight &lt;x&gt; on a PAM-based prior. Only has effect if -pam option is also in use. &lt;x&gt; is a positive real number, 20.0 by default. &lt;x&gt; is the number of 'pseudocounts' contriubuted by the heuristic prior. Very high values of &lt;x&gt; can force a scoring system that is entirely driven by the substitution matrix, making HMMER somewhat approximate Gribskov profiles.</td>
+<td>Any numeric value</td>
+<td>20.0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pbswitch</td>
+<td>integer</td>
+<td>For alignments with a very large number of sequences, the GSC, BLOSUM, and Voronoi weighting schemes are slow; they're O(N^2) for N sequences. Henikoff position-based weights (PB weights) are more effcient. At or above a certain threshold sequence number &lt;n&gt; hmmbuild will switch from GSC, BLOSUM, or Voronoi weights to PB weights. To disable this switching behavior (at the cost of compute time, set &lt;n&gt; to be something larger than the number of sequences in your alignment. &lt;n&gt; is a positive integer; the default is 1000.</td>
+<td>Any integer value</td>
+<td>1000</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-archpri</td>
+<td>float</td>
+<td>The value of the 'architecture prior' used by MAP architecture construction. This value is a probability between 0 and 1. This parameter governs a geometric prior distribution over model lengths. As 'archpri' increases, longer models are favored a priori. As 'archpri' decreases, it takes more residue conservation in a column to make a column a 'consensus' match column in the model architecture. The 0.85 default has been chosen empirically as a reasonable setting.</td>
+<td>Any numeric value</td>
+<td>0.85</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-binary</td>
+<td>boolean</td>
+<td>Write the HMM to file in HMMER binary format instead of readable ASCII text.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-fast</td>
+<td>boolean</td>
+<td>Quickly and heuristically determine the architecture of the model by assigning all columns with more than a certain fraction of gap characters to insert states. By default this fraction is 0.5, and it can be changed using the --gapmax option. The default construction algorithm is a maximum a posteriori (MAP) algorithm, which is slower.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-gapmax</td>
+<td>float</td>
+<td>Controls the -fast model construction algorithm, but if -fast is not being used, has no effect. If a column has more than a fraction &lt;x&gt; of gap symbols in it, it gets assigned to an insert column. &lt;x&gt; is a frequency from 0 to 1, and by default is set to 0.5. Higher values of &lt;x&gt; mean more columns get assigned to consensus, and models get longer; smaller values of &lt;x&gt; mean fewer columns get assigned to consensus, and models get smaller.</td>
+<td>Any numeric value</td>
+<td>0.5</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-hand</td>
+<td>boolean</td>
+<td>Specify the architecture of the model by hand: the alignment file must be in SELEX or Stockholm format, and the reference annotation line (RF in SELEX, GC RF in Stockholm) is used to specify the architecture. Any column marked with a non-gap symbol (such as an 'x', for instance) is assigned as a consensus (match) column in the model.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-sidlevel</td>
+<td>float</td>
+<td>Controls both the determination of effective sequence number and the behavior of the -wblosum weighting option. The sequence alignment is clustered by percent identity, and the number of clusters at a cutoff threshold of &lt;x&gt; is used to determine the effective sequence number. Higher values of &lt;x&gt; give more clusters and higher effective sequence numbers; lower values of &lt;x&gt; give fewer clusters and lower effective sequence numbers. &lt;x&gt; is a fraction from 0 to 1, and by default is set to 0.62 (corresponding to the clustering level used in constructing the BLOSUM62 substitution matrix).</td>
+<td>Any numeric value</td>
+<td>0.62</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-noeff</td>
+<td>boolean</td>
+<td>Turn off the effective sequence number calculation, and use the true number of sequences instead. This will usually reduce the sensitivity of the final model (so don't do it without good reason!)</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-swentry</td>
+<td>float</td>
+<td>Controls the total probability that is distributed to local entries into the model, versus starting at the beginning of the model as in a global alignment. &lt;x&gt; is a probability from 0 to 1, and by default is set to 0.5. Higher values of &lt;x&gt; mean that hits that are fragments on their left (N or 5'-terminal) side will be penalized less, but complete global alignments will be penalized more. Lower values of &lt;x&gt; mean that fragments on the left will be penalized more, and global alignments on this side will be favored. This option only affects the confgurations that allow local alignments, e.g. -s and -f; unless one of these options is also activated, this option has no effect. You have independent control over local/global alignment behavior for the N/C (5'/3') termini of your target sequences using --swentry and --swexit.</td>
+<td>Any numeric value</td>
+<td>0.5</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-swexit</td>
+<td>float</td>
+<td>Controls the total probability that is distributed to local exits from the model, versus ending an alignment at the end of the model as in a global alignment. &lt;x&gt; is a probability from 0 to 1, and by default is set to 0.5. Higher values of &lt;x&gt; mean that hits that are fragments on their right (C or 3'-terminal) side will be penalized less, but complete global alignments will be penalized more. Lower values of &lt;x&gt; mean that fragments on the right will be penalized more, and global alignments on this side will be favored. This option only affects the confgurations that allow local alignments, e.g. -s and -f; unless one of these options is also activated, this option has no effect. You have independent control over local/global alignment behavior for the N/C (5'/3') termini of your target sequences using -swentry and -swexit.</td>
+<td>Any numeric value</td>
+<td>0.5</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-verbosity</td>
+<td>boolean</td>
+<td>Print more possibly useful stuff, such as the individual scores for each sequence in the alignment.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-weighting</td>
+<td>list</td>
+<td>Values (B)(-wblosum in HMMER) Use the BLOSUM filtering algorithm to weight the sequences. Cluster the sequences at a given percentage identity (see -idlevel); assign each cluster a total weight of 1.0, distributed equally amongst the members of that cluster. (G)(-wgsc in HMMER) Use the Gerstein/Sonnhammer/Chothia ad hoc sequence weighting algorithm. This is the default. (K)(-wme in HMMER) Use the Krogh/Mitchison maximum entropy algorithm to 'weight' the sequences. This supercedes the Eddy/Mitchison/Durbin maximum discrimination algorithm, which gives almost identical weights but is less robust. ME weighting seems to give a marginal increase in sensitivity over the default GSC weights, but takes a fair amount of time. (W) (-wpb in HMMER) Use the Henikoff position-based weighting scheme. (V) (-wvoronoi in HMMER) Use the Sibbald/Argos Voronoi sequence weighting algorithm in place of the default GSC weighting. (N) (-wnone in HMMER) Turn off all sequence weighting.</td>
+<td><table><tr><td>B</td> <td><i>(Blosum)</i></td></tr><tr><td>G</td> <td><i>(Gerstein/Sonnhammer/Chothia)</i></td></tr><tr><td>K</td> <td><i>(Krogh/Mitchison)</i></td></tr><tr><td>W</td> <td><i>(Henikoff)</i></td></tr><tr><td>V</td> <td><i>(Sibbald/Argos Voronoi)</i></td></tr><tr><td>N</td> <td><i>(None)</i></td></tr></table></td>
+<td>G</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-o</td>
+<td>outfile</td>
+<td>Re-save the starting alignment to file, in Stockholm format. The columns which were assigned to match states will be marked with x's in an RF annotation line. If either the -hand or -fast construction options were chosen, the alignment may have been slightly altered to be compatible with Plan 7 transitions, so saving the final alignment and comparing to the starting alignment can let you view these alterations. See the User's Guide for more information on this arcane side effect.</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ehmmbuild</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-cfile</td>
+<td>outfile</td>
+<td>Save the observed emission and transition counts to file after the architecture has been determined (e.g. after residues/gaps have been assigned to match, delete, and insert states). This option is used in HMMER development for generating data files useful for training new Dirichlet priors. The format of count files is documented in the User's Guide.</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ehmmbuild</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-alignfile" associated seqset qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sbegin1<br>-sbegin_alignfile</td>
+<td>integer</td>
+<td>Start of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -send1<br>-send_alignfile</td>
+<td>integer</td>
+<td>End of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sreverse1<br>-sreverse_alignfile</td>
+<td>boolean</td>
+<td>Reverse (if DNA)</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sask1<br>-sask_alignfile</td>
+<td>boolean</td>
+<td>Ask for begin/end/reverse</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -snucleotide1<br>-snucleotide_alignfile</td>
+<td>boolean</td>
+<td>Sequence is nucleotide</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sprotein1<br>-sprotein_alignfile</td>
+<td>boolean</td>
+<td>Sequence is protein</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -slower1<br>-slower_alignfile</td>
+<td>boolean</td>
+<td>Make lower case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -supper1<br>-supper_alignfile</td>
+<td>boolean</td>
+<td>Make upper case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sformat1<br>-sformat_alignfile</td>
+<td>string</td>
+<td>Input sequence format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sdbname1<br>-sdbname_alignfile</td>
+<td>string</td>
+<td>Database name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sid1<br>-sid_alignfile</td>
+<td>string</td>
+<td>Entryname</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ufo1<br>-ufo_alignfile</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fformat1<br>-fformat_alignfile</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fopenfile1<br>-fopenfile_alignfile</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-hmmfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_hmmfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-o" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-cfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+<H3>Alignment and sequence formats </H3>
+Input and output of alignments and sequences is limited to the formats that the original hmmer supports. These include stockholm, SELEX, MSF, Clustal, Phylip and A2M /aligned FASTA (alignments) and FASTA, GENBANK, EMBL, GCG, PIR (sequences).  It would be fairly straightforward to adapt the code to support all EMBOSS-supported formats. 
+
+<H3>Compressed input files </H3>
+Automatic processing of gzipped files is not supported. 
+<p>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>ehmmbuild</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: globins50.msf</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+!!AA_MULTIPLE_ALIGNMENT 1.0
+PileUp of: *.pep
+
+ Symbol comparison table: GenRunData:blosum62.cmp  CompCheck: 6430
+
+                   GapWeight: 12
+             GapLengthWeight: 4 
+
+ pileup.msf  MSF: 308  Type: P  August 16, 1999 09:09  Check: 9858 ..
+
+ Name: lgb1_pea         Len:   308  Check: 2200  Weight:  1.00
+ Name: lgb1_vicfa       Len:   308  Check:  214  Weight:  1.00
+ Name: myg_escgi        Len:   308  Check: 3961  Weight:  1.00
+ Name: myg_horse        Len:   308  Check: 5619  Weight:  1.00
+ Name: myg_progu        Len:   308  Check: 6401  Weight:  1.00
+ Name: myg_saisc        Len:   308  Check: 6606  Weight:  1.00
+ Name: myg_lycpi        Len:   308  Check: 6090  Weight:  1.00
+ Name: myg_mouse        Len:   308  Check: 6613  Weight:  1.00
+ Name: myg_musan        Len:   308  Check: 3942  Weight:  1.00
+ Name: hba_ailme        Len:   308  Check: 4558  Weight:  1.00
+ Name: hba_prolo        Len:   308  Check: 5054  Weight:  1.00
+ Name: hba_pagla        Len:   308  Check: 5383  Weight:  1.00
+ Name: hba_macfa        Len:   308  Check: 5135  Weight:  1.00
+ Name: hba_macsi        Len:   308  Check: 5198  Weight:  1.00
+ Name: hba_ponpy        Len:   308  Check: 5050  Weight:  1.00
+ Name: hba2_galcr       Len:   308  Check: 5609  Weight:  1.00
+ Name: hba_mesau        Len:   308  Check: 4702  Weight:  1.00
+ Name: hba2_bosmu       Len:   308  Check: 4241  Weight:  1.00
+ Name: hba_erieu        Len:   308  Check: 4680  Weight:  1.00
+ Name: hba_frapo        Len:   308  Check: 3549  Weight:  1.00
+ Name: hba_phaco        Len:   308  Check: 4440  Weight:  1.00
+ Name: hba_trioc        Len:   308  Check: 5465  Weight:  1.00
+ Name: hba_ansse        Len:   308  Check: 3300  Weight:  1.00
+ Name: hba_colli        Len:   308  Check: 3816  Weight:  1.00
+ Name: hbad_chlme       Len:   308  Check: 4571  Weight:  1.00
+ Name: hbad_pasmo       Len:   308  Check: 6777  Weight:  1.00
+ Name: hbaz_horse       Len:   308  Check: 7187  Weight:  1.00
+ Name: hba4_salir       Len:   308  Check: 7329  Weight:  1.00
+ Name: hbb_ornan        Len:   308  Check: 2667  Weight:  1.00
+ Name: hbb_tacac        Len:   308  Check: 4356  Weight:  1.00
+ Name: hbe_ponpy        Len:   308  Check: 3827  Weight:  1.00
+ Name: hbb_speci        Len:   308  Check: 1556  Weight:  1.00
+ Name: hbb_speto        Len:   308  Check: 2051  Weight:  1.00
+ Name: hbb_equhe        Len:   308  Check: 3414  Weight:  1.00
+ Name: hbb_sunmu        Len:   308  Check: 2927  Weight:  1.00
+ Name: hbb_calar        Len:   308  Check: 3836  Weight:  1.00
+ Name: hbb_mansp        Len:   308  Check: 4322  Weight:  1.00
+ Name: hbb_ursma        Len:   308  Check: 4428  Weight:  1.00
+ Name: hbb_rabit        Len:   308  Check: 4190  Weight:  1.00
+ Name: hbb_tupgl        Len:   308  Check: 4185  Weight:  1.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+  lgb1_pea  ~~~~~~~~
+lgb1_vicfa  ~~~~~~~~
+ myg_escgi  ~~~~~~~~
+ myg_horse  ~~~~~~~~
+ myg_progu  ~~~~~~~~
+ myg_saisc  ~~~~~~~~
+ myg_lycpi  ~~~~~~~~
+ myg_mouse  ~~~~~~~~
+ myg_musan  ~~~~~~~~
+ hba_ailme  ~~~~~~~~
+ hba_prolo  ~~~~~~~~
+ hba_pagla  ~~~~~~~~
+ hba_macfa  ~~~~~~~~
+ hba_macsi  ~~~~~~~~
+ hba_ponpy  ~~~~~~~~
+hba2_galcr  ~~~~~~~~
+ hba_mesau  ~~~~~~~~
+hba2_bosmu  ~~~~~~~~
+ hba_erieu  ~~~~~~~~
+ hba_frapo  ~~~~~~~~
+ hba_phaco  ~~~~~~~~
+ hba_trioc  ~~~~~~~~
+ hba_ansse  ~~~~~~~~
+ hba_colli  ~~~~~~~~
+hbad_chlme  ~~~~~~~~
+hbad_pasmo  ~~~~~~~~
+hbaz_horse  ~~~~~~~~
+hba4_salir  ~~~~~~~~
+ hbb_ornan  ~~~~~~~~
+ hbb_tacac  ~~~~~~~~
+ hbe_ponpy  ~~~~~~~~
+ hbb_speci  ~~~~~~~~
+ hbb_speto  ~~~~~~~~
+ hbb_equhe  ~~~~~~~~
+ hbb_sunmu  ~~~~~~~~
+ hbb_calar  ~~~~~~~~
+ hbb_mansp  ~~~~~~~~
+ hbb_ursma  ~~~~~~~~
+ hbb_rabit  ~~~~~~~~
+ hbb_tupgl  ~~~~~~~~
+ hbb_triin  ~~~~~~~~
+ hbb_colli  ~~~~~~~~
+ hbb_larri  ~~~~~~~~
+hbb1_varex  ~~~~~~~~
+hbb2_xentr  ~~~~~~~~
+hbbl_ranca  ~~~~~~~~
+hbb2_tricr  ~~~~~~~~
+glb2_mormr  ~~~~~~~~
+glbz_chith  FGAVFAKM
+hbf1_ureca  VAAMK~~~
+
+</pre>
+</td></tr></table><p>
+
+<a name="input.2"></a>
+<h3>Input files for usage example 2</h3>
+<p><h3>File: rrm.sto</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+# STOCKHOLM 1.0
+
+
+
+YIS5_YEAST/33-104               IYIGNL......NRELTEGDILTVFS.....E.YGVP..VDVILSRD...
+YIS1_YEAST/66-136               IFVGNI......TPDVTPEQIEDHFK.....D.CGQI..KRITLLYD...
+RN15_YEAST/20-91                VYLGSI......PYDQTEEQILDLCS.....N.VGPV..INLKMMFD...
+CST2_HUMAN/18-89                VFVGNI......PYEATEEQLKDIFS.....E.VGPV..VSFRLVYD...
+NSR1_YEAST/269-340              LFLGNL......SFNADRDAIFELFA.....K.HGEV..VSVRIPTH...
+IF4B_HUMAN/98-168               AFLGNL......PYDVTEESIKEFFR.....G.LNIS...AVRLPR....
+TIA1_HUMAN/108-179              VFVGDL......SPQITTEDIKAAFA.....P.FGRI..SDARVVKD...
+PUB1_YEAST/163-234              LFVGDL......NVNVDDETLRNAFK.....D.FPSY..LSGHVMWD...
+NAM8_YEAST/165-237              IFVGDL......APNVTESQLFELFI.....NRYAST..SHAKIVHD...
+RT19_ARATH/33-104               LYIGGL......SPGTDEHSLKDAFS.....S.FNGV..TEARVMTN...
+NSR1_YEAST/170-241              IFVGRL......SWSIDDEWLKKEFE.....H.IGGV..IGARVIYE...
+PES4_YEAST/93-164               LFIGDL......HETVTEETLKGIFK.....K.YPSF..VSAKVCLD...
+PABP_DROME/4-75                 LYVGDL......PQDVNESGLFDKFS.....S.AGPV..LSIRVCRD...
+NOP4_YEAST/28-98                LFVRSI......PQDVTDEQLADFFS.....N.FAPI..KHAVVVKD...
+ROC5_NICSY/219-290              LYVANL......SWALTSQGLRDAFA.....D.QPGF..MSAKVIYD...
+ROC5_NICSY/116-187              LYVGNL......PFSMTSSQLSEIFA.....E.AGTV..ANVEIVYD...
+ROC3_NICSY/99-170               LFVGNL......PYDIDSEGLAQLFQ.....Q.AGVV..EIAEVIYN...
+GBP2_YEAST/221-291              VFIINL......PYSMNWQSLKDMFK.....E.CGHV..LRADVELD...
+PABP_SCHPO/263-333              VYIKNL......DTEITEQEFSDLFG.....Q.FGEI..TSLSLVKD...
+PABP_DROME/183-254              VYVKNF......TEDFDDEKLKEFFE.....P.YGKI..TSYKVMS....
+PABP_DROME/92-162               VFIKNL......DRAIDNKAIYDTFS.....A.FGNI..LSCKVATD...
+SFR3_HUMAN/12-78                VYVGNL......GNNGNKTELERAFG.....Y.YGPL..RSVWVARN...
+SR55_DROME/5-68                 VYVGGL......PYGVRERDLERFFK.....G.YGRT..RDILIKN....
+SFR1_HUMAN/17-85                IYVGNL......PPDIRTKDIEDVFY.....K.YGAI..RDIDLKNR...
+SFR2_CHICK/16-87                LKVDNL......TYRTSPDTLRRVFE.....K.YGRV..GDVYIPRD...
+ROG_HUMAN/10-81                 LFIGGL......NTETNEKALEAVFG.....K.YGRI..VEVLLMKD...
+TRA2_DROME/99-170               IGVFGL......NTNTSQHKVRELFN.....K.YGPI..ERIQMVID...
+ROC_HUMAN/18-82                 VFIGNL.....NTLVVKKSDVEAIFS.....K.YGKI..VGCSVHK....
+NONA_DROME/304-369              LYVGNL......TNDITDDELREMFK.....P.YGEI..SEIFSNLD...
+RU17_DROME/104-175              LFIARI......NYDTSESKLRREFE.....F.YGPI..KKIVLIHD...
+TIA1_HUMAN/216-281              VYCGGV......TSGLTEQLMRQTFS.....P.FGQI..MEIRVFPD...
+TIA1_HUMAN/9-78                 LYVGNL......SRDVTEALILQLFS.....Q.IGPC..KNCKMIMD...
+PUB1_YEAST/76-146               LYVGNL......DKAITEDILKQYFQ.....V.GGPI..ANIKIMID...
+SXL_DROME/213-285               LYVTNL......PRTITDDQLDTIFG.....K.YGSI..VQKNILRD...
+ELAV_DROME/250-322              LYVSGL......PKTMTQQELEAIFA.....P.FGAI..ITSRILQN...
+SXL_DROME/127-198               LIVNYL......PQDMTDRELYALFR.....A.IGPI..NTCRIMRD...
+ELV4_HUMAN/48-119               LIVNYL......PQNMTQEEFRSLFG.....S.IGEI..ESCKLVRD...
+MSSP_HUMAN/31-102               LYIRGL......PPHTTDQDLVKLCQ.....P.YGKI..VSTKAILD...
+ELAV_DROME/404-475              IFIYNL......APETEEAALWQLFG.....P.FGAV..QSVKIVKD...
+SQD_DROME/138-208               IFVGGL......TTEISDEEIKTYFG.....Q.FGNI..VEVEMPLD...
+ROA1_BOVIN/106-176              IFVGGI......KEDTEEHHLRDYFE.....Q.YGKI..EVIEIMTD...
+CABA_MOUSE/161-231              IFVGGL......NPEATEEKIREYFG.....Q.FGEI..EAIELPID...
+SQD_DROME/58-128                LFVGGL......SWETTEKELRDHFG.....K.YGEI..ESINVKTD...
+RB97_DROME/34-104               LFIGGL......APYTTEENLKLFYG.....Q.WGKV..VDVVVMRD...
+GR10_BRANA/8-79                 CFVGGL......AWATGDAELERTFS.....Q.FGEV..IDSKIIND...
+CABA_MOUSE/77-147               MFVGGL......SWDTSKKDLKDYFT.....K.FGEV..VDCTIKMD...
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ROA1_BOVIN/106-176              NCEV
+CABA_MOUSE/161-231              KCEI
+SQD_DROME/58-128                KVDP
+RB97_DROME/34-104               TVEA
+GR10_BRANA/8-79                 TITV
+CABA_MOUSE/77-147               VIDP
+SFPQ_HUMAN/373-443              TTPR
+NONA_DROME/378-448              ASLR
+NOP3_YEAST/127-190              PLEV
+GBP2_YEAST/124-193              KLMV
+U2AF_SCHPO/312-383              KLHA
+U2AF_HUMAN/261-332              KLLV
+NUCL_CHICK/283-352              EIKL
+MODU_DROME/342-410              EWKL
+RU2B_HUMAN/9-81                 PMRI
+RU1A_HUMAN/12-84                PMRI
+PUB1_YEAST/342-407              NLRT
+PTB_HUMAN/186-253               CCTL
+EWS_HUMAN/363-442               KLKV
+ARP2_PLAFA/364-438              YLKV
+YHH5_YEAST/315-384              TIWV
+PES4_YEAST/305-374              KLLV
+YHC4_YEAST/348-415              TMHV
+PR24_YEAST/212-284              EISV
+MODU_DROME/422-484              PIFI
+RNP1_YEAST/37-109               KIVI
+GBP2_YEAST/351-421              SLQI
+NOP4_YEAST/292-363              LIGD
+MEI2_SCHPO/197-265              LLYF
+IF39_YEAST/79-157               RLFL
+ROF_HUMAN/113-183               YIEV
+MODU_DROME/260-326              FITV
+WHI3_YEAST/540-614              TVSS
+CPO_DROME/453-526               PQTI
+RU2B_HUMAN/153-220              AMKI
+RU1A_HUMAN/210-276              NAMK
+RU1A_YEAST/229-293              NDVT
+SFR1_HUMAN/122-186              EGET
+NOP3_YEAST/202-270              VITV
+U2AG_HUMAN/67-142               PIHA
+D111_ARATH/285-364              TVRA
+PR24_YEAST/43-111               EIIV
+MODU_DROME/177-246              VLSV
+SSB1_YEAST/39-114               EIHI
+RN12_YEAST/200-267              VLHI
+PTB_HUMAN/61-128                PIYI
+LA_HUMAN/113-182                DLLI
+LA_DROME/151-225                ELLR
+PR24_YEAST/119-190              TLVT
+IF39_SCHPO/41-124               TFVV
+//
+</pre>
+</td></tr></table><p>
+
+<a name="input.3"></a>
+<h3>Input files for usage example 3</h3>
+<p><h3>File: fn3.sto</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+# STOCKHOLM 1.0
+#=GF ID    fn3
+#=GF AC    PF00041
+#=GF DE    Fibronectin type III domain
+#=GF AU    Sonnhammer ELL
+#=GF GA    7.8 -1.0
+#=GF TC    7.7 7.7
+#=GF TC    7.9 0.1
+#=GF AL    HMM_simulated_annealing
+#=GF SE    Swissprot_feature_table
+#=GF TP    Domain
+#=GF BM    hmmbuild -F HMM_ls SEED
+#=GF BM    hmmcalibrate --seed 0 HMM_ls
+#=GF BM    hmmbuild -f -F HMM_fs SEED
+#=GF BM    hmmcalibrate --seed 0 HMM_fs
+#=GF AM    globalfirst
+#=GF RN    [1]
+#=GF RM    90384924
+#=GF RT    Structural design and molecular evolution of a cytokine
+#=GF RT    receptor superfamily. 
+#=GF RA    Bazan JF; 
+#=GF RL    PNAS USA 1990;87:6934-6938.
+#=GF RN    [2]
+#=GF RM    95106303
+#=GF RT    Tracing the spread of fibronectin type III domains in
+#=GF RT    bacterial glycohydrolases. 
+#=GF RA    Little E, Bork P, Doolittle R; 
+#=GF RL    J Mol Evol 1994;39:631-643.
+#=GF RC    Definition of fibronectin domains
+#=GF RN    [3]
+#=GF RM    85284965
+#=GF RT    Primary structure of human fibronectin: differential
+#=GF RT    splicing may generate at least 10 polypeptides from a
+#=GF RT    single gene. 
+#=GF RA    Kornblihtt AR, Umezawa K, Vibe-Pedersen K, Baralle FE; 
+#=GF RL    EMBO J. 1985;4:1755-1759.
+#=GF DR    PROSITE; PDOC00214;
+#=GF DR    PRINTS; PR00014;
+#=GF DR    SCOP; 1ttf; sf;
+#=GF DR    SMART; FN3;
+#=GF DR    HOMSTRAD; fn3;
+#=GF DC    The following Pfam-B families contain sequences that according to Prodom
+#=GF DC    are members of this Pfam-A family.
+#=GF DR    PFAMB; PB001437;
+#=GF DR    PFAMB; PB004758;
+#=GF DR    PFAMB; PB007041;
+#=GF DR    PFAMB; PB007646;
+#=GF DR    PFAMB; PB012739;
+#=GF DR    PFAMB; PB016725;
+#=GF DR    PFAMB; PB016744;
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+FAS2_SCHAM/530-616                RFA.AQNEVGF....GPWS
+PTPZ_HUMAN/312-401                QIV.AICTNGL...YGKYS
+NCA1_BOVIN/610-691                YVV.AENQQ.......GKS
+FAS2_SCHAM/642-735                EVR.ATNAIGN....SVPG
+TIE2_HUMAN/543-626                RAR..VNTKAQ....GEWS
+TENA_CHICK/682-767                SLH.IVKNNTR...GPGLS
+UFO_HUMAN/327-411                 CVA.AYTAAGD....GPWS
+TIE1_HUMAN/545-632                DVQ.LYHCTLL....GPAS
+7LES_DROME/1799-1891              WVQ.AHATPTK....SNSS
+NRG_DROME/717-799                 KVV.AINDR.......GES
+#=GR NRG_DROME/717-799    SS     EEE.EEEEE.......EEE
+#=GR NRG_DROME/717-799    SA     030.10200.......020
+NRCA_CHICK/726-810                KVQ.ALNDLGY...APEPS
+NGCA_CHICK/700-794                RVQ.AVNGAGK....GPEA
+TIE2_HUMAN/639-724                DIF.AENNIGS....SNPA
+LAR_DROME/515-598                 WLA.ARSQRGE....GATT
+PTP6_DROME/236-321                RIV.GKNSIGN....GQPT
+TIE2_HUMAN/444-529                CVQ.LVRRGEG....GEGH
+TIE1_HUMAN/446-533                RVQLSRPGEGG...EGAWG
+PTPK_MOUSE/290-376                RVLLTRPGEGG...TGLPG
+PTPB_HUMAN/1355-1434              SIK.VQSAG.......MTS
+PTP1_DROME/583-661                QVN.TVSFG.......VES
+PTP1_DROME/312-394                IVK.TVSGK.......VTS
+PTP1_DROME/217-301                SVQ.TMSED.......EIS
+PTP1_DROME/123-205                QAY.TIYDG.......KES
+PTPB_HUMAN/1261-1344              NVK.TVSGDSW....KTYS
+PTP1_DROME/864-944                TVV.VRSGTESS..VLRSS
+PTPB_HUMAN/1173-1250              WVV.THSGD........LS
+PTPB_HUMAN/1085-1162              VIV.THSGE........LS
+PTPB_HUMAN/467-543                TVT.SISGD........LK
+PTPB_HUMAN/995-1074               QIL.TVSGG.......LFS
+PTPB_HUMAN/731-808                TVT.TKSGQ........YE
+PTPB_HUMAN/643-725                TIT.TRSGKYE...NHSFS
+PTPB_HUMAN/554-632                VVT.TVSGG.......ISS
+PTPB_HUMAN/907-984                MIA.SVSGS........LK
+PTPB_HUMAN/112-192                AIT.AVSGG.......KRS
+IL7R_HUMAN/129-221                KVR.SIPDHYFKGFWSEWS
+FINC_BOVIN/689-768                NVY.EISEE.......GEQ
+KALM_CHICK/178-271                RVA.AVNVHGT...RGFTA
+TENA_HUMAN/1529-1608              MVS.GFTQG.......HQT
+TENA_CHICK/1227-1306              ELY.GVSSG.......RRS
+TENA_CHICK/1136-1215              YLY.GISHG.......FRT
+TENA_HUMAN/1255-1335              TLH.GEVRG.......HST
+TENA_CHICK/1045-1124              TLY.GVIRG.......YRT
+7LES_DROVI/1917-1997              RLA.LAYAATP....GAPI
+PTPB_HUMAN/22-103                 KII.SLDEE........RT
+KALM_CHICK/544-642                EVQ.VLTTGGE....GPAT
+#=GC SS_cons                      EEE.EEECCCC....CCCC
+#=GC SA_cons                      221.2123454....3232
+#=GC seq_cons                     pVt.Ahsst.......t.S
+//
+</pre>
+</td></tr></table><p>
+
+<a name="input.4"></a>
+<h3>Input files for usage example 4</h3>
+<p><h3>File: pkinase.sto</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+# STOCKHOLM 1.0
+#=GF ID    pkinase
+#=GF AC    PF00069
+#=GF DE    Protein kinase domain
+#=GF AU    Sonnhammer ELL
+#=GF GA    -57.9 -57.9
+#=GF TC    -58.0 -58.0
+#=GF TC    -57.7 -57.7
+#=GF AL    Clustalw
+#=GF SE    Unknown
+#=GF TP    Domain
+#=GF BM    hmmbuild -F HMM_ls SEED
+#=GF BM    hmmcalibrate --seed 0 HMM_ls
+#=GF BM    hmmbuild -f -F HMM_fs SEED
+#=GF BM    hmmcalibrate --seed 0 HMM_fs
+#=GF AM    byscore
+#=GF RN    [1]
+#=GF RM    92065863
+#=GF RT    Protein kinase catalytic domain sequence database:
+#=GF RT    identification of conserved features of primary structure
+#=GF RT    and classification of family members. 
+#=GF RA    Hanks SK, Quinn AM; 
+#=GF RL    Methods Enzymol 1991;200:38-62.
+#=GF RN    [2]
+#=GF RM    95285959
+#=GF RT    Protein kinases 6. The eukaryotic protein kinase
+#=GF RT    superfamily: kinase (catalytic) domain structure and
+#=GF RT    classification. 
+#=GF RA    Hanks SK, Hunter T; 
+#=GF RL    FASEB J 1995;9:576-596.
+#=GF RN    [3]
+#=GF RM    97172697
+#=GF RT    The protein kinases of budding yeast: six score and more. 
+#=GF RA    Hunter T, Plowman GD; 
+#=GF RL    Trends Biochem Sci 1997;22:18-22.
+#=GF DR    PROSITE; PDOC00100;
+#=GF DR    PROSITE; PDOC00212;
+#=GF DR    PROSITE; PDOC00213;
+#=GF DR    PROSITE; PDOC00629;
+#=GF DR    PROSITE_PROFILE; PS50011;
+#=GF DR    PRINTS; PR00109;
+#=GF DC    Protein kinase; unclassified specificity.
+#=GF DR    SMART; STYKc;
+#=GF DC    Serine/Threonine protein kinases, catalytic domain
+#=GF DR    SMART; S_TKc;
+#=GF DC    Tyrosine kinase, catalytic domain
+#=GF DR    SMART; TyrKc;
+#=GF DR    SCOP; 1apm; sf;
+#=GF DR    URL; http://www.sdsc.edu/Kinases/pk_home.html;
+#=GF DR    HOMSTRAD; kinase;
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+#=GR SAT4_YEAST/316-590      AS  .....................
+KKL6_YEAST/192-508            TLTRKN.QRWSINEIYESPFV
+#=GR KKL6_YEAST/192-508      AS  .....................
+RAN1_SCHPO/18-295             PKTRI.....TLPEL..STLV
+#=GR RAN1_SCHPO/18-295       AS  .....................
+TRKA_HUMAN/510-781            PQQRH.....SIKDVHARL..
+#=GR TRKA_HUMAN/510-781      AS  .....................
+KSYK_PIG/364-619              VENRP.....GFVAVELRL..
+#=GR KSYK_PIG/364-619        AS  .....................
+BFR2_HUMAN/367-643            PSQRP.....TFKQLVEDL..
+#=GR BFR2_HUMAN/367-643      AS  .....................
+ABL1_CAEEL/311-562            PSDRP.....RFRDIHFNL..
+#=GR ABL1_CAEEL/311-562      AS  .....................
+7LES_DROME/2209-2481          PWERP.....SFRRCYNTL..
+JAK1_HUMAN/864-1137           PSNRT.....SFQNLIEGF..
+#=GR JAK1_HUMAN/864-1137     AS  .....................
+EGFR_DROME/938-1194           AAMRP.....TFKQLTTVF..
+#=GR EGFR_DROME/938-1194     AS  .....................
+RYK_HUMAN/327-593             PEERP.....KFQQLVQCL..
+#=GR RYK_HUMAN/327-593       AS  .....................
+MET_HUMAN/1078-1337           AEMRP.....SFSELVSRI..
+#=GR MET_HUMAN/1078-1337     AS  .....................
+PHY1_CERPU/1004-1282          PLKRP......SFAVICQKL.
+#=GR PHY1_CERPU/1004-1282    AS  .....................
+M3K9_HUMAN/3-262              PHSRP.....SFTNILDQL..
+#=GR M3K9_HUMAN/3-262        AS  .....................
+KYK2_DICDI/108-364            PNDRP.....PFTYIVNKL..
+#=GR KYK2_DICDI/108-364      AS  .....................
+KYK1_DICDI/1289-1559          PDSRP.....TFKQIIVHL..
+#=GR KYK1_DICDI/1289-1559    AS  .....................
+KMIL_AVIMH/82-339             REERP.....LFPQILSSI..
+#=GR KMIL_AVIMH/82-339       AS  .....................
+KPRO_MAIZE/534-812            RSKRP.....TMEHAVQTL..
+#=GR KPRO_MAIZE/534-812      AS  .....................
+AVR1_HUMAN/208-495            PSARL.....TALRIKKTL..
+#=GR AVR1_HUMAN/208-495      AS  .....................
+AVR2_HUMAN/192-479            AEARL.....SAGCVGERI..
+#=GR AVR2_HUMAN/192-479      AS  .....................
+PKN1_MYXXA/59-320             PEDRY....ASIAAFRNALQV
+#=GR PKN1_MYXXA/59-320       AS  .....................
+KMOS_CERAE/60-338             AAQRP.....SARPLLVDL..
+#=GR KMOS_CERAE/60-338       AS  .....................
+KR1_PRVKA/53-332              PVRRP.....SADEILNFGMW
+#=GR KR1_PRVKA/53-332        AS  .....................
+KR1_HSV11/191-478             GALRP.....SAAELLCLPLF
+#=GR KR1_HSV11/191-478       AS  .....................
+JAK1_HUMAN/571-833            PNQRP.....FFRAIMRDI..
+HR25_YEAST/9-273              FDEKP......DYLFLARLF.
+#=GR HR25_YEAST/9-273        AS  .....................
+#=GC seq_cons                     PppR......ohppllpc.ah
+//
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>ehmmbuild</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: globin.hmm</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+HMMER2.0  [2.3.2]
+NAME  globins50
+LENG  143
+ALPH  Amino
+RF    no
+CS    no
+MAP   yes
+COM   /shared/software/bin/hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
+NSEQ  50
+DATE  Thu Jul 15 12:00:00 2010
+CKSUM 9858
+XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
+NULT      -4  -8455
+NULE     595  -1558     85    338   -294    453  -1158    197    249    902  -1085   -142    -21   -313     45    531    201    384  -1998   -644 
+HMM        A      C      D      E      F      G      H      I      K      L      M      N      P      Q      R      S      T      V      W      Y    
+         m-&gt;m   m-&gt;i   m-&gt;d   i-&gt;m   i-&gt;i   d-&gt;m   d-&gt;d   b-&gt;m   m-&gt;e
+         -450      *  -1900
+     1    591  -1587    159   1351  -1874   -201    151  -1600    998  -1591   -693    389  -1272    595     42    -31     27   -693  -1797  -1134    14
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378   -450      * 
+     2   -926  -2616   2221   2269  -2845  -1178   -325  -2678   -300  -2596  -1810    220  -1592    939   -974   -671   -939  -2204  -2785  -1925    15
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     3   -638  -1715   -680    497  -2043  -1540     23  -1671   2380  -1641   -840   -222  -1595    437   1040   -564   -523  -1363   2124  -1313    16
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     4    829  -1571    -37    660  -1856   -873    152  -1578    894  -1573   -678    769  -1273   1284     58    224    447  -1175  -1782  -1125    17
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     5    369   -433   -475    286   -974  -1312    -19   -412    664    398    406   1030  -1394    388   -214   -261     85   -166  -1227   -725    18
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     6  -1291   -884  -3696  -3261  -1137  -3425  -2802   2322  -3066    111     19  -3028  -3275  -2855  -3100  -2670  -1269   2738  -2450  -2062    19
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     7    157   -413   -236    316  -1387  -1231     89   -863   1084   -431   -348    910  -1319    635    297     15    704   -483  -1497   -922    20
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     8    770  -1431    -43    459  -1751   -340     78  -1449    440  -1497   -631    866  -1302    825    -51    953    364  -1076  -1750  -1121    21
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     9    420   -186  -2172  -1577      8  -1818   -694   1477  -1281    760    614  -1299  -1867  -1001  -1262   -189    -12   1401   -722   -364    22
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+    10   -961   -879  -2277  -1821   1366  -2213   -204   -399  -1500   -130    -39  -1427  -2266  -1186  -1511   -159   -913   -367   4721   1177    23
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+    11    -48  -1782    809    844  -2073   1456      8  -1811    315  -1803   -932    180  -1365    921   -218    173   -115  -1399  -2018  -1327    24
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -68  -6528  -4832   -894  -1115   -701  -1378      *      * 
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   128   -415  -1926   1575   1399  -2219  -1163     17  -1983    527  -1929  -1039    341  -1367   1597   -212    257   -222  -1536  -2109  -1387   144
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   129   -529  -1434   -629   -143  -1926   -626   -171  -1460   2679  -1597   -839   -309  -1599    207    317   -530   -510   -130  -1840  -1369   145
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   130    811   -397  -2389  -1807   1883  -2039   -907    594  -1512   1077    687  -1532  -2065  -1201  -1483  -1125   -465   1067   -843   -472   146
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   131   -241   -102  -2327  -1710    724  -1767   -616    650  -1363   1074   1765   -718  -1809  -1026  -1252   -842   -181   1331   -541    695   147
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   132    723     95    385    823  -1820  -1168    167  -1540    875  -1362   -644    320  -1261    810    246    693    -67  -1141  -1753  -1098   148
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   133    551   -430  -1049   -481   -442    469   -241    465   -313    133    947   -411  -1543    197   -587   -146    202    522   -843   -429   149
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   134  -1086   -777  -3351  -2800    816  -2898  -1861   1501  -2515   1149    586  -2483  -2775  -2108  -2400  -2046  -1030   2380  -1511  -1216   150
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   135   1393   1409   -876   -345   -997   -525   -315   -590   -198   -847   -109   -420  -1441    -97    412    766   -130    139  -1306   -858   151
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   136     98  -1299     36    365  -1495  -1211   1241   -404    523   -952   -426   1174  -1303    511    -18    347    882   -853  -1566   -970   152
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   137   1308   -787    564   -132   -966  -1332   -203   -362    -49   -395    -57   -305  -1481     49   -437   -190   -182   1020  -1282   -802   153
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   138  -1746  -1358  -3897  -3341   -216  -3621  -2478   1774  -3040   2442   1157  -3189  -3229  -2422  -2853  -2824  -1659    392  -1720  -1647   154
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   139   1176  -1289   -179    534  -1606   -607     34  -1278    734  -1372   -534     44  -1325    433    -89    521    826   -941  -1666  -1072   155
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   140    602  -1500   -135    850  -1753  -1214   1951  -1452    838  -1484    431    118  -1306    555    347    489   -153  -1085  -1723  -1092   156
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -22  -6602  -7644   -894  -1115   -701  -1378      *      * 
+   141    351  -1646   -165    546  -1976   -498     46  -1667   2193  -1662   -798     35  -1405    476    311    -73   -306  -1287  -1859  -1254   157
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6561  -7603   -894  -1115   -701  -1378      *      * 
+   142  -1995  -1606  -3095  -2870   1739  -3015    -98  -1012  -2520   -730    655  -1990  -2962  -1884  -2326  -2167  -1915  -1128    548   4089   158
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -25  -6455  -7497   -894  -1115   -701  -1378      *      * 
+   143   -253  -1373   -267    301   -911   -565   1956   -450   1188  -1330   -497     33  -1352    502   1358   -205   -184   -941  -1604  -1026   159
+     -      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      * 
+     -      *      *      *      *      *      *      *      *      0 
+//
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: myhmms</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+HMMER2.0  [2.3.2]
+NAME  rrm
+LENG  77
+ALPH  Amino
+RF    no
+CS    no
+MAP   yes
+COM   /shared/software/bin/hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
+NSEQ  90
+DATE  Thu Jul 15 12:00:00 2010
+CKSUM 8325
+XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
+NULT      -4  -8455
+NULE     595  -1558     85    338   -294    453  -1158    197    249    902  -1085   -142    -21   -313     45    531    201    384  -1998   -644 
+HMM        A      C      D      E      F      G      H      I      K      L      M      N      P      Q      R      S      T      V      W      Y    
+         m-&gt;m   m-&gt;i   m-&gt;d   i-&gt;m   i-&gt;i   d-&gt;m   d-&gt;d   b-&gt;m   m-&gt;e
+          -16      *  -6492
+     1  -1084    390  -8597  -8255  -5793  -8424  -8268   2395  -8202   2081  -1197  -8080  -8115  -8020  -8297  -7789  -5911   1827  -7525  -7140     1
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378    -16      * 
+     2  -2140  -3785  -6293  -2251   3226  -2495   -727   -638  -2421   -545   -675  -5146  -5554  -4879  -1183  -2536  -1928    267     76   3171     2
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     3  -2542    458  -8584  -8273  -6055  -8452  -8531   2304  -8255   -324    101  -8104  -8170  -8221  -8440  -7840  -5878   3145  -7857  -7333     3
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     4  -1505  -5144  -1922   -558  -1842   2472  -3303  -2213   1099  -5160  -4233    372  -4738   -530   1147    168    498  -4766  -5327  -1476     4
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     5  -3724  -5184    300  -3013  -1655   1803  -3353  -5245  -1569  -2686  -4276   3495  -1963  -1331  -1054  -1472  -3664  -4803  -5369     -2     5
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     6  -1569  -6106  -8967  -8363    555  -8531  -7279    654  -8092   2953    -94  -8220  -7908  -1643  -7682  -7771  -6460    -59  -6191  -6284     6
+     -   -151   -504    230     45   -380    399    101   -621    211   -470   -713    278    399     48     91    360    113   -364   -299   -254 
+     -   -178  -3113 -12684  -1600   -578   -701  -1378      *      * 
+     7   -409  -5130   -215  -2987  -1709   -956    690  -5188   -395  -5144  -4224    729   3054  -2862  -3409    354   1293  -1381  -5321  -4644    13
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     8  -3674  -5118  -1004    639    420  -4652    176  -2050    404  -1039   -935     16   1755    168    147   -275    198  -1472   1889   1977    14
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     9   -408  -5134   2415   1299   -950    -66   -767  -1296  -2889  -1843  -4224   1084   -968  -1439  -1854    540   -314  -2304  -5320    -60    15
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    10    586   1804  -6294   -631  -1627  -1671  -4374   1029  -2223   -162   1172  -5147  -5554  -1870  -5058  -2327   1741   1687  -4242    687    16
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    11  -2134  -5144    845  -1187  -1652  -1667  -3303  -5216   -513   -801  -4233   1026  -1873   -543   -619    575   2956  -4766  -5327  -4644    17
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    62  -1537  -3785  -6300  -5664   -786  -5505  -4376   2171    652   1595    833  -5150  -5555   -869  -1636  -2574  -3898   1605  -4242  -1298    85
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    63     57  -5144   1387   1323  -5465  -2264  -3303   -780    812  -1898  -4233    131  -4738   1747   1061    108  -1766   -907  -5327   -793    86
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -   -310 -11642  -2372   -894  -1115   -701  -1378      *      * 
+    64   1233    705    139   1044  -1390   -413   -504  -4926    814  -1849   -873    617  -4450    473   -254    605    234  -2178    137  -4356    87
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11332 -12374   -894  -1115   -123  -3612      *      * 
+    65   -375    873  -6218  -1441    516  -5480  -4348  -3270   -294   2247   2716  -5104  -5531   -342  -2306  -4562  -1171   -333  -4233    564    88
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11626 -12668   -894  -1115   -382  -2105      *      * 
+    66  -2168  -5145   1778  -1715  -5466  -1556   1110  -5217   -347  -5161  -4234   3166   -102   1100   -928   -613  -1766  -4767  -5328   -411    89
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    67  -1458  -5144  -1823    270   -984   2973    159  -5216    311  -5160  -4233    841  -4738  -1432   -954   -817   -981  -4766  -5328   -609    90
+     -   -148   -501    232     42   -379    397    104   -627    216   -467   -722    274    395     48     95    358    116   -365   -296   -251 
+     -   -157  -3284 -12684    -21  -6140   -701  -1378      *      * 
+    68   -674  -5080  -1101   -628    453  -1645   1133    200   1615  -1341    445  -3310  -4756    953   1117    -19    662  -1560  -5281    955    92
+     -   -149   -500    232     43   -381    398    105   -627    210   -466   -721    275    396     45     95    359    120   -366   -295   -250 
+     -    -20  -6226 -12684  -1519   -619   -701  -1378      *      * 
+    69  -3696   -785    -17   1147    150  -1499  -3377    543   1044   -698    461   -736   -351    445   -584   -975    753     89    793    475    96
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    70  -3956  -3787  -1147  -2465   2321  -2554  -4371   1615  -2185   1495   -817  -5139  -2093  -4870  -2110  -2380  -1415   1282  -4244    800    97
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    71  -1015   -904    926    188   -880   1152   -650  -5215    677   -786    923   1723   -676    247    421  -1028  -1335  -4766  -5327    275    98
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    72  -2168  -5150    604  -1054  -5471   2761   -702  -5222   -918  -2141  -4239   1981  -4742   -142  -1740    262  -2027  -4772  -5333  -4650    99
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    73  -1412    853  -3523  -1169   -883  -4647   1925  -5199   1786  -1944   -937    588  -4740    633   2507   -312   -306  -4755  -5321   -528   100
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    74   -301   -498  -1749   1022   -866  -4653  -3313  -1356   1140  -1447  -4209    233   1336   -200    701  -1399   1158    451  -5307   -378   101
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    75  -1685    926  -1227  -5667  -1443  -2425  -4376   2317  -5261   1910    668  -5151  -2133  -1673  -5061  -2536  -2110   1189     -5  -3899   102
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    76  -2255  -5128   -302    363   -784  -2353   1398  -2058   1512   -314   -275  -1693  -1200   -571   1806   -524    252   -175   -255    793   103
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    77   -633    879  -2198  -5620  -1457  -5498  -4367   1846  -2705   -311  -2992  -5128  -1361  -1689   -695  -1593     53   2770  -4246  -3903   104
+     -      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      * 
+     -      *      *      *      *      *      *      *      *      0 
+//
+</pre>
+</td></tr></table><p>
+
+<a name="output.3"></a>
+<h3>Output files for usage example 3</h3>
+<p><h3>File: myhmms</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+HMMER2.0  [2.3.2]
+NAME  rrm
+LENG  77
+ALPH  Amino
+RF    no
+CS    no
+MAP   yes
+COM   /shared/software/bin/hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
+NSEQ  90
+DATE  Thu Jul 15 12:00:00 2010
+CKSUM 8325
+XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
+NULT      -4  -8455
+NULE     595  -1558     85    338   -294    453  -1158    197    249    902  -1085   -142    -21   -313     45    531    201    384  -1998   -644 
+HMM        A      C      D      E      F      G      H      I      K      L      M      N      P      Q      R      S      T      V      W      Y    
+         m-&gt;m   m-&gt;i   m-&gt;d   i-&gt;m   i-&gt;i   d-&gt;m   d-&gt;d   b-&gt;m   m-&gt;e
+          -16      *  -6492
+     1  -1084    390  -8597  -8255  -5793  -8424  -8268   2395  -8202   2081  -1197  -8080  -8115  -8020  -8297  -7789  -5911   1827  -7525  -7140     1
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378    -16      * 
+     2  -2140  -3785  -6293  -2251   3226  -2495   -727   -638  -2421   -545   -675  -5146  -5554  -4879  -1183  -2536  -1928    267     76   3171     2
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     3  -2542    458  -8584  -8273  -6055  -8452  -8531   2304  -8255   -324    101  -8104  -8170  -8221  -8440  -7840  -5878   3145  -7857  -7333     3
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     4  -1505  -5144  -1922   -558  -1842   2472  -3303  -2213   1099  -5160  -4233    372  -4738   -530   1147    168    498  -4766  -5327  -1476     4
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     5  -3724  -5184    300  -3013  -1655   1803  -3353  -5245  -1569  -2686  -4276   3495  -1963  -1331  -1054  -1472  -3664  -4803  -5369     -2     5
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     6  -1569  -6106  -8967  -8363    555  -8531  -7279    654  -8092   2953    -94  -8220  -7908  -1643  -7682  -7771  -6460    -59  -6191  -6284     6
+     -   -151   -504    230     45   -380    399    101   -621    211   -470   -713    278    399     48     91    360    113   -364   -299   -254 
+     -   -178  -3113 -12684  -1600   -578   -701  -1378      *      * 
+     7   -409  -5130   -215  -2987  -1709   -956    690  -5188   -395  -5144  -4224    729   3054  -2862  -3409    354   1293  -1381  -5321  -4644    13
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     8  -3674  -5118  -1004    639    420  -4652    176  -2050    404  -1039   -935     16   1755    168    147   -275    198  -1472   1889   1977    14
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     9   -408  -5134   2415   1299   -950    -66   -767  -1296  -2889  -1843  -4224   1084   -968  -1439  -1854    540   -314  -2304  -5320    -60    15
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    10    586   1804  -6294   -631  -1627  -1671  -4374   1029  -2223   -162   1172  -5147  -5554  -1870  -5058  -2327   1741   1687  -4242    687    16
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    11  -2134  -5144    845  -1187  -1652  -1667  -3303  -5216   -513   -801  -4233   1026  -1873   -543   -619    575   2956  -4766  -5327  -4644    17
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C     -1 -11935 -12977   -894  -1115   -701  -1378      *      * 
+    69  -8583  -7493  -8946  -9308   -409  -8830  -5009  -7467  -8865  -3133  -6867  -2231  -8684  -7580  -8224  -8080  -8432  -7625  -4255   4885    98
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C     -1 -11935 -12977   -894  -1115   -701  -1378      *      * 
+    70  -1815  -5406  -2090   1238  -1053  -2697    642   -683    206   -981  -1214   1027  -5018    797    -56    458   1323    686  -5593   -187    99
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C     -1 -11935 -12977   -894  -1115   -701  -1378      *      * 
+    71  -1772   -576  -6691  -6059   2751  -2721  -4781   1861  -5659    107    276  -5548  -5946  -5283  -5462  -4990  -4280   2105  -4641    656   100
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C     -1 -11935 -12977   -894  -1115   -701  -1378      *      * 
+    72  -1774    157   -771   -126  -5740  -2696   -247  -1555    925  -5435   -361   -242  -5015   1187   2154    813    923  -1324   1141    185   101
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     E     -1 -11935 -12977   -894  -1115   -701  -1378      *      * 
+    73  -1859  -5823  -9013  -8663  -1043  -8868  -8653   1700  -8616    373  -1223  -8529  -8476  -8301  -8657  -8252  -6326   3293  -7705  -7445   102
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     E     -1 -11935 -12977   -894  -1115   -701  -1378      *      * 
+    74    339   -912  -2304  -1480   -161  -4982    242    328    485  -1007  -4340  -1086  -5073   1886   1206  -1252    451    493  -5463   1681   103
+     -   -149   -500    233     43   -381    398    105   -626    210   -462   -721    275    394     45     96    359    117   -369   -295   -250 
+     E    -43  -5729  -6603    -86  -4119   -701  -1378      *      * 
+    75   3003  -4642  -7089  -2701  -4985   -369  -5478  -2243  -6266  -1473  -4220  -5882  -6177  -5887  -6084    548   1259   -953  -5472  -5145   105
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     E     -1 -11920 -12962   -894  -1115   -357  -2190      *      * 
+    76   -890   -701  -6337   -456   -128  -5749    302    444   -435    294   -981  -5315  -5801    452   1013  -1812  -1348   2281  -4547   1032   106
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     E     -1 -11935 -12977   -894  -1115   -701  -1378      *      * 
+    77  -2363   -782    199  -2083  -5740  -2662   -943  -1132    147  -3104  -4508   2805   -755  -1553   -765   1511   1258  -2796  -5603   -104   107
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     E    -14 -11935  -6734   -894  -1115   -701  -1378      *      * 
+    78    349   -725    812    169  -2094   1817   -228  -2472   -192  -5424  -4497    321  -2426    905     63   -120    421   -272  -5591  -4908   108
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C     -1 -11921 -12963   -894  -1115   -373  -2135      *      * 
+    79    763   -866    480    290  -2215    944    426    219    379  -1687   -278    514  -2124    507    130  -1212   -544     72  -5596   -747   109
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C   -733 -11935  -1329   -894  -1115   -701  -1378      *      * 
+    80  -1113  -4530  -1626   -702  -1338   3243  -3172  -4385  -2855  -2220  -3677  -1218  -4564  -2783  -3335   -609    475  -4086  -4819    473   110
+     -   -153   -500    231     50   -364    398     93   -624    206   -464   -733    283    383     46     94    356    116   -368   -250   -237 
+     C  -6367    -18 -12245   -485  -1807  -3912    -99      *      * 
+    81  -5380  -6068  -5956  -5194  -7389   3194   -752  -6799  -1418  -2482  -5840  -5063   -706  -4120  -1351   1839  -5344  -6386  -6417  -6291   116
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C     -1 -11248 -12290   -894  -1115   -277  -2516      *      * 
+    82     68  -5329   -386    943  -1053    -34   1308  -2479    103  -1629    757   -877   1926   1130    381  -1141   -878  -1038  -5513  -1828   117
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C     -1 -11840 -12882   -894  -1115   -101  -3893      *      * 
+    83    102  -5296  -3867   1691     21  -1212  -3624  -1510   -259   -602  -1204  -1862   1786  -1626    665   -353   -181  -4888   2391    466   118
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     C     -1 -11935 -12977   -894  -1115   -701  -1378      *      * 
+    84  -1211  -5433  -3815  -1455  -5755   -850   -140  -2313  -1280  -5448  -4523  -3575  -2241  -1598   -412   3271    384  -5056  -5615  -4936   119
+     -      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      * 
+     C      *      *      *      *      *      *      *      *      0 
+//
+</pre>
+</td></tr></table><p>
+
+<a name="output.4"></a>
+<h3>Output files for usage example 4</h3>
+<p><h3>File: myhmms</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+HMMER2.0  [2.3.2]
+NAME  rrm
+LENG  77
+ALPH  Amino
+RF    no
+CS    no
+MAP   yes
+COM   /shared/software/bin/hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
+NSEQ  90
+DATE  Thu Jul 15 12:00:00 2010
+CKSUM 8325
+XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
+NULT      -4  -8455
+NULE     595  -1558     85    338   -294    453  -1158    197    249    902  -1085   -142    -21   -313     45    531    201    384  -1998   -644 
+HMM        A      C      D      E      F      G      H      I      K      L      M      N      P      Q      R      S      T      V      W      Y    
+         m-&gt;m   m-&gt;i   m-&gt;d   i-&gt;m   i-&gt;i   d-&gt;m   d-&gt;d   b-&gt;m   m-&gt;e
+          -16      *  -6492
+     1  -1084    390  -8597  -8255  -5793  -8424  -8268   2395  -8202   2081  -1197  -8080  -8115  -8020  -8297  -7789  -5911   1827  -7525  -7140     1
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378    -16      * 
+     2  -2140  -3785  -6293  -2251   3226  -2495   -727   -638  -2421   -545   -675  -5146  -5554  -4879  -1183  -2536  -1928    267     76   3171     2
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     3  -2542    458  -8584  -8273  -6055  -8452  -8531   2304  -8255   -324    101  -8104  -8170  -8221  -8440  -7840  -5878   3145  -7857  -7333     3
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     4  -1505  -5144  -1922   -558  -1842   2472  -3303  -2213   1099  -5160  -4233    372  -4738   -530   1147    168    498  -4766  -5327  -1476     4
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     5  -3724  -5184    300  -3013  -1655   1803  -3353  -5245  -1569  -2686  -4276   3495  -1963  -1331  -1054  -1472  -3664  -4803  -5369     -2     5
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     6  -1569  -6106  -8967  -8363    555  -8531  -7279    654  -8092   2953    -94  -8220  -7908  -1643  -7682  -7771  -6460    -59  -6191  -6284     6
+     -   -151   -504    230     45   -380    399    101   -621    211   -470   -713    278    399     48     91    360    113   -364   -299   -254 
+     -   -178  -3113 -12684  -1600   -578   -701  -1378      *      * 
+     7   -409  -5130   -215  -2987  -1709   -956    690  -5188   -395  -5144  -4224    729   3054  -2862  -3409    354   1293  -1381  -5321  -4644    13
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     8  -3674  -5118  -1004    639    420  -4652    176  -2050    404  -1039   -935     16   1755    168    147   -275    198  -1472   1889   1977    14
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+     9   -408  -5134   2415   1299   -950    -66   -767  -1296  -2889  -1843  -4224   1084   -968  -1439  -1854    540   -314  -2304  -5320    -60    15
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    10    586   1804  -6294   -631  -1627  -1671  -4374   1029  -2223   -162   1172  -5147  -5554  -1870  -5058  -2327   1741   1687  -4242    687    16
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+    11  -2134  -5144    845  -1187  -1652  -1667  -3303  -5216   -513   -801  -4233   1026  -1873   -543   -619    575   2956  -4766  -5327  -4644    17
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      * 
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      * 
+   279  -7207  -7306  -8076  -6588  -8459  -7223  -5448  -7982  -1500  -7531  -6953  -6369  -7277  -5081   4236  -7139  -6862  -7777  -7053  -7277   454
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      * 
+   280   -694   -163  -5922  -5286  -1204  -2048   -610   1082  -1800   1434  -2618  -4776   2951  -4509  -4688  -1216  -1648  -2829    202     21   455
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -  -3168 -11253   -171   -894  -1115   -701  -1378      *      * 
+   281  -1412  -2132  -2007  -2293  -4366   3113  -2847  -4225  -3107  -4377  -3503   1660  -2881  -2661  -3396    961  -1821  -3134  -4516  -4119   456
+     -   -150   -489    232     42   -382    400    104   -627    211   -465   -722    274    393     51     95    359    116   -370   -296   -245 
+     -  -2121   -637  -2975   -831  -1191  -6099    -21      *      * 
+   282   -968  -1818  -1787  -1351  -3112    953  -1494  -2818  -1122  -2911  -2044  -1365  -2340  -1133   1510   1816   2121  -2205  -3137  -2649   459
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -   -228  -7899  -2816   -894  -1115  -4964    -47      *      * 
+   283    840  -1663   -994    969   1159    503   -604  -1413   -325  -1594   -814   -688  -1996   -267   1103   -851   -755  -1179   2900  -1437   460
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -9  -7938  -8980   -894  -1115    -89  -4060      *      * 
+   284  -3257  -4642   -697  -2590  -1218   -252  -2907  -4655  -1306  -2353   -529    482  -1607  -2459  -1398   2112   2745  -4246  -4848  -4187   461
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11183 -12226   -894  -1115   -186  -3045      *      * 
+   285   2163    763  -1619  -5296   2250  -2060  -4007   1241  -4891   -489    484  -4781   -226  -4515  -4692   -678  -1688   -813    264  -3530   462
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      * 
+   286   -268   -329   -158    917   -541  -1990    350  -4851   1273  -1075    388  -1130    233    840    993   -602    801   -595  -4964   -857   463
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      * 
+   287    109   -243    672   2304  -5103  -4283    488  -4854  -1317  -2269   -656   -492  -1519   2679   -655   -618  -3248  -4404  -4965  -1114   464
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      * 
+   288   1312   1294  -6215  -5593   -206  -1244  -4339   2188  -5201   1409    395  -5091  -5478  -4828  -5009  -4538  -3794   1162  -4187  -3846   465
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23 -11253  -6022   -894  -1115   -701  -1378      *      * 
+   289  -3562    799  -5767  -2054  -1235  -2075    318    138    237   2164   1713  -1454  -5145  -1272   -730  -4172  -1640   1071  -3865    -34   466
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11231 -12273   -894  -1115  -1470   -646      *      * 
+   290     73   1351   -674   1236  -1549  -2008   1350  -4834   1049  -2498  -3851   1801  -4356   1813   -115   -223  -1582  -1052  -4945  -4262   467
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11231 -12273   -894  -1115   -369  -2147      *      * 
+   291  -1739   -320    777  -2654  -1419  -2051   4360  -4707  -1358  -2412   -689  -1300  -4399   -224    537    531   -289  -2010  -4905  -1057   468
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      * 
+   292  -3345  -4494   -233   -332   -563  -1986  -3051    333     99   1063  -3616  -3072   2953  -1026  -1490   -943  -1528  -1070  -4753  -4151   469
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -10815 -11857   -894  -1115   -701  -1378      *      * 
+   293  -6409  -5751  -7614  -7636   2593  -7311  -4003  -5084  -7219   -150   -151  -6210  -7172   -849  -6723  -6510  -6299  -1387   4881   2807   470
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -     -1 -10749 -11791   -894  -1115   -701  -1378      *      * 
+   294  -4057  -3817  -6415  -5791   3203  -1638  -4541   1679  -5412    765   1434  -5333  -5617  -4930  -5182  -4791  -3987   1226    750  -3959   471
+     -      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      * 
+     -      *      *      *      *      *      *      *      *      0 
+//
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+include file="inc/localfiles.ihtml"
+   -->
+
+None.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+<H3>1. Command-line arguments</H3>
+The following original HMMER options are not supported:
+<br><pre>
+-h         : Use -help to get help information instead.
+-f         : Use -strategy option instead.
+-g         : Use -strategy option instead.
+-s         : Use -strategy option instead.
+-A         : Set append: "N" or append: "Y" for "hmmfile" in the ACD file instead.
+-F         : Always set (an existing hmmfile will be overwritten).
+-amino     : Sequence alignment type is specified via the ACD file.
+-nucleic   : Sequence alignment type is specified via the ACD file.
+-informat  : All common alignment formats are supported automatically.  
+-wblosum   : Use -weighting option to specify the sequence weighting algorithm. 
+-wgsc      : Use -weighting option to specify the sequence weighting algorithm. 
+-wme       : Use -weighting option to specify the sequence weighting algorithm. 
+-wnone     : Use -weighting option to specify the sequence weighting algorithm. 
+-wpb       : Use -weighting option to specify the sequence weighting algorithm. 
+-wvoronoi  : Use -weighting option to specify the sequence weighting algorithm. 
+-verbose   : Use -verbosity instead.
+</pre>
+
+<p>
+The following additional options are provided:
+<br><pre>
+-weighting : Sequence weighting algorithm. 
+-n         : Use -nhmm instead (-n causes problems for GUI developers)
+</pre>
+
+
+
+<H3>2. Installing EMBASSY HMMER</H3>
+The EMBASSY HMMER package contains "wrapper" applications providing an EMBOSS-style interface to the applications in the original HMMER package version 2.3.2 developed by Sean Eddy.  Please read the file INSTALL in the EMBASSY HMMER package distribution for installation instructions.
+
+<H3>3. Installing original HMMER</H3>
+To use EMBASSY HMMER, you will first need to download and install the original HMMER package.  Please read the file 00README in the the original HMMER package distribution for installation instructions:
+<pre>
+WWW home:       http://hmmer.wustl.edu/
+Distribution:   ftp://ftp.genetics.wustl.edu/pub/eddy/hmmer/
+</pre>
+
+<H3>4. Setting up HMMER</H3>
+For the EMBASSY HMMER package to work, the directory containing the original HMMER executables *must* be in your path. For example if you executables were installed to "/usr/local/hmmer/bin", then type:
+<pre>
+set path=(/usr/local/hmmer/bin/ $path)
+rehash
+</pre>
+
+<H3> 5. Getting help </H3>
+Please read the Userguide.pdf distributed with the original HMMER and included in the EMBASSY HMMER distribution under the DOCS directory. The first 3 chapters (Introduction, Installation and Tutorial) are particularly useful.
+<p>Please read the 'Notes' section below for a description of the differences between the original and EMBASSY HMMER, particularly which application command line options are supported. 
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+<H3>Types of input data</H3>
+hmmer v3.2.1 and therefore EMBASSY HMMER is only recommended for use with protein sequences.  If you provide a non-protein sequence you will be reprompted for a protein sequence.  To accept nucleic acid sequences you must replace instances of < type: "protein" > in the application ACD files with <type: "nucleic" >.
+
+<H3>Environment variables</H3>
+The original hmmer uses BLAST environment variables (below), if defined, to locate files. The EMBASSY HMMER does not.
+<pre>
+BLASTDB   location of sequence databases to be searched
+BLASMAT   location of substitution matrices
+HMMERDB   location of HMMs
+</pre>
+
+<H3>Alignment input</H3>
+The user must provide the full filename of an alignment for the "alignfile" ACD option, not an indirect reference to a set of sequences, e.g. a USA is NOT acceptable.  This is because hmmbuild (which ehmmbuild wraps) requires an alignment and does not support USAs.
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="ehmmalign.html">ehmmalign</a></td>
+<td>Align sequences to an HMM profile</td>
+</tr>
+
+<tr>
+<td><a href="ehmmcalibrate.html">ehmmcalibrate</a></td>
+<td>Calibrate HMM search statistics</td>
+</tr>
+
+<tr>
+<td><a href="ehmmconvert.html">ehmmconvert</a></td>
+<td>Convert between profile HMM file formats</td>
+</tr>
+
+<tr>
+<td><a href="ehmmemit.html">ehmmemit</a></td>
+<td>Generate sequences from a profile HMM</td>
+</tr>
+
+<tr>
+<td><a href="ehmmfetch.html">ehmmfetch</a></td>
+<td>Retrieve an HMM from an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmindex.html">ehmmindex</a></td>
+<td>Create a binary SSI index for an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmpfam.html">ehmmpfam</a></td>
+<td>Search one or more sequences against an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmsearch.html">ehmmsearch</a></td>
+<td>Search a sequence database with a profile HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/oalistat.html">oalistat</a></td>
+<td>Statistics for multiple alignment files</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmalign.html">ohmmalign</a></td>
+<td>Align sequences with an HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmbuild.html">ohmmbuild</a></td>
+<td>Build HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmcalibrate.html">ohmmcalibrate</a></td>
+<td>Calibrate a hidden Markov model</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmconvert.html">ohmmconvert</a></td>
+<td>Convert between HMM formats</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmemit.html">ohmmemit</a></td>
+<td>Extract HMM sequences</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmfetch.html">ohmmfetch</a></td>
+<td>Extract HMM from a database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmindex.html">ohmmindex</a></td>
+<td>Index an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmpfam.html">ohmmpfam</a></td>
+<td>Align single sequence with an HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmsearch.html">ohmmsearch</a></td>
+<td>Search sequence database with an HMM</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS conversion of a program written by Sean Eddy
+as part of his HMMER package.
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+Jon Ison
+<br>
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+<p>This program is an EMBASSY wrapper to a program written by Sean Eddy as part of his hmmer package.
+<p>Please report any bugs to the EMBOSS bug team in the first instance, not to Sean Eddy.
+
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

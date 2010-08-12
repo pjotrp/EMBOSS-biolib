@@ -1,0 +1,15 @@
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/embassy/myemboss/ensembltest.html">ensembltest</a></td>
+<td>Demonstration of the Ensembl API to be</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/myemboss/sqltest.html">sqltest</a></td>
+<td>Demonstration of SQL server access</td>
+</tr>
+
+</table>

@@ -1,0 +1,74 @@
+application: pepnet [
+  documentation: "Draw a helical net for a protein sequence"
+  groups: "Display, Protein:2D Structure"
+    relations: "EDAM:0000137 topic Protein hydropathy"
+    relations: "EDAM:0000092 topic Visualisation and rendering"
+    relations: "EDAM:0002124 topic Protein secondary structure analysis"
+    relations: "EDAM:0000569 operation Protein secondary structure visualisation"
+    relations: "EDAM:0000401 operation Protein sequence hydropathy calculation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "Protein"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  toggle: amphipathic [
+    information: "Prompt for amphipathic residue marking"
+    help: "If this is true then the residues ACFGILMVWY are marked as
+           squares and all other residues are unmarked. This overrides any
+           other markup that you may have specified using the qualifiers
+           '-squares', '-diamonds' and '-octags'."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  string: squares [
+    additional: "@(!$(amphipathic))"
+    default: "ILVM"
+    information: "Mark as squares"
+    help: "By default the aliphatic residues ILVM are marked with
+           squares."
+    knowntype: "protein codes"
+    relations: "EDAM:0001006 data Amino acid code"
+  ]
+
+  string: diamonds [
+    additional: "@(!$(amphipathic))"
+    default: "DENQST"
+    information: "Mark as diamonds"
+    help: "By default the residues DENQST are marked with diamonds."
+    knowntype: "protein codes"
+    relations: "EDAM:0001006 data Amino acid code"
+  ]
+
+  string: octags [
+    additional: "@(!$(amphipathic))"
+    default: "HKR"
+    information: "Mark as octagons"
+    help: "By default the positively charged residues HKR are marked
+           with octagons."
+    knowntype: "protein codes"
+    relations: "EDAM:0001006 data Amino acid code"
+  ]
+
+  graph: graph [
+    standard: "Y"
+    gdesc: "Helical net"
+    relations: "EDAM:0002163 data Helical net"
+  ]
+
+endsection: output

@@ -1,0 +1,75 @@
+application: tranalign [
+  documentation: "Generate an alignment of nucleic coding regions
+                  from aligned proteins"
+  groups: "Alignment:Multiple"
+    relations: "EDAM:0000182 topic Sequence alignment"
+    relations: "EDAM:0000260 operation Sequence alignment conversion"
+    relations: "EDAM:0000371 operation DNA translation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: asequence [
+    parameter: "Y"
+    type: "nucleotide"
+    relations: "EDAM:0001210 data Pure nucleotide sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+  seqset: bsequence [
+    parameter: "Y"
+    type: "gapprotein"
+    aligned: "Y"
+    relations: "EDAM:0001384 data Protein sequence alignment"
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  list: table [
+    additional: "Y"
+    default: "0"
+    minimum: "1"
+    maximum: "1"
+    header: "Genetic codes"
+    values: "0:Standard; 1:Standard (with alternative initiation
+             codons); 2:Vertebrate Mitochondrial; 3:Yeast Mitochondrial;
+             4:Mold, Protozoan, Coelenterate Mitochondrial and
+             Mycoplasma/Spiroplasma; 5:Invertebrate Mitochondrial; 6:Ciliate
+             Macronuclear and Dasycladacean; 9:Echinoderm Mitochondrial;
+             10:Euplotid Nuclear; 11:Bacterial; 12:Alternative Yeast Nuclear;
+             13:Ascidian Mitochondrial; 14:Flatworm Mitochondrial;
+             15:Blepharisma Macronuclear; 16:Chlorophycean Mitochondrial;
+             21:Trematode Mitochondrial; 22:Scenedesmus obliquus;
+             23:Thraustochytrium Mitochondrial"
+    delimiter: ";"
+    codedelimiter: ":"
+    information: "Code to use"
+    relations: "EDAM:0002128 data Genetic code name"
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqoutset: outseq [
+    parameter: "Y"
+    type: "gapnucleotide"
+    aligned: "Y"
+    relations: "EDAM:0001207 data Nucleotide sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: output

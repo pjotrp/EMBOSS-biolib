@@ -1,0 +1,267 @@
+                                 vrnaalifold
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   RNA alignment folding
+
+Description
+
+   This is a port of the Vienna RNA package program RNAalifold.
+
+   The original program produces different outputs, depending on the
+   options selected. In the EMBASSY implementation it is split into
+   vrnaalifold and vrnaalifoldpf
+
+Algorithm
+
+   See the original documentation for the Vienna RNA package
+   http://www.tbi.univie.ac.at/~ivo/RNA/
+
+Usage
+
+   Here is a sample session with vrnaalifold
+
+
+% vrnaalifold
+RNA alignment folding
+Input (aligned) nucleotide sequence set: ecoli6s.fasta
+Vienna RNAfold output file [ecoli6s.vrnaalifold]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+RNA alignment folding
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) nucleotide sequence set filename
+                                  and optional format, or reference (input
+                                  USA)
+  [-outfile]           outfile    [*.vrnaalifold] Vienna RNAfold output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -constraintfile     infile     Vienna RNA structure constraints file
+                                  (optional)
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -circular           boolean    [N] Circular RNA
+   -colour             boolean    [N] Colour structure plot
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -scale              float      [1.07] Estimate of ensemble free energy (Any
+                                  numeric value)
+   -dangles            menu       [2] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
+   -covariance         float      [1.0] Weight for covariance (Any numeric
+                                  value)
+   -nspenalty          float      [1.0] Non-compatible sequence penalty (Any
+                                  numeric value)
+   -endgaps            boolean    [N] Mark end gaps
+   -most               boolean    [N] Use most informative sequence algorithm
+   -ssoutfile          outfile    [*.vrnaalifold] Vienna RNA structure
+                                  postscript output file
+   -alignoutfile       outfile    [*.vrnaalifold] Vienna RNA alignment
+                                  postscript output file
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-ssoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-alignoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   vrnaalifold reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: ecoli6s.fasta
+
+>X01238.1/1-183
+AUUUCUCUGAGAUGUUCGCAAGCGGGC.CAGUCCCCUGAGCCGAUAUUUCAUACCACAAG
+AAUGUGGCGCUCCGCGGUUGGUGAGCAUGCUCGGUCCGU...............CCGAGA
+AGCCUUAAAACUGCGACGACACAUUCACCUUGAACCAA.GGGUUCAAGGGUUACAGCCUG
+CGGCGGCA.UC.UCGGAG.AUUC
+>AL627277.1/108623-108805
+AUUUCUCUGAGAUGUUUGCAAGCGGGC.CAGUCCCCUGAGCCGAUAUUUCAUACCACAAG
+AAUGUGGCGCUCCGCGGUUGGUGAGCAUGCUCGGUUCGU...............CCGAGA
+AGCCUUAAAACUGUGACGACACAUUCACCUUGAACCAA.GGGUUCAAGGGUUACAGCCUG
+CGGCGGCA.UC.UCGGAG.AUUC
+>AJ414145.1/90993-91174
+AUUUCUCUGAGGUGUUUGCCAGCGGGC.CAGUCCCCUGAGCCGAUAUUUAAUACCAACAG
+AAUGUAGUGCUCCGUAACCGGUGAGCAUGCUCGGUCCG................CCGAGA
+AGCCUUAAGGUUGCGACGCUGCGUUCACCUUGAACCAA.GGGUUCAAGGGUUACAGCCUG
+CGACGGCA.CC.UCGGAG.AUCC
+>U32767.1/6538-6734
+.AUUACCUGGAGUGUUCGUCAGUAGGC.UAUGUCCCUGAGCCGAUACUUUAAAUCUUAUA
+AAUU.GGUUUCCUAUCGUUGGUGUGUAGGCUUAACCUUUGACUCGUUCAUUGGGCUAAGA
+AACCUGAAAACGGUAUCAACUGAUUU.CCUUGAACCGUCGGGUUCAAGGACUACUGCCCG
+CAGCGGCACUC.UGGGGU.CUUC
+>AE006208.1/8365-8185
+.AUUACCUGAGGUGUUUGCCAGUGGGU.UAUGUCCCUGAGCCGAUACUUU.UAUUUUAUG
+AAUC.GGUUUCUAAUUGUUGGUGUGCAUGCUUAGCUUGA...............CUAAGA
+AGCCUAAAAAUAGUUAUAACUGAUUC.CCUUGAACCGUUGGGUUCAAGGACUGAGACUUG
+CAGCGGCA.UC.UCGGGUUCUUC
+>Y00334.1/77-254
+CGCUCCCUGGUGUGUUGGCCAGUCGGU.GAUGUCCCUGAGCCGAUAACUGCAACAAC..G
+GAGGUUGC.CAGUUGGACCGGUGUGCAUGUCCGCACG.................ACGGAA
+AGCCUUAAGGUCUAC.UGCAACCGCCACCUUGAACUUUCGGGUUCAAGGGCUA.ACCCGA
+CAGCGGCA.CGACCGGGG.AGCU
+>AE004317.1/5626-5807
+UUUACCCUGGGGUGUUCGUCAGCGGAUUUAUGUCCCUGAGCCGAUAAGCAACAUAAC..A
+GGGUUGGUAUUGGGUAGCUAUUGAGCAAGCUCGGCUUGUA..............CCGAGA
+AGCCUGCGGUUACCAUUACUGAUCCG.CCUUGAACCUGAUGGUUCAAGGGCUACGAUCCU
+CAACGGCA.UC.CCGGGG.UUC.
+
+Output file format
+
+   vrnaalifold outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
+
+  Output files for usage example
+
+  File: ecoli6s.vrnaalifold
+
+AUUUCCCUGAGGUGUUCGCCAGCGGGC_CAUGUCCCUGAGCCGAUAUUUAAUACCACAAGAAUGUGGUGCUCCGUGGUUG
+GUGAGCAUGCUCGGCCCGU_______________CCGAGAAGCCUUAAAAUUGCGACGACACAUUCACCUUGAACCAA_G
+GGUUCAAGGGCUACAGCCUGCAGCGGCA_UC_UCGGGG_AUUC
+....(((((((((((.(((..((((((................................(((((((......(((((((.
+..(.((...(((((....................)))))..)))....)))))))....))))))).(((((((((....
+)))))))))......)))))).)))))).)).))))))..... (-56.91 = -48.71 +  -8.20)
+
+  Graphics File: ecoli6s.ssps
+
+   [vrnaalifold results]
+
+  Graphics File: ecoli6s.alirnaps
+
+   [vrnaalifold results]
+
+Data files
+
+   For details of Vienna RNA file formats, see the original documentation
+   http://www.tbi.univie.ac.at/~ivo/RNA/
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+                     Program name                       Description
+                    einverted      Finds inverted repeats in nucleotide sequences
+                    vrnaalifoldpf  RNA alignment folding with partition
+                    vrnacofold     RNA cofolding
+   vrnacofoldconc   RNA cofolding with concentrations
+                    vrnacofoldpf   RNA cofolding with partitioning
+                    vrnadistance   RNA distances
+                    vrnaduplex     RNA duplex calculation
+                    vrnaeval       RNA eval
+                    vrnaevalpair   RNA eval with cofold
+                    vrnafold       Calculate secondary structures of RNAs
+                    vrnafoldpf     Secondary structures of RNAs with partition
+                    vrnaheat       RNA melting
+                    vrnainverse    RNA sequences matching a structure
+                    vrnalfold      Calculate locally stable secondary structures of RNAs
+                    vrnaplot       Plot vrnafold output
+                    vrnasubopt     Calculate RNA suboptimals
+
+Author(s)
+
+                    This program is an EMBOSS conversion of a program written by Ivo
+                    Hofacker as part of his VIENNA package.
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+                    Converted (October 2005) by Alan Bleasby
+
+Target users
+
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.
+
+Comments

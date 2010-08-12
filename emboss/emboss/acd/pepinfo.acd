@@ -1,0 +1,87 @@
+application: pepinfo [
+  documentation: "Plot amino acid properties of a protein sequence in parallel."
+  groups: "Protein:Composition"
+    relations: "EDAM:0000092 topic Visualisation and rendering"
+    relations: "EDAM:0000123 topic Protein physicochemical properties"
+    relations: "EDAM:0000564 operation Sequence visualisation"
+    relations: "EDAM:0000250 operation Protein physicochemical property calculation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "protein"
+    relations: "EDAM:0001219 data Pure protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+  datafile: aaproperties [
+    additional: "Y"
+    default: "Eaa_properties.dat"
+    information: "Amino acid chemical classes data file"
+    knowntype: "amino acid classification"
+    relations: "EDAM:0001502 data Amino acid chemical classes data"
+  ]
+
+  datafile: aahydropathy [
+    additional: "Y"
+    default: "Eaa_hydropathy.dat"
+    information: "Amino acid hydropathy values data file"
+    knowntype: "amino acid hydropathy"
+    relations: "EDAM:0001506 data Amino acid hydropathy data"
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: hwindow [
+    additional: "Y"
+    default: "9"
+    minimum: "1"
+    maximum: "$(sequence.length)"
+    failrange: "N"
+    trueminimum: "Y"
+    information: "Window size for hydropathy averaging"
+    relations: "EDAM:0001251 data Window size"
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  xygraph: graph [
+    standard: "Y"
+    multiple: "3"
+    relations: "EDAM:0001522 data Protein sequence hydropathy plot"
+  ]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "pepinfo output"
+    relations: "EDAM:0001257 data Protein sequence property"
+  ]
+
+  boolean: generalplot [
+    default: "Y"
+    information: "Plot histogram of general properties"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: hydropathyplot [
+    default: "Y"
+    information: "Plot graphs of hydropathy"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: output

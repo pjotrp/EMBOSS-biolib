@@ -1,0 +1,1255 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: crp0.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;ce1cg
+TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGT
+TTTTTTGATCGTTTTCACAAAAATGGAAGTCCACAGTCTTGACAG
+&gt;ara
+GACAAAAACGCGTAACAAAAGTGTCTATAATCACGGCAGAAAAGTCCACATTGATTATTT
+GCACGGCGTCACACTTTGCTATGCCATAGCATTTTTATCCATAAG
+&gt;bglr1
+ACAAATCCCAATAACTTAATTATTGGGATTTGTTATATATAACTTTATAAATTCCTAAAA
+TTACACAAAGTTAATAACTGTGAGCATGGTCATATTTTTATCAAT
+&gt;crp
+CACAAAGCGAAAGCTATGCTAAAACAGTCAGGATGCTACAGTAATACATTGATGTACTGC
+ATGTATGCAAAGGACGTCACATTACCGTGCAGTACAGTTGATAGC
+&gt;cya
+ACGGTGCTACACTTGTATGTAGCGCATCTTTCTTTACGGTCAATCAGCAAGGTGTTAAAT
+TGATCACGTTTTAGACCATTTTTTCGTCGTGAAACTAAAAAAACC
+&gt;deop2
+AGTGAATTATTTGAACCAGATCGCATTACAGTGATGCAAACTTGTAAGTAGATTTCCTTA
+ATTGTGATGTGTATCGAAGTGTGTTGCGGAGTAGATGTTAGAATA
+&gt;gale
+GCGCATAAAAAACGGCTAAATTCTTGTGTAAACGATTCCACTAATTTATTCCATGTCACA
+CTTTTCGCATCTTTGTTATGCTATGGTTATTTCATACCATAAGCC
+&gt;ilv
+GCTCCGGCGGGGTTTTTTGTTATCTGCAATTCAGTACAAAACGTGATCAACCCCTCAATT
+TTCCCTTTGCTGAAAAATTTTCCATTGTCTCCCCTGTAAAGCTGT
+&gt;lac
+AACGCAATTAATGTGAGTTAGCTCACTCATTAGGCACCCCAGGCTTTACACTTTATGCTT
+CCGGCTCGTATGTTGTGTGGAATTGTGAGCGGATAACAATTTCAC
+&gt;male
+ACATTACCGCCAATTCTGTAACAGAGATCACACAAAGCGACGGTGGGGCGTAGGGGCAAG
+GAGGATGGAAAGAGGTTGCCGTATAAAGAAACTAGAGTCCGTTTA
+&gt;malk
+GGAGGAGGCGGGAGGATGAGAACACGGCTTCTGTGAACTAAACCGAGGTCATGTAAGGAA
+TTTCGTGATGTTGCTTGCAAAAATCGTGGCGATTTTATGTGCGCA
+&gt;malt
+GATCAGCGTCGTTTTAGGTGAGTTGTTAATAAAGATTTGGAATTGTGACACAGTGCAAAT
+TCAGACACATAAAAAAACGTCATCGCTTGCATTAGAAAGGTTTCT
+&gt;ompa
+GCTGACAAAAAAGATTAAACATACCTTATACAAGACTTTTTTTTCATATGCCTGACGGAG
+TTCACACTTGTAAGTTTTCAACTACGTTGTAGACTTTACATCGCC
+&gt;tnaa
+TTTTTTAAACATTAAAATTCTTACGTAATTTATAATCTTTAAAAAAAGCATTTAATATTG
+CTCCCCGAACGATTGTGATTCGATTCACATTTAAACAATTTCAGA
+&gt;uxu1
+CCCATGAGAGTGAAATTGTTGTGATGTGGTTAACCCAATTAGAATTCGGGATTGACATGT
+CTTACCAAAAGGTAGAACTTATACGCCATCTCATCCGATGCAAGC
+&gt;pbr322
+CTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCACCATATGCGGTGTGA
+AATACCGCACAGATGCGTAAGGAGAAAATACCGCATCAGGCGCTC
+&gt;trn9cat
+CTGTGACGGAAGATCACTTCGCAGAATAAATAAATCCTGGTGTCCCTGTTGATACCGGGA
+AGCCCTGGGCCAACTTTTGGCGAAAATGAGACGTTGATCGGCACG
+&gt;tdc
+GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTG
+GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= crp0.fasta
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+ce1cg                    1.0000    105  ara                      1.0000    105  
+bglr1                    1.0000    105  crp                      1.0000    105  
+cya                      1.0000    105  deop2                    1.0000    105  
+gale                     1.0000    105  ilv                      1.0000    105  
+lac                      1.0000    105  male                     1.0000    105  
+malk                     1.0000    105  malt                     1.0000    105  
+ompa                     1.0000    105  tnaa                     1.0000    105  
+uxu1                     1.0000    105  pbr322                   1.0000    105  
+trn9cat                  1.0000    105  tdc                      1.0000    105  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+--------------------------------------------------------------------------------
+GTGA[TC][CG][TC][ATG][GT][TC]TCACA
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.47 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+ce1cg                            1.94e-03  64_[+1(1.07e-05)]_26
+ara                              5.19e-04  57_[-1(2.85e-06)]_33
+bglr1                            1.76e-03  78_[-1(9.67e-06)]_12
+crp                              2.34e-03  65_[-1(1.29e-05)]_25
+cya                              8.88e-04  52_[-1(4.88e-06)]_38
+deop2                            1.76e-03  9_[-1(9.67e-06)]_81
+gale                             1.06e-02  54_[+1(5.85e-05)]_36
+ilv                              2.85e-02  105
+lac                              2.93e-04  11_[-1(1.61e-06)]_79
+male                             2.80e-03  16_[-1(1.54e-05)]_74
+malk                             9.85e-04  64_[+1(5.41e-06)]_26
+malt                             2.12e-03  44_[+1(1.17e-05)]_46
+ompa                             4.19e-04  51_[+1(2.30e-06)]_39
+tnaa                             7.20e-04  74_[+1(3.95e-06)]_16
+uxu1                             2.80e-03  20_[+1(1.54e-05)]_70
+pbr322                           9.85e-04  55_[-1(5.41e-06)]_35
+trn9cat                          4.18e-02  105
+tdc                              3.35e-03  81_[+1(1.84e-05)]_9
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: ex2.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= crp0.fasta
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+ce1cg                    1.0000    105  ara                      1.0000    105  
+bglr1                    1.0000    105  crp                      1.0000    105  
+cya                      1.0000    105  deop2                    1.0000    105  
+gale                     1.0000    105  ilv                      1.0000    105  
+lac                      1.0000    105  male                     1.0000    105  
+malk                     1.0000    105  malt                     1.0000    105  
+ompa                     1.0000    105  tnaa                     1.0000    105  
+uxu1                     1.0000    105  pbr322                   1.0000    105  
+trn9cat                  1.0000    105  tdc                      1.0000    105  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+--------------------------------------------------------------------------------
+[TA][AT]AT[GT]T[GA][AC][AGT]C[CTAGA]A[CTG][GAC]TCACA[AC]
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.07 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+ce1cg                            1.25e-03  60_[+1(7.30e-06)]_25
+ara                              1.68e-06  54_[+1(9.77e-09)]_31
+bglr1                            1.93e-03  77_[-1(1.12e-05)]_8
+crp                              8.74e-04  62_[+1(5.08e-06)]_23
+cya                              2.47e-03  51_[-1(1.44e-05)]_34
+deop2                            3.29e-04  6_[+1(1.91e-06)]_79
+gale                             1.23e-04  41_[+1(7.15e-07)]_44
+ilv                              4.96e-03  38_[+1(2.89e-05)]_47
+lac                              2.67e-04  8_[+1(1.55e-06)]_77
+male                             4.93e-04  13_[+1(2.86e-06)]_72
+malk                             2.47e-03  62_[-1(1.44e-05)]_23
+malt                             4.09e-05  42_[-1(2.38e-07)]_43
+ompa                             9.58e-04  49_[-1(5.57e-06)]_36
+tnaa                             1.38e-04  72_[-1(8.02e-07)]_13
+uxu1                             7.96e-04  18_[-1(4.63e-06)]_67
+pbr322                           4.03e-04  54_[-1(2.34e-06)]_31
+trn9cat                          6.32e-02  105
+tdc                              4.03e-04  79_[-1(2.34e-06)]_6
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.3"></a>
+<h3>Output files for usage example 3</h3>
+<p><h3>File: ino_up800.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;CHO1 sequence of the region upstream from YER026C
+CCGACCCAAATGTAATGGAACAATATTATTTGACACTTGATCAGCAGCAAAATAATCACC
+AAAATATGGCCTGGTTGACTCCTCCACAACTGCCACCTCATTTAGAAAACGTCATTTTGA
+ATAGTTACTCAAACGCGCAAACTGATAATACGTCTGGCGCCCTTCCCATTCCGAACCATG
+TTATATTGAACCATCTGGCGACAAGCAGTATTAAGCATAATACATTATGTGTCGCATCCA
+TTGTTAGGTATAAACAAAAATACGTGACCCAAATACTGTATACACCATTGCAATAGATAT
+GATTATAGAGCTTATAGCTACATCTTTTTAGATAAAAGCGAAGATGTTTCTGCGATTTTT
+CCATTATAGCTCTCCATGATACTAAATATCAAGGTCTACATGTAAGTATTTGTATATATG
+GGTTGGAATGTATATACGTATATACGTACGTACGTACGTATATGCACATAATTGTTACGG
+GATGTATATATAAATTAGTAGCATTATAGAAGATATCCCTAACATCAATCCCCACTCCTT
+CTCAATGTGTGCAGACTTCTGTGCCAGACACTGAATATATATCAGTAATTGGTCAAAATC
+ACTTTGAACGTTCACACGGCACCCTCACGCCTTTGAGCTTTCACATGGACCCATCTAAAG
+ATGAAGATCCGTATTTTATAGGAAACATTATAAATAAGGAAAGAGAGATACACCTATTTT
+TTTCATTTTGTGGGTGATTGTCATTTTTAGTTGTCTATTTGATTCAATCAAAAAACAAAA
+ATAAAACTATATATTAAAAA
+&gt;CHO2 sequence of the region upstream from YGR157W
+ACCCTCTAACGCGAATAAAGCGAATGACAGCGGCACCATTAATATGGCGAAACTGCAATT
+ACTACCTGAAAACCAACAAGATATGATCAAACAAGTTCTTACTTTGACACCTGCCCAGAT
+CCAAAGTTTACCAAGTGACCAGCAACTTATGGTGGAAAACTTTAGAAAAGAATATATAAT
+CTAAGTAATCAGAGCCATAGCGTATCAGAAAACCACACCTAATTAGATGGTTCTTGCATC
+TGTACCTCTTATCACTAAAAGCGGCACTAAACTTCCAACATTAAATGTTTGCCTTGTTAA
+ATATATATTTTTGCCTTGGTTTAAATTGGTCAAGACAGTCAATTGCCACACTTTTCTCAT
+GCCGCATTCATTATTCGCGAAGTTTTCCACACAAAACTGTGAAAATGAACGGCGATGCCA
+GAAACGGCAAAACCTCAAATGTTAGATAACGTGGATCTCCGACACATGTGAATTTATAAG
+TAGGCATATGAAAATACAGATTCTTTCCACTGTGTTCCCTTTTATTCCCTTCTCATGTGA
+AGAGTTCACACCAAATCTTCAAAATATAACTAATATAGTAGAGTTTGATTCAAAGGACCT
+TTTTTTTTGCCTCTTTGATTAGTTTATCTTCTTTTCTTCATTTTATCCCCTAATTTTATA
+CGTTAGTTCAACCTAACAATCCAGGATTTCATTAACAAGAAAGGTAAAAGTAACCTATCA
+AGGCTATTTTGAAAAAAAAAATTCCGCCCTGAATATTTCGAGTGATTTTCTTAGTGACAA
+AGCTTTTTCTTCATCTGTAG
+&gt;FAS1 sequence of the region upstream from YKL182W
+CCGGGTTATAGCAGCGTCTGCTCCGCATCACGATACACGAGGTGCAGGCACGGTTCACTA
+CTCCCCTGGCCTCCAACAAACGACGGCCAAAAACTTCACATGCCGCCCAGCCAAGCATAA
+TTACGCAACAGCGATCTTTCCGTCGCACAAGTTAAAAGAAATTGTTGAAAAATACAAATA
+ATCGCGAACAATACGTTGTTGCTATTTAACGCTTTTGGTCTGACAGTAAGTGTGCCTTTC
+CCAATCACCGAAAAGTGTTGAACGATTCACTGCGACAATAATCAGAGATTACAGTCGGCA
+TTTTGGCATTTTTGGCATACTTTTTATCGATTGAACCATCTTCTCCAAACACTTTTCCTT
+TTTCCTTCTATTCTGCAGGACCAACTAAAACTGGGTATATATATCATTATCTATATATAT
+AAACGGCTTTCAACAAAGTTATAGGGGAAAACTAAAAATATAAGAAAAAAAAAGGTATTG
+ATTGATAAGGAAAAAGAACCAAGGGAAAAATATAAAAAAGTACATTGGGCCTTTTCATAC
+TTGTTATCACTTACATTACAAAGAAGAACAAACAACTTTTTTAAACGAATTTTCTTTCTT
+CCTTTTTCAATTTATTAATTCTTTTTTTCCATACAATTCAAGGTCAAATATATTCTTATA
+TGCTCTTTGAATATTTCTGAAAAATATATAAAGAAAAGAAACTACAAGAACATCATCCGG
+AAAATCAGATTATAGACTAGGATTCCGCTCTTTTTAGTATATTTATTCGCCACACCTAAC
+TGCTCTATTATTCGCTCATT
+&gt;FAS2 sequence of the region upstream from YPL231W
+TCCAGGCAAGGCACCAAGAGTTATTGAAACTAGAAAAATCCATGGCAGAACTTACTCAAT
+TGTTTAATGACATGGAAGAACTGGTAATAGAACAACAAGAAAACGTAGACGTCATCGACA
+AGAACGTTGAAGACGCTCAACTCGACGTAGAACAGGGTGTCGGTCATACCGATAAAGCCG
+TCAAGAGTGCCAGAAAAGCAAGAAAGAACAAGATTAGATGTTGGTTGATTGTATTCGCCA
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+CTCTTCCTAAAAATACATTGGGCATTACCCGCAAACTAACCCATCGCTTAGCAAAATCCA
+ACCATTTTTTTTTTATCTCCCGCGTTTTCACATGCTACCTCATTCGCCTCGTAACGTTAC
+GACCGAAATCTCACTAAGGCACGGTTTGTTGGGCAGTTTACAGATGTTGGATAACCAGTT
+GTTTCTAAACGGTTATGCCTCATATATAACTTGTTAACTGAAGGTTACACAAGACCACAT
+CACCACTGTCGTGCTTTTCTAATAACCGCTATATTAGACGTTTAAAGGGCTACAGCAACA
+CCAATTGAAATACCATCATT
+&gt;ACC1 sequence of the region upstream from YNR016C
+TATCCAAAGGGGAATGCTTCATCTTGTTGAACAACGCCCAACAATTTCCACTGCCCACCG
+AATCGTTGCGCCCGTTAAAATCTTCACATGGCCCGGCCGCGCGCGCGTTGTGCCAACAAG
+TCGCAGTCGAAATTCAACCGCTCATTGCCACTCTCTCTACTGCTTGGTGAACTAGGCTAT
+ACGCTCAATCAGCGCCAAGATATATAAGAAGAACAGCACTCCCAGTCGTATTCTGGCACA
+GTATAGCCTAGCACAATCACTGTCACAATTGTTATCGGTTCTACAATTGTTCTGCTCTCT
+TCAATTTTCCTTTCCTTATTCTACTCTTTTTATCCCTTTCGTACAGTTTACCTGAAGATA
+AAAAACAACAAAGCCAATTCCCTAATTTGCAATCGCCATTTGCATCTATATATATATATT
+TGTTGTGCCATTTTTTTATCCTCTGTGAGTGATCGGTGCATGTGTTTATAAAAGTTTATT
+CATTCTACTATACGAACTTTTCCCTCTGCCCTTCCCTCCCGCTTCATCCTTATTTTTGGA
+CAATAAACTAGAGAACAATTTGAACTTGAATTGGAATTCAGATTCAGAGCAAGAGACAAG
+AAACTTCCCTTTTTCTTCTCCACATATTATTATTTATTCGTGTATTTTCTTTTAACGATA
+CGATACGATACGACACGATACGATACGACACGCTACTATACTATACAAATATAATAGTAT
+AATAACCGATTCGTCTTCTAGCTTAATTTTTTTCCGTTCCCGAAACAGCGCAGAAAATTA
+GAAAAAATCAAGTTTCTACC
+&gt;INO1 sequence of the region upstream from YJL153C
+AGCAAACAACCAAATATAATTTAGAAATGGACAGAGACCATATTAATGACCATGACCATC
+GAATGAGCTATTCCATCAACAAGGACGACTTGTTGTTAATGGTTTTGGCGGTTTTCATTC
+CCCCAGTGGCCGTCTGGAAGCGTAAGGGTATGTTCAACAGGGATACACTATTGAACTTAC
+TTCTCTTCCTACTGTTATTCTTCCCAGCAATCATTCACGCTTGCTACGTTGTATATGAAA
+CGAGTAGTGAACGTTCGTACGATCTTTCACGCAGACATGCGACTGCGCCCGCCGTAGACC
+GTGACCTGGAAGCTCACCCTGCAGAGGAATCTCAAGCACAGCCTCCAGCATATGATGAAG
+ACGATGAGGCCGGTGCCGATGTGCCCTTGATGGACAACAAACAACAGCTCTCTTCCGGCC
+GTACTTAGTGATCGGAACGAGCTCTTTATCACCGTAGTTCTAAATAACACATAGAGTAAA
+TTATTGCCTTTTTCTTCGTTCCTTTTGTTCTTCACGTCCTTTTTATGAAATACGTGCCGG
+TGTTCCGGGGTTGGATGCGGAATCGAAAGTGTTGAATGTGAAATATGCGGAGGCCAAGTA
+TGCGCTTCGGCGGCTAAATGCGGCATGTGAAAAGTATTGTCTATTTTATCTTCATCCTTC
+TTTCCCAGAATATTGAACTTATTTAATTCACATGGAGCAGAGAAAGCGCACCTCTGCGTT
+GGCGGCAATGTTAATTTGAGACGTATATAAATTGGAGCTTTCGTCACCTTTTTTTGGCTT
+GTTCTGTTGTCGGGTTCCTA
+&gt;OPI3 sequence of the region upstream from YJR073C
+GTGTCCACAACGTGAAACTTCCGTACCATTTCTTGCAACAATTGGTAAACAGCATGACAT
+CTTGCAGGCAACTCTTTGTTGCTTGCTTGCGACGCCTCCTCCTTTGTCAAAGGTACATTA
+ATGGAGATGACCACATCCGTGTCAAACTGGGTTAATCTGATCAACGCTACGCCGATGACA
+ACGGTCTGTGCCAGATCTGGTTTTCCCCACTTATTTGCTACTTCCATAACGAGTCCGGTG
+AACTTGGTTCCTTGCTGAACAGTGTCTTCTTGTAAAGCTTCCCATTTGGTGGTCCCGTTC
+AACTCCGTCAGGTCTTCCACGTGGAACTGCCAAGCCTCCTTCAGATCGCTCTTGTCGACC
+GTCTCCAAGAGATCCACGATAATGCTTTCATTGGTGGCTAGTCCATCTTCGAATTCTTCT
+TCATCGCGACGGGAATTGACGTACACCTCCTGTGTATCGGGGACTTCTCTTAGAGTAGAA
+GCGTCTATAAACCCAGGTGGGACGACAGTAGTGATGGCGCCGCCGTATAATTCGACTTCC
+TTGTTGTTCATGCTTCCTTGATGACCAGGGTAGGTGTCAATGAGAGTGCATGTGGAAAGT
+TGCACCGGTTGTGAAATATGAGAAGCCTTTTCAATCTTCATATGCAAACCCACACATGCA
+TCGTTGGTTTCTGTCCACTGCCACTGCAATGACCACTGGATAAGGGGTCTTTATAAGAGA
+ACACATATGAAGAACATGAACGTTCTTGGACAGAGCCATAAACAGCAATTGAAGACAACA
+AGAATAGCGCAAGTCAAGCG
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex3.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= ino_up800.fasta
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+CHO1                     1.0000    800  CHO2                     1.0000    800  
+FAS1                     1.0000    800  FAS2                     1.0000    800  
+ACC1                     1.0000    800  INO1                     1.0000    800  
+OPI3                     1.0000    800  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme ino_up800.fasta -bfile ../../data/memenew/yeast.nc.6.freq -mod anr -prior dirichlet -revcomp -nostatus -dna -text 
+
+model:  mod=           anr    nmotifs=         1    evt=           inf
+object function=  E-value of product of p-values
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.714286  0.285714  0.000000 
+ 0.428571  0.500000  0.000000  0.071429 
+ 0.357143  0.214286  0.357143  0.071429 
+ 0.214286  0.714286  0.000000  0.071429 
+ 0.357143  0.571429  0.071429  0.000000 
+ 0.071429  0.428571  0.142857  0.357143 
+ 0.142857  0.428571  0.000000  0.428571 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 1 regular expression
+--------------------------------------------------------------------------------
+TTCACATG[CG][CA][AGC][CA][CA][CT][CT]
+--------------------------------------------------------------------------------
+
+
+
+
+Time 10.22 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+CHO1                             3.16e-04  162_[+1(3.61e-06)]_351_[+1(9.87e-05)]_67_[+1(2.01e-07)]_14_[+1(7.50e-07)]_146
+CHO2                             9.08e-04  353_[+1(5.77e-07)]_109_[-1(7.24e-06)]_308
+FAS1                             9.60e-06  94_[+1(6.11e-09)]_691
+FAS2                             2.82e-04  566_[+1(1.80e-07)]_219
+ACC1                             6.55e-04  82_[+1(4.17e-07)]_703
+INO1                             4.14e-05  546_[-1(2.94e-06)]_6_[-1(8.23e-07)]_34_[-1(2.64e-08)]_55_[+1(1.09e-06)]_99
+OPI3                             1.57e-03  581_[-1(1.82e-06)]_40_[+1(1.00e-06)]_149
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.4"></a>
+<h3>Output files for usage example 4</h3>
+<p><h3>File: lipocalin.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;ICYA_MANSE
+GDIFYPGYCPDVKPVNDFDLSAFAGAWHEIAKLPLENENQGKCTIAEYKYDGKKASVYNS
+FVSNGVKEYMEGDLEIAPDAKYTKQGKYVMTFKFGQRVVNLVPWVLATDYKNYAINYNCD
+YHPDKKAHSIHAWILSKSKVLEGNTKEVVDNVLKTFSHLIDASKFISNDFSEAACQYSTT
+YSLTGPDRH
+&gt;LACB_BOVIN
+MKCLLLALALTCGAQALIVTQTMKGLDIQKVAGTWYSLAMAASDISLLDAQSAPLRVYVE
+ELKPTPEGDLEILLQKWENGECAQKKIIAEKTKIPAVFKIDALNENKVLVLDTDYKKYLL
+FCMENSAEPEQSLACQCLVRTPEVDDEALEKFDKALKALPMHIRLSFNPTQLEEQCHI
+&gt;BBP_PIEBR
+NVYHDGACPEVKPVDNFDWSNYHGKWWEVAKYPNSVEKYGKCGWAEYTPEGKSVKVSNYH
+VIHGKEYFIEGTAYPVGDSKIGKIYHKLTYGGVTKENVFNVLSTDNKNYIIGYYCKYDED
+KKGHQDFVWVLSRSKVLTGEAKTAVENYLIGSPVVDSQKLVYSDFSEAACKVN
+&gt;RETB_BOVIN
+ERDCRVSSFRVKENFDKARFAGTWYAMAKKDPEGLFLQDNIVAEFSVDENGHMSATAKGR
+VRLLNNWDVCADMVGTFTDTEDPAKFKMKYWGVASFLQKGNDDHWIIDTDYETFAVQYSC
+RLLNLDGTCADSYSFVFARDPSGFSPEVQKIVRQRQEELCLARQYRLIPHNGYCDGKSER
+NIL
+&gt;MUP2_MOUSE
+MKMLLLLCLGLTLVCVHAEEASSTGRNFNVEKINGEWHTIILASDKREKIEDNGNFRLFL
+EQIHVLEKSLVLKFHTVRDEECSELSMVADKTEKAGEYSVTYDGFNTFTIPKTDYDNFLM
+AHLINEKDGETFQLMGLYGREPDLSSDIKERFAKLCEEHGILRENIIDLSNANRCLQARE
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex4.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= lipocalin.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+ICYA_MANSE               1.0000    189  LACB_BOVIN               1.0000    178  
+BBP_PIEBR                1.0000    173  RETB_BOVIN               1.0000    183  
+MUP2_MOUSE               1.0000    180  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme lipocalin.fasta -mod oops -nmotifs 2 -prior dirichlet -maxw 20 -nostatus -protein -text 
+
+model:  mod=          oops    nmotifs=         2    evt=           inf
+object function=  E-value of product of p-values
+width:  minw=            8    maxw=           20    minic=        0.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.000000  0.200000  0.200000  0.000000  0.000000  0.000000  0.000000  0.600000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.600000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.400000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.600000 
+ 0.400000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.400000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.400000  0.000000  0.200000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000 
+ 0.200000  0.000000  0.000000  0.000000  0.200000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.000000  0.200000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.600000 
+ 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.200000  0.200000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.000000  0.200000 
+ 0.000000  0.600000  0.000000  0.200000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 2 regular expression
+--------------------------------------------------------------------------------
+[ENF][NDL][VDKT][FHPV][WLNT][VI][LIP][DAKS]TD[YN][KDE][NKT][YF][ALI][ILMV][AFGNQ][YCH][LMNSY][CEI]
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.12 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+ICYA_MANSE                       5.85e-32  13_[1(1.17e-18)]_67_[2(2.23e-20)]_70
+LACB_BOVIN                       2.65e-27  21_[1(4.11e-17)]_64_[2(3.82e-17)]_18_[1(7.85e-05)]_17
+BBP_PIEBR                        3.66e-31  12_[1(6.04e-19)]_64_[2(3.37e-19)]_58
+RETB_BOVIN                       1.46e-29  10_[1(6.49e-18)]_71_[2(1.16e-18)]_63
+MUP2_MOUSE                       2.28e-27  23_[1(1.21e-16)]_62_[2(1.09e-17)]_56
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 2 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.5"></a>
+<h3>Output files for usage example 5</h3>
+<p><h3>File: farntrans5.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;RAM1_YEAST PROTEIN FARNESYLTRANSFERASE BETA SUBUNIT (EC 2.5.1.-) (CAAX FARN
+MRQRVGRSIARAKFINTALLGRKRPVMERVVDIAHVDSSKAIQPLMKELETDTTEARYKV
+LQSVLEIYDDEKNIEPALTKEFHKMYLDVAFEISLPPQMTALDASQPWMLYWIANSLKVM
+DRDWLSDDTKRKIVVKLFTISPSGGPFGGGPGQLSHLASTYAAINALSLCDNIDGCWDRI
+DRKGIYQWLISLKEPNGGFKTCLEVGEVDTRGIYCALSIATLLNILTEELTEGVLNYLKN
+CQNYEGGFGSCPHVDEAHGGYTFCATASLAILRSMDQINVEKLLEWSSARQLQEERGFCG
+RSNKLVDGCYSFWVGGSAAILEAFGYGQCFNKHALRDYILYCCQEKEQPGLRDKPGAHSD
+FYHTNYCLLGLAVAESSYSCTPNDSPHNIKCTPDRLIGSSKLTDVNPVYGLPIENVRKII
+HYFKSNLSSPS
+&gt;PFTB_RAT PROTEIN FARNESYLTRANSFERASE BETA SUBUNIT (EC 2.5.1.-) (CAAX FARNES
+MASSSSFTYYCPPSSSPVWSEPLYSLRPEHARERLQDDSVETVTSIEQAKVEEKIQEVFS
+SYKFNHLVPRLVLQREKHFHYLKRGLRQLTDAYECLDASRPWLCYWILHSLELLDEPIPQ
+IVATDVCQFLELCQSPDGGFGGGPGQYPHLAPTYAAVNALCIIGTEEAYNVINREKLLQY
+LYSLKQPDGSFLMHVGGEVDVRSAYCAASVASLTNIITPDLFEGTAEWIARCQNWEGGIG
+GVPGMEAHGGYTFCGLAALVILKKERSLNLKSLLQWVTSRQMRFEGGFQGRCNKLVDGCY
+SFWQAGLLPLLHRALHAQGDPALSMSHWMFHQQALQEYILMCCQCPAGGLLDKPGKSRDF
+YHTCYCLSGLSIAQHFGSGAMLHDVVMGVPENVLQPTHPVYNIGPDKVIQATTHFLQKPV
+PGFEECEDAVTSDPATD
+&gt;BET2_YEAST YPT1/SEC4 PROTEINS GERANYLGERANYLTRANSFERASE BETA SUBUNIT (EC 2.
+MSGSLTLLKEKHIRYIESLDTNKHNFEYWLTEHLRLNGIYWGLTALCVLDSPETFVKEEV
+ISFVLSCWDDKYGAFAPFPRHDAHLLTTLSAVQILATYDALDVLGKDRKVRLISFIRGNQ
+LEDGSFQGDRFGEVDTRFVYTALSALSILGELTSEVVDPAVDFVLKCYNFDGGFGLCPNA
+ESHAAQAFTCLGALAIANKLDMLSDDQLEEIGWWLCERQLPEGGLNGRPSKLPDVCYSWW
+VLSSLAIIGRLDWINYEKLTEFILKCQDEKKGGISDRPENEVDVFHTVFGVAGLSLMGYD
+NLVPIDPIYCMPKSVTSKFKKYPYK
+&gt;RATRABGERB Rat rab geranylgeranyl transferase beta-subunit
+MGTQQKDVTIKSDAPDTLLLEKHADYIASYGSKKDDYEYCMSEYLRMSGVYWGLTVMDLM
+GQLHRMNKEEILVFIKSCQHECGGVSASIGHDPHLLYTLSAVQILTLYDSIHVINVDKVV
+AYVQSLQKEDGSFAGDIWGEIDTRFSFCAVATLALLGKLDAINVEKAIEFVLSCMNFDGG
+FGCRPGSESHAGQIYCCTGFLAITSQLHQVNSDLLGWWLCERQLPSGGLNGRPEKLPDVC
+YSWWVLASLKIIGRLHWIDREKLRSFILACQDEETGGFADRPGDMVDPFHTLFGIAGLSL
+LGEEQIKPVSPVFCMPEEVLQRVNVQPELVS
+&gt;CAL1_YEAST RAS PROTEINS GERANYLGERANYLTRANSFERASE (EC 2.5.1.-) (PROTEIN GER
+MCQATNGPSRVVTKKHRKFFERHLQLLPSSHQGHDVNRMAIIFYSISGLSIFDVNVSAKY
+GDHLGWMRKHYIKTVLDDTENTVISGFVGSLVMNIPHATTINLPNTLFALLSMIMLRDYE
+YFETILDKRSLARFVSKCQRPDRGSFVSCLDYKTNCGSSVDSDDLRFCYIAVAILYICGC
+RSKEDFDEYIDTEKLLGYIMSQQCYNGAFGAHNEPHSGYTSCALSTLALLSSLEKLSDKF
+KEDTITWLLHRQVSSHGCMKFESELNASYDQSDDGGFQGRENKFADTCYAFWCLNSLHLL
+TKDWKMLCQTELVTNYLLDRTQKTLTGGFSKNDEEDADLYHSCLGSAALALIEGKFNGEL
+CIPQEIFNDFSKRCCF
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex5.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= farntrans5.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  
+BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  
+CAL1_YEAST               1.0000    376  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme farntrans5.fasta -mod anr -prior dirichlet -maxsites 50 -maxw 40 -nostatus -protein -text 
+
+model:  mod=           anr    nmotifs=         1    evt=           inf
+object function=  E-value of product of p-values
+width:  minw=            8    maxw=           40    minic=        0.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.000000  0.000000  0.166667  0.055556  0.388889  0.000000  0.000000  0.000000  0.000000  0.000000  0.222222  0.000000  0.000000  0.000000  0.055556  0.000000  0.055556  0.055556  0.000000 
+ 0.111111  0.000000  0.111111  0.055556  0.000000  0.166667  0.000000  0.000000  0.333333  0.000000  0.055556  0.055556  0.000000  0.055556  0.000000  0.055556  0.000000  0.000000  0.000000  0.000000 
+ 0.000000  0.000000  0.055556  0.444444  0.055556  0.000000  0.055556  0.000000  0.000000  0.222222  0.055556  0.000000  0.000000  0.000000  0.000000  0.055556  0.000000  0.000000  0.000000  0.055556 
+ 0.222222  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.055556  0.000000  0.000000  0.000000  0.000000  0.166667  0.000000  0.055556  0.166667  0.000000  0.333333  0.000000  0.000000 
+ 0.000000  0.000000  0.722222  0.000000  0.000000  0.000000  0.277778  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.111111  0.000000  0.000000  0.000000  0.111111  0.222222  0.000000  0.000000  0.000000  0.111111  0.000000  0.000000  0.055556  0.000000  0.000000  0.000000  0.166667  0.222222  0.000000  0.000000 
+ 0.111111  0.277778  0.000000  0.000000  0.111111  0.166667  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.166667  0.000000  0.000000  0.000000  0.000000  0.166667 
+ 0.000000  0.000000  0.000000  0.000000  0.111111  0.000000  0.277778  0.000000  0.000000  0.000000  0.000000  0.000000  0.055556  0.111111  0.000000  0.055556  0.000000  0.000000  0.000000  0.388889 
+ 0.166667  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.055556  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.333333  0.388889  0.055556  0.000000  0.000000 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 1 regular expression
+--------------------------------------------------------------------------------
+Qx[EP][DE]GG[FL]G[GD]RP[GN]K[EL][VA][DH][GV]C[YH][TS]
+--------------------------------------------------------------------------------
+
+
+
+
+Time  1.49 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+RAM1_YEAST                       1.98e-11  140_[1(3.83e-06)]_82_[1(3.85e-11)]_29_[1(4.81e-14)]_33_[1(3.01e-12)]_67
+PFTB_RAT                         2.50e-14  133_[1(5.98e-14)]_31_[1(1.26e-12)]_28_[1(5.88e-16)]_29_[1(5.97e-17)]_42_[1(1.38e-13)]_74
+BET2_YEAST                       5.50e-14  119_[1(1.69e-13)]_28_[1(3.03e-13)]_31_[1(1.80e-16)]_29_[1(5.98e-14)]_38
+RATRABGERB                       8.82e-14  126_[1(1.53e-13)]_28_[1(9.50e-15)]_28_[1(2.83e-16)]_29_[1(2.05e-15)]_40
+CAL1_YEAST                       2.42e-13  270_[1(6.78e-16)]_32_[1(4.48e-11)]_34
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.6"></a>
+<h3>Output files for usage example 6</h3>
+<p><h3>File: ex6.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= farntrans5.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  
+BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  
+CAL1_YEAST               1.0000    376  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme farntrans5.fasta -mod anr -nmotifs 3 -prior dirichlet -maxsites 30 -w 10 -nostatus -protein -text 
+
+model:  mod=           anr    nmotifs=         3    evt=           inf
+object function=  E-value of product of p-values
+width:  minw=           10    maxw=           10    minic=        0.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.000000  0.142857  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.142857  0.000000  0.571429  0.000000  0.071429  0.000000  0.000000  0.000000  0.071429  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.285714  0.071429  0.000000  0.000000  0.000000  0.000000  0.214286  0.000000  0.071429  0.285714  0.000000  0.071429 
+ 0.000000  0.000000  0.071429  0.785714  0.000000  0.000000  0.071429  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.071429  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.071429  0.000000  0.000000  0.142857  0.000000  0.000000  0.000000  0.000000  0.785714  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.071429  0.000000  0.000000  0.000000  0.000000  0.000000  0.214286  0.142857  0.000000  0.428571  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.142857  0.000000  0.000000 
+ 0.071429  0.000000  0.000000  0.000000  0.071429  0.000000  0.000000  0.285714  0.000000  0.285714  0.000000  0.000000  0.000000  0.000000  0.142857  0.000000  0.071429  0.071429  0.000000  0.000000 
+ 0.071429  0.000000  0.142857  0.214286  0.000000  0.071429  0.142857  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.071429  0.071429  0.142857  0.000000  0.071429  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.357143  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.071429  0.571429 
+ 0.000000  0.000000  0.000000  0.000000  0.071429  0.000000  0.000000  0.500000  0.000000  0.142857  0.000000  0.000000  0.000000  0.000000  0.000000  0.071429  0.000000  0.214286  0.000000  0.000000 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 3 regular expression
+--------------------------------------------------------------------------------
+[IL]N[KVR]EK[LH][IL]E[YF][IV]
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.47 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+RAM1_YEAST                       1.28e-15  109_[2(1.99e-06)]_24_[1(9.95e-09)]_6_[2(3.56e-08)]_43_[2(6.10e-07)]_2_[3(1.62e-05)]_10_[1(6.34e-09)]_7_[2(6.90e-10)]_6_[3(7.11e-09)]_7_[1(3.91e-09)]_6_[2(8.06e-07)]_9_[3(4.43e-08)]_24_[2(1.85e-06)]_40_[3(3.31e-08)]_8
+PFTB_RAT                         1.38e-16  72_[3(4.86e-08)]_21_[2(7.36e-07)]_23_[1(2.07e-10)]_6_[2(1.20e-08)]_9_[3(2.23e-09)]_22_[2(1.35e-06)]_22_[1(2.12e-09)]_6_[2(2.28e-08)]_23_[1(6.68e-11)]_68_[2(8.11e-08)]_65
+BET2_YEAST                       3.95e-16  6_[3(6.29e-09)]_22_[2(2.41e-07)]_6_[3(1.97e-07)]_74_[2(1.05e-07)]_6_[3(5.91e-05)]_6_[1(3.56e-09)]_6_[2(8.11e-08)]_25_[1(1.39e-09)]_6_[2(1.03e-08)]_6_[3(9.33e-10)]_7_[1(3.44e-08)]_6_[2(1.46e-06)]_29
+RATRABGERB                       3.89e-16  17_[3(1.70e-07)]_38_[3(2.44e-08)]_38_[3(5.33e-08)]_22_[2(5.42e-08)]_6_[3(5.01e-10)]_6_[1(6.01e-10)]_6_[2(9.24e-08)]_22_[1(3.56e-09)]_6_[2(4.12e-08)]_6_[3(2.91e-09)]_7_[1(6.95e-09)]_6_[2(2.83e-06)]_31
+CAL1_YEAST                       5.03e-15  41_[2(7.36e-07)]_74_[3(3.01e-05)]_32_[2(8.06e-07)]_12_[3(2.20e-08)]_20_[2(1.92e-07)]_44_[1(1.82e-10)]_6_[2(3.07e-08)]_77
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 3 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.7"></a>
+<h3>Output files for usage example 7</h3>
+<p><h3>File: ex7.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= farntrans5.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  
+BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  
+CAL1_YEAST               1.0000    376  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme farntrans5.fasta -mod anr -nmotifs 3 -prior dirichlet -nsites 24 -maxw 12 -nostatus -protein -text 
+
+model:  mod=           anr    nmotifs=         3    evt=           inf
+object function=  E-value of product of p-values
+width:  minw=            8    maxw=           12    minic=        0.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.000000  0.125000  0.583333  0.000000  0.000000  0.041667  0.000000  0.125000  0.000000  0.000000  0.000000  0.000000  0.041667  0.041667  0.041667  0.000000  0.000000  0.000000  0.000000 
+ 0.083333  0.000000  0.000000  0.083333  0.000000  0.083333  0.000000  0.000000  0.625000  0.041667  0.000000  0.000000  0.041667  0.000000  0.000000  0.041667  0.000000  0.000000  0.000000  0.000000 
+ 0.125000  0.000000  0.000000  0.000000  0.000000  0.000000  0.166667  0.166667  0.000000  0.333333  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.208333  0.000000  0.000000 
+ 0.041667  0.000000  0.000000  0.000000  0.041667  0.000000  0.000000  0.250000  0.000000  0.250000  0.000000  0.000000  0.000000  0.083333  0.125000  0.000000  0.083333  0.083333  0.000000  0.041667 
+ 0.041667  0.000000  0.125000  0.208333  0.000000  0.041667  0.083333  0.000000  0.041667  0.000000  0.000000  0.083333  0.000000  0.208333  0.041667  0.083333  0.000000  0.041667  0.000000  0.000000 
+ 0.041667  0.000000  0.000000  0.000000  0.291667  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.041667  0.000000  0.000000  0.000000  0.000000  0.041667  0.125000  0.458333 
+ 0.000000  0.000000  0.000000  0.000000  0.125000  0.000000  0.000000  0.333333  0.000000  0.250000  0.000000  0.000000  0.000000  0.000000  0.000000  0.041667  0.041667  0.208333  0.000000  0.000000 
+ 0.041667  0.000000  0.000000  0.083333  0.000000  0.000000  0.000000  0.041667  0.166667  0.333333  0.083333  0.000000  0.000000  0.041667  0.000000  0.083333  0.083333  0.000000  0.000000  0.041667 
+ 0.083333  0.000000  0.041667  0.000000  0.000000  0.000000  0.041667  0.000000  0.125000  0.000000  0.041667  0.041667  0.000000  0.000000  0.083333  0.500000  0.000000  0.000000  0.000000  0.041667 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 3 regular expression
+--------------------------------------------------------------------------------
+INVEK[LV][IL][EQ][YF][ILV]LS
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.58 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+RAM1_YEAST                       2.42e-16  35_[3(3.87e-06)]_62_[1(1.43e-07)]_23_[2(2.96e-09)]_3_[1(4.98e-09)]_8_[3(4.87e-07)]_21_[1(3.26e-08)]_4_[3(6.95e-07)]_5_[2(3.84e-07)]_4_[1(6.42e-10)]_4_[3(2.63e-08)]_6_[2(7.99e-09)]_3_[1(2.34e-07)]_7_[3(2.04e-07)]_7_[2(2.81e-07)]_15_[2(1.16e-06)]_26_[3(1.79e-09)]_6
+PFTB_RAT                         3.08e-19  49_[3(1.45e-06)]_11_[3(3.82e-08)]_19_[1(4.06e-08)]_22_[2(1.38e-10)]_3_[1(9.07e-10)]_7_[3(5.77e-11)]_5_[2(8.29e-08)]_3_[1(9.97e-08)]_21_[2(1.99e-09)]_3_[1(8.60e-09)]_4_[3(8.26e-07)]_6_[2(5.90e-11)]_32_[3(1.82e-06)]_6_[2(4.62e-08)]_3_[1(1.31e-07)]_28_[3(4.11e-06)]_23
+BET2_YEAST                       9.82e-18  6_[3(7.95e-09)]_20_[1(7.52e-09)]_4_[3(3.82e-08)]_6_[2(4.17e-08)]_39_[2(5.11e-08)]_3_[1(1.27e-09)]_4_[3(2.11e-06)]_5_[2(5.63e-10)]_3_[1(2.32e-08)]_24_[2(1.99e-09)]_3_[1(6.42e-10)]_4_[3(7.88e-10)]_6_[2(8.71e-10)]_3_[1(6.15e-08)]_27
+RATRABGERB                       2.86e-20  17_[3(4.04e-07)]_20_[1(1.20e-07)]_4_[3(2.99e-08)]_5_[2(1.09e-07)]_19_[3(1.57e-08)]_5_[2(1.31e-07)]_3_[1(2.05e-09)]_4_[3(6.10e-12)]_5_[2(4.94e-11)]_3_[1(7.50e-08)]_21_[2(2.25e-10)]_3_[1(2.39e-09)]_4_[3(5.99e-09)]_6_[2(8.34e-11)]_3_[1(1.99e-07)]_29
+CAL1_YEAST                       2.39e-16  10_[3(4.04e-07)]_19_[1(2.94e-07)]_79_[2(6.23e-06)]_23_[1(7.50e-08)]_10_[3(7.88e-10)]_5_[2(4.15e-07)]_1_[1(5.56e-08)]_43_[2(7.55e-10)]_3_[1(8.60e-09)]_6_[3(3.19e-06)]_7_[2(1.56e-07)]_38
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 3 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.8"></a>
+<h3>Output files for usage example 8</h3>
+<p><h3>File: adh.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;2BHD_STREX 20-BETA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.53)
+MNDLSGKTVIITGGARGLGAEAARQAVAAGARVVLADVLDEEGAATARELGDAARYQHLD
+VTIEEDWQRVVAYAREEFGSVDGLVNNAGISTGMFLETESVERFRKVVDINLTGVFIGMK
+TVIPAMKDAGGGSIVNISSAAGLMGLALTSSYGASKWGVRGLSKLAAVELGTDRIRVNSV
+HPGMTYTPMTAETGIRQGEGNYPNTPMGRVGNEPGEIAGAVVKLLSDTSSYVTGAELAVD
+GGWTTGPTVKYVMGQ
+&gt;3BHD_COMTE 3-BETA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.51)
+TNRLQGKVALVTGGASGVGLEVVKLLLGEGAKVAFSDINEAAGQQLAAELGERSMFVRHD
+VSSEADWTLVMAAVQRRLGTLNVLVNNAGILLPGDMETGRLEDFSRLLKINTESVFIGCQ
+QGIAAMKETGGSIINMASVSSWLPIEQYAGYSASKAAVSALTRAAALSCRKQGYAIRVNS
+IHPDGIYTPMMQASLPKGVSKEMVLHDPKLNRAGRAYMPERIAQLVLFLASDESSVMSGG
+ELHADNSILGMGL
+&gt;ADH_DROME ALCOHOL DEHYDROGENASE (EC 1.1.1.1)
+SFTLTNKNVIFVAGLGGIGLDTSKELLKRDLKNLVILDRIENPAAIAELKAINPKVTVTF
+YPYDVTVPIAETTKLLKTIFAQLKTVDVLINGAGILDDHQIERTIAVNYTGLVNTTTAIL
+DFWDKRKGGPGGIICNIGSVTGFNAIYQVPVYSGTKAAVVNFTSSLAKLAPITGVTAYTV
+NPGITRTTLVHKFNSWLDVEPQVAEKLLAHPTQPSLACAENFVKAIELNQNGAIWKLDLG
+TLEAIQWTKHWDSGI
+&gt;AP27_MOUSE ADIPOCYTE P27 PROTEIN (AP27)
+MKLNFSGLRALVTGAGKGIGRDTVKALHASGAKVVAVTRTNSDLVSLAKECPGIEPVCVD
+LGDWDATEKALGGIGPVDLLVNNAALVIMQPFLEVTKEAFDRSFSVNLRSVFQVSQMVAR
+DMINRGVPGSIVNVSSMVAHVTFPNLITYSSTKGAMTMLTKAMAMELGPHKIRVNSVNPT
+VVLTDMGKKVSADPEFARKLKERHPLRKFAEVEDVVNSILFLLSDRSASTSGGGILVDAG
+YLAS
+&gt;BA72_EUBSP 7-ALPHA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.159) (BILE ACID 7-DEHYDROXYLASE) (BILE ACID-INDUCIBLE PROTEIN)
+MNLVQDKVTIITGGTRGIGFAAAKIFIDNGAKVSIFGETQEEVDTALAQLKELYPEEEVL
+GFAPDLTSRDAVMAAVGQVAQKYGRLDVMINNAGITSNNVFSRVSEEEFKHIMDINVTGV
+FNGAWCAYQCMKDAKKGVIINTASVTGIFGSLSGVGYPASKASVIGLTHGLGREIIRKNI
+RVVGVAPGVVNTDMTNGNPPEIMEGYLKALPMKRMLEPEEIANVYLFLASDLASGITATT
+VSVDGAYRP
+&gt;BDH_HUMAN D-BETA-HYDROXYBUTYRATE DEHYDROGENASE PRECURSOR (EC 1.1.1.30) (BDH) (3-HYDROXYBUTYRATE DEHYDROGENASE) (FRAGMENT)
+GLRPPPPGRFSRLPGKTLSACDRENGARRPLLLGSTSFIPIGRRTYASAAEPVGSKAVLV
+TGCDSGFGFSLAKHLHSKGFLVFAGCLMKDKGHDGVKELDSLNSDRLRTVQLNVFRSEEV
+EKVVGDCPFEPEGPEKGMWGLVNNAGISTFGEVEFTSLETYKQVAEVNLWGTVRMTKSFL
+PLIRRAKGRVVNISSMLGRMANPARSPYCITKFGVEAFSDCLRYEMYPLGVKVSVVEPGN
+FIAATSLYNPESIQAIAKKMWEELPEVVRKDYGKKYFDEKIAKMETYCSSGSTDTSPVID
+AVTHALTATTPYTRYHPMDYYWWLRMQIMTHLPGAISDMIYIR
+&gt;BPHB_PSEPS BIPHENYL-CIS-DIOL DEHYDROGENASE (EC 1.3.1.-)
+MKLKGEAVLITGGASGLGRALVDRFVAEAKVAVLDKSAERLAELETDLGDNVLGIVGDVR
+SLEDQKQAASRCVARFGKIDTLIPNAGIWDYSTALVDLPEESLDAAFDEVFHINVKGYIH
+AVKALPALVASRGNVIFTISNAGFYPNGGGPLYTAAKQAIVGLVRELAFELAPYVRVNGV
+GPGGMNSDMRGPSSLGMGSKAISTVPLADMLKSVLPIGRMPEVEEYTGAYVFFATRGDAA
+PASGALVNYDGGLGVRGFFSGAGGNDLLEQLNIHP
+&gt;BUDC_KLETE ACETOIN(DIACETYL) REDUCTASE (EC 1.1.1.5) (ACETOIN DEHYDROGENASE)
+MQKVALVTGAGQGIGKAIALRLVKDGFAVAIADYNDATATAVAAEINQAGGRAVAIKVDV
+SRRDQVFAAVEQARKALGGFNVIVNNAGIAPSTPIESITEEIVDRVYNINVKGVIWGMQA
+AVEAFKKEGHGGKIVNACSQAGHVGNPELAVYSSSKFAVRGLTQTAARDLAPLGITVNGF
+CPGIVKTPMWAEIDRQCRKRRANRWATARLNLPNASPLAACRSLKTSPPACRSSPARIPT
+I
+&gt;DHES_HUMAN ESTRADIOL 17 BETA-DEHYDROGENASE (EC 1.1.1.62) (20 ALPHA-HYDROXYSTEROID DEHYDROGENASE) (E2DH) (17-BETA-HSD) (PLACENTAL 17-BETA-HYDROXYSTEROID DEHYDROGENASE)
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+GVHQKEGWPSSAYGVTKIGVTVLSRIHARKLSEQRKGDKILLNACCPGWVRTDMAGPKAT
+KSPEEGAETPVYLALLPPDAEGPHGQFVSEKRVEQW
+&gt;FABI_ECOLI no comment
+MGFLSGKRILVTGVASKLSIAYGIAQAMHREGAELAFTYQNDKLKGRVEEFAAQLGSDIV
+LQCDVAEDASIDTMFAELGKVWPKFDGFVHSIGFAPGDQLDGDYVNAVTREGFKIAHDIS
+SYSFVAMAKACRSMLNPGSALLTLSYLGAERAIPNYNVMGLAKASLEANVRYMANAMGPE
+GVRVNAISAGPIRTLAASGIKDFRKMLAHCEAVTPIRRTVTIEDVGNSAAFLCSDLSAGI
+SGEVVHVDGGFSIAAMNELELK
+&gt;FVT1_HUMAN no comment
+MLLLAAAFLVAFVLLLYMVSPLISPKPLALPGAHVVVTGGSSGIGKCIAIECYKQGAFIT
+LVARNEDKLLQAKKEIEMHSINDKQVVLCISVDVSQDYNQVENVIKQAQEKLGPVDMLVN
+CAGMAVSGKFEDLEVSTFERLMSINYLGSVYPSRAVITTMKERRVGRIVFVSSQAGQLGL
+FGFTAYSASKFAIRGLAEALQMEVKPYNVYITVAYPPDTDTPGFAEENRTKPLETRLISE
+TTSVCKPEQVAKQIVKDAIQGNFNSSLGSDGYMLSALTCGMAPVTSITEGLQQVVTMGLF
+RTIALFYLGSFDSIVRRCMMQREKSENADKTA
+&gt;HMTR_LEIMA no comment
+MTAPTVPVALVTGAAKRLGRSIAEGLHAEGYAVCLHYHRSAAEANALSATLNARRPNSAI
+TVQADLSNVATAPVSGADGSAPVTLFTRCAELVAACYTHWGRCDVLVNNASSFYPTPLLR
+NDEDGHEPCVGDREAMETATADLFGSNAIAPYFLIKAFAHRSRHPSQASRTNYSIINMVD
+AMTNQPLLGYTIYTMAKGALEGLTRSAALELAPLQIRVNGVGPGLSVLVDDMPPAVWEGH
+RSKVPLYQRDSSAAEVSDVVIFLCSSKAKYITGTCVKVDGGYSLTRA
+&gt;MAS1_AGRRA no comment
+MHQLWAYDVGTLGCVSYHALPDIKRHSPKSGHLYLNKPSLRSFILQCPSLARTLVLPSHQ
+PVSRSSTSSAMVQPISTRKKCTCKVKNIGVCRAPARTSVSMELANAKRFSPATFSANFLS
+XSVVCSPLLRAIQTALIANIGFLCFDIDEDLKERDFGKHEGGYGPLKMFEDNYPDCEDTE
+MFSLRVAKALTHAKNENTLFVSHGGVLRVIAALLGVDLTKEHTNNGRVLHFRRGFSHWTV
+EIHQSPVILVSGSNRGVGKAIAEDLIAHGYRLSLGARKVKDLEVAFGPQDEWLHYARFDA
+EDHGTMAAWVTAAVEKFGRIDGLVNNAGYGEPVNLDKHVDYQRFHLQWYINCVAPLRMTE
+LCLPHLYETGSGRIVNINSMSGQRVLNPLVGYNMTKHALGGLTKTTQHVGWDRRCAAIDI
+CLGFVATDMSAWTDLIASKDMIQPEDIAKLVREAIERPNRAYVPRSEVMCIKEATR
+&gt;PCR_PEA no comment
+MALQTASMLPASFSIPKEGKIGASLKDSTLFGVSSLSDSLKGDFTSSALRCKELRQKVGA
+VRAETAAPATPAVNKSSSEGKKTLRKGNVVITGASSGLGLATAKALAESGKWHVIMACRD
+YLKAARAAKSAGLAKENYTIMHLDLASLDSVRQFVDNFRRSEMPLDVLINNAAVYFPTAK
+EPSFTADGFEISVGTNHLGHFLLSRLLLEDLKKSDYPSKRLIIVGSITGNTNTLAGNVPP
+KANLGDLRGLAGGLTGLNSSAMIDGGDFDGAKAYKDSKVCNMLTMQEFHRRYHEETGITF
+ASLYPGCIATTGLFREHIPLFRTLFPPFQKYITKGYVSEEESGKRLAQVVSDPSLTKSGV
+YWSWNNASASFENQLSQEASDAEKARKVWEVSEKLVGLA
+&gt;RFBB_NEIGO no comment
+MQTEGKKNILVTGGAGFIGSAVVRHIIQNTRDSVVNLDKLTYAGNLESLTDIADNPRYAF
+EQVDICDRAELDRVFAQYRPDAVMHLAAESHVDRAIGSAGEFIRTNIVGTFDLLEAARAY
+WQQMPSEKREAFRFHHISTDEVYGDLHGTDDLFTETTPYAPSSPYSASKAAADHLVRAWQ
+RTYRLPSIVSNCSNNYGPRQFPEKLIPLMILNALSGKPLPVYGDGAQIRDWLFVEDHARA
+LYQVVTEGVVGETYNIGGHNEKTNLEVVKTICALLEELAPEKPAGVARYEDLITFVQDRP
+GHDARYAVDAAKIRRDLGWLPLETFESGLRKTVQWYLDNKTRRQNA
+&gt;YURA_MYXXA no comment
+RQHTGGLHGGDELPDGVGDGCLQRPGTRAGAVARQAGVRVFAAGRRLPQLQAADEAPGGR
+RHRGARGVDVTKADATLERIRALDAEAGGLDLVVANAGVGGTTNAKRLPWERVRGIIDTN
+VTGAAATLSAVLPQMVERKRGHLVGVSSLAGFRGLPATRYSASKAFLSTFMESLRVDLRG
+TGVRVTCIYPGFVKSELTATNNFPMPFLMETHDAVELMGKGIVRGDAEVSFPWQLAVPTR
+MAKVLPNPLFDAAARRLR
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex8.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= adh.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+2BHD_STREX               1.0000    255  3BHD_COMTE               1.0000    253  
+ADH_DROME                1.0000    255  AP27_MOUSE               1.0000    244  
+BA72_EUBSP               1.0000    249  BDH_HUMAN                1.0000    343  
+BPHB_PSEPS               1.0000    275  BUDC_KLETE               1.0000    241  
+DHES_HUMAN               1.0000    327  DHGB_BACME               1.0000    262  
+DHII_HUMAN               1.0000    292  DHMA_FLAS1               1.0000    270  
+ENTA_ECOLI               1.0000    248  FIXR_BRAJA               1.0000    278  
+GUTD_ECOLI               1.0000    259  HDE_CANTR                1.0000    906  
+HDHA_ECOLI               1.0000    255  LIGD_PSEPA               1.0000    305  
+NODG_RHIME               1.0000    245  RIDH_KLEAE               1.0000    249  
+YINL_LISMO               1.0000    248  YRTP_BACSU               1.0000    238  
+CSGA_MYXXA               1.0000    166  DHB2_HUMAN               1.0000    387  
+DHB3_HUMAN               1.0000    310  DHCA_HUMAN               1.0000    276  
+FABI_ECOLI               1.0000    262  FVT1_HUMAN               1.0000    332  
+HMTR_LEIMA               1.0000    287  MAS1_AGRRA               1.0000    476  
+PCR_PEA                  1.0000    399  RFBB_NEIGO               1.0000    346  
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+2BHD_STREX                       3.00e-81  5_[2(6.76e-13)]_2_[8(2.79e-13)]_24_[3(3.26e-12)]_12_[4(1.64e-13)]_2_[6(1.48e-15)]_5_[1(8.10e-19)]_[7(4.84e-10)]_24_[5(1.29e-21)]_13
+3BHD_COMTE                       4.50e-74  5_[2(6.53e-15)]_2_[8(6.48e-16)]_24_[3(4.42e-12)]_12_[4(1.98e-11)]_1_[6(3.58e-11)]_5_[1(1.62e-15)]_2_[7(1.89e-08)]_28_[5(5.31e-21)]_6
+ADH_DROME                        2.38e-37  5_[2(3.69e-11)]_56_[3(1.89e-10)]_4_[4(2.17e-11)]_5_[6(1.44e-11)]_5_[1(4.20e-13)]_[7(2.82e-07)]_66
+AP27_MOUSE                       6.69e-75  6_[2(1.73e-14)]_2_[8(5.45e-13)]_19_[3(4.79e-10)]_12_[4(7.74e-13)]_3_[6(1.19e-11)]_5_[1(3.16e-22)]_[7(9.85e-08)]_25_[5(3.17e-19)]_4
+BA72_EUBSP                       1.68e-81  5_[2(3.44e-14)]_2_[8(8.85e-13)]_29_[3(1.25e-13)]_12_[4(2.96e-14)]_2_[6(2.51e-14)]_5_[1(1.55e-16)]_[7(3.30e-09)]_23_[5(3.54e-23)]_3
+BDH_HUMAN                        1.27e-45  54_[2(9.49e-15)]_59_[3(1.36e-10)]_12_[4(4.70e-13)]_1_[6(3.80e-14)]_5_[1(6.62e-18)]_107
+BPHB_PSEPS                       3.73e-42  4_[2(5.94e-14)]_1_[8(3.23e-06)]_24_[3(9.73e-11)]_17_[4(1.11e-11)]_[6(1.24e-10)]_5_[1(4.44e-14)]_94
+BUDC_KLETE                       3.15e-66  1_[2(1.49e-17)]_2_[8(5.08e-13)]_27_[3(1.52e-10)]_12_[4(1.59e-12)]_3_[6(1.82e-13)]_5_[1(2.03e-21)]_[7(5.92e-10)]_52
+DHES_HUMAN                       2.57e-42  1_[2(5.94e-14)]_58_[3(2.01e-11)]_12_[4(8.18e-12)]_2_[6(4.83e-13)]_5_[1(2.45e-17)]_144
+DHGB_BACME                       3.04e-66  6_[2(8.39e-15)]_56_[3(1.76e-12)]_12_[4(2.54e-14)]_3_[6(6.03e-10)]_6_[1(9.72e-20)]_[7(3.36e-07)]_24_[5(2.28e-20)]_12
+DHII_HUMAN                       1.93e-53  33_[2(4.63e-17)]_2_[8(1.21e-15)]_28_[3(1.70e-08)]_12_[4(6.26e-11)]_1_[6(1.10e-13)]_5_[1(7.62e-16)]_81
+DHMA_FLAS1                       8.76e-61  13_[2(8.39e-15)]_49_[3(5.34e-08)]_13_[4(3.17e-15)]_8_[6(3.28e-11)]_5_[1(6.62e-18)]_34_[5(1.77e-22)]_14
+ENTA_ECOLI                       3.09e-68  4_[2(1.11e-16)]_44_[3(5.83e-10)]_12_[4(6.04e-13)]_2_[6(2.09e-11)]_5_[1(1.55e-16)]_[7(4.26e-08)]_33_[5(2.99e-25)]_5
+FIXR_BRAJA                       9.12e-69  35_[2(3.91e-15)]_52_[3(2.72e-09)]_18_[4(2.86e-11)]_1_[6(9.83e-12)]_6_[1(3.46e-21)]_[7(5.02e-09)]_20_[5(5.45e-24)]_3
+GUTD_ECOLI                       1.30e-71  1_[2(4.40e-11)]_2_[8(6.15e-15)]_29_[3(3.92e-10)]_12_[4(3.17e-15)]_3_[6(6.62e-12)]_5_[1(5.21e-19)]_44_[5(1.77e-22)]_4
+HDE_CANTR                        1.58e-58  7_[2(1.53e-11)]_60_[3(4.28e-11)]_12_[4(3.59e-08)]_2_[6(1.14e-07)]_5_[1(1.97e-12)]_21_[5(5.78e-05)]_80_[2(5.54e-17)]_50_[3(9.64e-14)]_12_[4(6.17e-14)]_2_[6(3.31e-14)]_5_[1(5.78e-18)]_57_[8(3.01e-13)]_329
+HDHA_ECOLI                       5.20e-81  10_[2(2.96e-16)]_2_[8(3.51e-15)]_27_[3(9.10e-12)]_11_[4(1.78e-12)]_2_[6(4.26e-11)]_5_[1(6.04e-19)]_[7(4.32e-07)]_24_[5(7.10e-25)]_6
+LIGD_PSEPA                       3.19e-45  5_[2(1.34e-12)]_2_[8(8.35e-16)]_53_[4(2.15e-13)]_3_[6(3.81e-13)]_5_[1(1.18e-15)]_120
+NODG_RHIME                       2.04e-87  5_[2(1.72e-12)]_2_[8(9.46e-16)]_24_[3(1.76e-12)]_12_[4(2.54e-14)]_2_[6(1.18e-16)]_5_[1(4.63e-22)]_[7(4.68e-07)]_23_[5(2.47e-23)]_4
+RIDH_KLEAE                       2.13e-56  13_[2(1.14e-15)]_2_[8(5.42e-20)]_24_[3(4.46e-09)]_12_[4(4.70e-13)]_2_[6(1.34e-10)]_5_[1(4.60e-17)]_61
+YINL_LISMO                       1.43e-58  4_[2(2.66e-17)]_2_[8(7.36e-16)]_27_[3(1.24e-09)]_12_[4(9.87e-13)]_2_[6(2.06e-13)]_5_[1(5.04e-15)]_2_[7(5.94e-07)]_55
+YRTP_BACSU                       3.25e-69  5_[2(2.15e-16)]_2_[8(5.11e-14)]_27_[3(2.07e-12)]_12_[4(5.23e-15)]_2_[6(5.95e-15)]_5_[1(5.59e-22)]_[7(1.07e-06)]_46
+CSGA_MYXXA                       2.43e-28  9_[3(1.51e-12)]_13_[4(3.03e-10)]_31_[1(1.25e-13)]_[7(1.33e-11)]_41
+DHB2_HUMAN                       1.75e-51  81_[2(2.62e-15)]_55_[3(5.65e-09)]_13_[4(9.87e-13)]_1_[6(6.62e-12)]_5_[1(8.10e-19)]_1_[8(2.58e-13)]_101
+DHB3_HUMAN                       1.82e-48  47_[2(3.44e-14)]_2_[8(5.51e-15)]_26_[3(6.73e-08)]_14_[4(3.14e-12)]_2_[6(5.41e-12)]_5_[1(4.56e-15)]_84
+DHCA_HUMAN                       3.85e-44  3_[2(1.54e-14)]_3_[8(1.21e-05)]_27_[3(1.10e-14)]_12_[4(4.78e-05)]_[6(2.51e-11)]_46_[1(7.01e-12)]_4_[7(1.11e-12)]_42
+FABI_ECOLI                       3.60e-30  5_[2(8.23e-11)]_132_[1(1.74e-13)]_34_[5(2.46e-22)]_12
+FVT1_HUMAN                       2.52e-62  31_[2(1.36e-14)]_2_[8(1.50e-16)]_32_[3(6.81e-12)]_12_[4(3.91e-12)]_2_[6(7.76e-16)]_5_[1(1.13e-17)]_[7(5.08e-07)]_63_[4(2.64e-05)]_25
+HMTR_LEIMA                       2.44e-44  5_[2(1.23e-12)]_73_[3(8.68e-11)]_80_[1(1.14e-19)]_31_[5(1.29e-21)]_6
+MAS1_AGRRA                       2.00e-27  172_[7(1.01e-05)]_63_[2(4.05e-12)]_51_[3(3.78e-12)]_19_[1(6.98e-11)]_43_[7(2.41e-08)]_47
+PCR_PEA                          6.40e-31  25_[1(2.02e-10)]_31_[2(1.54e-14)]_55_[3(2.10e-10)]_13_[4(5.76e-11)]_95_[7(8.04e-08)]_87
+RFBB_NEIGO                       7.66e-16  5_[2(1.72e-12)]_138_[1(5.57e-15)]_153
+YURA_MYXXA                       5.59e-32  35_[8(6.92e-05)]_26_[3(6.11e-09)]_12_[4(7.46e-06)]_2_[6(2.64e-13)]_4_[1(2.11e-19)]_[7(2.35e-07)]_61
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because motif E-value &gt; 1.00e-02.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>

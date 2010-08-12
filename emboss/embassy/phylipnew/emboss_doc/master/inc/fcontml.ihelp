@@ -1,0 +1,53 @@
+Gene frequency and continuous character Maximum Likelihood
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-infile]            frequencies File containing one or more sets of data
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fcontml] Phylip contml program output
+                                  file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -datatype           menu       [g] Input type in infile (Values: g (Gene
+                                  frequencies); i (Continuous characters))
+*  -lengths            boolean    [N] Use branch lengths from user trees
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+*  -global             boolean    [N] Global rearrangements
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    [*.fcontml] Phylip tree output file
+                                  (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

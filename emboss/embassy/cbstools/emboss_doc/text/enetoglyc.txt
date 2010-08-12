@@ -1,0 +1,301 @@
+                                  enetoglyc
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Reports mucin type GalNAc O-glycosylation sites in mammalian proteins
+
+Description
+
+   The NetOglyc server produces neural network predictions of mucin type
+   GalNAc O-glycosylation sites in mammalian proteins.
+
+Usage
+
+   Here is a sample session with enetoglyc
+
+
+% enetoglyc
+Reports mucin type GalNAc O-glycosylation sites in mammalian proteins
+Input (aligned) sequence set: LEUK_RAT.fsa
+Output file [leuk_rat.enetoglyc]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Reports mucin type GalNAc O-glycosylation sites in mammalian proteins
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.enetoglyc] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -plot               boolean    [N] Produce graphics
+   -signalp            boolean    [N] Run signalp on the sequences
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   enetoglyc reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: LEUK_RAT.fsa
+
+>LEUK_RAT P13838 LEUKOSIALIN PRECURSOR (LEUCOCYTE SIALOGLYCOPROTEIN) (SIALOPHORI
+N) (CD43) (W3/13 ANTIGEN) (FRAGMENT). - RATTUS NORVEGICUS (RAT).
+WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAP
+ASSIPLGTPELSSFFFTSAGASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTIT
+NPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATTVSSETSGPPVTMATGSLGPS
+KETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLIA
+LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGN
+KSSGAPETDGSGQRPTLTTFFSRRKSRQGSVALEELKPGTGPNLKGEEEPLVGSEDEAVE
+TPTSDGPQAKDGAAPQSL
+
+Output file format
+
+  Output files for usage example
+
+  File: leuk_rat.enetoglyc
+
+Name:  LEUK_RAT         Length:  378
+WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAPASSIPLGTPELSSFFFTSAG
+ASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTITNPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATT
+VSSETSGPPVTMATGSLGPSKETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLIA
+LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGNKSSGAPETDGSGQRPTLTTF
+FSRRKSRQGSVALEELKPGTGPNLKGEEEPLVGSEDEAVETPTSDGPQAKDGAAPQSL
+..............T....T....S.STS...ST.SS..T...T.....S.S....TT.........T....S...T...
+....T.....TT.....T..............S....T.T...TSS...STS..T...TS....T.TSST.TS.....TT
+.SS.TS....T..T.S...S..T.....T..TSS...SS....T...ST..STTST....TT..................
+...................................................TT.S.S....SS....T.......T....
+........................................T.T.............S.
+
+Name                         S/T   Pos  G-score I-score Y/N  Comment
+----------------------------------------------------------------------------
+LEUK_RAT                      S      6   0.379   0.054   .   -
+LEUK_RAT                      T     13   0.498   0.039   .   -
+LEUK_RAT                      T     15   0.535   0.095   T   -
+LEUK_RAT                      T     20   0.567   0.070   T   -
+LEUK_RAT                      S     23   0.469   0.059   .   -
+LEUK_RAT                      S     25   0.502   0.029   S   -
+LEUK_RAT                      S     27   0.526   0.190   S   -
+LEUK_RAT                      T     28   0.659   0.100   T   -
+LEUK_RAT                      S     29   0.552   0.153   S   -
+LEUK_RAT                      S     33   0.567   0.035   S   -
+LEUK_RAT                      T     34   0.650   0.097   T   -
+LEUK_RAT                      S     36   0.557   0.047   S   -
+LEUK_RAT                      S     37   0.550   0.046   S   -
+LEUK_RAT                      T     40   0.653   0.087   T   -
+LEUK_RAT                      T     44   0.609   0.408   T   -
+LEUK_RAT                      S     50   0.565   0.065   S   -
+LEUK_RAT                      S     52   0.554   0.053   S   -
+LEUK_RAT                      T     57   0.669   0.045   T   -
+LEUK_RAT                      T     58   0.661   0.050   T   -
+LEUK_RAT                      S     62   0.477   0.084   .   -
+LEUK_RAT                      S     63   0.457   0.277   .   -
+LEUK_RAT                      T     68   0.576   0.081   T   -
+LEUK_RAT                      S     72   0.497   0.040   .   -
+LEUK_RAT                      S     73   0.503   0.034   S   -
+LEUK_RAT                      T     77   0.592   0.054   T   -
+LEUK_RAT                      S     78   0.466   0.050   .   -
+LEUK_RAT                      S     82   0.459   0.163   .   -
+LEUK_RAT                      T     85   0.562   0.110   T   -
+LEUK_RAT                      T     91   0.592   0.072   T   -
+LEUK_RAT                      T     92   0.577   0.152   T   -
+LEUK_RAT                      S     93   0.451   0.065   .   -
+LEUK_RAT                      S     97   0.454   0.048   .   -
+LEUK_RAT                      T     98   0.570   0.190   T   -
+LEUK_RAT                      S    101   0.498   0.029   .   -
+LEUK_RAT                      S    108   0.461   0.048   .   -
+LEUK_RAT                      S    109   0.465   0.043   .   -
+
+
+  [Part of this file has been deleted for brevity]
+
+LEUK_RAT                      S    180   0.516   0.121   S   -
+LEUK_RAT                      T    183   0.633   0.077   T   -
+LEUK_RAT                      S    187   0.492   0.039   .   -
+LEUK_RAT                      T    189   0.608   0.202   T   -
+LEUK_RAT                      T    192   0.597   0.255   T   -
+LEUK_RAT                      S    193   0.520   0.033   S   -
+LEUK_RAT                      S    194   0.526   0.033   S   -
+LEUK_RAT                      S    197   0.478   0.037   .   -
+LEUK_RAT                      S    198   0.501   0.031   S   -
+LEUK_RAT                      S    199   0.503   0.104   S   -
+LEUK_RAT                      T    204   0.696   0.099   T   -
+LEUK_RAT                      S    208   0.600   0.078   S   -
+LEUK_RAT                      T    209   0.700   0.298   T   -
+LEUK_RAT                      S    212   0.615   0.041   S   -
+LEUK_RAT                      T    213   0.707   0.070   T   -
+LEUK_RAT                      T    214   0.712   0.644   T   -
+LEUK_RAT                      S    215   0.613   0.046   S   -
+LEUK_RAT                      T    216   0.711   0.609   T   -
+LEUK_RAT                      T    221   0.670   0.193   T   -
+LEUK_RAT                      T    222   0.650   0.465   T   -
+LEUK_RAT                      S    229   0.428   0.064   .   -
+LEUK_RAT                      S    230   0.379   0.056   .   -
+LEUK_RAT                      S    236   0.215   0.053   .   -
+LEUK_RAT                      T    242   0.113   0.093   .   -
+LEUK_RAT                      T    262   0.193   0.055   .   -
+LEUK_RAT                      T    266   0.228   0.060   .   -
+LEUK_RAT                      S    268   0.201   0.073   .   -
+LEUK_RAT                      T    276   0.402   0.045   .   -
+LEUK_RAT                      T    292   0.603   0.232   T   -
+LEUK_RAT                      T    293   0.616   0.413   T   -
+LEUK_RAT                      S    295   0.507   0.098   S   -
+LEUK_RAT                      S    297   0.533   0.047   S   -
+LEUK_RAT                      S    302   0.520   0.038   S   -
+LEUK_RAT                      S    303   0.503   0.038   S   -
+LEUK_RAT                      T    308   0.577   0.208   T   -
+LEUK_RAT                      S    311   0.385   0.072   .   -
+LEUK_RAT                      T    316   0.506   0.221   T   -
+LEUK_RAT                      T    318   0.496   0.070   .   -
+LEUK_RAT                      T    319   0.469   0.045   .   -
+LEUK_RAT                      S    322   0.254   0.055   .   -
+LEUK_RAT                      S    326   0.292   0.024   .   -
+LEUK_RAT                      S    330   0.288   0.047   .   -
+LEUK_RAT                      T    340   0.422   0.058   .   -
+LEUK_RAT                      S    354   0.463   0.034   .   -
+LEUK_RAT                      T    361   0.594   0.214   T   -
+LEUK_RAT                      T    363   0.598   0.403   T   -
+LEUK_RAT                      S    364   0.492   0.463   .   -
+LEUK_RAT                      S    377   0.579   0.021   S   -
+----------------------------------------------------------------------------
+
+
+
+Data files
+
+   None.
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS wrapper for a program written by the CBS
+   group http://www.cbs.dtu.dk/index.shtml
+
+   The original CBS group application must be licensed and installed to
+   use this wrapper.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

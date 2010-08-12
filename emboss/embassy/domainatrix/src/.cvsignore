@@ -1,0 +1,11 @@
+.deps
+Makefile
+Makefile.in
+.libs
+domainnr
+scopparse
+ssematch
+domainsse
+domainseqs
+cathparse
+domainreso

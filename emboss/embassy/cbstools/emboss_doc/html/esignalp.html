@@ -1,0 +1,1000 @@
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBASSY: CBSTOOLS: esignalp
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+esignalp
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Reports protein signal cleavage sites
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+SignalP 3.0 server predicts the presence and location of signal
+peptide cleavage sites in amino acid sequences from different
+organisms: Gram-positive prokaryotes, Gram-negative prokaryotes, and
+eukaryotes. The method incorporates a prediction of cleavage sites and
+a signal peptide/non-signal peptide prediction based on a combination
+of several artificial neural networks and hidden Markov models. 
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with esignalp</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>esignalp </b>
+Reports protein signal cleavage sites
+Input (aligned) sequence set: <b>test.seq</b>
+Organism
+       euk : euk
+     gramp : gram positive
+     gramn : gram negative
+Organism type to use [euk]: <b></b>
+Algorithm method
+    nn+hmm : Neural net plus hmm
+        nn : Neural net
+       hmm : Hmm
+Method to use [nn+hmm]: <b></b>
+Text output format
+      full : Full
+   summary : Summary
+     short : Short
+Output format [full]: <b></b>
+Graphics mode
+      none : none
+       gif : gif
+       eps : eps
+   gif+eps : gif+eps
+        ps : ps
+Graphics output [none]: <b></b>
+       1.0 : 1.0
+       1.1 : 1.1
+       2.0 : 2.0
+       3.0 : 3.0
+Signalp version weights [3.0]: <b></b>
+Output file [test.esignalp]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Reports protein signal cleavage sites
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+   -type               menu       [euk] Organism type to use (Values: euk
+                                  (euk); gramp (gram positive); gramn (gram
+                                  negative))
+   -method             menu       [nn+hmm] Method to use (Values: nn+hmm
+                                  (Neural net plus hmm); nn (Neural net); hmm
+                                  (Hmm))
+   -format             menu       [full] Output format (Values: full (Full);
+                                  summary (Summary); short (Short))
+   -gmode              menu       [none] Graphics output (Values: none (none);
+                                  gif (gif); eps (eps); gif+eps (gif+eps); ps
+                                  (ps))
+   -synver             menu       [3.0] Signalp version weights (Values: 1.0
+                                  (1.0); 1.1 (1.1); 2.0 (2.0); 3.0 (3.0))
+  [-outfile]           outfile    [*.esignalp] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -truncate           integer    [0] Truncate sequence to n N-terminal
+                                  residues (0=off) (Integer 0 or more)
+   -keepall            boolean    [N] Keep all gnuplot files
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>seqset</td>
+<td>(Aligned) sequence set filename and optional format, or reference (input USA)</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-type</td>
+<td>list</td>
+<td>Organism type to use</td>
+<td><table><tr><td>euk</td> <td><i>(euk)</i></td></tr><tr><td>gramp</td> <td><i>(gram positive)</i></td></tr><tr><td>gramn</td> <td><i>(gram negative)</i></td></tr></table></td>
+<td>euk</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-method</td>
+<td>list</td>
+<td>Method to use</td>
+<td><table><tr><td>nn+hmm</td> <td><i>(Neural net plus hmm)</i></td></tr><tr><td>nn</td> <td><i>(Neural net)</i></td></tr><tr><td>hmm</td> <td><i>(Hmm)</i></td></tr></table></td>
+<td>nn+hmm</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-format</td>
+<td>list</td>
+<td>Output format</td>
+<td><table><tr><td>full</td> <td><i>(Full)</i></td></tr><tr><td>summary</td> <td><i>(Summary)</i></td></tr><tr><td>short</td> <td><i>(Short)</i></td></tr></table></td>
+<td>full</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-gmode</td>
+<td>list</td>
+<td>Graphics output</td>
+<td><table><tr><td>none</td> <td><i>(none)</i></td></tr><tr><td>gif</td> <td><i>(gif)</i></td></tr><tr><td>eps</td> <td><i>(eps)</i></td></tr><tr><td>gif+eps</td> <td><i>(gif+eps)</i></td></tr><tr><td>ps</td> <td><i>(ps)</i></td></tr></table></td>
+<td>none</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-synver</td>
+<td>list</td>
+<td>Signalp version weights</td>
+<td><table><tr><td>1.0</td> <td><i>(1.0)</i></td></tr><tr><td>1.1</td> <td><i>(1.1)</i></td></tr><tr><td>2.0</td> <td><i>(2.0)</i></td></tr><tr><td>3.0</td> <td><i>(3.0)</i></td></tr></table></td>
+<td>3.0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.esignalp</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-truncate</td>
+<td>integer</td>
+<td>Truncate sequence to n N-terminal residues (0=off)</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-keepall</td>
+<td>boolean</td>
+<td>Keep all gnuplot files</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-sequence" associated seqset qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sbegin1<br>-sbegin_sequence</td>
+<td>integer</td>
+<td>Start of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -send1<br>-send_sequence</td>
+<td>integer</td>
+<td>End of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sreverse1<br>-sreverse_sequence</td>
+<td>boolean</td>
+<td>Reverse (if DNA)</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sask1<br>-sask_sequence</td>
+<td>boolean</td>
+<td>Ask for begin/end/reverse</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -snucleotide1<br>-snucleotide_sequence</td>
+<td>boolean</td>
+<td>Sequence is nucleotide</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sprotein1<br>-sprotein_sequence</td>
+<td>boolean</td>
+<td>Sequence is protein</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -slower1<br>-slower_sequence</td>
+<td>boolean</td>
+<td>Make lower case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -supper1<br>-supper_sequence</td>
+<td>boolean</td>
+<td>Make upper case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sformat1<br>-sformat_sequence</td>
+<td>string</td>
+<td>Input sequence format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sdbname1<br>-sdbname_sequence</td>
+<td>string</td>
+<td>Database name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sid1<br>-sid_sequence</td>
+<td>string</td>
+<td>Entryname</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ufo1<br>-ufo_sequence</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fformat1<br>-fformat_sequence</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fopenfile1<br>-fopenfile_sequence</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>esignalp</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: test.seq</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;14KD_DAUCA
+MGSKNSASVALFFTLNILFFALVSSTEKCPDPYKPKPKPTPKPTPTPYPSAGKCPRDALK
+LGVCADVLNL
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: test.esignalp</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+*********************** SignalP 3.0 predictions ***********************
+Using neural networks (NN) and hidden Markov models (HMM) trained on eukaryotes
+
+----------------------------------------------------------------------
+&gt;14KD_DAUCA
+
+SignalP-NN result:
+&gt;14KD_DAUCA            length = 70
+
+# pos  aa    C       S       Y
+    1   M   0.008   0.666   0.000
+    2   G   0.008   0.759   0.000
+    3   S   0.008   0.594   0.000
+    4   K   0.008   0.583   0.000
+    5   N   0.008   0.652   0.000
+    6   S   0.008   0.700   0.000
+    7   A   0.008   0.662   0.000
+    8   S   0.008   0.861   0.000
+    9   V   0.008   0.859   0.000
+   10   A   0.008   0.891   0.000
+   11   L   0.008   0.895   0.000
+   12   F   0.011   0.628   0.000
+   13   F   0.008   0.916   0.000
+   14   T   0.008   0.922   0.000
+   15   L   0.009   0.837   0.000
+   16   N   0.008   0.910   0.000
+   17   I   0.009   0.969   0.024
+   18   L   0.009   0.982   0.038
+   19   F   0.010   0.965   0.051
+   20   F   0.013   0.958   0.067
+   21   A   0.028   0.925   0.110
+   22   L   0.049   0.906   0.158
+   23   V   0.026   0.925   0.123
+   24   S   0.023   0.919   0.121
+   25   S   0.049   0.924   0.188
+   26   T   0.681   0.826   0.731
+   27   E   0.304   0.350   0.511
+   28   K   0.054   0.291   0.214
+   29   C   0.178   0.070   0.381
+   30   P   0.029   0.041   0.150
+   31   D   0.063   0.032   0.211
+   32   P   0.009   0.017   0.077
+   33   Y   0.017   0.014   0.099
+   34   K   0.011   0.010   0.076
+   35   P   0.008   0.009   0.061
+   36   K   0.027   0.013   0.100
+   37   P   0.008   0.013   0.049
+   38   K   0.009   0.013   0.046
+   39   P   0.008   0.011   0.037
+   40   T   0.008   0.003   0.030
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+   26   T   0.704   0.281   0.000   0.001   0.281
+   27   E   0.280   0.001   0.000   0.000   0.001
+   28   K   0.000   0.001   0.000   0.000   0.001
+   29   C   0.000   0.001   0.000   0.000   0.001
+   30   P   0.000   0.001   0.000   0.000   0.001
+   31   D   0.001   0.000   0.000   0.000   0.000
+   32   P   0.000   0.000   0.000   0.000   0.000
+   33   Y   0.000   0.000   0.000   0.000   0.000
+   34   K   0.000   0.000   0.000   0.000   0.000
+   35   P   0.000   0.000   0.000   0.000   0.000
+   36   K   0.000   0.000   0.000   0.000   0.000
+   37   P   0.000   0.000   0.000   0.000   0.000
+   38   K   0.000   0.000   0.000   0.000   0.000
+   39   P   0.000   0.000   0.000   0.000   0.000
+   40   T   0.000   0.000   0.000   0.000   0.000
+   41   P   0.000   0.000   0.000   0.000   0.000
+   42   K   0.000   0.000   0.000   0.000   0.000
+   43   P   0.000   0.000   0.000   0.000   0.000
+   44   T   0.000   0.000   0.000   0.000   0.000
+   45   P   0.000   0.000   0.000   0.000   0.000
+   46   T   0.000   0.000   0.000   0.000   0.000
+   47   P   0.000   0.000   0.000   0.000   0.000
+   48   Y   0.000   0.000   0.000   0.000   0.000
+   49   P   0.000   0.000   0.000   0.000   0.000
+   50   S   0.000   0.000   0.000   0.000   0.000
+   51   A   0.000   0.000   0.000   0.000   0.000
+   52   G   0.000   0.000   0.000   0.000   0.000
+   53   K   0.000   0.000   0.000   0.000   0.000
+   54   C   0.000   0.000   0.000   0.000   0.000
+   55   P   0.000   0.000   0.000   0.000   0.000
+   56   R   0.000   0.000   0.000   0.000   0.000
+   57   D   0.000   0.000   0.000   0.000   0.000
+   58   A   0.000   0.000   0.000   0.000   0.000
+   59   L   0.000   0.000   0.000   0.000   0.000
+   60   K   0.000   0.000   0.000   0.000   0.000
+   61   L   0.000   0.000   0.000   0.000   0.000
+   62   G   0.000   0.000   0.000   0.000   0.000
+   63   V   0.000   0.000   0.000   0.000   0.000
+   64   C   0.000   0.000   0.000   0.000   0.000
+   65   A   0.000   0.000   0.000   0.000   0.000
+   66   D   0.000   0.000   0.000   0.000   0.000
+   67   V   0.000   0.000   0.000   0.000   0.000
+   68   L   0.000   0.000   0.000   0.000   0.000
+   69   N   0.000   0.000   0.000   0.000   0.000
+   70   L   0.000   0.000   0.000   0.000   0.000
+&gt;14KD_DAUCA
+Prediction: Signal peptide
+Signal peptide probability: 0.990
+Signal anchor probability: 0.008
+Max cleavage site probability: 0.704 between pos. 25 and 26
+
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+None.
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+
+Locating proteins in the cell using TargetP, SignalP, and related tools
+Olof Emanuelsson, Søren Brunak, Gunnar von Heijne, Henrik Nielsen
+Nature Protocols 2, 953-971 (2007).
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/antigenic.html">antigenic</a></td>
+<td>Finds antigenic sites in proteins</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/digest.html">digest</a></td>
+<td>Reports on protein proteolytic enzyme or reagent cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="echlorop.html">echlorop</a></td>
+<td>Reports presence of chloroplast transit peptides</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/iprscan/eiprscan.html">eiprscan</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="elipop.html">elipop</a></td>
+<td>Prediction of lipoproteins</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/memenew/emast.html">emast</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/memenew/ememe.html">ememe</a></td>
+<td>Multiple EM for Motif Elicitation</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/memenew/ememetext.html">ememetext</a></td>
+<td>Multiple EM for Motif Elicitation. Text file only</td>
+</tr>
+
+<tr>
+<td><a href="enetnglyc.html">enetnglyc</a></td>
+<td>Reports N-glycosylation sites in human proteins</td>
+</tr>
+
+<tr>
+<td><a href="enetoglyc.html">enetoglyc</a></td>
+<td>Reports mucin type GalNAc O-glycosylation sites in mammalian proteins</td>
+</tr>
+
+<tr>
+<td><a href="enetphos.html">enetphos</a></td>
+<td>Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/epestfind.html">epestfind</a></td>
+<td>Finds PEST motifs as potential proteolytic cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="eprop.html">eprop</a></td>
+<td>Reports propeptide cleavage sites in proteins</td>
+</tr>
+
+<tr>
+<td><a href="etmhmm.html">etmhmm</a></td>
+<td>Reports transmembrane helices</td>
+</tr>
+
+<tr>
+<td><a href="eyinoyang.html">eyinoyang</a></td>
+<td>Reports O-(beta)-GlcNAc attachment sites</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/fuzzpro.html">fuzzpro</a></td>
+<td>Search for patterns in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/fuzztran.html">fuzztran</a></td>
+<td>Search for patterns in protein sequences (translated)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/helixturnhelix.html">helixturnhelix</a></td>
+<td>Identify nucleic acid-binding motifs in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/oddcomp.html">oddcomp</a></td>
+<td>Identify proteins with specified sequence word composition</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/meme/omeme.html">omeme</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/patmatdb.html">patmatdb</a></td>
+<td>Searches protein sequences with a sequence motif</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/patmatmotifs.html">patmatmotifs</a></td>
+<td>Scan a protein sequence with motifs from the PROSITE database</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepcoil.html">pepcoil</a></td>
+<td>Predicts coiled coil regions in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/preg.html">preg</a></td>
+<td>Regular expression search of protein sequence(s)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pscan.html">pscan</a></td>
+<td>Scans protein sequence(s) with fingerprints from the PRINTS database</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/sigcleave.html">sigcleave</a></td>
+<td>Reports on signal cleavage sites in a protein sequence</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS wrapper for a program written by the CBS group
+http://www.cbs.dtu.dk/index.shtml
+
+<p>
+The original CBS group application must be licensed and installed to
+use this wrapper.
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+<H2>
+    Comments
+</H2>
+
+None
+
+</BODY>
+</HTML>
+

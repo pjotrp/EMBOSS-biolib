@@ -1,0 +1,73 @@
+application: descseq [
+  documentation: "Alter the name or description of a
+                  sequence."
+  groups: "Edit"
+    relations: "EDAM:0000220 topic File handling"
+    relations: "EDAM:0000226 operation Annotation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "gapany"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  string: name [
+    additional: "Y"
+    default: ""
+    information: "Name of the sequence"
+    knowntype: "sequence id output"
+    relations: "EDAM:0001063 data Sequence identifier"
+  ]
+
+  string: description [
+    additional: "Y"
+    default: ""
+    information: "Description of the sequence"
+    knowntype: "string"
+    relations: "EDAM:0000969 data Free text"
+  ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: append [
+    default: "N"
+    information: "Append to the existing description"
+    help: "This allows you to append the name or description you have
+           given on to the end of the existing name or description of the
+           sequence."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqout: outseq [
+    parameter: "Y"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

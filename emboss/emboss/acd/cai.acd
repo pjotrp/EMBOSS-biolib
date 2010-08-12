@@ -1,0 +1,40 @@
+application: cai [
+  documentation: "Calculate codon adaptation index"
+  groups: "Nucleic:Codon usage"
+    relations: "EDAM:0000107 topic Codon usage"
+    relations: "EDAM:0000286 operation Codon usage analysis"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: seqall [
+    parameter: "Y"
+    type: "DNA"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+  codon: cfile [
+    standard: "Y"
+    default: "Eyeast_cai.cut"
+    relations: "EDAM:0001597 data Codon usage table"
+  ]
+
+endsection: input
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "cai output"
+    relations: "EDAM:0001599 data Codon adaptation index "
+  ]
+
+endsection: output

@@ -1,0 +1,59 @@
+Discrete character parsimony
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-infile]            discretestates File containing one or more data sets
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fpars] Phylip pars program output file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -weights            properties Weights file
+   -method             menu       [Wagner] Choose the parsimony method to use
+                                  (Values: w (Wagner); c (Camin-Sokal))
+   -maxtrees           integer    [100] Number of trees to save (Integer from
+                                  1 to 1000000)
+*  -[no]thorough       toggle     [Y] More thorough search
+*  -[no]rearrange      boolean    [Y] Rearrange on just one best tree
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 1.000 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    [*.fpars] Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -stepbox            boolean    [N] Print steps at each site
+   -ancseq             boolean    [N] Print states at all nodes of tree
+*  -[no]dotdiff        boolean    [Y] Use dot differencing to display results
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

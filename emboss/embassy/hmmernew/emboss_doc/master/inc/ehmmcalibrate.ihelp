@@ -1,0 +1,84 @@
+Calibrate HMM search statistics
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-inhmmfile]         infile     File containing an HMM.
+  [-outhmmfile]        outfile    [*.ehmmcalibrate] File containing an HMM
+                                  with EVD parameters.
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -cpu                integer    [0] Sets the maximum number of CPUs that the
+                                  program will run on. The default is to use
+                                  all CPUs in the machine. Overrides the HMMER
+                                  NCPU environment variable. Only affects
+                                  threaded versions of HMMER (the default on
+                                  most systems). (Integer 0 or more)
+   -fixed              integer    [0] Fix the length of the random sequences
+                                  to <n>, where <n> is a positive (and
+                                  reasonably sized) integer. The default is
+                                  instead to generate sequences with a variety
+                                  of different lengths, controlled by a
+                                  Gaussian (normal) distribution. (Integer 0
+                                  or more)
+   -mean               float      [350.0] Set the mean length of the synthetic
+                                  sequences to <x>, where <x> is a positive
+                                  real number. The default is 350. (Any
+                                  numeric value)
+   -num                integer    [5000] Set the number of synthetic sequences
+                                  to <n>, where <n> is a positive integer. If
+                                  <n> is less than about 1000, the ft to the
+                                  EVD may fail. Higher numbers of <n> will
+                                  give better determined EVD parameters. The
+                                  default is 5000; it was empirically chosen
+                                  as a tradeoff between accuracy and
+                                  computation time. (Integer 0 or more)
+   -pvm                boolean    [N] Run on a Parallel Virtual Machine (PVM).
+                                  The PVM must already be running. The client
+                                  program hmmcalibrate-pvm must be installed
+                                  on all the PVM nodes. Optional PVM support
+                                  must have been compiled into HMMER.
+   -sd                 float      [350.0] Set the standard deviation of the
+                                  synthetic sequence length distribution to
+                                  <x>, where <x> is a positive real number.
+                                  The default is 350. Note that the Gaussian
+                                  is left-truncated so that no sequences have
+                                  lengths <= 0. (Number 0.000 or more)
+   -seed               integer    [0] Set the random seed to <n>, where <n> is
+                                  a positive integer. The default is to use
+                                  time() to generate a different seed for each
+                                  run, which means that two different runs of
+                                  hmmcalibrate on the same HMM will give
+                                  slightly different results. You can use this
+                                  option to generate reproducible results for
+                                  different hmmcalibrate runs on the same
+                                  HMM. (Integer 0 or more)
+   -histfile           outfile    [*.ehmmcalibrate] Save a histogram of the
+                                  scores and the fitted theoretical curve to
+                                  file.
+
+   Associated qualifiers:
+
+   "-outhmmfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-histfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

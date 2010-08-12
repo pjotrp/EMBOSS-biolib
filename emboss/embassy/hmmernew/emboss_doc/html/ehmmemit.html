@@ -1,0 +1,984 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: ehmmemit
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+ehmmemit
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Generate sequences from a profile HMM
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+EMBASSY HMMER is a suite of application wrappers to the original hmmer v2.3.2 applications written by Sean Eddy. hmmer v2.3.2 must be installed on the same system as EMBOSS and the location of the hmmer executables must be defined in your path for EMBASSY HMMER to work.
+
+<p><b>Usage:</b>
+<br>ehmmemit [options] hmmfile outfile
+<p>The outfile parameter is new to EMBASSY HMMER.  The synthetic sequences are always written to outfile. The name of outfile is specified by the -o option as normal.
+
+<p>hmmemit reads an HMM file from a file <hmmfile> containing one or more HMMs, and generates a number of sequences from each HMM; or, if the -c option is selected, generate a single majority-rule consensus. This can be useful for various applications in which one needs a simulation of sequences consistent with a sequence family consensus. By default, hmmemit generates 10 sequences and outputs them in FASTA (unaligned) format file <outfile>.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+Please read the Userguide.pdf distributed with the original HMMER and included in the EMBASSY HMMER distribution under the DOCS directory. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with ehmmemit</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmemit -c N -n 10 </b>
+Generate sequences from a profile HMM.
+
+hmmemit - generate sequences from a profile HMM
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:             ../ehmmcalibrate-ex-keep/globino.hmm
+Number of seqs:       10
+Random seed:          0
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Output saved in file globino.ehmmemit
+
+/shared/software/bin/hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+Where possible, the same command-line qualifier names and parameter order is used as in the original hmmer.  There are however several unavoidable differences and these are clearly documented in the "Notes" section below.
+<p>More or less all options documented as "expert" in the original hmmer user guide are given in ACD as "advanced" options (-options must be specified on the command-line in order to be prompted for a value for them).  
+<p>
+
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Generate sequences from a profile HMM.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-hmmfile]           infile     File containing one or more HMMs.
+   -c                  boolean    [N] Predict a single majority-rule consensus
+                                  sequence instead of sampling sequences from
+                                  the HMM's probability distribution. Highly
+                                  conserved residues (p >= 0.9 for DNA, p >=
+                                  0.5 for protein) are shown in upper case;
+                                  others are shown in lower case. Some insert
+                                  states may become part of the majority rule
+                                  consensus, because they are used in >= 50%
+                                  of generated sequences; when this happens,
+                                  insert-generated residues are simply shown
+                                  as 'x'.
+*  -nseq               integer    [10] Generate <n> sequences. Default is 10.
+                                  (Any integer value)
+  [-o]                 outfile    [*.ehmmemit] File of synthetic sequences.
+
+   Additional (Optional) qualifiers:
+   -a                  boolean    [N] Write the generated sequences in an
+                                  aligned format (SELEX) rather than FASTA.
+   -q                  boolean    [N] Quiet; suppress all output except for
+                                  the sequences themselves. Useful for piping
+                                  or directing the output.
+
+   Advanced (Unprompted) qualifiers:
+   -seed               integer    [0] Set the random seed to <n>, where <n> is
+                                  a positive integer. The default is to use
+                                  time() to generate a different seed for each
+                                  run, which means that two different runs of
+                                  hmmemit on the same HMM will give slightly
+                                  different results. You can use this option
+                                  to generate reproducible results. (Integer 0
+                                  or more)
+
+   Associated qualifiers:
+
+   "-o" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-hmmfile]<br>(Parameter 1)</td>
+<td>infile</td>
+<td>File containing one or more HMMs.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-c</td>
+<td>boolean</td>
+<td>Predict a single majority-rule consensus sequence instead of sampling sequences from the HMM's probability distribution. Highly conserved residues (p &gt;= 0.9 for DNA, p &gt;= 0.5 for protein) are shown in upper case; others are shown in lower case. Some insert states may become part of the majority rule consensus, because they are used in &gt;= 50% of generated sequences; when this happens, insert-generated residues are simply shown as 'x'.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-nseq</td>
+<td>integer</td>
+<td>Generate &lt;n&gt; sequences. Default is 10.</td>
+<td>Any integer value</td>
+<td>10</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-o]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>File of synthetic sequences.</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ehmmemit</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-a</td>
+<td>boolean</td>
+<td>Write the generated sequences in an aligned format (SELEX) rather than FASTA.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-q</td>
+<td>boolean</td>
+<td>Quiet; suppress all output except for the sequences themselves. Useful for piping or directing the output.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-seed</td>
+<td>integer</td>
+<td>Set the random seed to &lt;n&gt;, where &lt;n&gt; is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmemit on the same HMM will give slightly different results. You can use this option to generate reproducible results.</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-o" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_o</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+<H3>Alignment and sequence formats </H3>
+Input and output of alignments and sequences is limited to the formats that the original hmmer supports. These include stockholm, SELEX, MSF, Clustal, Phylip and A2M /aligned FASTA (alignments) and FASTA, GENBANK, EMBL, GCG, PIR (sequences).  It would be fairly straightforward to adapt the code to support all EMBOSS-supported formats. 
+
+<H3>Compressed input files </H3>
+Automatic processing of gzipped files is not supported. 
+<p>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>ehmmemit</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: ../ehmmcalibrate-ex-keep/globino.hmm</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+HMMER2.0  [2.3.2]
+NAME  globins50
+LENG  143
+ALPH  Amino
+RF    no
+CS    no
+MAP   yes
+COM   /shared/software/bin/hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
+COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
+NSEQ  50
+DATE  Thu Jul 15 12:00:00 2010
+CKSUM 9858
+XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
+NULT      -4  -8455
+NULE     595  -1558     85    338   -294    453  -1158    197    249    902  -1085   -142    -21   -313     45    531    201    384  -1998   -644 
+EVD   -35.959286   0.267496
+HMM        A      C      D      E      F      G      H      I      K      L      M      N      P      Q      R      S      T      V      W      Y    
+         m-&gt;m   m-&gt;i   m-&gt;d   i-&gt;m   i-&gt;i   d-&gt;m   d-&gt;d   b-&gt;m   m-&gt;e
+         -450      *  -1900
+     1    591  -1587    159   1351  -1874   -201    151  -1600    998  -1591   -693    389  -1272    595     42    -31     27   -693  -1797  -1134    14
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378   -450      * 
+     2   -926  -2616   2221   2269  -2845  -1178   -325  -2678   -300  -2596  -1810    220  -1592    939   -974   -671   -939  -2204  -2785  -1925    15
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     3   -638  -1715   -680    497  -2043  -1540     23  -1671   2380  -1641   -840   -222  -1595    437   1040   -564   -523  -1363   2124  -1313    16
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     4    829  -1571    -37    660  -1856   -873    152  -1578    894  -1573   -678    769  -1273   1284     58    224    447  -1175  -1782  -1125    17
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     5    369   -433   -475    286   -974  -1312    -19   -412    664    398    406   1030  -1394    388   -214   -261     85   -166  -1227   -725    18
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     6  -1291   -884  -3696  -3261  -1137  -3425  -2802   2322  -3066    111     19  -3028  -3275  -2855  -3100  -2670  -1269   2738  -2450  -2062    19
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     7    157   -413   -236    316  -1387  -1231     89   -863   1084   -431   -348    910  -1319    635    297     15    704   -483  -1497   -922    20
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     8    770  -1431    -43    459  -1751   -340     78  -1449    440  -1497   -631    866  -1302    825    -51    953    364  -1076  -1750  -1121    21
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     9    420   -186  -2172  -1577      8  -1818   -694   1477  -1281    760    614  -1299  -1867  -1001  -1262   -189    -12   1401   -722   -364    22
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+    10   -961   -879  -2277  -1821   1366  -2213   -204   -399  -1500   -130    -39  -1427  -2266  -1186  -1511   -159   -913   -367   4721   1177    23
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+    11    -48  -1782    809    844  -2073   1456      8  -1811    315  -1803   -932    180  -1365    921   -218    173   -115  -1399  -2018  -1327    24
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   128   -415  -1926   1575   1399  -2219  -1163     17  -1983    527  -1929  -1039    341  -1367   1597   -212    257   -222  -1536  -2109  -1387   144
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   129   -529  -1434   -629   -143  -1926   -626   -171  -1460   2679  -1597   -839   -309  -1599    207    317   -530   -510   -130  -1840  -1369   145
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   130    811   -397  -2389  -1807   1883  -2039   -907    594  -1512   1077    687  -1532  -2065  -1201  -1483  -1125   -465   1067   -843   -472   146
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   131   -241   -102  -2327  -1710    724  -1767   -616    650  -1363   1074   1765   -718  -1809  -1026  -1252   -842   -181   1331   -541    695   147
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   132    723     95    385    823  -1820  -1168    167  -1540    875  -1362   -644    320  -1261    810    246    693    -67  -1141  -1753  -1098   148
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   133    551   -430  -1049   -481   -442    469   -241    465   -313    133    947   -411  -1543    197   -587   -146    202    522   -843   -429   149
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   134  -1086   -777  -3351  -2800    816  -2898  -1861   1501  -2515   1149    586  -2483  -2775  -2108  -2400  -2046  -1030   2380  -1511  -1216   150
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   135   1393   1409   -876   -345   -997   -525   -315   -590   -198   -847   -109   -420  -1441    -97    412    766   -130    139  -1306   -858   151
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   136     98  -1299     36    365  -1495  -1211   1241   -404    523   -952   -426   1174  -1303    511    -18    347    882   -853  -1566   -970   152
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   137   1308   -787    564   -132   -966  -1332   -203   -362    -49   -395    -57   -305  -1481     49   -437   -190   -182   1020  -1282   -802   153
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   138  -1746  -1358  -3897  -3341   -216  -3621  -2478   1774  -3040   2442   1157  -3189  -3229  -2422  -2853  -2824  -1659    392  -1720  -1647   154
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   139   1176  -1289   -179    534  -1606   -607     34  -1278    734  -1372   -534     44  -1325    433    -89    521    826   -941  -1666  -1072   155
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   140    602  -1500   -135    850  -1753  -1214   1951  -1452    838  -1484    431    118  -1306    555    347    489   -153  -1085  -1723  -1092   156
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -22  -6602  -7644   -894  -1115   -701  -1378      *      * 
+   141    351  -1646   -165    546  -1976   -498     46  -1667   2193  -1662   -798     35  -1405    476    311    -73   -306  -1287  -1859  -1254   157
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6561  -7603   -894  -1115   -701  -1378      *      * 
+   142  -1995  -1606  -3095  -2870   1739  -3015    -98  -1012  -2520   -730    655  -1990  -2962  -1884  -2326  -2167  -1915  -1128    548   4089   158
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -25  -6455  -7497   -894  -1115   -701  -1378      *      * 
+   143   -253  -1373   -267    301   -911   -565   1956   -450   1188  -1330   -497     33  -1352    502   1358   -205   -184   -941  -1604  -1026   159
+     -      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      * 
+     -      *      *      *      *      *      *      *      *      0 
+//
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>ehmmemit</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: globino.ehmmemit</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;globins50-1 
+EESEKITERMGLMDGAHNKATETSLACLLKKLTPYPETKFSFAAYIRLKW
+SEEPDLRKIALKVTDALTLTKIVQEIDDLMWKFQNGAVQHSRKQLNDIYF
+KLIERILECSERRVGGATEAKLKKPITEIGKSQHRPVLGKGI
+&gt;globins50-2 
+AETSQVKIKWGKITEVCDEFPDAIFSSEWDLAELLHSQLMFMALTSVEAS
+HEVRKSKTLKATGNQVLQVVVEAVPERDDMNGLLNELADTGCEEARISFY
+FSILAKAIVNVLQPANEWIARIAYSAKAFIHTPGTVMNDSKR
+&gt;globins50-3 
+CDLDRCTLIYKQIDVRAEKVTGPARVFHSLADNHNAFPSCGDLTSRVTIL
+RLPGIFNQADKVTGAIVNLTIKLNTDGIQVQSRDEQLHHAQYAVDIKSFT
+EIIHCYLATVAPHKPDKYILEVFLVWQKRLTLTATDIGKQYG
+&gt;globins50-4 
+QWKNNVKRIFRQLQGNSRGHAHSALTFLLKKVPTTRDYLTQFKKFASGVE
+WDEVCTNVMEEEKPGEMVARVQAGAEQRNELREVIREVSKIHAHEDYFDK
+QRNSLLGQVVIERLLLHKGDNLEIQETESSSMQSAFISTWIKAGYQ
+&gt;globins50-5 
+KNRQKLDQISESITDDQAADGGQETITRVFGRRPSAKESFSEFLSSVRAF
+EGQPEIRKGFMEVIYIFKEVVSPKGGLNATAAKLNVMLAYKLRVDPRFVV
+LFLEAAEVLKCKQWDKVRFEFGSTIPEELRAIRRASGNYT
+&gt;globins50-6 
+GDKLTVLSYMREYKKYAPNSKESLAQMARAIPKTIAKKNYFKANHCMPVQ
+ALTRIKTNGAKVLRYLNQIKNYGDMSGKLSNIGESHATSLSVGDENFPLN
+SCIFVAGLDDVLDVSEDLTAEVHLGVDNLMQVVSHAVYLPKDLH
+&gt;globins50-7 
+DQEKVLFTQQKQGADRDNFGIIDCLNSPLDHMPWTRALVKMSRKSYEDKG
+INQAEKQKLEGNSVLIVCVTALQSLDEVEQGISELLKHFACDLTIGKFQA
+ICKGLPLRILLSGESSVMEPGAYASAQKRADVEAIVKEGKL
+&gt;globins50-8 
+DDKVNVKQVIQLIEKQLRTNGAEVLVHLLKVRPAREAAFQDWQRLHSGAA
+FRDASVQTYGIEIVKSVGNAIEDTDNYMDRTIGKLSLMHARLRRIKPTGF
+TLLKEVLTTINVLAVHNKAKFGPQSGRALSRIIKIVVNDLASDYK
+&gt;globins50-9 
+EDKAAANQGVSGVKKSKAKSTRPGLGRQFVKRPSAQEISRLFDLLDQTPT
+SGDILRSADVDIQAHQCFPAFTNAYTIIDGMQGDWLKVLDAHWGFKGVHS
+EATLYLAVIFVLPISLILQAELGTLKLYASERFYSRLIEVLGHKIT
+&gt;globins50-10 
+AEQAIEMQLWHAVANAKKVEEEQVKRLYQDERGSTAHFMHYEKLRNNNDK
+VKQKGCTVLTVIKKQYKTLESDGSEVELLSSLEGDKDTLEIKLFVRLSDM
+LITVLNNSTHNDESTHSEGASQAYFSGFSAVLAGKFT
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+include file="inc/localfiles.ihtml"
+   -->
+
+None.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+<H3>1. Command-line arguments</H3>
+The following original HMMER options are not supported:
+<br><pre>
+-h         : Use -help to get help information instead.
+-n         : Use -nseq instead (-n causes problems for GUI developers)
+</pre>
+
+
+<H3>2. Installing EMBASSY HMMER</H3>
+The EMBASSY HMMER package contains "wrapper" applications providing an EMBOSS-style interface to the applications in the original HMMER package version 2.3.2 developed by Sean Eddy.  Please read the file INSTALL in the EMBASSY HMMER package distribution for installation instructions.
+
+<H3>3. Installing original HMMER</H3>
+To use EMBASSY HMMER, you will first need to download and install the original HMMER package.  Please read the file 00README in the the original HMMER package distribution for installation instructions:
+<pre>
+WWW home:       http://hmmer.wustl.edu/
+Distribution:   ftp://ftp.genetics.wustl.edu/pub/eddy/hmmer/
+</pre>
+
+<H3>4. Setting up HMMER</H3>
+For the EMBASSY HMMER package to work, the directory containing the original HMMER executables *must* be in your path. For example if you executables were installed to "/usr/local/hmmer/bin", then type:
+<pre>
+set path=(/usr/local/hmmer/bin/ $path)
+rehash
+</pre>
+
+<H3> 5. Getting help </H3>
+Please read the Userguide.pdf distributed with the original HMMER and included in the EMBASSY HMMER distribution under the DOCS directory. The first 3 chapters (Introduction, Installation and Tutorial) are particularly useful.
+<p>Please read the 'Notes' section below for a description of the differences between the original and EMBASSY HMMER, particularly which application command line options are supported. 
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+<H3>Types of input data</H3>
+hmmer v3.2.1 and therefore EMBASSY HMMER is only recommended for use with protein sequences.  If you provide a non-protein sequence you will be reprompted for a protein sequence.  To accept nucleic acid sequences you must replace instances of < type: "protein" > in the application ACD files with <type: "nucleic" >.
+
+<H3>Environment variables</H3>
+The original hmmer uses BLAST environment variables (below), if defined, to locate files. The EMBASSY HMMER does not.
+<pre>
+BLASTDB   location of sequence databases to be searched
+BLASMAT   location of substitution matrices
+HMMERDB   location of HMMs
+</pre>
+
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="ehmmalign.html">ehmmalign</a></td>
+<td>Align sequences to an HMM profile</td>
+</tr>
+
+<tr>
+<td><a href="ehmmbuild.html">ehmmbuild</a></td>
+<td>Build a profile HMM from an alignment</td>
+</tr>
+
+<tr>
+<td><a href="ehmmcalibrate.html">ehmmcalibrate</a></td>
+<td>Calibrate HMM search statistics</td>
+</tr>
+
+<tr>
+<td><a href="ehmmconvert.html">ehmmconvert</a></td>
+<td>Convert between profile HMM file formats</td>
+</tr>
+
+<tr>
+<td><a href="ehmmfetch.html">ehmmfetch</a></td>
+<td>Retrieve an HMM from an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmindex.html">ehmmindex</a></td>
+<td>Create a binary SSI index for an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmpfam.html">ehmmpfam</a></td>
+<td>Search one or more sequences against an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmsearch.html">ehmmsearch</a></td>
+<td>Search a sequence database with a profile HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/oalistat.html">oalistat</a></td>
+<td>Statistics for multiple alignment files</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmalign.html">ohmmalign</a></td>
+<td>Align sequences with an HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmbuild.html">ohmmbuild</a></td>
+<td>Build HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmcalibrate.html">ohmmcalibrate</a></td>
+<td>Calibrate a hidden Markov model</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmconvert.html">ohmmconvert</a></td>
+<td>Convert between HMM formats</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmemit.html">ohmmemit</a></td>
+<td>Extract HMM sequences</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmfetch.html">ohmmfetch</a></td>
+<td>Extract HMM from a database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmindex.html">ohmmindex</a></td>
+<td>Index an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmpfam.html">ohmmpfam</a></td>
+<td>Align single sequence with an HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmsearch.html">ohmmsearch</a></td>
+<td>Search sequence database with an HMM</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS conversion of a program written by Sean Eddy
+as part of his HMMER package.
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+Jon Ison
+<br>
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+<p>This program is an EMBASSY wrapper to a program written by Sean Eddy as part of his hmmer package.
+<p>Please report any bugs to the EMBOSS bug team in the first instance, not to Sean Eddy.
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

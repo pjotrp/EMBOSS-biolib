@@ -1,0 +1,335 @@
+                           DOMAINREP documentation
+
+
+
+CONTENTS
+
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
+
+1.0 SUMMARY
+
+   Reorder DCF file to identify representative structures
+
+2.0 INPUTS & OUTPUTS
+
+   DOMAINREP reads a DCF file (domain classification file) and writes a
+   DCF file containing the same data except that the order of domains
+   within each user-specified node (e.g. family) in the hierarchy may be
+   changed so that the representative structure of each node is given
+   first. The representative structure is found by using stamp and this
+   application must be installed on the system that is running DOMAINREP
+   and correctly configured (see 'Notes' below). A 'domain PDB file' for
+   each domain in the DCF file must exist in a directory specified in the
+   stamp "pdb.directories" file (see 'Notes' below). The domain PDB file
+   contains coordinate data for a single domain from SCOP or CATH, in PDB
+   format. The input and output files are specified by the user.
+
+3.0 INPUT FILE FORMAT
+
+   The format of the DCF file is described in the SCOPPARSE documentation.
+
+  Input files for usage example
+
+  File: all.scop2
+
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1FX2A_
+XX
+EN   1FX2
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55081 DO; 55082 SO; 39430 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Receptor-type monomeric adenylyl cyclase
+XX
+OS   Trypanosome (Trypanosoma brucei), different isoform
+XX
+NC   1
+XX
+CN   [1]
+XX
+
+
+  [Part of this file has been deleted for brevity]
+
+XX
+EN   4AT1
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 54893 SF; 54894 FA; 54895 DO; 54896 SO; 39019 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+DO   Aspartate carbamoyltransferase
+XX
+OS   Escherichia coli
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   B CHAIN; 8 START; 100 END;
+//
+ID   D4AT1D1
+XX
+EN   4AT1
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 54893 SF; 54894 FA; 54895 DO; 54896 SO; 39020 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+DO   Aspartate carbamoyltransferase
+XX
+OS   Escherichia coli
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   D CHAIN; 8 START; 100 END;
+//
+
+4.0 OUTPUT FILE FORMAT
+
+   The format of the DCF file is described in the SCOPPARSE documentation.
+
+  Output files for usage example
+
+  File: all_rep1st.scop
+
+ID   D4AT1B1
+XX
+EN   4AT1
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 54893 SF; 54894 FA; 54895 DO; 54896 SO; 39019 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+DO   Aspartate carbamoyltransferase
+XX
+OS   Escherichia coli
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   B CHAIN; 8 START; 100 END;
+//
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+NC   1
+XX
+CN   [1]
+XX
+
+
+  [Part of this file has been deleted for brevity]
+
+XX
+EN   1FX2
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55081 DO; 55082 SO; 39430 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Receptor-type monomeric adenylyl cyclase
+XX
+OS   Trypanosome (Trypanosoma brucei), different isoform
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D4AT1D1
+XX
+EN   4AT1
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 54893 SF; 54894 FA; 54895 DO; 54896 SO; 39020 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+FA   Aspartate carbamoyltransferase, Regulatory-chain, N-terminal domain
+XX
+DO   Aspartate carbamoyltransferase
+XX
+OS   Escherichia coli
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   D CHAIN; 8 START; 100 END;
+//
+
+5.0 DATA FILES
+
+   DOMAINREP does not use any data files but does make use of the stamp
+   "pdb.directories" file (see 'Notes').
+
+6.0 USAGE
+
+  6.1 COMMAND LINE ARGUMENTS
+
+Reorder DCF file to identify representative structures.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-dcfinfile]         infile     This option specifies the name of DCF file
+                                  (domain classification file) (input). A
+                                  'domain classification file' contains
+                                  classification and other data for domains
+                                  from SCOP or CATH, in DCF format
+                                  (EMBL-like). The files are generated by
+                                  using SCOPPARSE and CATHPARSE. Domain
+                                  sequence information can be added to the
+                                  file by using DOMAINSEQS.
+   -node               menu       [1] This option specifies the node fore
+                                  reordering the file. Reordering can be done
+                                  for any specified node in the SCOP or CATH
+                                  hierarchies. For example by selecting
+                                  'Class' entries belonging to the same Class
+                                  will be reordered in turn. (Values: 1 (Class
+                                  (SCOP)); 2 (Fold (SCOP)); 3 (Superfamily
+                                  (SCOP)); 4 (Family (SCOP)); 5 (Class
+                                  (CATH)); 6 (Architecture (CATH)); 7
+                                  (Topology (CATH)); 8 (Homologous Superfamily
+                                  (CATH)); 9 (Family (CATH)))
+  [-dcfoutfile]        outfile    [test.scop] This option specifies the name
+                                  of DCF file (domain classification file)
+                                  (output). A 'domain classification file'
+                                  contains classification and other data for
+                                  domains from SCOP or CATH, in DCF format
+                                  (EMBL-like). The files are generated by
+                                  using SCOPPARSE and CATHPARSE. Domain
+                                  sequence information can be added to the
+                                  file by using DOMAINSEQS.
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-dcfoutfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+

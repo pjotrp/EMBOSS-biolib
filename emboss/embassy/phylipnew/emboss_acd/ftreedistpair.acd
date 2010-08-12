@@ -1,0 +1,95 @@
+application: ftreedistpair [
+  documentation: "Distances between two sets of trees"
+  groups: "Phylogeny:Consensus"
+  embassy: "phylipnew"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  tree: intreefile [
+    parameter: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+  tree: bintreefile [
+    parameter: "Y"
+    knowntype: "newick"
+    information: "Second phylip tree file"
+    relations:  "EDAM: PHYLIP phylogenetic tree report"                
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  list: dtype [
+    additional: "Y"
+    information: "Distance type"
+    values: "s:Symmetric difference; b:Branch score distance"
+    default: "b"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: pairing [
+    additional: "Y"
+    information: "Tree pairing method"
+    values: "c:Distances between corresponding pairs each tree file;
+             l:Distances between all possible pairs in each tree file"
+    default: "l"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: style [
+    additional: "Y"
+    information: "Distances output option"
+    values: "f:Full_matrix; v:Verbose, one pair per line;
+             s:Sparse, one pair per line"
+    default: "v"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  boolean: noroot [
+    additional: "Y"
+    default: "N"
+    information: "Trees to be treated as rooted"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    default: "0"
+    information: "Species number to use as outgroup"
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "treedist output"
+    information: "Phylip treedist program output file"
+    relations:  "EDAM: Phylip phylogenetic tree distance data"         
+  ]
+
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: output

@@ -1,0 +1,93 @@
+Align sequences to an HMM profile
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-hmmfile]           infile     File containing a HMM profile
+  [-seqfile]           seqset     File containing a (set of) sequence(s)
+  [-o]                 align      [*.ehmmalign] Multiple sequence alignment
+                                  output file.
+
+   Additional (Optional) qualifiers:
+   -m                  boolean    [N] Include in the alignment only those
+                                  symbols aligned to match states. Do not show
+                                  symbols assigned to insert states.
+   -q                  boolean    [N] Quiet; suppress all output except the
+                                  alignment itself. Useful for piping or
+                                  redirecting the output.
+
+   Advanced (Unprompted) qualifiers:
+   -mapali             infile     Reads an alignment from file and aligns it
+                                  as a single object to the HMM; e.g. the
+                                  alignment in file is held fixed. This allows
+                                  you to align sequences to a model with
+                                  hmmalign and view them in the context of an
+                                  existing trusted multiple alignment. The
+                                  alignment to the alignment is defined by a
+                                  'map' kept in the HMM, and so is fast and
+                                  guaranteed to be consistent with the way the
+                                  HMM was constructed from the alignment. The
+                                  alignment in the file must be exactly the
+                                  alignment that the HMM was built from.
+                                  Compare the -withali option.
+   -withali            infile     Reads an alignment from file and aligns it
+                                  as a single object to the HMM; e.g. the
+                                  alignment in file is held fixed. This allows
+                                  you to align sequences to a model with
+                                  hmmalign and view them in the context of an
+                                  existing trusted multiple alignment. The
+                                  alignment to the alignment is done with a
+                                  heuristic (nonoptimal) dynamic programming
+                                  procedure, which may be somewhat slow and is
+                                  not guaranteed to be completely consistent
+                                  with the way the HMM was constructed (though
+                                  it should be quite close). However, any
+                                  alignment can be used, not just the
+                                  alignment that the HMM was built from.
+                                  Compare the -mapali option.
+
+   Associated qualifiers:
+
+   "-seqfile" associated qualifiers
+   -sbegin2            integer    Start of each sequence to be used
+   -send2              integer    End of each sequence to be used
+   -sreverse2          boolean    Reverse (if DNA)
+   -sask2              boolean    Ask for begin/end/reverse
+   -snucleotide2       boolean    Sequence is nucleotide
+   -sprotein2          boolean    Sequence is protein
+   -slower2            boolean    Make lower case
+   -supper2            boolean    Make upper case
+   -sformat2           string     Input sequence format
+   -sdbname2           string     Database name
+   -sid2               string     Entryname
+   -ufo2               string     UFO features
+   -fformat2           string     Features format
+   -fopenfile2         string     Features file name
+
+   "-o" associated qualifiers
+   -aformat3           string     Alignment format
+   -aextension3        string     File name extension
+   -adirectory3        string     Output directory
+   -aname3             string     Base file name
+   -awidth3            integer    Alignment width
+   -aaccshow3          boolean    Show accession number in the header
+   -adesshow3          boolean    Show description in the header
+   -ausashow3          boolean    Show the full USA in the alignment
+   -aglobal3           boolean    Show the full sequence in alignment
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

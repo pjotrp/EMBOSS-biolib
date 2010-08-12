@@ -1,0 +1,531 @@
+application: ememetext [
+  documentation: "Multiple EM for Motif Elicitation. Text file only."
+  groups: "Protein:Motifs"
+  embassy: "memenew"
+  external: "meme MEME package http://meme.sdsc.edu/meme/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: dataset [
+    information: "Set of sequences (not a USA!)"
+    parameter: "Y"
+    type: "any"
+    help: "User must provide the full filename of a set of sequences,
+           not an indirect reference, e.g. a USA is NOT acceptable."
+    aligned: "N"
+    relations: "EDAM: Sequence record"                                     
+  ]
+
+  infile: bfile [
+    additional: "Y"
+    default: ""
+    nullok: "Y"
+    information: "MEME background Markov model file (optional)"
+    help: "The name of the file containing the background model for
+           sequences. The background model is the model of random sequences
+           used by MEME. The background model is used by MEME 1) during EM as
+           the 'null model', 2) for calculating the log likelihood ratio of
+           a motif, 3) for calculating the significance (E-value) of a motif,
+           and, 4) for creating the position-specific scoring matrix
+           (log-odds matrix). See application documentation for more
+           information."
+    knowntype: "background markov model meme"
+    relations:  "EDAM: MEME background Markov model"                   
+  ]
+
+  infile: plibfile [
+    additional: "Y"
+    default: ""
+    nullok: "Y"
+    information: "MEME dirichlet prior file (optional)"
+    help: "The name of the file containing the Dirichlet prior in the
+           format of file prior30.plib"
+    knowntype: "dirichlet prior meme"
+    relations:  "EDAM: MEME Dirichlet prior record"                    
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  selection: mod [
+    additional: "Y"
+    casesensitive: "N"
+    default: "zoops"
+    header: "Distribution of motifs"
+    help: "If you know how occurrences of motifs are distributed in
+           the training set sequences, you can specify it with these options.
+           The default distribution of motif occurrences is assumed to be
+           zero or one occurrence per sequence. oops : One Occurrence Per
+           Sequence. MEME assumes that each sequence in the dataset contains
+           exactly one occurrence of each motif. This option is the fastest
+           and most sensitive but the motifs returned by MEME may be 'blurry'
+           if any of the sequences is missing them. zoops : Zero or One
+           Occurrence Per Sequence. MEME assumes that each sequence may
+           contain at most one occurrence of each motif. This option is
+           useful when you suspect that some motifs may be missing from some
+           of the sequences. In that case, the motifs found will be more
+           accurate than using the first option. This option takes more
+           computer time than the first option (about twice as much) and is
+           slightly less sensitive to weak motifs present in all of the
+           sequences. anr : Any Number of Repetitions. MEME assumes each
+           sequence may contain any number of non-overlapping occurrences of
+           each motif. This option is useful when you suspect that motifs
+           repeat multiple times within a single sequence. In that case, the
+           motifs found will be much more accurate than using one of the
+           other options. This option can also be used to discover repeats
+           within a single sequence. This option takes the much more computer
+           time than the first option (about ten times as much) and is
+           somewhat less sensitive to weak motifs which do not repeat within
+           a single sequence than the other two options."
+    information: "Select motif distribution"
+    maximum: "1"
+    minimum: "1"
+    delimiter: ","
+    values: "oops, zoops, anr"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  integer: nmotifs [
+    additional: "Y"
+    default: "1"
+    information: "Maximum number of motifs to find"
+    help: "The number of *different* motifs to search for. MEME will
+           search for and output <n> motifs."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: text [
+    additional: "Y"
+    default: "N"
+    information: "Output in text format (default is HTML)"
+    help: "Default output is in HTML"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  selection: prior [
+    additional: "Y"
+    casesensitive: "N"
+    default: "dirichlet"
+    minimum: "1"
+    maximum: "1"
+    header: "Prior"
+    delimiter: ","
+    values: "dirichlet, dmix, mega, megap, addone"
+    information: "Prior to use"
+    help: "The prior distribution on the model parameters. dirichlet:
+           Simple Dirichlet prior. This is the default for -dna and -alph. It
+           is based on the non-redundant database letter frequencies. dmix:
+           Mixture of Dirichlets prior. This is the default for -protein.
+           mega: Extremely low variance dmix; variance is scaled inversely
+           with the size of the dataset. megap: Mega for all but last
+           iteration of EM; dmix on last iteration. addone: Add +1 to each
+           observed count."
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  float: evt [
+    additional: "Y"
+    default: "-1"
+    information: "Threshold value of motif E-value at which to
+                  stop searching."
+    help: "Quit looking for motifs if E-value exceeds this value. Has
+           an extremely high default so by default MEME never quits before
+           -nmotifs <n> have been found. A value of -1 here is a
+           shorthand for infinity."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  integer: nsites [
+    additional: "Y"
+    default: "-1"
+    information: "Number of sites for each motif"
+    help: "These switches are ignored if mod = oops. The (expected)
+           number of occurrences of each motif. If a value for -nsites is
+           specified, only that number of occurrences is tried. Otherwise,
+           numbers of occurrences between -minsites and -maxsites are tried
+           as initial guesses for the number of motif occurrences. If a value
+           is not specified for -minsites and maxsites then the default
+           hardcoded into MEME, as opposed to the default value given in the
+           ACD file, is used. The hardcoded default value of -minsites is
+           equal to sqrt(number sequences). The hardcoded default value of
+           -maxsites is equal to the number of sequences (zoops) or MIN(5*
+           num.sequences, 50) (anr). A value of -1 here represents nsites
+           being unspecified."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: minsites [
+    additional: "Y"
+    default: "-1"
+    information: "Minimum number of sites for each motif"
+    help: "These switches are ignored if mod = oops. The (expected)
+           number of occurrences of each motif. If a value for -nsites is
+           specified, only that number of occurrences is tried. Otherwise,
+           numbers of occurrences between -minsites and -maxsites are tried
+           as initial guesses for the number of motif occurrences. If a value
+           is not specified for -minsites and maxsites then the default
+           hardcoded into MEME, as opposed to the default value given in the
+           ACD file, is used. The hardcoded default value of -minsites is
+           equal to sqrt(number sequences). The hardcoded default value of
+           -maxsites is equal to the number of sequences (zoops) or MIN(5 *
+           num.sequences, 50) (anr). A value of -1 here represents minsites
+           being unspecified."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: maxsites [
+    additional: "Y"
+    default: "-1"
+    information: "Maximum number of sites for each motif"
+    help: "These switches are ignored if mod = oops. The (expected)
+           number of occurrences of each motif. If a value for -nsites is
+           specified, only that number of occurrences is tried. Otherwise,
+           numbers of occurrences between -minsites and -maxsites are tried
+           as initial guesses for the number of motif occurrences. If a value
+           is not specified for -minsites and maxsites then the default
+           hardcoded into MEME, as opposed to the default value given in the
+           ACD file, is used. The hardcoded default value of -minsites is
+           equal to sqrt(number sequences). The hardcoded default value of
+           -maxsites is equal to the number of sequences (zoops) or MIN(5 *
+           num.sequences, 50) (anr). A value of -1 here represents maxsites
+           being unspecified."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  float: wnsites [
+    additional: "Y"
+    default: "0.8"
+    information: "Weight on expected number of sites"
+    help: "The weight of the prior on nsites. This controls how strong
+           the bias towards motifs with exactly nsites sites (or between
+           minsites and maxsites sites) is. It is a number in the range
+           [0..1). The larger it is, the stronger the bias towards motifs
+           with exactly nsites occurrences is."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  integer: w [
+    additional: "Y"
+    default: "-1"
+    information: "Motif width"
+    help: "The width of the motif(s) to search for. If -w is given,
+           only that width is tried. Otherwise, widths between -minw and
+           -maxw are tried. Note: if width is less than the length of the
+           shortest sequence in the dataset, width is reset by MEME to that
+           value. A value of -1 here represents -w being unspecified."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: minw [
+    additional: "Y"
+    default: "8"
+    information: "Minumum motif width"
+    help: "The width of the motif(s) to search for. If -w is given,
+           only that width is tried. Otherwise, widths between -minw and
+           -maxw are tried. Note: if width is less than the length of the
+           shortest sequence in the dataset, width is reset by MEME to that
+           value."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: maxw [
+    additional: "Y"
+    default: "50"
+    information: "Maximum motif width"
+    help: "The width of the motif(s) to search for. If -w is given,
+           only that width is tried. Otherwise, widths between -minw and
+           -maxw are tried. Note: if width is less than the length of the
+           shortest sequence in the dataset, width is reset by MEME to that
+           value."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: nomatrim [
+    additional: "Y"
+    default: "N"
+    information: "Do not adjust motif width using multiple
+                  alignment."
+    help: "The -nomatrim, -wg, -ws and -noendgaps switches control
+           trimming (shortening) of motifs using the multiple alignment
+           method. Specifying -nomatrim causes MEME to skip this and causes
+           the other switches to be ignored. The pairwise alignment is
+           controlled by the switches -wg (gap cost), -ws (space cost) and
+           -noendgaps (do not penalize endgaps). See application
+           documentation for further information."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: wg [
+    additional: "Y"
+    default: "11"
+    information: "Gap opening cost for multiple alignments"
+    help: "The -nomatrim, -wg, -ws and -noendgaps switches control
+           trimming (shortening) of motifs using the multiple alignment
+           method. Specifying -nomatrim causes MEME to skip this and causes
+           the other switches to be ignored. The pairwise alignment is
+           controlled by the switches -wg (gap cost), -ws (space cost) and
+           -noendgaps (do not penalize endgaps). See application
+           documentation for further information."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: ws [
+    additional: "Y"
+    default: "1"
+    information: "Gap extension cost for multiple alignments"
+    help: "The -nomatrim, -wg, -ws and -noendgaps switches control
+           trimming (shortening) of motifs using the multiple alignment
+           method. Specifying -nomatrim causes MEME to skip this and causes
+           the other switches to be ignored. The pairwise alignment is
+           controlled by the switches -wg (gap cost), -ws (space cost) and
+           -noendgaps (do not penalize endgaps). See application
+           documentation for further information."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: noendgaps [
+    additional: "Y"
+    default: "N"
+    information: "Do not penalise end gaps in multiple
+                  alignments"
+    help: "The -nomatrim, -wg, -ws and -noendgaps switches control
+           trimming (shortening) of motifs using the multiple alignment
+           method. Specifying -nomatrim causes MEME to skip this and causes
+           the other switches to be ignored. The pairwise alignment is
+           controlled by the switches -wg (gap cost), -ws (space cost) and
+           -noendgaps (do not penalise endgaps). See application
+           documentation for further information."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: revcomp [
+    additional: "Y"
+    default: "N"
+    information: "Allow sites on + or - DNA strands"
+    help: "Motif occurrences may be on the given DNA strand or on its
+           reverse complement. The default is to look for DNA motifs only on
+           the strand given in the training set."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: pal [
+    additional: "Y"
+    default: "N"
+    information: "Look for palindromes (requires input sequence to
+                  be dna)"
+    help: "Choosing -pal causes MEME to look for palindromes in DNA
+           datasets. MEME averages the letter frequencies in corresponding
+           columns of the motif (PSPM) together. For instance, if the width
+           of the motif is 10, columns 1 and 10, 2 and 9, 3 and 8, etc., are
+           averaged together. The averaging combines the frequency of A in
+           one column with T in the other, and the frequency of C in one
+           column with G in the other."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: nostatus [
+    additional: "Y"
+    default: "Y"
+    information: "Do not print progress reports to terminal"
+    help: "Set this option to prevent progress reports to the
+           terminal."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: maxiter [
+    default: "50"
+    information: "Maximum EM iterations to run"
+    help: "The number of iterations of EM to run from any starting
+           point. EM is run for <n> iterations or until convergence (see
+           -distance, below) from each starting point."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  float: distance [
+    default: "0.001"
+    information: "EM convergence criterion"
+    help: "The convergence criterion. MEME stops iterating EM when the
+           change in the motif frequency matrix is less than <a>. (Change is
+           the euclidean distance between two successive frequency
+           matrices.)"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  float: b [
+    default: "-1.0"
+    information: "Strength of the prior"
+    help: "The strength of the prior on model parameters. A value of 0
+           means use intrinsic strength of prior if prior = dmix. The
+           default values are 0.01 if prior = dirichlet or 0 if prior = dmix.
+           These defaults are hardcoded into MEME (the value of the default
+           in the ACD file is not used). A value of -1 here represents -b
+           being unspecified."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  float: spfuzz [
+    default: "-1.0"
+    information: "Fuzziness of sequence to theta mapping"
+    help: "The fuzziness of the mapping. Possible values are greater
+           than 0. Meaning depends on -spmap, see below. See the application
+           documentation for more information. A value of -1.0 here
+           represents -spfuzz being unspecified."
+    relations: "EDAM: Generic float"                                       
+  ]
+
+  selection: spmap [
+    casesensitive: "N"
+    default: "default"
+    minimum: "1"
+    maximum: "1"
+    header: "Starting point seq to theta mapping type"
+    delimiter: ","
+    values: "uni, pam, default"
+    information: "Select type of mapping"
+    help: "The type of mapping function to use. uni: Use prior when
+           converting a substring to an estimate of theta. Default -spfuzz
+           <a>: 0.5. pam: Use columns of PAM <a> matrix when converting a
+           substring to an estimate of theta. Default -spfuzz <a>: 120 (PAM
+           120). See the application documentation for more information."
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  string: cons [
+    default: ""
+    information: "Consensus sequence to start EM from"
+    help: "Override the sampling of starting points and just use a
+           starting point derived from <string>. This is useful when an
+           actual occurrence of a motif is known and can be used as the
+           starting point for finding the motif. See the application
+           documentation for more information."
+    knowntype: "sequence"
+    relations:  "EDAM: Sequence"                                       
+  ]
+
+  integer: maxsize [
+    default: "-1"
+    information: "Maximum dataset size in characters (-1 = use meme default)."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: p [
+    default: "0"
+    information: "Use parallel version with <p> processors"
+    help: "Only values of >0 will be applied. The -p <np> argument
+           causes a version of MEME compiled for a parallel CPU architecture
+           to be run. (By placing <np> in quotes you may pass installation
+           specific switches to the 'mpirun' command. The number of
+           processors to run on must be the first argument following -p)."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  integer: time [
+    default: "0"
+    information: "Quit before <time> CPU seconds consumed"
+    help: "Only values of more than 0 will be applied."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  string: sf [
+    default: ""
+    information: "Print <sf> as name of sequence file"
+    knowntype: "sequence id output"
+    relations:  "EDAM: Sequence unique identifier"                     
+  ]
+
+  integer: heapsize [
+    default: "64"
+    information: "Maximum size of heap used during a branching search"
+    help: "The search for good EM starting points can be improved by
+           using a branching search. A branching search begins with a
+           fixed-size heap of best EM starts identified during the search
+           of subsequences from the dataset. These starts are also called
+           seeds. The fixed-size heap of seeds is used as the branch-heap
+           during the first iteration of branching search. See the
+           application documentation for more information."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+  boolean: xbranch [
+    default: "N"
+    information: "Perform x-branching"
+    help: "The search for good EM starting points can be improved by
+           using a branching search. A branching search begins with a
+           fixed-size heap of best EM starts identified during the search
+           of subsequences from the dataset. These starts are also called
+           seeds. The fixed-size heap of seeds is used as the branch-heap
+           during the first iteration of branching search. See the
+           application documentation for more information."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: wbranch [
+    default: "N"
+    information: "Perform width branching"
+    help: "The search for good EM starting points can be improved by
+           using a branching search. A branching search begins with a
+           fixed-size heap of best EM starts identified during the search
+           of subsequences from the dataset. These starts are also called
+           seeds. The fixed-size heap of seeds is used as the branch-heap
+           during the first iteration of branching search. See the
+           application documentation for more information."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  integer: bfactor [
+    default: "3"
+    information: "Number of iterations in the branching search"
+    help: "The search for good EM starting points can be improved by
+           using a branching search. A branching search begins with a
+           fixed-size heap of best EM starts identified during the search
+           of subsequences from the dataset. These starts are also called
+           seeds. The fixed-size heap of seeds is used as the branch-heap
+           during the first iteration of branching search. See the
+           application documentation for more information."
+    relations: "EDAM: Generic integer"                                     
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outtext [
+    parameter: "Y"
+    information: "MEME program text output file"
+    knowntype: "meme text output"
+    extension: "text"
+    relations:                                                 
+  ]
+
+  seqoutset: outseq [
+    parameter: "Y"
+    extension: "fasta"
+    relations: "EDAM: Sequence record"                                     
+  ]
+
+endsection: output

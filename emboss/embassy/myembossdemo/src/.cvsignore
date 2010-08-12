@@ -1,0 +1,14 @@
+.deps
+Makefile
+Makefile.in
+.libs
+demosequence
+demoreport
+demostringnew
+demofeatures
+demostring
+myseq
+demotable
+demoalign
+mytest
+demolist

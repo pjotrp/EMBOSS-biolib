@@ -1,0 +1,313 @@
+                                  enetphos
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins
+
+Description
+
+   The NetPhos 2.0 server produces neural network predictions for serine,
+   threonine and tyrosine phosphorylation sites in eukaryotic proteins.
+
+Usage
+
+   Here is a sample session with enetphos
+
+
+% enetphos
+Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins
+Input (aligned) sequence set: EFTU_HUMAN.fsa
+Output file [eftu_human.enetphos]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.enetphos] Output file name
+
+   Additional (Optional) qualifiers:
+   -cutoff             float      [0.0] Report only scores above this value
+                                  (Any numeric value)
+
+   Advanced (Unprompted) qualifiers:
+   -plot               boolean    [N] Produce graphics
+   -two                boolean    [N] Run generic predictions only
+   -kinase             boolean    [N] Run kinase-specific only
+   -residue            menu       [all] Residues to predict with (Values: all
+                                  (all); serine (serine); threonine
+                                  (threonine); tyrosine (tyrosine))
+   -gff                boolean    [N] Produce gff output
+   -best               boolean    [N] Report only the highest score for each
+                                  residue
+   -addseq             boolean    [N] Add sequence to gff output
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   enetphos reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: EFTU_HUMAN.fsa
+
+>EFTU_HUMAN  P49411 Elongation factor Tu, mitochondrial precursor (EF-Tu) (P43).
+ - Homo sapiens (Human).
+MAAATLLRATPHFSGLAAGRTFLLQGLLRLLKAPALPLLCRGLAVEAKKTYVRDKPHVNV
+GTIGHVDHGKTTLTAAITKILAEGGGAKFKKYEEIDNAPEERARGITINAAHVEYSTAAR
+HYAHTDCPGHADYVKNMITGTAPLDGCILVVAANDGPMPQTREHLLLARQIGVEHVVVYV
+NKADAVQDSEMVELVELEIRELLTEFGYKGEETPVIVGSALCALEGRDPELGLKSVQKLL
+DAVDTYIPVPARDLEKPFLLPVEAVYSVPGRGTVVTGTLERGILKKGDECELLGHSKNIR
+TVVTGIEMFHKSLERAEAGDNLGALVRGLKREDLRRGLVMVKPGSIKPHQKVEAQVYILS
+KEEGGRHKPFVSHFMPVMFSLTWDMACRIILPPEKELAMPGEDLKFNLILRQPMILEKGQ
+RFTLRDGNRTIGTGLVTNTLAMTEEEKNIKWG
+
+Output file format
+
+  Output files for usage example
+
+  File: eftu_human.enetphos
+
+>EFTU_HUMAN     452 amino acids
+#
+# netphos-3.1b prediction results
+#
+# Sequence                 # x   Context     Score   Kinase    Answer
+# -------------------------------------------------------------------
+# EFTU_HUMAN               5 T   MAAATLLRA   0.776   PKC        YES
+# EFTU_HUMAN               5 T   MAAATLLRA   0.520   cdc2       YES
+# EFTU_HUMAN               5 T   MAAATLLRA   0.442   CaM-II      .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.428   GSK3        .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.382   CKI         .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.350   DNAPK       .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.345   p38MAPK     .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.285   CKII        .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.226   ATM         .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.221   PKG         .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.204   RSK         .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.187   cdk5        .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.172   unsp        .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.125   PKA         .
+# EFTU_HUMAN               5 T   MAAATLLRA   0.073   PKB         .
+#
+# EFTU_HUMAN              10 T   LLRATPHFS   0.555   cdk5       YES
+# EFTU_HUMAN              10 T   LLRATPHFS   0.531   p38MAPK    YES
+# EFTU_HUMAN              10 T   LLRATPHFS   0.490   GSK3        .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.440   CaM-II      .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.369   CKI         .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.343   DNAPK       .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.341   PKG         .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.322   cdc2        .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.303   unsp        .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.275   RSK         .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.266   ATM         .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.249   CKII        .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.190   PKA         .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.099   PKC         .
+# EFTU_HUMAN              10 T   LLRATPHFS   0.093   PKB         .
+#
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.547   cdc2       YES
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.468   CaM-II      .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.444   GSK3        .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.371   CKI         .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.342   DNAPK       .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.332   CKII        .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.306   PKG         .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.304   PKC         .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.290   p38MAPK     .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.270   ATM         .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.248   RSK         .
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.199   cdk5        .
+
+
+  [Part of this file has been deleted for brevity]
+
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.446   CKII        .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.441   CaM-II      .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.425   CKI         .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.424   GSK3        .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.420   cdc2        .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.364   PKA         .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.279   p38MAPK     .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.275   ATM         .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.264   PKG         .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.192   RSK         .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.160   cdk5        .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.160   unsp        .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.138   PKC         .
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.078   PKB         .
+#
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.678   CKII       YES
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.480   CKI         .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.447   unsp        .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.443   GSK3        .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.425   CaM-II      .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.376   cdc2        .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.348   DNAPK       .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.315   PKG         .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.277   ATM         .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.251   p38MAPK     .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.249   RSK         .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.157   cdk5        .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.132   PKC         .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.081   PKB         .
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.066   PKA         .
+#
+    MAAATLLRATPHFSGLAAGRTFLLQGLLRLLKAPALPLLCRGLAVEAKKT   #     50
+    YVRDKPHVNVGTIGHVDHGKTTLTAAITKILAEGGGAKFKKYEEIDNAPE   #    100
+    ERARGITINAAHVEYSTAARHYAHTDCPGHADYVKNMITGTAPLDGCILV   #    150
+    VAANDGPMPQTREHLLLARQIGVEHVVVYVNKADAVQDSEMVELVELEIR   #    200
+    ELLTEFGYKGEETPVIVGSALCALEGRDPELGLKSVQKLLDAVDTYIPVP   #    250
+    ARDLEKPFLLPVEAVYSVPGRGTVVTGTLERGILKKGDECELLGHSKNIR   #    300
+    TVVTGIEMFHKSLERAEAGDNLGALVRGLKREDLRRGLVMVKPGSIKPHQ   #    350
+    KVEAQVYILSKEEGGRHKPFVSHFMPVMFSLTWDMACRIILPPEKELAMP   #    400
+    GEDLKFNLILRQPMILEKGQRFTLRDGNRTIGTGLVTNTLAMTEEEKNIK   #    450
+    WG                                                   #    500
+%1  ....T....T...S...................................T   #     50
+%1  Y....................T.T.................Y........   #    100
+%1  ......T........S................Y.......T.........   #    150
+%1  ..........T.................Y.........S...........   #    200
+%1  .......Y....T...............................TY....   #    250
+%1  ...............Y......T....T.................S....   #    300
+%1  ...T.......S................................S.....   #    350
+%1  .........S........................................   #    400
+%1  ......................T.........T.....T...T.......   #    450
+%1  ..
+
+Data files
+
+   None.
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS wrapper for a program written by the CBS
+   group http://www.cbs.dtu.dk/index.shtml
+
+   The original CBS group application must be licensed and installed to
+   use this wrapper.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

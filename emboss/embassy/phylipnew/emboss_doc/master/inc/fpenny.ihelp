@@ -1,0 +1,58 @@
+Penny algorithm, branch-and-bound
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-infile]            discretestates File containing one or more data sets
+  [-outfile]           outfile    [*.fpenny] Phylip penny program output file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -weights            properties Phylip weights file (optional)
+   -ancfile            properties Phylip ancestral states file (optional)
+   -mixfile            properties Phylip mix output file (optional)
+   -method             menu       [Wagner] Choose the method to use (Values:
+                                  Wag (Wagner); Cam (Camin-Sokal); Mix
+                                  (Mixed))
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -howmany            integer    [1000] How many groups of trees (Any integer
+                                  value)
+   -howoften           integer    [100] How often to report, in trees (Any
+                                  integer value)
+   -simple             boolean    Branch and bound is simple
+   -threshold          float      [$(infile.discretesize)] Threshold value
+                                  (Number 1.000 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    [*.fpenny] Phylip tree output file
+                                  (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -stepbox            boolean    [N] Print out steps in each site
+   -ancseq             boolean    [N] Print states at all nodes of tree
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

@@ -1,0 +1,97 @@
+application: etandem [
+  documentation: "Finds tandem repeats in a nucleotide sequence"
+  groups: "Nucleic:Repeats"
+    relations: "EDAM:0000157 topic Sequence composition"
+    relations: "EDAM:0000379 operation Repeat sequence identification"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "dna"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: minrepeat [
+    standard: "Y"
+    default: "10"
+    minimum: "2"
+    information: "Minimum repeat size"
+    valid: "Integer, 2 or higher"
+    relations: "EDAM:0001249 data Sequence length"
+  ]
+
+  integer: maxrepeat [
+    standard: "Y"
+    default: "$(minrepeat)"
+    minimum: "$(minrepeat)"
+    information: "Maximum repeat size"
+    valid: "Integer, same as -minrepeat or higher"
+    expected: "Same as -minrepeat"
+    relations: "EDAM:0001249 data Sequence length"
+  ]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: threshold [
+    default: "20"
+    information: "Threshold score"
+    relations: "EDAM:0002146 data Threshold"
+  ]
+
+  boolean: mismatch [
+    information: "Allow N as a mismatch"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: uniform [
+    information: "Allow uniform consensus"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  report: outfile [
+    parameter: "Y"
+    rformat: "table"
+    taglist: "int:rpt_size=Size int:rpt_count=Count
+              float:identity=Identity str:consensus=Consensus"
+    rextension: "tan"
+    precision: "0"
+    relations: "EDAM:0001282 data Repeat sequence map"
+  ]
+
+  outfile: origfile [
+    extension: "oldtan"
+    nullok: "Y"
+#    default: ""
+    nulldefault: "Y"
+    knowntype: "tandem output"
+    information: "Sanger Centre program tandem output file
+                  (optional)"
+    relations: "EDAM:0001282 data Repeat sequence map"
+  ]
+
+endsection: output

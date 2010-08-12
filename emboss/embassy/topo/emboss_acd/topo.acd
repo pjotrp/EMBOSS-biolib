@@ -1,0 +1,301 @@
+application: topo [
+  documentation: "Draws an image of a transmembrane protein"
+  groups: "PROTEIN:2D STRUCTURE"
+  embassy: "topo"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "protein"
+    relations: "EDAM: Pure protein sequence"                               
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  range: sections [
+    standard: "y"
+    information: "Transmembrane Sections"
+    minsize: "1"
+    minimum: "1"
+    maximum: "$(sequence.length)"
+    failrange: "N"
+    trueminimum: "Y"
+    help: "Examples of region specifications are: \
+           24-45, 56-78 \
+           1:45, 67=99;765..888 \
+           1,5,8,10,23,45,57,99"
+    relations: "EDAM: Generic integer range"                               
+  ]
+
+  boolean: membrane [
+    standard: "Y"
+    information: "First membrane from the outside"
+    default: "Y"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  toggle: signature [
+    standard: "Y"
+    default: "N"
+    information: "Are there any signature areas to be marked"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  range: sigrange [
+    standard: "$(signature)"
+    information: "Signature Sections"
+    minimum: "1"
+    maximum: "$(sequence.length)"
+    failrange: "N"
+    trueminimum: "Y"
+    help: "Examples of ranges specifications are: \
+           10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF \
+           1,5,HG,8,10,HY,23,45,SR,57,99,UG"
+    relations: "EDAM: Generic integer range"                               
+  ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  list: cyssymbol [
+    additional: "Y"
+    default: "CF"
+    minimum: "1"
+    maximum: "1"
+    header: "Symbol type for CYS sites outside of membrane"
+    values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+             arrow, DF: down arrow, C: black circle, CG: green circle, CR:
+             red circle, CB: blue circle, CA: aqua circle, CM: magenta
+             circle, CY: yellow circle, S: black square, SG: green square,
+             SR: red square, SB: blue square, SA: aqua square, SM: magenta
+             square, SY: yellow square, H: black hexagon, HG: green hexagon,
+             HR: red hexagon, HB: blue hexagon, HA: aqua hexagon, HM: magenta
+             hexagon, HY: yellow hexagon, U: black up arrow, UG: green up
+             arrow, UR: red up arrow, UB: blue up arrow, UA: aqua up arrow,
+             UM: magenta up arrow, UY: yellow up arrow, D: black down arrow,
+             DG: green down arrow, DR: red down arrow, DB: blue down arrow,
+             DA: aqua down arrow, DM: magenta down arrow, DY: yellow down
+             arrow"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Symbol to display cys sites"
+    help: "Code representing shape and colour for cys \
+           i.e. SR square red, HY hexagon yellow \
+           CF circle NOfill, UG up arrow green"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: glysymbol [
+    additional: "Y"
+    default: "CF"
+    minimum: "1"
+    maximum: "1"
+    header: "Symbol type for N-glycosylation sites outside of
+             membrane"
+    values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+             arrow, DF: down arrow, C: black circle, CG: green circle, CR:
+             red circle, CB: blue circle, CA: aqua circle, CM: magenta
+             circle, CY: yellow circle, S: black square, SG: green square,
+             SR: red square, SB: blue square, SA: aqua square, SM: magenta
+             square, SY: yellow square, H: black hexagon, HG: green hexagon,
+             HR: red hexagon, HB: blue hexagon, HA: aqua hexagon, HM: magenta
+             hexagon, HY: yellow hexagon, U: black up arrow, UG: green up
+             arrow, UR: red up arrow, UB: blue up arrow, UA: aqua up arrow,
+             UM: magenta up arrow, UY: yellow up arrow, D: black down arrow,
+             DG: green down arrow, DR: red down arrow, DB: blue down arrow,
+             DA: aqua down arrow, DM: magenta down arrow, DY: yellow down
+             arrow"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Symbol to display N-glycosylation sites
+                  outside of membrane"
+    help: "Symbol to display N-glycosylation sites outside of membrane
+           see cyssymbol for examples"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: acidicaa [
+    additional: "Y"
+    default: "CF"
+    minimum: "1"
+    maximum: "1"
+    header: "Acidic amino acid Symbol type"
+    values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+             arrow, DF: down arrow, C: black circle, CG: green circle, CR:
+             red circle, CB: blue circle, CA: aqua circle, CM: magenta
+             circle, CY: yellow circle, S: black square, SG: green square,
+             SR: red square, SB: blue square, SA: aqua square, SM: magenta
+             square, SY: yellow square, H: black hexagon, HG: green hexagon,
+             HR: red hexagon, HB: blue hexagon, HA: aqua hexagon, HM: magenta
+             hexagon, HY: yellow hexagon, U: black up arrow, UG: green up
+             arrow, UR: red up arrow, UB: blue up arrow, UA: aqua up arrow,
+             UM: magenta up arrow, UY: yellow up arrow, D: black down arrow,
+             DG: green down arrow, DR: red down arrow, DB: blue down arrow,
+             DA: aqua down arrow, DM: magenta down arrow, DY: yellow down
+             arrow"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Symbol to display acidic amino acids"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: basicaa [
+    additional: "Y"
+    default: "CF"
+    minimum: "1"
+    maximum: "1"
+    header: "Basic amino acid Symbol type"
+    values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+             arrow, DF: down arrow, C: black circle, CG: green circle, CR:
+             red circle, CB: blue circle, CA: aqua circle, CM: magenta
+             circle, CY: yellow circle, S: black square, SG: green square,
+             SR: red square, SB: blue square, SA: aqua square, SM: magenta
+             square, SY: yellow square, H: black hexagon, HG: green hexagon,
+             HR: red hexagon, HB: blue hexagon, HA: aqua hexagon, HM: magenta
+             hexagon, HY: yellow hexagon, U: black up arrow, UG: green up
+             arrow, UR: red up arrow, UB: blue up arrow, UA: aqua up arrow,
+             UM: magenta up arrow, UY: yellow up arrow, D: black down arrow,
+             DG: green down arrow, DR: red down arrow, DB: blue down arrow,
+             DA: aqua down arrow, DM: magenta down arrow, DY: yellow down
+             arrow"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Symbol to display basic amino acids"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: amineaa [
+    additional: "Y"
+    default: "CF"
+    minimum: "1"
+    maximum: "1"
+    header: "Amine amino acid Symbol type"
+    values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+             arrow, DF: down arrow, C: black circle, CG: green circle, CR:
+             red circle, CB: blue circle, CA: aqua circle, CM: magenta
+             circle, CY: yellow circle, S: black square, SG: green square,
+             SR: red square, SB: blue square, SA: aqua square, SM: magenta
+             square, SY: yellow square, H: black hexagon, HG: green hexagon,
+             HR: red hexagon, HB: blue hexagon, HA: aqua hexagon, HM: magenta
+             hexagon, HY: yellow hexagon, U: black up arrow, UG: green up
+             arrow, UR: red up arrow, UB: blue up arrow, UA: aqua up arrow,
+             UM: magenta up arrow, UY: yellow up arrow, D: black down arrow,
+             DG: green down arrow, DR: red down arrow, DB: blue down arrow,
+             DA: aqua down arrow, DM: magenta down arrow, DY: yellow down
+             arrow"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Symbol to display amine amino acids"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: ohaa [
+    additional: "Y"
+    default: "CF"
+    minimum: "1"
+    maximum: "1"
+    header: "OH- amino acid Symbol type"
+    values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+             arrow, DF: down arrow, C: black circle, CG: green circle, CR:
+             red circle, CB: blue circle, CA: aqua circle, CM: magenta
+             circle, CY: yellow circle, S: black square, SG: green square,
+             SR: red square, SB: blue square, SA: aqua square, SM: magenta
+             square, SY: yellow square, H: black hexagon, HG: green hexagon,
+             HR: red hexagon, HB: blue hexagon, HA: aqua hexagon, HM: magenta
+             hexagon, HY: yellow hexagon, U: black up arrow, UG: green up
+             arrow, UR: red up arrow, UB: blue up arrow, UA: aqua up arrow,
+             UM: magenta up arrow, UY: yellow up arrow, D: black down arrow,
+             DG: green down arrow, DR: red down arrow, DB: blue down arrow,
+             DA: aqua down arrow, DM: magenta down arrow, DY: yellow down
+             arrow"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Symbol to display OH- amino acids"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: araa [
+    additional: "Y"
+    default: "CF"
+    minimum: "1"
+    maximum: "1"
+    header: "Aromatic amino acid Symbol type"
+    values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+             arrow, DF: down arrow, C: black circle, CG: green circle, CR:
+             red circle, CB: blue circle, CA: aqua circle, CM: magenta
+             circle, CY: yellow circle, S: black square, SG: green square,
+             SR: red square, SB: blue square, SA: aqua square, SM: magenta
+             square, SY: yellow square, H: black hexagon, HG: green hexagon,
+             HR: red hexagon, HB: blue hexagon, HA: aqua hexagon, HM: magenta
+             hexagon, HY: yellow hexagon, U: black up arrow, UG: green up
+             arrow, UR: red up arrow, UB: blue up arrow, UA: aqua up arrow,
+             UM: magenta up arrow, UY: yellow up arrow, D: black down arrow,
+             DG: green down arrow, DR: red down arrow, DB: blue down arrow,
+             DA: aqua down arrow, DM: magenta down arrow, DY: yellow down
+             arrow"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Symbol to display aromatic amino acids"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  list: proline [
+    additional: "Y"
+    default: "CF"
+    minimum: "1"
+    maximum: "1"
+    header: "Prolines Symbol type"
+    values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
+             arrow, DF: down arrow, C: black circle, CG: green circle, CR:
+             red circle, CB: blue circle, CA: aqua circle, CM: magenta
+             circle, CY: yellow circle, S: black square, SG: green square,
+             SR: red square, SB: blue square, SA: aqua square, SM: magenta
+             square, SY: yellow square, H: black hexagon, HG: green hexagon,
+             HR: red hexagon, HB: blue hexagon, HA: aqua hexagon, HM: magenta
+             hexagon, HY: yellow hexagon, U: black up arrow, UG: green up
+             arrow, UR: red up arrow, UB: blue up arrow, UA: aqua up arrow,
+             UM: magenta up arrow, UY: yellow up arrow, D: black down arrow,
+             DG: green down arrow, DR: red down arrow, DB: blue down arrow,
+             DA: aqua down arrow, DM: magenta down arrow, DY: yellow down
+             arrow"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Symbol to display prolines"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  boolean: draft [
+    additional: "Y"
+    default: "N"
+    information: "Is this a draft plot"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  graph: graph [
+    standard: "Y"
+    gdesc: "Membrane topology"
+    relations: "EDAM: EMBOSS graph file"                                   
+  ]
+
+endsection: output

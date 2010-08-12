@@ -1,0 +1,368 @@
+                                  eyinoyang
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Reports O-(beta)-GlcNAc attachment sites
+
+Description
+
+   The YinOYang WWW server produces neural network predictions for
+   O-ss-GlcNAc attachment sites in eukaryotic protein sequences. This
+   server can also use NetPhos, to mark possible phosphorylated sites and
+   hence identify "Yin-Yang" sites.
+
+Usage
+
+   Here is a sample session with eyinoyang
+
+
+% eyinoyang
+Reports O-(beta)-GlcNAc attachment sites
+Input (aligned) sequence set: CBG_HUMAN.fsa
+Output file [cbg_human.eyinoyang]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+   Example 2
+
+
+% eyinoyang
+Reports O-(beta)-GlcNAc attachment sites
+Input (aligned) sequence set: LEUK_RAT.fsa
+Output file [leuk_rat.eyinoyang]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Reports O-(beta)-GlcNAc attachment sites
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.eyinoyang] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -plot               boolean    [N] Produce graphics
+   -format             menu       [short] Format (Values: short (short); long
+                                  (long))
+   -netphos            boolean    [N] Run netphos and predict Yin-Yang sites
+   -threshold          float      [0.5] Report netphos only scores above this
+                                  value (Number from 0.000 to 1.000)
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   eyinoyang reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: CBG_HUMAN.fsa
+
+>CBG_HUMAN
+MPLLLYTCLLWLPTSGLWTVQAMDPNAAYVNMSNHHRGLASANVDFAFSLYKHLVALSPK
+KNIFISPVSISMALAMLSLGTCGHTRAQLLQGLGFNLTERSETEIHQGFQHLHQLFAKSD
+TSLEMTMGNALFLDGSLELLESFSADIKHYYESEVLAMNFQDWATASRQINSYVKNKTQG
+KIVDLFSGLDSPAILVLVNYIFFKGTWTQPFDLASTREENFYVDETTVVKVPMMLQSSTI
+SYLHDSELPCQLVQMNYVGNGTVFFILPDKGKMNTVIAALSRDTINRWSAGLTSSQVDLY
+IPKVTISGVYDLGDVLEEMGIADLFTNQANFSRITQDAQLKSSKVVHKAVLQLNEEGVDT
+AGSTGVTLNLTSKPIILRFNQPFIIMIFDHFTWSSLFLARVMNPV
+
+  Input files for usage example 2
+
+  File: LEUK_RAT.fsa
+
+>LEUK_RAT P13838 LEUKOSIALIN PRECURSOR (LEUCOCYTE SIALOGLYCOPROTEIN) (SIALOPHORI
+N) (CD43) (W3/13 ANTIGEN) (FRAGMENT). - RATTUS NORVEGICUS (RAT).
+WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAP
+ASSIPLGTPELSSFFFTSAGASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTIT
+NPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATTVSSETSGPPVTMATGSLGPS
+KETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLIA
+LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGN
+KSSGAPETDGSGQRPTLTTFFSRRKSRQGSVALEELKPGTGPNLKGEEEPLVGSEDEAVE
+TPTSDGPQAKDGAAPQSL
+
+Output file format
+
+  Output files for usage example
+
+  File: cbg_human.eyinoyang
+
+The predictions for O-GlcNAc sites in 1 sequence
+
+
+###############################################################################
+Warning:   This sequence seems to contain a signal peptide !!
+         Proteins with signal peptides are most probably secreted
+          and are unlikely to contain an O-(beta)-GlcNAc site
+  # SignalP-NN ver. 3.0 euk predictions
+  # name                Cmax  pos ?  Ymax  pos ?  Smax  pos ?  Smean ?  D     ?
+  CBG_HUMAN             0.645  23 Y  0.717  23 Y  0.981  13 Y  0.886 Y  0.801 Y
+###############################################################################
+
+
+Name:  CBG_HUMAN        Length:  405
+MPLLLYTCLLWLPTSGLWTVQAMDPNAAYVNMSNHHRGLASANVDFAFSLYKHLVALSPKKNIFISPVSISMALAMLSLG
+      80
+TCGHTRAQLLQGLGFNLTERSETEIHQGFQHLHQLFAKSDTSLEMTMGNALFLDGSLELLESFSADIKHYYESEVLAMNF
+     160
+QDWATASRQINSYVKNKTQGKIVDLFSGLDSPAILVLVNYIFFKGTWTQPFDLASTREENFYVDETTVVKVPMMLQSSTI
+     240
+SYLHDSELPCQLVQMNYVGNGTVFFILPDKGKMNTVIAALSRDTINRWSAGLTSSQVDLYIPKVTISGVYDLGDVLEEMG
+     320
+IADLFTNQANFSRITQDAQLKSSKVVHKAVLQLNEEGVDTAGSTGVTLNLTSKPIILRFNQPFIIMIFDHFTWSSLFLAR
+     400
+VMNPV
+     480
+..............G.....................................................G...........
+      80
+................................................................................
+     160
+....G...........................................................................
+     240
+................................................................G...............
+     320
+.....................GG.........................................................
+     400
+.....
+     480
+
+
+----------------------------------------------------------
+SeqName     Residue  O-GlcNAc  Potential  Thresh.  Thresh.
+                      result                (1)      (2)
+----------------------------------------------------------
+CBG_HUMAN      15  S    +        0.4952    0.4560   0.5650
+CBG_HUMAN      69  S    +        0.5330    0.5116   0.6400
+CBG_HUMAN     165  T    +        0.5099    0.4381   0.5409
+CBG_HUMAN     305  T    ++       0.5937    0.4585   0.5684
+CBG_HUMAN     342  S    ++       0.4782    0.3860   0.4707
+CBG_HUMAN     343  S    +        0.4153    0.4096   0.5025
+----------------------------------------------------------
+
+  Output files for usage example 2
+
+  File: leuk_rat.eyinoyang
+
+The predictions for O-GlcNAc sites in 1 sequence
+
+
+Name:  LEUK_RAT         Length:  378
+WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAPASSIPLGTPELSSFFFTSAG
+      80
+ASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTITNPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATT
+     160
+VSSETSGPPVTMATGSLGPSKETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLIA
+     240
+LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGNKSSGAPETDGSGQRPTLTTF
+     320
+FSRRKSRQGSVALEELKPGTGPNLKGEEEPLVGSEDEAVETPTSDGPQAKDGAAPQSL
+     400
+.....G.............G..G....GG...G..........G.....G......GG...GG.................
+      80
+..........GGG...GG.........GG........G.G...GGG....G.............G.GGG...G.....G.
+     160
+.GG..G....G...........G........GGG...G.........G.....G......GG......G...........
+     240
+.....................G.............................GG.G............G.........G..
+     320
+...........................................G............G.
+     400
+
+
+----------------------------------------------------------
+SeqName     Residue  O-GlcNAc  Potential  Thresh.  Thresh.
+                      result                (1)      (2)
+----------------------------------------------------------
+LEUK_RAT        6  S    ++       0.5334    0.4196   0.5159
+LEUK_RAT       20  T    +        0.4550    0.4247   0.5229
+LEUK_RAT       23  S    +++      0.6551    0.3665   0.4444
+LEUK_RAT       28  T    +        0.3938    0.3852   0.4697
+LEUK_RAT       29  S    +++      0.6920    0.4029   0.4935
+LEUK_RAT       33  S    +        0.4933    0.4381   0.5409
+LEUK_RAT       44  T    +++      0.6693    0.4165   0.5118
+LEUK_RAT       50  S    +        0.3897    0.3747   0.4554
+LEUK_RAT       57  T    ++       0.5390    0.4111   0.5046
+LEUK_RAT       58  T    +++      0.6271    0.4053   0.4967
+LEUK_RAT       62  S    +        0.4869    0.4238   0.5217
+LEUK_RAT       63  S    ++       0.6100    0.4194   0.5157
+LEUK_RAT       91  T    +        0.4330    0.4060   0.4977
+LEUK_RAT       92  T    ++       0.4961    0.3934   0.4807
+LEUK_RAT       93  S    +        0.4557    0.4124   0.5063
+LEUK_RAT       97  S    +        0.4692    0.4066   0.4985
+LEUK_RAT       98  T    +        0.5114    0.4222   0.5195
+LEUK_RAT      108  S    +        0.4984    0.4119   0.5056
+LEUK_RAT      109  S    +++      0.6209    0.3978   0.4866
+LEUK_RAT      118  T    ++++     0.7542    0.4267   0.5256
+LEUK_RAT      120  T    ++       0.5358    0.4281   0.5274
+LEUK_RAT      124  T    +++      0.6470    0.4087   0.5013
+LEUK_RAT      125  S    +++      0.7343    0.4145   0.5091
+LEUK_RAT      126  S    ++       0.6243    0.4313   0.5318
+LEUK_RAT      131  T    +        0.4973    0.4487   0.5552
+LEUK_RAT      145  T    ++++     0.7629    0.4440   0.5489
+LEUK_RAT      147  T    +++      0.6993    0.4525   0.5603
+LEUK_RAT      148  S    ++       0.5850    0.4536   0.5618
+LEUK_RAT      149  S    +        0.5067    0.4533   0.5614
+LEUK_RAT      153  S    +        0.4848    0.4352   0.5370
+LEUK_RAT      159  T    ++       0.6054    0.4765   0.5927
+LEUK_RAT      162  S    ++++     0.7702    0.4242   0.5221
+LEUK_RAT      163  S    +        0.4354    0.4092   0.5019
+LEUK_RAT      166  S    +        0.4314    0.3751   0.4560
+LEUK_RAT      171  T    +++      0.7201    0.4458   0.5513
+LEUK_RAT      183  T    +        0.4774    0.4040   0.4950
+LEUK_RAT      192  T    ++       0.5797    0.4320   0.5327
+LEUK_RAT      193  S    +++      0.6347    0.4159   0.5110
+LEUK_RAT      194  S    +        0.4443    0.3990   0.4883
+LEUK_RAT      198  S    +        0.4110    0.4073   0.4994
+LEUK_RAT      208  S    ++       0.5823    0.4501   0.5571
+LEUK_RAT      214  T    +        0.4242    0.4092   0.5020
+LEUK_RAT      221  T    ++       0.5461    0.4168   0.5122
+LEUK_RAT      222  T    ++       0.6041    0.4159   0.5110
+LEUK_RAT      229  S    +        0.4820    0.4089   0.5016
+LEUK_RAT      262  T    ++       0.4988    0.3886   0.4742
+LEUK_RAT      292  T    +        0.3937    0.3877   0.4730
+LEUK_RAT      293  T    ++       0.5152    0.3967   0.4851
+LEUK_RAT      295  S    +        0.4397    0.3839   0.4678
+LEUK_RAT      308  T    ++       0.5271    0.3720   0.4518
+LEUK_RAT      318  T    +        0.4814    0.4671   0.5800
+LEUK_RAT      364  S    ++       0.5089    0.3646   0.4419
+LEUK_RAT      377  S    +++      0.6489    0.3408   0.4097
+----------------------------------------------------------
+
+Data files
+
+   None.
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS wrapper for a program written by the CBS
+   group http://www.cbs.dtu.dk/index.shtml
+
+   The original CBS group application must be licensed and installed to
+   use this wrapper.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

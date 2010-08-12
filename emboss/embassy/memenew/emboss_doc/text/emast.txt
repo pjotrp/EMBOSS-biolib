@@ -1,0 +1,975 @@
+                                    emast
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Motif detection
+
+Description
+
+   EMBASSY MEME is a suite of application wrappers to the original meme
+   v3.0.14 applications written by Timothy Bailey. meme v3.0.14 must be
+   installed on the same system as EMBOSS and the location of the meme
+   executables must be defined in your path for EMBASSY MEME to work.
+
+   Usage:
+   ememe [options] mfile outfile
+
+   The outfile parameter is new to EMBASSY MEME. The output is always
+   written to .
+
+   MAST: Motif Alignment and Search Tool
+
+   MAST is a tool for searching biological sequence databases for
+   sequences that contain one or more of a group of known motifs.
+
+   A motif is a sequence pattern that occurs repeatedly in a group of
+   related protein or DNA sequences. Motifs are represented as
+   position-dependent scoring matrices that describe the score of each
+   possible letter at each position in the pattern. Individual motifs may
+   not contain gaps. Patterns with variable-length gaps must be split into
+   two or more separate motifs before being submitted as input to MAST.
+
+   MAST takes as input a file containing the descriptions of one or more
+   motifs and searches a sequence database that you select for sequences
+   that match the motifs. The motif file can be the output of the MEME
+   motif discovery tool or any file in the appropriate format.
+
+   MAST outputs three things:
+     * 1. The names of the high-scoring sequences sorted by the strength
+       of the combined match of the sequence to all of the motifs in the
+       group.
+     * 2. Motif diagrams showing the order and spacing of the motifs
+       within each matching sequence.
+     * 3. Detailed annotation of each matching sequence showing the
+       sequence and the locations and strengths of matches to the motifs.
+
+   MAST works by calculating match scores for each sequence in the
+   database compared with each of the motifs in the group of motifs you
+   provide. For each sequence, the match scores are converted into various
+   types of p-values and these are used to determine the overall match of
+   the sequence to the group of motifs and the probable order and spacing
+   of occurrences of the motifs in the sequence.
+
+Algorithm
+
+   Please read the file README distributed with the original MEME.
+
+Usage
+
+   Here is a sample session with emast
+
+
+% emast ex1.html ex1.out
+Motif detection
+Print results for sequences with E-value [10]:
+Show motif matches with p-value < mt [0.0001]:
+
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+  EXAMPLES:
+
+   Please note the examples below are unedited excerpts of the original
+   MEME documentation. Bear in mind the EMBASSY and original MEME options
+   may differ in practice (see "1. Command-line arguments").
+
+   The following examples assume that file "meme.results" is the output of
+   a MEME run containing at least 3 motifs and file SwissProt is a copy of
+   the Swiss-Prot database on your local disk. DNA_DB is a copy of a DNA
+   database on your local disk.
+
+   1) Annotate the training set:
+   mast meme.results
+
+   2) Find sequences matching the motif and annotate them in the SwissProt
+   database:
+   mast meme.results -d SwissProt
+
+   3) Show sequences with weaker combined matches to motifs.
+   mast meme.results -d SwissProt -ev 200
+
+   4) Indicate weaker matches to single motifs in the annotation so that
+   sequences with weak matches to the motifs (but perhaps with the
+   "correct" order and spacing) can be seen:
+   mast meme.results -d SwissProt -w
+
+   5) Include a nominal order and spacing of the first three motifs in the
+   calculation of the sequence p-values to increase the sensitivity of the
+   search for matching sequences:
+   mast meme.results -d SwissProt -diag "9-[2]-61-[1]-62-[3]-91"
+
+   6) Use only the first and third motifs in the search:
+   mast meme.results -d SwissProt -m 1 -m 3
+
+   7) Use only the first two motifs in the search:
+   mast meme.results -d SwissProt -c 2
+
+   8) Search DNA sequences using protein motifs, adjusting p-values and
+   E-values for each sequence by that sequence's composition:
+   mast meme.results -d DNA_DB -dna -comp
+
+Command line arguments
+
+   Where possible, the same command-line qualifier names and parameter
+   order is used as in the original mast. There are however several
+   unavoidable differences and these are clearly documented in the "Notes"
+   section below.
+
+   Most of the options in the original mast are given in ACD as "advanced"
+   or "additional" options. -options must be specified on the command-line
+   in order to be prompted for a value for "additional" options but
+   "advanced" options will never be prompted for.
+
+   Please note that one only of -stdin or -d should be specified. If you
+   set both, then -d will be used. This behaviour could have been enforced
+   at the level of the ACD file by using an ACD select: or list: type but
+   this would have been inconsistent with the original meme, which has two
+   separate options.
+
+Motif detection
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-mfile]             infile     If -d  is not given, MAST looks
+                                  for database specified inside of .
+   -ev                 float      [10] Print results for sequences with
+                                  E-value (Any numeric value)
+   -mt                 float      [0.0001] Show motif matches with p-value <
+                                  mt (Any numeric value)
+  [-outfile]           outfile    [*.emast] MAST program output file
+
+   Additional (Optional) qualifiers:
+   -dfile              infile     If -d  is not given, MAST looks
+                                  for database specified inside of .
+   -afile              infile     Input file  is assumed to contain
+                                  motifs in the format output by
+                                  bin/make_logodds and  is their alphabet;
+                                  -d  or -stdin must be specified
+                                  when this option is used.
+   -bfile              infile     The random model uses the letter frequencies
+                                  given in  instead of the
+                                  non-redundant database frequencies. The
+                                  format of  is the same as that for
+                                  the MEME -bfile opton; see the MEME
+                                  documentation for details. Sample files are
+                                  given in directory tests: tests/nt.freq and
+                                  tests/na.freq in the MEME distribution.)
+   -smax               integer    [-1] Print results for no more than
+                                  sequences (Any integer value)
+   -stdin              boolean    [N] The default is to read the database
+                                  specified inside .
+   -text               boolean    [N] Default is hypertext (HTML) format
+   -dna                boolean    [N] Translate DNA sequences to protein
+   -comp               boolean    [N] The random model uses the letter
+                                  frequencies in the current target sequence
+                                  instead of the non-redundant database
+                                  frequencies. This causes p-values and
+                                  E-values to be compensated individually for
+                                  the actual composition of each sequence in
+                                  the database. This option can increase
+                                  search time substantially due to the need to
+                                  compute a different score distribution for
+                                  each high-scoring sequence.
+   -rank               integer    [-1] Print results starting with  best
+                                  (Any integer value)
+   -best               boolean    [N] Include only the best motif in diagrams
+   -remcorr            boolean    [N] Remove highly correlated motifs from
+                                  query
+   -brief              boolean    [N] Brief output: do not print
+                                  documentation.
+   -b                  boolean    [N] Print only sections I and II
+   -nostatus           boolean    [N] Do not print progress report
+   -hitlist            boolean    [N] If you specify the -hitlist switch to
+                                  MAST, the motif 'diagram' takes the form of
+                                  a comma separated list of motif occurrences
+                                  ('hits'). Each 'hit' has the format:
+
+                                  where  is the strand (+ or - for
+                                  DNA, blank for protein),  is the
+                                  motif number,  is the starting
+                                  position of the hit,  is the ending
+                                  position of the hit, and  is the
+                                  position p-value of the hit.
+
+   Advanced (Unprompted) qualifiers:
+   -c                  integer    [-1] Only use the first  motifs (Any
+                                  integer value)
+   -sep                boolean    [N] Score reverse complement DNA strand as a
+                                  separate sequence
+   -norc               boolean    [N] Do not score reverse complement DNA
+                                  strand
+   -w                  boolean    [N] Show weak matches (mt as motif file name.
+(Any string)
+   -df                 string     Print  as database name. (Any string)
+   -minseqs            integer    [-1] Lower bound on number of sequences in
+                                  db (Any integer value)
+   -mev                float      [-1] Use only motifs with E-values less than
+                                   (Any numeric value)
+   -m                  integer    [-1] Overrides value set by using -mev. (Any
+                                  integer value)
+   -diag               string     See on-line documentation for a valid
+                                  example. (Any string)
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+
+
+
+
+  Input files for usage example
+
+  File: ex1.html
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<TITLE>MEME</TITLE>
+<STYLE type="text/css">
+  TD.invisible { color: '#D5F0FF'; }
+  TD.c0 { background: aqua; color: black; }
+  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
+  TD.c1 { background: blue; color: white; }
+  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
+  TD.c2 { background: red; color: white; }
+  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
+  TD.c3 { background: fuchsia; color: black; }
+  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
+  TD.c4 { background: yellow; color: black; }
+  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
+  TD.c5 { background: lime; color: black; }
+  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
+  TD.c6 { background: teal; color: white; }
+  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+  TD.c7 { background: #444444; color: white; }
+  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
+  TD.c8 { background: green; color: white; }
+  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
+  TD.c9 { background: silver; color: black; }
+  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
+  TD.c10 { background: purple; color: white; }
+  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
+  TD.c11 { background: olive; color: black; }
+  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
+  TD.c12 { background: navy; color: white; }
+  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
+  TD.c13 { background: maroon; color: white; }
+  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
+  TD.c14 { background: black; color: white; }
+  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
+  TD.c15 { background: white; color: black; }
+  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
+  B.red { color: red; }
+  TD.red { color: red; }
+  TH.red { color: red; }
+  B.blue { color: blue; }
+  TD.blue { color: blue; }
+  TH.blue { color: blue; }
+  B.orange { color: orange; }
+  TD.orange { color: orange; }
+  TH.orange { color: orange; }
+  B.green { color: green; }
+  TD.green { color: green; }
+
+
+  [Part of this file has been deleted for brevity]
+
+for use by database search programs such as MAST.  This matrix is a
+log-odds matrix calculated
+by taking the log (base 2) of the ratio <TT>p/f</TT> at each position in
+the motif where <TT>p</TT> is the probability of a particular letter at that
+position in the motif, and <TT>f</TT> is the background frequency of the
+letter (given in the <A HREF=#command_doc>command line summary</A> section.)
+Each entry in the matrix is multiplied by 100 and rounded to the nearest
+integer before printing.
+This is the same matrix that is used above in computing the <I>p</I>-values
+of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
+Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+sections.
+
+The scoring matrix is printed "sideways"--columns
+correspond to the letters in the alphabet (in the same order as shown in
+the simplified motif) and rows corresponding to the positions of the motif,
+position one first.  The scoring matrix is preceded by a line starting with
+"log-odds matrix:" and containing the length of the alphabet, width
+of the motif, number of characters in the training set and a scoring
+threshold.
+
+<P>
+<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
+Position-Specific Probability Matrix</H4></A>
+
+The motif itself is a position-specific probability matrix giving,
+for each position in the pattern, the observed frequency
+("probability") of each possible letter.
+The probability matrix is printed "sideways"--columns
+correspond to the letters in the alphabet (in the same order as shown in
+the simplified motif) and rows corresponding to the positions of the motif,
+position one first.
+The motif is preceded by a line starting with
+"letter-probability matrix:" and containing the length of the alphabet, width
+of the motif, number of occurrences of the motif, and the E-value of the
+motif.
+<p>
+<b>Note:</b> Earlier versions
+of MEME gave the posterior probabilities--the probability after applying
+a prior on letter frequencies--rather than the observed frequencies.
+These versions of MEME also gave the number of <I>possible</I>
+positions for the motif rather than the actual number of occurrences.
+The output from these earlier versions of MEME can be distinguished
+by "n=" rather than "nsites=" in the line preceding the matrix.
+
+</UL>
+<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
+</FORM>
+</BODY>
+</HTML>
+
+
+
+  MOTIF FORMAT
+
+   MAST can search using (multiple) motifs contained in
+     * a MEME output file,
+     * a GCG profile file,
+     * two or more GCG profile filess concatenated together, or
+     * a file with the following format.
+
+  Motif file format
+
+
+       ALPHABET= alphabet
+       log-odds matrix: alength= alength w= w
+       row_1
+       row_2
+       ...
+       row_w
+
+   A motif is represented by a position-dependent scoring matrix.
+
+   A scoring matrix is preceded by a line starting with the words log-odds
+   matrix: and specifying alength, the length of the alphabet (number of
+   columns in the scoring matrix), and the w, the width of the motif
+   (number of rows in the scoring matrix).
+
+   The following w lines (no blank lines allowed) contain the rows of the
+   scoring matrix. Row i, column j of the matrix gives the score for the
+   j-th letter in alphabet appearing at position i in an occurrence of the
+   motif.
+
+   The spaces after the equals signs and the colon are required.
+
+   The number of letters in alphabet must equal alength.
+
+   Any number of additional motifs may follow the first one.
+
+   The motif file must contain a line starting with
+              ALPHABET=
+
+   followed by alphabet, a list containing the letters used in the motifs.
+
+   The order of the letters in alphabet must be the same as the order of
+   the columns of scores in the motifs. The order need not be alphabetical
+   and case does not matter, but there should be no spaces in alphabet.
+
+   The letters in alphabet must be a subset of either the IUB/IUPAC DNA
+   (ABCDGHKMNRSTUVWY) or protein (ABCDEFGHIKLMNPQRSTUVWXYZ) alphabets. DNA
+   alphabets must contain at least the letters ACGT. Protein alphabets
+   must contain at least the letters ACDEFGHIKLMNPQRSTVWY. All other
+   letters in the alphabets are optional. If any of the optional letters
+   are missing from alphabet, MAST automatically generates scores for them
+   by taking the weighted average of the scores for the letters which the
+   missing letter could match. (The weights are the frequencies of the
+   replaced letters in the appropriate non-redundant database.)
+   Replacements for the optional letters are given in the following table.
+
+  LETTERS MATCHED BY OPTIONAL LETTERS
+
+      =================================================
+      optional          matches
+      letter      DNA             protein
+      =================================================
+       B          CGT             DN
+       D          AGT
+       H          ACT
+       K          GT
+       M          AC
+       N          ACGT
+       R          AG
+       S          CG
+       U          T               ACDEFGHIKLMNPQRSTVWY
+       V          CAG
+       W          AT
+       X                          ACDEFGHIKLMNPQRSTVWY
+       Y          CT
+       Z                          EQ
+       *          ACGT            ACDEFGHIKLMNPQRSTVWY
+       -          ACGT            ACDEFGHIKLMNPQRSTVWY
+      =================================================
+
+  EXAMPLE
+
+  Here is an example of a DNA motif file that contains two motifs.
+
+  Sample motif file
+
+
+          ALPHABET= ACGT
+          log-odds matrix: alength= 4 w= 9
+           -4.275  -0.182  -4.195   1.408
+           -4.296  -1.487   1.880  -0.816
+           -2.160  -1.492  -4.171   1.474
+           -0.810  -4.076   1.872  -2.164
+            1.537  -1.487  -4.195  -4.205
+            0.113   0.340  -0.237  -0.209
+           -0.454   0.923   0.390  -0.834
+           -1.336  -0.082   0.905   0.100
+            0.674  -4.183   0.130  -0.201
+          log-odds matrix: alength= 4 w= 6
+           -2.032   0.324   1.371  -0.781
+           -0.409   0.560  -0.250   0.119
+           -4.274  -0.519  -0.260   1.167
+           -2.188   2.300  -4.191  -2.465
+            1.265  -4.111  -0.267  -2.180
+           -1.977   2.158  -1.661  -2.071
+
+   In the example above, because the order of the letters in alphabet is
+   ACGT, the first column of each motif gives the scores for the letter A
+   at each position in the motif, the second column gives the scores for C
+   and so forth.
+
+   Note: If -d is not given, MAST looks for database specified inside of <
+   mfile >
+
+   Creates file (unless [-stdout] given) after stripping ".html" from the
+   end of < mfile >:
+
+   mast.< mfile >[.< database >][.c< count >][.m< motif >]+[.rank< rank
+   >][.ev< ev >][.mt< mt >][.b]
+
+Output file format
+
+  Output files for usage example
+
+  File: ex1.out
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<TITLE>MAST</TITLE>
+<STYLE type="text/css">
+  TD.invisible { color: '#D5F0FF'; }
+  TD.c0 { background: aqua; color: black; }
+  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
+  TD.c1 { background: blue; color: white; }
+  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
+  TD.c2 { background: red; color: white; }
+  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
+  TD.c3 { background: fuchsia; color: black; }
+  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
+  TD.c4 { background: yellow; color: black; }
+  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
+  TD.c5 { background: lime; color: black; }
+  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
+  TD.c6 { background: teal; color: white; }
+  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+  TD.c7 { background: #444444; color: white; }
+  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
+  TD.c8 { background: green; color: white; }
+  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
+  TD.c9 { background: silver; color: black; }
+  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
+  TD.c10 { background: purple; color: white; }
+  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
+  TD.c11 { background: olive; color: black; }
+  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
+  TD.c12 { background: navy; color: white; }
+  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
+  TD.c13 { background: maroon; color: white; }
+  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
+  TD.c14 { background: black; color: white; }
+  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
+  TD.c15 { background: white; color: black; }
+  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
+  B.red { color: red; }
+  TD.red { color: red; }
+  TH.red { color: red; }
+  B.blue { color: blue; }
+  TD.blue { color: blue; }
+  TH.blue { color: blue; }
+  B.orange { color: orange; }
+  TD.orange { color: orange; }
+  TH.orange { color: orange; }
+  B.green { color: green; }
+  TD.green { color: green; }
+
+
+  [Part of this file has been deleted for brevity]
+
+
+<HR>
+<A NAME=a17></A>ilv <TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#DDDD88'><A HREF='#s17'>S</A>
+  <TD BGCOLOR='#DDFFDD'><A HREF='#d17'>D</A>
+  <TD BGCOLOR='#FFFFFF'><A HREF='#bh'>?</A></TABLE><BR CLEAR=LEFT>
+  <BR>
+  LENGTH = 105  COMBINED P-VALUE = 6.93e-02  E-VALUE =      1.2<BR>
+  DIAGRAM: 105<PRE>
+
+
+</PRE>
+
+<HR>
+<A NAME=a18></A>trn9cat <TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#DDDD88'><A HREF='#s18'>S</A>
+  <TD BGCOLOR='#DDFFDD'><A HREF='#d18'>D</A>
+  <TD BGCOLOR='#FFFFFF'><A HREF='#bh'>?</A></TABLE><BR CLEAR=LEFT>
+  <BR>
+  LENGTH = 105  COMBINED P-VALUE = 2.42e-01  E-VALUE =      4.4<BR>
+  DIAGRAM: 105<PRE></PRE>
+
+<A NAME=debug></A><HR><CENTER><H3>Debugging Information</H3></CENTER><HR>
+<PRE>
+
+
+CPU: emboss4.ebi.ac.uk
+Time 0.000000 secs.
+
+mast ../../data/memenew/ex1.html -ev 10.000000 -mt 0.000100
+</PRE>
+<A NAME=bh></A>
+<A NAME=sbh></A>
+<A NAME=dbh></A>
+<A NAME=abh></A>
+<HR><CENTER><H3>Button Help</H3></CENTER><HR>
+<TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#DDDDFF'><A HREF='#bh'>E</A></TABLE>Links to Entrez database at <
+A HREF='http://www.ncbi.nlm.nih.gov'>NCBI</A> <BR CLEAR=LEFT>
+<TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#DDDD88'><A HREF='#sbh'>S</A></TABLE>Links to sequence scores (<A
+ HREF='#sec_i'>section I</A>) <BR CLEAR=LEFT>
+<TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#DDFFDD'><A HREF='#dbh'>D</A></TABLE>Links to motif diagrams (<A
+HREF='#sec_ii'>section II</A>) <BR CLEAR=LEFT>
+<TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#FFDDDD'><A HREF='#abh'>A</A></TABLE>Links to sequence/motif anno
+tated alignments (<A HREF='#sec_iii'>section III</A>) <BR CLEAR=LEFT>
+<TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#FFFFFF'><A HREF='#bh'>?</A></TABLE>This information <BR CLEAR=LE
+FT>
+
+<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
+  <TD BGCOLOR='#DDDDFF'><A HREF='#top_buttons'><B>Go to top</B></A></TABLE><BR>
+</BODY>
+</HTML>
+
+  File: crp0.s
+
+>ce1cg
+TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGTTTTTTTGATCGTTTTCACAA
+AAATGGAAGTCCACAGTCTTGACAG
+>ara
+GACAAAAACGCGTAACAAAAGTGTCTATAATCACGGCAGAAAAGTCCACATTGATTATTTGCACGGCGTCACACTTTGCT
+ATGCCATAGCATTTTTATCCATAAG
+>bglr1
+ACAAATCCCAATAACTTAATTATTGGGATTTGTTATATATAACTTTATAAATTCCTAAAATTACACAAAGTTAATAACTG
+TGAGCATGGTCATATTTTTATCAAT
+>crp
+CACAAAGCGAAAGCTATGCTAAAACAGTCAGGATGCTACAGTAATACATTGATGTACTGCATGTATGCAAAGGACGTCAC
+ATTACCGTGCAGTACAGTTGATAGC
+>cya
+ACGGTGCTACACTTGTATGTAGCGCATCTTTCTTTACGGTCAATCAGCAAGGTGTTAAATTGATCACGTTTTAGACCATT
+TTTTCGTCGTGAAACTAAAAAAACC
+>deop2
+AGTGAATTATTTGAACCAGATCGCATTACAGTGATGCAAACTTGTAAGTAGATTTCCTTAATTGTGATGTGTATCGAAGT
+GTGTTGCGGAGTAGATGTTAGAATA
+>gale
+GCGCATAAAAAACGGCTAAATTCTTGTGTAAACGATTCCACTAATTTATTCCATGTCACACTTTTCGCATCTTTGTTATG
+CTATGGTTATTTCATACCATAAGCC
+>ilv
+GCTCCGGCGGGGTTTTTTGTTATCTGCAATTCAGTACAAAACGTGATCAACCCCTCAATTTTCCCTTTGCTGAAAAATTT
+TCCATTGTCTCCCCTGTAAAGCTGT
+>lac
+AACGCAATTAATGTGAGTTAGCTCACTCATTAGGCACCCCAGGCTTTACACTTTATGCTTCCGGCTCGTATGTTGTGTGG
+AATTGTGAGCGGATAACAATTTCAC
+>male
+ACATTACCGCCAATTCTGTAACAGAGATCACACAAAGCGACGGTGGGGCGTAGGGGCAAGGAGGATGGAAAGAGGTTGCC
+GTATAAAGAAACTAGAGTCCGTTTA
+>malk
+GGAGGAGGCGGGAGGATGAGAACACGGCTTCTGTGAACTAAACCGAGGTCATGTAAGGAATTTCGTGATGTTGCTTGCAA
+AAATCGTGGCGATTTTATGTGCGCA
+>malt
+GATCAGCGTCGTTTTAGGTGAGTTGTTAATAAAGATTTGGAATTGTGACACAGTGCAAATTCAGACACATAAAAAAACGT
+CATCGCTTGCATTAGAAAGGTTTCT
+>ompa
+GCTGACAAAAAAGATTAAACATACCTTATACAAGACTTTTTTTTCATATGCCTGACGGAGTTCACACTTGTAAGTTTTCA
+ACTACGTTGTAGACTTTACATCGCC
+>tnaa
+TTTTTTAAACATTAAAATTCTTACGTAATTTATAATCTTTAAAAAAAGCATTTAATATTGCTCCCCGAACGATTGTGATT
+CGATTCACATTTAAACAATTTCAGA
+>uxu1
+CCCATGAGAGTGAAATTGTTGTGATGTGGTTAACCCAATTAGAATTCGGGATTGACATGTCTTACCAAAAGGTAGAACTT
+ATACGCCATCTCATCCGATGCAAGC
+>pbr322
+CTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCACCATATGCGGTGTGAAATACCGCACAGATGCGTAA
+GGAGAAAATACCGCATCAGGCGCTC
+>trn9cat
+CTGTGACGGAAGATCACTTCGCAGAATAAATAAATCCTGGTGTCCCTGTTGATACCGGGAAGCCCTGGGCCAACTTTTGG
+CGAAAATGAGACGTTGATCGGCACG
+>tdc
+GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTGGAAAGTATTGAAAGTTAATT
+TGTGAGTGGTCGCACATATCCTGTT
+
+   MAST outputs a file containing:
+     * * the version of MAST and the date it was built,
+     * * the reference to cite if you use MAST in your research,
+     * * a description of the database and motifs used in the search,
+     * * an explanation of the results,
+     * * high-scoring sequences--sequences matching the group of motifs
+       above a stated level of statistical significance,
+     * * motif diagrams showing the order and spacing of occurrences of
+       the motifs in the high-scoring sequences and
+     * * annotated sequences showing the positions and p-values of all
+       motif occurrences in each of the high-scoring sequences.
+
+   Each section of the results file contains an explanation of how to
+   interpret them.
+
+  Match Scores
+
+  The match score of a motif to a position in a sequence is the sum of the score
+  from each column of the position-dependent scoring matrix corresponding to the
+  letter at that position in the sequence. For example, if the sequence is
+
+
+  TAATGTTGGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGC
+     ========
+
+   and the motif is represented by the position-dependent scoring matrix
+   (where each row of the matrix corresponds to a position in the motif)
+
+  =========|=================================
+  POSITION |   A        C        G        T
+  =========|=================================
+    1      | 1.447    0.188   -4.025   -4.095
+    2      | 0.739    1.339   -3.945   -2.325
+    3      | 1.764   -3.562   -4.197   -3.895
+    4      | 1.574   -3.784   -1.594   -1.994
+    5      | 1.602   -3.935   -4.054   -1.370
+    6      | 0.797   -3.647   -0.814    0.215
+    7      |-1.280    1.873   -0.607   -1.933
+    8      |-3.076    1.035    1.414   -3.913
+  =========|=================================
+
+   then the match score of the fourth position in the sequence
+   (underlined) would be found by summing the score for T in position 1, G
+   in position 2 and so on until G in position 8. So the match score would
+   be
+    score = -4.095 + -3.945 + -3.895 + -1.994
+            + -4.054 + -0.814 + -1.933 + 1.414
+          = -19.316
+
+   The match scores for other positions in the sequence are calculated in
+   the same way. Match scores are only calculated if the match completely
+   fits within the sequence. Match scores are not calculated if the motif
+   would overhang either end of the sequence.
+
+  P-values
+
+   MAST reports all matches of a sequence to a motif or group of motifs in
+   terms of the p-value of the match. MAST considers the p-values of four
+   types of events:
+     * position p-value: the match of a single position within a sequence
+       to a given motif,
+     * sequence p-value: the best match of any position within a sequence
+       to a given motif,
+     * combined p-value: the combined best matches of a sequence to a
+       group of motifs, and
+     * E-value: observing a combined p-value at least as small in a random
+       database of the same size.
+
+   All p-values are based on a random sequence model that assumes each
+   position in a random sequence is generated according to the average
+   letter frequencies of all sequences in the the appropriate (peptide or
+   nucleotide) non-redundant database (ftp://ncbi.nlm.nih.gov/blast/db/)
+   on September 22, 1996. This can be overridden in two ways:
+
+  1) -bfile < bfile >
+
+   The random model uses the letter frequencies given in < bfile > instead
+   of the non-redundant database frequencies. The format of < bfile > is
+   the same as that for the MEME -bfile opton; see the MEME documentation
+   for details. Sample files are given in directory tests: tests/nt.freq
+   and tests/na.freq.)
+
+  2) -comp
+
+   The random model uses the letter frequencies in the current target
+   sequence instead of the non-redundant database frequencies. This causes
+   p-values and E-values to be compensated individually for the actual
+   composition of each sequence in the database. This option can increase
+   search time substantially due to the need to compute a different score
+   distribution for each high-scoring sequence.
+
+  Position p-value
+
+   The p-value of a match of a given position within a sequence to a motif
+   is defined as the probability of a randomly selected position in a
+   randomly generated sequence having a match score at least as large as
+   that of the given position.
+
+  Sequence p-value
+
+   The p-value of a match of a sequence to a motif is defined as the
+   probability of a randomly generated sequence of the same length having
+   a match score at least as large as the largest match score of any
+   position in the sequence.
+
+  Combined p-value
+
+   The p-value of a match of a sequence to a group of motifs is defined as
+   the probability of a randomly generated sequence of the same length
+   having sequence p-values whose product is at least as small as the
+   product of the sequence p-values of the matches of the motifs to the
+   given sequence.
+
+  E-value
+
+   The E-value of the match of a sequence in a database to a a group of
+   motifs is defined as the expected number of sequences in a random
+   database of the same size that would match the motifs as well as the
+   sequence does and is equal to the combined p-value of the sequence
+   times the number of sequences in the database.
+
+  High-scoring Sequences
+
+   MAST lists the names and part of the descriptive text of all sequences
+   whose E-value is less than E. Sequences shorter than one or more of the
+   motifs are skipped. The sequences are sorted by increasing E-value. The
+   value of E is set to 10 for the WEB server but is user-selectable in
+   the down-loadable version of MAST.
+
+  Motif Diagrams
+
+   Motif diagrams show the order and spacing of non-overlapping matches to
+   the motifs in each high-scoring sequence. Motif occurrences are
+   determined based on the position p-value of matches to the motif.
+   Strong matches (p-value < M) are shown in square brackets (`[ ]'), weak
+   matches (M < p-value < M * 10) are shown in angle brackets (`< >') and
+   the length of non-motif sequence ("spacer") is shown between dashes
+   (`-'). For example,
+
+          27-[3]-44-< 4 >-99-[1]-7
+
+   shows an initial spacer of length 27, followed by a strong match to
+   motif 3, a spacer of length 44, a weak match to motif 4, a spacer of
+   length 99, a strong match to motif 1 and a final non-motif sequence of
+   length 7. The value of M is 0.0001 for the WEB server but is
+   user-selectable in the down-loadable version of MAST.
+
+   Note: If you specify the -hit_list switch to MAST, the motif "diagram"
+   takes the form of a comma separated list of motif occurrences ("hits").
+   Each "hit" has the format: < strand >< motif > < start > < end > <
+   p-value > where
+     * < strand > is the strand (+ or - for DNA, blank for protein),
+     * < motif > is the motif number,
+     * < start > is the starting position of the hit,
+     * < end > is the ending position of the hit, and
+     * < p-value > is the position p-value of the hit.
+
+  Annotated Sequences
+
+   MAST annotates each high-scoring sequence by printing the sequence
+   along with the position and strength of all the non-overlapping motif
+   occurrences. The four lines above each motif occurrence contain,
+   respectively,
+     * the motif number of the occurrence,
+     * the position p-value of the occurence,
+     * the best possible match to the motif, and
+     * a plus sign (`+') above each letter in the occurrence that has a
+       positive
+     * match score to the motif.
+
+   The best possible match to a motif is the sequence of letters which
+   would acheive the highest match score.
+
+Data files
+
+   None.
+
+Notes
+
+  1. Command-line arguments
+
+   The following original MEME options are not supported:
+-stdout       : The output is always written to file.
+-hit_list     : Use -hitlist instead.
+
+   The following additional options are provided:
+outfile       : Application output that was normally written to stdout.
+
+  2. Installing EMBASSY MEMENEW
+
+   The EMBASSY MEMENEW package contains "wrapper" applications providing
+   an EMBOSS-style interface to the applications in the original MEME
+   package version 4.4.0 developed by Timothy L. Bailey. Please read the
+   file README in the EMBASSY MEMENEW package distribution for
+   installation instructions.
+
+  3. Installing original MEME
+
+   To use EMBASSY MEMENEW, you will first need to download and install the
+   original MEME package:
+WWW home:       http://meme.sdsc.edu/meme/
+Distribution:   http://meme.nbcr.net/downloads/old_versions/
+
+   Please read the file README in the the original MEME package
+   distribution for installation instructions.
+
+  4. Setting up MEME
+
+   For the EMBASSY MEMENEW package to work, the directory containing the
+   original MEME executables *must* be in your path. For example if you
+   executables were installed to "/usr/local/meme/bin", then type:
+set path=(/usr/local/meme/bin/ $path)
+rehash
+
+  5. Getting help
+
+   Once you have installed the original MEME, type
+meme > meme.txt
+mast > mast.txt
+
+   to retrieve the meme and mast documentation into text files. The same
+   documentation is given here and in the ememe documentation.
+
+   Please read the 'Notes' section below for a description of the
+   differences between the original and EMBASSY MEMENEW, particularly
+   which application command line options are supported.
+
+References
+
+   (MEME) Timothy L. Bailey and Charles Elkan, "Fitting a mixture model by
+   expectation maximization to discover motifs in biopolymers",
+   Proceedings of the Second International Conference on Intelligent
+   Systems for Molecular Biology, pp. 28-36, AAAI Press, Menlo Park,
+   California, 1994.
+
+   (MAST) Timothy L. Bailey and Michael Gribskov, "Combining evidence
+   using p-values: application to sequence homology searches",
+   Bioinformatics, Vol. 14, pp. 48-54, 1998.
+
+Warnings
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   echlorop         Reports presence of chloroplast transit peptides
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS conversion of a program written by Sean Eddy
+   as part of his HMMER package.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author. Jon
+   Ison
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+   This program is an EMBASSY wrapper to a program written by Timothy L.
+   Bailey as part of his meme package.
+
+   Please report any bugs to the EMBOSS bug team in the first instance,
+   not to Timothy L. Bailey.
+
+History
+
+   None.
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.

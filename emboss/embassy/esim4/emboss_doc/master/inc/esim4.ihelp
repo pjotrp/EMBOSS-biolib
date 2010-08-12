@@ -1,0 +1,170 @@
+Align an mRNA to a genomic DNA sequence
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-asequence]         sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
+  [-bsequence]         seqall     Genomic sequence
+  [-outfile]           outfile    [*.esim4] Sim4 program output file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -word               integer    [12] Sets the word size (W) for blast hits.
+                                  Default value: 12. (Any integer value)
+   -extend             integer    [12] Sets the word extension termination
+                                  limit (X) for the blast-like stage of the
+                                  algorithm. Default value: 12. (Any integer
+                                  value)
+   -cutoff             integer    [3] Sets the cutoff (E) in range [3,10].
+                                  (Integer up to 10)
+   -useramsp           toggle     [N] False: esim4 calculates mspA, True:
+                                  value from mspA command line argument.
+*  -amsp               integer    [16] MSP score threshold (K) for the first
+                                  stage of the algorithm. (If this option is
+                                  not specified, the threshold is computed
+                                  from the lengths of the sequences, using
+                                  statistical criteria.) For example, a good
+                                  value for genomic sequences in the range of
+                                  a few hundred Kb is 16. To avoid spurious
+                                  matches, however, a larger value may be
+                                  needed for longer sequences. (Any integer
+                                  value)
+   -userbmsp           toggle     [N] False: esim4 calculates mspB, True:
+                                  value from mspB command line argument.
+*  -bmsp               integer    [12] Sets the threshold for the MSP scores
+                                  (C) when aligning the as-yet-unmatched
+                                  fragments, during the second stage of the
+                                  algorithm. By default, the smaller of the
+                                  constant 12 and a statistics-based threshold
+                                  is chosen. (Any integer value)
+   -weight             integer    [0] Weight value (H) (undocumented). 0 uses
+                                  a default, >0 is a value (Any integer value)
+   -diagonal           integer    [10] Bound (K) for the diagonal distance
+                                  within consecutive MSPs in an exon. (Any
+                                  integer value)
+   -strand             menu       [both] This determines the strand of the
+                                  genome (R) with which the mRNA will be
+                                  aligned. The default value is 'both', in
+                                  which case both strands of the genome are
+                                  attempted. The other allowed modes are
+                                  'forward' and 'reverse'. (Values: both (Both
+                                  strands); forward (Forward strand only);
+                                  reverse (Reverse strand only))
+   -format             integer    [0] Sets the output format (A). Exon
+                                  endpoints only (format=0), exon endpoints
+                                  and boundaries of the coding region (CDS) in
+                                  the genomic sequence, when specified for
+                                  the input mRNA (-format=5), alignment text
+                                  (-format=1), alignment in lav-block format
+                                  (-format=2), or both exon endpoints and
+                                  alignment text (-format=3 or -format=4). If
+                                  a reverse complement match is found,
+                                  -format=0,1,2,3,5 will give its position in
+                                  the plus strand of the longer sequence and
+                                  the minus strand of the shorter sequence.
+                                  -format=4 will give its position in the plus
+                                  strand of the first sequence (mRNA) and the
+                                  minus strand of the second sequence
+                                  (genome), regardless of which sequence is
+                                  longer. The -format=5 option can be used
+                                  with the S command line option to specify
+                                  the endpoints of the CDS in the mRNA, and
+                                  produces output in the exons file format
+                                  required by PipMaker. (Integer from 0 to 5)
+   -cliptails          boolean    [N] Trim poly-A tails (P). Specifies whether
+                                  or not the program should report the
+                                  fragment of the alignment containing the
+                                  poly-A tail (if found). By default
+                                  (-nocliptails) the alignment is displayed as
+                                  computed. When this feature is enabled
+                                  (-cliptails), sim4 will remove the poly-A
+                                  tails and all format options will produce
+                                  additional lav alignment headers.
+   -smallexons         boolean    [N] Requests an additional search for small
+                                  marginal exons (N) (N=1) guided by the
+                                  splice-site recognition signals. This option
+                                  can be used when a high accuracy match is
+                                  expected. The default value is N=0,
+                                  specifying no additional search.
+   -[no]ambiguity      boolean    [Y] Controls the set of characters allowed
+                                  in the input sequences (B). By default
+                                  (-ambiguity), ambiguity characters
+                                  (ABCDGHKMNRSTVWXY) are allowed. By
+                                  specifying -noambiguity, the set of
+                                  acceptable characters is restricted to
+                                  A,C,G,T,N and X only.
+   -cdsregion          string     Allows the user to specify the endpoints of
+                                  the CDS in the input mRNA (S), with the
+                                  syntax: -cdsregion=n1..n2. This option is
+                                  only available with the -format=5 flag,
+                                  which produces output in the format required
+                                  by PipMaker. Alternatively, the CDS
+                                  coordinates could appear in a construct
+                                  CDS=n1..n2 in the FastA header of the mRNA
+                                  sequence. When the second file is an mRNA
+                                  database, the command line specification for
+                                  the CDS will apply to the first sequence in
+                                  the file only. (Any string)
+   -aoffset            integer    [0] Undocumented (f) - some sort of offset
+                                  in first sequence. (Any integer value)
+   -boffset            integer    [0] Undocumented (F) - some sort of offset
+                                  in second sequence. (Any integer value)
+   -toa                integer    [0] Undocumented (t)- offset end of first
+                                  sequence? (Any integer value)
+   -tob                integer    [0] Undocumented (T) - offset end of second
+                                  sequence? (Any integer value)
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-asequence" associated qualifiers
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-bsequence" associated qualifiers
+   -sbegin2            integer    Start of each sequence to be used
+   -send2              integer    End of each sequence to be used
+   -sreverse2          boolean    Reverse (if DNA)
+   -sask2              boolean    Ask for begin/end/reverse
+   -snucleotide2       boolean    Sequence is nucleotide
+   -sprotein2          boolean    Sequence is protein
+   -slower2            boolean    Make lower case
+   -supper2            boolean    Make upper case
+   -sformat2           string     Input sequence format
+   -sdbname2           string     Database name
+   -sid2               string     Entryname
+   -ufo2               string     UFO features
+   -fformat2           string     Features format
+   -fopenfile2         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

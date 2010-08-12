@@ -1,0 +1,58 @@
+application: martdatasets [
+  documentation: "Return datasets from a mart from a registry"
+  groups: "Edit"
+    relations: "EDAM:0000090 topic Database search and retrieval"
+    relations: "EDAM:0000224 operation Database search and retrieval"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  string: mart [
+    standard: "Y"
+    default: "ensembl"
+    information: "Mart name"
+    relations: "EDAM:0001056 data Database name"
+  ]
+
+
+endsection: input
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  string: host [
+    default: "www.biomart.org"
+    information: "Registry host location"
+    relations: "EDAM:0001047 data URI"
+  ]
+
+  string: path [
+    default: "/biomart/martservice"
+    information: "Registry path on registry host"
+    relations: "EDAM:0001049 data Directory name"
+  ]
+
+  integer: port [
+    default: "80"
+    information: "Registry port on registry host"
+    relations: "EDAM:0001773 data Tool-specific parameter"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    relations: "EDAM:0000957 data Database metadata"
+  ]
+
+endsection: output

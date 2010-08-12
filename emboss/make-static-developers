@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+autoreconf -fi
+./configure --enable-warnings --disable-shared --enable-debug
+make

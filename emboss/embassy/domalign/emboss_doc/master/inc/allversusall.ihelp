@@ -1,0 +1,73 @@
+Sequence similarity data from all-versus-all comparison.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-seqinpath]         dirlist    [./] Sequence directories
+  [-datoutdir]         outdir     [./] This option specifies the location of
+                                  sequence similarity data files (output).
+   -logfile            outfile    [allversusall.log] This option specifies the
+                                  name of ALLVERSUSALL log file (output). The
+                                  log file contains messages about any errors
+                                  arising while ALLVERSUSALL ran.
+
+   Additional (Optional) qualifiers:
+   -matrix             matrixf    [EBLOSUM62] This option specifies the
+                                  residue substitution matrix that is used for
+                                  sequence comparison.
+   -gapopen            float      [10.0 for any sequence] This option
+                                  specifies the gap insertion penalty. The gap
+                                  insertion penalty is the score taken away
+                                  when a gap is created. The best value
+                                  depends on the choice of comparison matrix.
+                                  The default value assumes you are using the
+                                  EBLOSUM62 matrix for protein sequences, and
+                                  the EDNAFULL matrix for nucleotide
+                                  sequences. (Floating point number from 1.0
+                                  to 100.0)
+   -gapextend          float      [0.5 for any sequence] This option specifies
+                                  the gap extension penalty. The gap
+                                  extension, penalty is added to the standard
+                                  gap penalty for each base or residue in the
+                                  gap. This is how long gaps are penalized.
+                                  Usually you will expect a few long gaps
+                                  rather than many short gaps, so the gap
+                                  extension penalty should be lower than the
+                                  gap penalty. An exception is where one or
+                                  both sequences are single reads with
+                                  possible sequencing errors in which case you
+                                  would expect many single base gaps. You can
+                                  get this result by setting the gap open
+                                  penalty to zero (or very low) and using the
+                                  gap extension penalty to control gap
+                                  scoring. (Floating point number from 0.0 to
+                                  10.0)
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-seqinpath" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-datoutdir" associated qualifiers
+   -extension2         string     Default file extension
+
+   "-logfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

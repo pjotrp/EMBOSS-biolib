@@ -1,0 +1,68 @@
+application: cutseq [
+  documentation: "Removes a section from a sequence"
+  groups: "Edit"
+    relations: "EDAM:0000156 topic Sequence editing"
+    relations: "EDAM:0000369 operation Sequence cutting"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "gapany"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: from [
+    standard: "Y"
+    default: "$(sequence.begin)"
+    minimum: "$(sequence.begin)"
+    maximum: "$(sequence.end)"
+    failrange: "N"
+    trueminimum: "N"
+    information: "Start of region to delete"
+    help: "This is the start position (inclusive) of the section of
+           the sequence that you wish to remove."
+    expected: "Start of sequence (0)"
+    relations: "EDAM:0001016 data Sequence position"
+  ]
+
+  integer: to [
+    standard: "Y"
+    default: "$(sequence.end)"
+    maximum: "$(sequence.end)"
+    minimum: "$(from)"
+    failrange: "N"
+    trueminimum: "N"
+    information: "End of region to delete"
+    help: "This is the end position (inclusive) of the section of the
+           sequence that you wish to remove."
+    expected: "End of sequence (0)"
+    relations: "EDAM:0001016 data Sequence position"
+  ]
+
+endsection: required
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  seqout: outseq [
+    parameter: "Y"
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

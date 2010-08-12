@@ -1,0 +1,1046 @@
+<HTML>
+
+<HEAD>
+  <TITLE>
+  EMBOSS: topo
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+topo
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+ 
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2
+Draws an image of a transmembrane protein
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+<H2>
+    Description
+</H2>TOPO creates an image of a transmembrane region but the user must give
+the transmembrane regions for the sequence as it does not
+calculate these. 
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with topo</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>topo tsw:aqp1_human -signa -prol=UM -cys=cg -gly=sr -acid=dr -basic=db -ohaa=da -araa=dg -graph ps </b>
+Draws an image of a transmembrane protein
+Transmembrane Sections: <b>18 35 49 67 94 115 136 156 165 184 211 232</b>
+First membrane from the outside [Y]: <b>n</b>
+Signature Sections: <b>74 82 sy 189 189 hm 239 239 sa 157 157 sa 262 262 sa</b>
+
+Created topo.ps
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Draws an image of a transmembrane protein
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-sequence]          sequence   Protein sequence filename and optional
+                                  format, or reference (input USA)
+   -sections           range      [(full sequence)] Examples of region
+                                  specifications are:
+                                  24-45, 56-78
+                                  1:45, 67=99;765..888
+                                  1,5,8,10,23,45,57,99
+   -[no]membrane       boolean    [Y] First membrane from the outside
+   -signature          toggle     [N] Are there any signature areas to be
+                                  marked
+*  -sigrange           range      [(full sequence)] Examples of ranges
+                                  specifications are:
+                                  10-10 CF, 56-78 SY\ 1:45 SR, 67=99
+                                  HY;765..888 SF
+                                  1,5,HG,8,10,HY,23,45,SR,57,99,UG
+   -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tek, tekt, none, data, xterm, png, gif, pdf,
+                                  svg, pdf, svg)
+
+   Additional (Optional) qualifiers:
+   -cyssymbol          menu       [CF] Code representing shape and colour for
+                                  cys
+                                  i.e. SR square red, HY hexagon yellow
+                                  CF circle NOfill, UG up arrow green (Values:
+                                  N (None); CF (circle); SF (square); HF
+                                  (hexagon); UF (up arrow); DF (down arrow); C
+                                  (black circle); CG (green circle); CR (red
+                                  circle); CB (blue circle); CA (aqua circle);
+                                  CM (magenta circle); CY (yellow circle); S
+                                  (black square); SG (green square); SR (red
+                                  square); SB (blue square); SA (aqua square);
+                                  SM (magenta square); SY (yellow square); H
+                                  (black hexagon); HG (green hexagon); HR (red
+                                  hexagon); HB (blue hexagon); HA (aqua
+                                  hexagon); HM (magenta hexagon); HY (yellow
+                                  hexagon); U (black up arrow); UG (green up
+                                  arrow); UR (red up arrow); UB (blue up
+                                  arrow); UA (aqua up arrow); UM (magenta up
+                                  arrow); UY (yellow up arrow); D (black down
+                                  arrow); DG (green down arrow); DR (red down
+                                  arrow); DB (blue down arrow); DA (aqua down
+                                  arrow); DM (magenta down arrow); DY (yellow
+                                  down arrow))
+   -glysymbol          menu       [CF] Symbol to display N-glycosylation sites
+                                  outside of membrane see cyssymbol for
+                                  examples (Values: N (None); CF (circle); SF
+                                  (square); HF (hexagon); UF (up arrow); DF
+                                  (down arrow); C (black circle); CG (green
+                                  circle); CR (red circle); CB (blue circle);
+                                  CA (aqua circle); CM (magenta circle); CY
+                                  (yellow circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -acidicaa           menu       [CF] Symbol to display acidic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -basicaa            menu       [CF] Symbol to display basic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -amineaa            menu       [CF] Symbol to display amine amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -ohaa               menu       [CF] Symbol to display OH- amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -araa               menu       [CF] Symbol to display aromatic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -proline            menu       [CF] Symbol to display prolines (Values: N
+                                  (None); CF (circle); SF (square); HF
+                                  (hexagon); UF (up arrow); DF (down arrow); C
+                                  (black circle); CG (green circle); CR (red
+                                  circle); CB (blue circle); CA (aqua circle);
+                                  CM (magenta circle); CY (yellow circle); S
+                                  (black square); SG (green square); SR (red
+                                  square); SB (blue square); SA (aqua square);
+                                  SM (magenta square); SY (yellow square); H
+                                  (black hexagon); HG (green hexagon); HR (red
+                                  hexagon); HB (blue hexagon); HA (aqua
+                                  hexagon); HM (magenta hexagon); HY (yellow
+                                  hexagon); U (black up arrow); UG (green up
+                                  arrow); UR (red up arrow); UB (blue up
+                                  arrow); UA (aqua up arrow); UM (magenta up
+                                  arrow); UY (yellow up arrow); D (black down
+                                  arrow); DG (green down arrow); DR (red down
+                                  arrow); DB (blue down arrow); DA (aqua down
+                                  arrow); DM (magenta down arrow); DY (yellow
+                                  down arrow))
+   -draft              boolean    [N] Is this a draft plot
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-graph" associated qualifiers
+   -gprompt            boolean    Graph prompting
+   -gdesc              string     Graph description
+   -gtitle             string     Graph title
+   -gsubtitle          string     Graph subtitle
+   -gxtitle            string     Graph x axis title
+   -gytitle            string     Graph y axis title
+   -goutfile           string     Output file for non interactive displays
+   -gdirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>sequence</td>
+<td>Protein sequence filename and optional format, or reference (input USA)</td>
+<td>Readable sequence</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-sections</td>
+<td>range</td>
+<td>Examples of region specifications are:
+24-45, 56-78
+1:45, 67=99;765..888
+1,5,8,10,23,45,57,99</td>
+<td>Sequence range</td>
+<td><i>full sequence</i></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]membrane</td>
+<td>boolean</td>
+<td>First membrane from the outside</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-signature</td>
+<td>toggle</td>
+<td>Are there any signature areas to be marked</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-sigrange</td>
+<td>range</td>
+<td>Examples of ranges specifications are:
+10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF
+1,5,HG,8,10,HY,23,45,SR,57,99,UG</td>
+<td>Sequence range</td>
+<td><i>full sequence</i></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-graph</td>
+<td>graph</td>
+<td>Graph type</td>
+<td>EMBOSS has a list of known devices, including ps, hpgl, hp7470, hp7580, meta, cps, x11, tek, tekt, none, data, xterm, png, gif, pdf, svg, pdf, svg</td>
+<td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-cyssymbol</td>
+<td>list</td>
+<td>Code representing shape and colour for cys
+i.e. SR square red, HY hexagon yellow
+CF circle NOfill, UG up arrow green</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrow)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-glysymbol</td>
+<td>list</td>
+<td>Symbol to display N-glycosylation sites outside of membrane see cyssymbol for examples</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrow)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-acidicaa</td>
+<td>list</td>
+<td>Symbol to display acidic amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrow)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-basicaa</td>
+<td>list</td>
+<td>Symbol to display basic amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrow)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-amineaa</td>
+<td>list</td>
+<td>Symbol to display amine amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrow)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ohaa</td>
+<td>list</td>
+<td>Symbol to display OH- amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrow)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-araa</td>
+<td>list</td>
+<td>Symbol to display aromatic amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrow)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-proline</td>
+<td>list</td>
+<td>Symbol to display prolines</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrow)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-draft</td>
+<td>boolean</td>
+<td>Is this a draft plot</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-sequence" associated sequence qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sbegin1<br>-sbegin_sequence</td>
+<td>integer</td>
+<td>Start of the sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -send1<br>-send_sequence</td>
+<td>integer</td>
+<td>End of the sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sreverse1<br>-sreverse_sequence</td>
+<td>boolean</td>
+<td>Reverse (if DNA)</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sask1<br>-sask_sequence</td>
+<td>boolean</td>
+<td>Ask for begin/end/reverse</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -snucleotide1<br>-snucleotide_sequence</td>
+<td>boolean</td>
+<td>Sequence is nucleotide</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sprotein1<br>-sprotein_sequence</td>
+<td>boolean</td>
+<td>Sequence is protein</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -slower1<br>-slower_sequence</td>
+<td>boolean</td>
+<td>Make lower case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -supper1<br>-supper_sequence</td>
+<td>boolean</td>
+<td>Make upper case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sformat1<br>-sformat_sequence</td>
+<td>string</td>
+<td>Input sequence format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sdbname1<br>-sdbname_sequence</td>
+<td>string</td>
+<td>Database name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sid1<br>-sid_sequence</td>
+<td>string</td>
+<td>Entryname</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ufo1<br>-ufo_sequence</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fformat1<br>-fformat_sequence</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fopenfile1<br>-fopenfile_sequence</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-graph" associated graph qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -gprompt</td>
+<td>boolean</td>
+<td>Graph prompting</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -gdesc</td>
+<td>string</td>
+<td>Graph description</td>
+<td>Any string</td>
+<td>Membrane topology</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -gtitle</td>
+<td>string</td>
+<td>Graph title</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -gsubtitle</td>
+<td>string</td>
+<td>Graph subtitle</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -gxtitle</td>
+<td>string</td>
+<td>Graph x axis title</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -gytitle</td>
+<td>string</td>
+<td>Graph y axis title</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -goutfile</td>
+<td>string</td>
+<td>Output file for non interactive displays</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -gdirectory</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+<H2>
+    Input file format
+</H2>
+Any sequence.
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+
+'tsw:aqp1_human' is a sequence entry in the example protein database 'tsw'
+<p>
+<p><h3>Database entry: tsw:aqp1_human</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   AQP1_HUMAN              Reviewed;         269 AA.
+AC   P29972; B5BU39; Q8TBI5; Q8TDC1;
+DT   01-APR-1993, integrated into UniProtKB/Swiss-Prot.
+DT   23-JAN-2007, sequence version 3.
+DT   15-JUN-2010, entry version 123.
+DE   RecName: Full=Aquaporin-1;
+DE            Short=AQP-1;
+DE   AltName: Full=Aquaporin-CHIP;
+DE   AltName: Full=Water channel protein for red blood cells and kidney proximal tubule;
+DE   AltName: Full=Urine water channel;
+GN   Name=AQP1; Synonyms=CHIP28;
+OS   Homo sapiens (Human).
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+OC   Catarrhini; Hominidae; Homo.
+OX   NCBI_TaxID=9606;
+RN   [1]
+RP   NUCLEOTIDE SEQUENCE [MRNA], AND PARTIAL PROTEIN SEQUENCE.
+RX   MEDLINE=92107900; PubMed=1722319; DOI=10.1073/pnas.88.24.11110;
+RA   Preston G.M., Agre P.;
+RT   "Isolation of the cDNA for erythrocyte integral membrane protein of 28
+RT   kilodaltons: member of an ancient channel family.";
+RL   Proc. Natl. Acad. Sci. U.S.A. 88:11110-11114(1991).
+RN   [2]
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
+RX   MEDLINE=93340184; PubMed=8340403;
+RA   Moon C., Preston G.M., Griffin C.A., Jabs E.W., Agre P.;
+RT   "The human aquaporin-CHIP gene. Structure, organization, and
+RT   chromosomal localization.";
+RL   J. Biol. Chem. 268:15772-15778(1993).
+RN   [3]
+RP   NUCLEOTIDE SEQUENCE [MRNA].
+RC   TISSUE=Retinal pigment epithelium;
+RX   MEDLINE=96326579; PubMed=8703970; DOI=10.1016/0005-2736(96)00076-4;
+RA   Ruiz A.C., Bok D.;
+RT   "Characterization of the 3' UTR sequence encoded by the AQP-1 gene in
+RT   human retinal pigment epithelium.";
+RL   Biochim. Biophys. Acta 1282:174-178(1996).
+RN   [4]
+RP   NUCLEOTIDE SEQUENCE [MRNA].
+RC   TISSUE=Uterus;
+RX   MEDLINE=94290349; PubMed=7517253;
+RA   Li X., Yu H., Koide S.S.;
+RT   "The water channel gene in human uterus.";
+RL   Biochem. Mol. Biol. Int. 32:371-377(1994).
+RN   [5]
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANTS VAL-45 AND ASP-165.
+RG   SeattleSNPs variation discovery resource;
+RL   Submitted (MAR-2005) to the EMBL/GenBank/DDBJ databases.
+RN   [6]
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+FT   TRANSMEM    137    155       Helical; Name=Helix 4.
+FT   TOPO_DOM    156    166       Cytoplasmic.
+FT   TRANSMEM    167    183       Helical; Name=Helix 5.
+FT   TOPO_DOM    184    186       Extracellular.
+FT   INTRAMEM    187    192
+FT   INTRAMEM    193    200       Helical; Name=Helix E.
+FT   TOPO_DOM    201    207       Extracellular.
+FT   TRANSMEM    208    228       Helical; Name=Helix 6.
+FT   TOPO_DOM    229    269       Cytoplasmic.
+FT   MOTIF        76     78       NPA 1.
+FT   MOTIF       192    194       NPA 2.
+FT   COMPBIAS    159    162       Poly-Arg.
+FT   SITE         56     56       Substrate discrimination.
+FT   SITE        180    180       Substrate discrimination.
+FT   SITE        189    189       Hg(2+)-sensitive residue.
+FT   SITE        195    195       Substrate discrimination.
+FT   MOD_RES     246    246       Phosphothreonine (By similarity).
+FT   MOD_RES     247    247       Phosphoserine (By similarity).
+FT   MOD_RES     262    262       Phosphoserine.
+FT   CARBOHYD     42     42       N-linked (GlcNAc...).
+FT   CARBOHYD    205    205       N-linked (GlcNAc...) (Potential).
+FT   VARIANT      38     38       P -&gt; L (in Co(A-B-) antigen; non
+FT                                functional AQP1; red cells show low
+FT                                osmotic water permeability).
+FT                                /FTId=VAR_013279.
+FT   VARIANT      45     45       A -&gt; V (in Co(A-B+) antigen;
+FT                                dbSNP:rs28362692).
+FT                                /FTId=VAR_004400.
+FT   VARIANT     165    165       G -&gt; D (in dbSNP:rs28362731).
+FT                                /FTId=VAR_022318.
+FT   CONFLICT     45     45       A -&gt; T (in Ref. 9; AAH22486).
+FT   HELIX         8     35
+FT   STRAND       37     42
+FT   HELIX        48     65
+FT   STRAND       68     71
+FT   HELIX        76     83
+FT   HELIX        94    114
+FT   TURN        119    122
+FT   STRAND      132    135
+FT   HELIX       136    154
+FT   HELIX       166    182
+FT   TURN        183    185
+FT   HELIX       192    199
+FT   HELIX       207    227
+SQ   SEQUENCE   269 AA;  28526 MW;  BA204D82FB26352E CRC64;
+     MASEFKKKLF WRAVVAEFLA TTLFVFISIG SALGFKYPVG NNQTAVQDNV KVSLAFGLSI
+     ATLAQSVGHI SGAHLNPAVT LGLLLSCQIS IFRALMYIIA QCVGAIVATA ILSGITSSLT
+     GNSLGRNDLA DGVNSGQGLG IEIIGTLQLV LCVLATTDRR RRDLGGSAPL AIGLSVALGH
+     LLAIDYTGCG INPARSFGSA VITHNFSNHW IFWVGPFIGG ALAVLIYDFI LAPRSSDLTD
+     RVKVWTSGQV EEYDLDADDI NSRVEMKPK
+//
+</pre>
+</td></tr></table><p>
+<H2>
+    Output file format
+</H2>
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>Graphics File: topo.ps</h3>
+<p><img src="topo.1.topo.gif" alt="[topo results]">
+<H2>
+    Data files
+</H2>
+<H2>
+    Notes
+</H2>As you can see the lists above the are alot of options to choose for
+the displays of acidic, basic amino acids etc. This can be explained
+simply as :-<p>
+One letter codes are black filled shaped EXCEPT for "N" which means
+NONE (no shape).<p>
+For two letter codes the first letter is the shape and the second the
+colour except for "F" which means NO FILL.<p>
+For the signatures you need to input sets of start position, end
+    position and code. For the example given these are 74 82 sy 189
+    189 hm 239 239 sa 157 157 sa 262 262 sa
+<pre>
+So residues 74 to 82 will have Yellow Squares (sy).
+   residue 189 (i.e. 189 to 189) will have a Magenta Hexagon. (hm)          
+</pre>
+
+
+<H2>
+    References
+</H2>
+<H2>
+    Warnings
+</H2>
+<H2>
+    Diagnostics
+</H2>
+<H2>
+    Exit status
+</H2>
+<H2>
+    Known bugs
+</H2>
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/garnier.html">garnier</a></td>
+<td>Predicts protein secondary structure using GOR method</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/helixturnhelix.html">helixturnhelix</a></td>
+<td>Identify nucleic acid-binding motifs in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/hmoment.html">hmoment</a></td>
+<td>Calculate and plot hydrophobic moment for protein sequence(s)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepcoil.html">pepcoil</a></td>
+<td>Predicts coiled coil regions in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepnet.html">pepnet</a></td>
+<td>Draw a helical net for a protein sequence</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepwheel.html">pepwheel</a></td>
+<td>Draw a helical wheel diagram for a protein sequence</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/tmap.html">tmap</a></td>
+<td>Predict and plot transmembrane segments in protein sequences</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS conversion of a Fortran program written by Susan
+Jean Johns, VADMS Center, Biochemistry/Biophysics Department at WSU.
+
+<p>This application was modified for inclusion in EMBOSS by Ian Longden formerly at:
+<br>
+Informatics Division, The Sanger Centre, Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SA, UK.
+
+<p>
+Changes to the functionality in version 2 have been ported to the EMBOSS version.
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+<H2>
+    Comments
+</H2>
+
+None
+
+
+</BODY>
+</HTML>
+

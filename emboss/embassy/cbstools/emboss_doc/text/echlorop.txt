@@ -1,0 +1,328 @@
+                                  echlorop
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Reports presence of chloroplast transit peptides
+
+Description
+
+   The ChloroP server predicts the presence of chloroplast transit
+   peptides (cTP) in protein sequences and the location of potential cTP
+   cleavage sites.
+
+Usage
+
+   Here is a sample session with echlorop
+
+
+% echlorop
+Reports presence of chloroplast transit peptides
+Input (aligned) sequence set: test1.fsa
+Output file [test1.echlorop]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+   Example 2
+
+
+% echlorop
+Reports presence of chloroplast transit peptides
+Input (aligned) sequence set: test12.fsa
+Output file [test12.echlorop]:
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+Reports presence of chloroplast transit peptides
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.echlorop] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -full               boolean    [N] Show full output
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+   echlorop reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: test1.fsa
+
+>P48786;       PATHOGENESIS-RELATED HOMEODOMAIN PROTEIN (PRHP).
+MEEISDPKPNALEQVLPTVPNGKCTAPVQMESLAVDVQKVSGEAKVRICSCWCEIVRSPEDLTKLVPCNDFAEDIKLFDS
+DPMQQEAESSIGIPLIPKQVTMSHNHDHESGSEMVSNEVMQENHVIATENTYQKSDFDRINMGQKETMPEEVIHKSFLES
+STSSIDILLNNHNSYQSGLPPENAVTDCKQVQLGHRSDDAIKNSGLVELVIGQKNVAKSPSQLVETGKRGRGRPRKVQTG
+LEQLVIGQKTAAKSSSQLGDTGKRSRGRPRKVQNSPTSFLENINMEQKETIPEQVTQNSILESLTIPTDNQSRTYNSDQS
+ELPPENAAKNCNHAQFGHQSDDTTKISGFKELVIGQETVAKSPSQLVDAGKRGRGRPRKVQTGLEQLVPVQETAAKSSSQ
+LGDTGKRSRGRPRKVQDSPTSLGGNVKVVPEKGKDSQELSVNSSRSLRSRSQEKSIEPDVNNIVADEGADREKPRKKRKK
+RMEENRVDEFCRIRTHLRYLLHRIKYEKNFLDAYSGEGWKGQSLDKIKPEKELKRAKAEIFGRKLKIRDLFQRLDLARSE
+GRLPEILFDSRGEIDSEDIFCAKCGSKDVTLSNDIILCDGACDRGFHQFCLDPPLLKEYIPPDDEGWLCPGCECKIDCIK
+LLNDSQETNILLGDSWEKVFAEEAAAAASGKNLDDNSGLPSDDSEDDDYDPGGPDLDEKVQGDDSSTDESDYQSESDDMQ
+VIRQKNSRGLPSDDSEDDEYDPSGLVTDQMYKDSSCSDFTSDSEDFTGVFDDYKDTGKAQGPLASTPDHVRNNEEGCGHP
+EQGDTAPLYPRRQVESLDYKKLNDIEFSKMCDILDILSSQLDVIICTGNQEEYGNTSSDSSDEDYMVTSSPDKNNSDKEA
+TAMERGRESGDLELDQKARESTHNRRYIKKFAVEGTDSFLSRSCEDSAAPVAGSKSTSKTLHGEHATQRLLQSFKENQYP
+QRAVKESLAAELALSVRQVSNWFNNRRWSFRHSSRIGSDVAKFDSNDTPRQKSIDMSGPSLKSVLDSATYSEIEKKEQDT
+ASLGLTEGCDRYMTLNMVADEGNVHTPCIAETREEKTEVGIKPQQNPL
+
+  Input files for usage example 2
+
+  File: test12.fsa
+
+>P11043_it_is_a_very_very_long_name;       3-PHOSPHOSHIKIMATE 1-CARBOXYVINYLTRAN
+SFERASE PRECURSOR (EC 2
+MAQINNMAQGIQTLNPNSNFHKPQVPKSSSFLVFGSKKLKNSANSMLVLKKDSIFMQKFCSFRISASVATAQKPSEIVLQ
+PIKEISGTVKLPGSKSLSNRILLLAALSEGTTVVDNLLSSDDIHYMLGALKTLGLHVEEDSANQRAVVEGCGGLFPVGKE
+SKEEIQLFLGNAGTAMRPLTAAVTVAGGNSRYVLDGVPRMRERPISDLVDGLKQLGAEVDCFLGTKCPPVRIVSKGGLPG
+GKVKLSGSISSQYLTALLMAAPLALGDVEIEIIDKLISVPYVEMTLKLMERFGISVEHSSSWDRFFVRGGQKYKSPGKAF
+VEGDASSASYFLAGAAVTGGTITVEGCGTNSLQGDVKFAEVLEKMGAEVTWTENSVTVKGPPRSSSGRKHLRAIDVNMNK
+MPDVAMTLAVVALYADGPTAIRDVASWRVKETERMIAICTELRKLGATVEEGPDYCIITPPEKLNVTDIDTYDDHRMAMA
+FSLAACADVPVTINDPGCTRKTFPNYFDVLQQYSKH
+>P07505;       SUPEROXIDE DISMUTASE, CHLOROPLAST PRECURSOR (CU-ZN) (EC 1.15
+MAAHTILASAPSHTTFSLISPFSSTPTNALSSSLQSSSFNGLSFKLSPTTQSLSLSTSAASKPLTIVAATKKAVAVLKGT
+SNVEGVVTLTQEDDGPTTVNVRISGLAPGKHGFHLHEFGDTTNGCMSTGPHFNPDKKTHGAPEDEVRHAGDLGNIVANTD
+GVAEATIVDNQIPLTGPNSVVGRALVVHELEDDLGKGGHELSPTTGNAGGRLACGVVGLTPV
+>P12360;       CHLOROPHYLL A-B BINDING PROTEIN OF LHCI TYPE I PRECURSOR (CA
+MASNTLMSCGIPAVCPSFLSSTKSKFAAAMPVYVGATNFMSRFSMSADWMPGQPRPSYLDGSAPGDFGFDSLGLGEVPAN
+LERYKESELIHCRWAMLAVPGIIVPEALGLGNWVKAQEWAAIPGGQATYLGQPVPWGTLPTILAIEFLAIAFVEHQRSME
+KDSEKKKYPGGAFDPLGYSKDPAKFEELKVKEIKNGRLALLAIVGFCVQQSAYLGTGPLENLATHLADPWHNNIGDVIIP
+KGIFPN
+>P12352;       PHOTOSYSTEM I REACTION CENTRE SUBUNIT IV PRECURSOR (PHOTOSYS
+MQALSSRVNIAAKPQRAQRLVVRAEEVKAAPKKEVGPKRGSLVKILRPESYWFNQVGKVVSVDQSGVRYPVVVRFENQNY
+AGVTTNNYALDEVVAAK
+>Q01289;       PROTOCHLOROPHYLLIDE REDUCTASE PRECURSOR (EC 1.3.1.33) (PCR)
+MALQTASMLPASFSIPKEGKIGASLKDSTLFGVSSLSDSLKGDFTSSALRCKELRQKVGAVRAETAAPATPAVNKSSSEG
+KKTLRKGNVVITGASSGLGLATAKALAESGKWHVIMACRDYLKAARAAKSAGLAKENYTIMHLDLASLDSVRQFVDNFRR
+SEMPLDVLINNAAVYFPTAKEPSFTADGFEISVGTNHLGHFLLSRLLLEDLKKSDYPSKRLIIVGSITGNTNTLAGNVPP
+KANLGDLRGLAGGLTGLNSSAMIDGGDFDGAKAYKDSKVCNMLTMQEFHRRYHEETGITFASLYPGCIATTGLFREHIPL
+FRTLFPPFQKYITKGYVSEEESGKRLAQVVSDPSLTKSGVYWSWNNASASFENQLSQEASDAEKARKVWEVSEKLVGLA
+>P08817;       ACYL CARRIER PROTEIN II PRECURSOR (ACP II).
+MASAAASAVSFARPVKAICVNSVSFSALRKDNVSFRLQPVPQRFSVCCAAKKETVEKVCDIVKSQLALSDDTEVSGSSTF
+ADLGADSLDTVEIVMGLEEAFGISVEESSAQTIATVEDAANLIDSLVGK
+>P07263;       HISTIDYL-TRNA SYNTHETASE, MITOCHONDRIAL PRECURSOR (EC 6.1.1.
+MLSRSLNKVVTSIKSSSIIRMSSATAAATSAPTANAANALKASKAPKKGKLQVSLKTPKGTKDWADSDMVIREAIFSTLS
+GLFKKHGGVTIDTPVFELREILAGKYGEDSKLIYNLEDQGGELCSLRYDLTVPFARYVAMNNIQSIKRYHIAKVYRRDQP
+AMTKGRMREFYQCDFDVAGTFESMVPDSECLSILVEGLTSLGIKDFKIKLNHRKILDGIFQIAGVKDEDVRKISSAVDKL
+DKSPWEAVKKEMTEEKGQSEETADKIGEYVKLNGSLKEIHAVLSADANITSNEKAKQGLDDIATLMKYTEAFDIDSFISF
+DLSLARGLDYYTGLIYEVVTSASAPPENASELKKKAKSAEDASEFVGVGSIAAGGRYDNLVNMFSEASGKKSTQIPCVGI
+SFGVERIFSLIKQRINSSTTIKPTATQVFVMAFGGGKDWTGYLPERMKVTKQLWDAGIEAEYVYKAKANPRKQFDAAEKA
+GCHIAVILGKEEYLEGKLRVKRLGQEFADDDGELVSAADIVPIVQEKLSQIHEDGLNEVTRLIKGL
+>P07597;       NONSPECIFIC LIPID-TRANSFER PROTEIN 1 PRECURSOR (LTP 1) (PAPI
+MARAQVLLMAAALVLMLTAAPRAAVALNCGQVDSKMKPCLTYVQGGPGPSGECCNGVRDLHNQAQSSGDRQTVCNCLKGI
+ARGIHNLNLNNAASIPSKCNVNVPYTISPDIDCSRIY
+>P48786;       PATHOGENESIS-RELATED HOMEODOMAIN PROTEIN (PRHP).
+MEEISDPKPNALEQVLPTVPNGKCTAPVQMESLAVDVQKVSGEAKVRICSCWCEIVRSPEDLTKLVPCNDFAEDIKLFDS
+DPMQQEAESSIGIPLIPKQVTMSHNHDHESGSEMVSNEVMQENHVIATENTYQKSDFDRINMGQKETMPEEVIHKSFLES
+STSSIDILLNNHNSYQSGLPPENAVTDCKQVQLGHRSDDAIKNSGLVELVIGQKNVAKSPSQLVETGKRGRGRPRKVQTG
+LEQLVIGQKTAAKSSSQLGDTGKRSRGRPRKVQNSPTSFLENINMEQKETIPEQVTQNSILESLTIPTDNQSRTYNSDQS
+ELPPENAAKNCNHAQFGHQSDDTTKISGFKELVIGQETVAKSPSQLVDAGKRGRGRPRKVQTGLEQLVPVQETAAKSSSQ
+LGDTGKRSRGRPRKVQDSPTSLGGNVKVVPEKGKDSQELSVNSSRSLRSRSQEKSIEPDVNNIVADEGADREKPRKKRKK
+RMEENRVDEFCRIRTHLRYLLHRIKYEKNFLDAYSGEGWKGQSLDKIKPEKELKRAKAEIFGRKLKIRDLFQRLDLARSE
+GRLPEILFDSRGEIDSEDIFCAKCGSKDVTLSNDIILCDGACDRGFHQFCLDPPLLKEYIPPDDEGWLCPGCECKIDCIK
+LLNDSQETNILLGDSWEKVFAEEAAAAASGKNLDDNSGLPSDDSEDDDYDPGGPDLDEKVQGDDSSTDESDYQSESDDMQ
+VIRQKNSRGLPSDDSEDDEYDPSGLVTDQMYKDSSCSDFTSDSEDFTGVFDDYKDTGKAQGPLASTPDHVRNNEEGCGHP
+EQGDTAPLYPRRQVESLDYKKLNDIEFSKMCDILDILSSQLDVIICTGNQEEYGNTSSDSSDEDYMVTSSPDKNNSDKEA
+TAMERGRESGDLELDQKARESTHNRRYIKKFAVEGTDSFLSRSCEDSAAPVAGSKSTSKTLHGEHATQRLLQSFKENQYP
+QRAVKESLAAELALSVRQVSNWFNNRRWSFRHSSRIGSDVAKFDSNDTPRQKSIDMSGPSLKSVLDSATYSEIEKKEQDT
+ASLGLTEGCDRYMTLNMVADEGNVHTPCIAETREEKTEVGIKPQQNPL
+>Q01238;       MAJOR BASIC NUCLEAR PROTEIN 2 (P14 PROTEIN ALPHA CHAIN).
+MKAMKATKKAMTKTGLAEALAPKPSSARRIAPPSSRAWPPSAQEVKKTGKLIIPGLVMVKTRKKPATKAGKREMFGKVVL
+VKAQPAKTVVKAYPVKALKDNF
+>P35334;       POLYGALACTURONASE INHIBITOR PRECURSOR (POLYGALACTURONASE-INH
+MTQFNIPVTMSSSLSIILVILVSLRTALSELCNPQDKQALLQIKKDLGNPTTLSSWLPTTDCCNRTWLGVLCDTDTQTYR
+VNNLDLSGHNLPKPYPIPSSLANLPYLNFLYIGGINNLVGPIPPAIAKLTQLHYLYITHTNVSGAIPDFLSQIKTLVTLD
+FSYNALSGTLPPSISSLPNLGGITFDGNRISGAIPDSYGSFSKLFTAMTISRNRLTGKIPPTFANLNLAFVDLSRNMLEG
+DASVLFGSDKNTKKIHLAKNSLAFDLGKVGLSKNLNGLDLRNNRIYGTLPQGLTQLKFLQSLNVSFNNLCGEIPQGGNLK
+RFDVSSYANNKCLCGSPLPSCT
+>P13086;       SUCCINYL-COA LIGASE (GDP-FORMING), ALPHA-CHAIN PRECURSOR (EC
+MVSGSSGLAAARLLSRTFLLQQNGIRHGSYTASRKNIYIDKNTKVICQGFTGKQGTFHSQQALEYGTKLVGGTTPGKGGK
+KHLGLPVFNTVKEAKEKTGATASVIYVPPPFAAAAINEAIDAEIPLVVCITEGIPQQDMLRVKHKLTRQGKTRLIGPNCP
+GIINPGECKIGIMPGHIHKKGRIGIVSRSGTLTYEAVHQTTQVGLGQSLCIGIGGDPFNGTNFIDCLDVFLKDPATEGIV
+LIGEIGGHAEENAAEFLKEHNSGPKAKPVVSFIAGITAPPGRRMGHAGAIIAGGKGGAKEKISALQSAGVIVSMSPAQLG
+TCMYKEFEKRKML
+
+
+Output file format
+
+  Output files for usage example
+
+  File: test1.echlorop
+
+
+### chlorop v1.1 prediction results ###########################
+Number of query sequences: 1
+
+Name                  Length       Score  cTP       CS-    cTP-
+                                                  score  length
+---------------------------------------------------------------
+P48786;                 1088       0.434   -     -0.663     28
+---------------------------------------------------------------
+
+
+  Output files for usage example 2
+
+  File: test12.echlorop
+
+
+### chlorop v1.1 prediction results ###########################
+Number of query sequences: 12
+
+Name                  Length       Score  cTP       CS-    cTP-
+                                                  score  length
+---------------------------------------------------------------
+P11043_it_is_a_very_     516       0.580   Y      6.765     65
+P07505;                  222       0.596   Y     11.122     67
+P12360;                  246       0.566   Y      1.302     42
+P12352;                   97       0.470   -     13.692     23
+Q01289;                  399       0.532   Y     10.699     62
+P08817;                  129       0.559   Y     12.650     47
+P07263;                  546       0.534   Y      4.495     41
+P07597;                  117       0.465   -      4.575     22
+P48786;                 1088       0.434   -     -0.663     28
+Q01238;                  102       0.533   Y      8.666     41
+P35334;                  342       0.465   -      4.342     71
+P13086;                  333       0.460   -      0.747     48
+---------------------------------------------------------------
+
+
+Data files
+
+   None.
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+   Program name     Description
+   antigenic        Finds antigenic sites in proteins
+   digest           Reports on protein proteolytic enzyme or reagent cleavage sites
+   eiprscan         Motif detection
+   elipop           Prediction of lipoproteins
+   emast            Motif detection
+   ememe            Multiple EM for Motif Elicitation
+   ememetext        Multiple EM for Motif Elicitation. Text file only
+   enetnglyc        Reports N-glycosylation sites in human proteins
+   enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian
+                    proteins
+   enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic
+                    proteins
+   epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+   eprop            Reports propeptide cleavage sites in proteins
+   esignalp         Reports protein signal cleavage sites
+   etmhmm           Reports transmembrane helices
+   eyinoyang        Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro          Search for patterns in protein sequences
+   fuzztran         Search for patterns in protein sequences (translated)
+   helixturnhelix   Identify nucleic acid-binding motifs in protein
+                    sequences
+   oddcomp          Identify proteins with specified sequence word composition
+   omeme            Motif detection
+   patmatdb         Searches protein sequences with a sequence motif
+   patmatmotifs     Scan a protein sequence with motifs from the PROSITE
+                    database
+   pepcoil          Predicts coiled coil regions in protein sequences
+   preg             Regular expression search of protein sequence(s)
+   pscan            Scans protein sequence(s) with fingerprints from the PRINTS
+                    database
+   sigcleave        Reports on signal cleavage sites in a protein sequence
+
+Author(s)
+
+   This program is an EMBOSS wrapper for a program written by the CBS
+   group http://www.cbs.dtu.dk/index.shtml
+
+   The original CBS group application must be licensed and installed to
+   use this wrapper.
+
+   Please report all bugs to the EMBOSS bug team
+   (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+History
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments
+
+   None

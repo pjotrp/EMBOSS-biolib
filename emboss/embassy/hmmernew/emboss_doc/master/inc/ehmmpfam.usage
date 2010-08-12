@@ -1,0 +1,16 @@
+<b>Here is a sample session with ehmmpfam</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmpfam ../ehmmcalibrate-ex2-keep/myhmmso 7LES_DROME myhmmso.ehmmpfam -A 10 -E 10 </b>
+Search one or more sequences against an HMM database.
+
+
+/shared/software/bin/hmmpfam -A 10 -E 10.000000 -T -1000000.000000 -Z 59021 --domE 1000000.000000 --domT -1000000.000000  --informat FASTA ../ehmmcalibrate-ex2-keep/myhmmso ./ehmmpfam-1234567890.1234
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

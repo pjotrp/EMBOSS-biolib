@@ -1,0 +1,143 @@
+Searches ligand-signature library and writes hits (LHF file)
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-siginfilesdir]     dirlist    [./] This option specifies the directory of
+                                  signature files (input). A 'signature file'
+                                  contains a sparse sequence signature
+                                  suitable for use with the SIGSCAN and
+                                  SIGSCANLIG programs. The files are generated
+                                  by using SIGGEN and SIGGENLIG.
+  [-dbseqall]          seqall     This option specifies the name of the
+                                  database of query sequences.
+   -sub                matrixf    [EBLOSUM62] This option specifies the
+                                  scoring matrix to use, e.g. residue
+                                  substitution matrix (1D signatures) or
+                                  matrix of 3D:1D (environment:residue) scores
+                                  (3D).
+   -mode               menu       [1] This option specifies the mode of
+                                  scoring ligands. In 'Patch Score Mode' (mode
+                                  1) the score for a ligand is the mean of
+                                  its patch scores. In 'Site Score Mode' the
+                                  score for a ligand is the mean of its site
+                                  scores. A site score is the mean of patch
+                                  score for all patches for a given site.
+                                  (Values: 1 (Patch score mode); 2 (Site score
+                                  mode))
+   -gapo               float      [10.0 for any sequence] This option
+                                  specifies the gap insertion penalty. The gap
+                                  insertion penalty is the score taken away
+                                  when a gap is created. The best value
+                                  depends on the choice of comparison matrix.
+                                  The default value assumes you are using the
+                                  EBLOSUM62 matrix for protein sequences, and
+                                  the EDNAMAT matrix for nucleotide sequences.
+                                  (Floating point number from 1.0 to 100.0)
+   -gape               float      [0.5 for any sequence] This option specifies
+                                  the gap extension penalty. The gap
+                                  extension penalty is added to the standard
+                                  gap penalty for each base or residue in the
+                                  gap. This is how long gaps are penalized.
+                                  Usually you will expect a few long gaps
+                                  rather than many short gaps, so the gap
+                                  extension penalty should be lower than the
+                                  gap penalty. (Floating point number from 0.0
+                                  to 10.0)
+   -nterm              menu       [1] This option specifies the N-terminal
+                                  matching option. This determines how the
+                                  first signature position is aligned to a
+                                  sequence from the database. (Values: 1
+                                  (Align anywhere and allow only complete
+                                  signature-sequence fit); 2 (Align anywhere
+                                  and allow partial signature-sequence fit); 3
+                                  (Use empirical gaps only))
+  [-hitsoutdir]        outdir     [./] This option specifies the directory of
+                                  the LHF files (ligand hits files) (output).
+                                  A 'ligand hits file' contains database hits
+                                  (sequences) with ligand classification
+                                  information, in the LHF format (FASTA-like).
+                                  The hits are putative ligand-binding
+                                  sequences and are found from a search of a
+                                  sequence database, in this case, by using
+                                  SIGSCANLIG.
+  [-alignoutdir]       outdir     [./] This option specifies the name of the
+                                  SAF (signature alignment file) (output).A
+                                  'signature alignment file' contains one or
+                                  more signnature-sequence alignments. The
+                                  file is in DAF format (CLUSTAL-like) and is
+                                  annotated with bibliographic information,
+                                  either the domain family classification (for
+                                  SIGSCAN output) or ligand classification
+                                  (for SIGSCANLIG output). The files generated
+                                  by SIGSCAN will contain a
+                                  signature-sequence alignment for a single
+                                  signature against a library of one or more
+                                  sequences. The files generated by using
+                                  SIGSCANLIG will contain a signature-sequence
+                                  alignment for a single query sequence
+                                  against a library of one or more signatures.
+  [-resultsoutdir]     outdir     [./] This option specifies the directory for
+                                  the results files. A results file is
+                                  generated for each query sequence and
+                                  contains a list of hits (ligands),
+                                  rank-ordered on the basis of score.
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -nhits              integer    [100] This option specifies the maximum
+                                  number of hits to output. (Any integer
+                                  value)
+   -domax              toggle     [N] This option specifies whether to
+                                  consider a max. number of top-scoring hits
+                                  only for each ligand.
+*  -maxhits            integer    [0] This option specifies the maximum number
+                                  of top-scoring hits to consider for each
+                                  ligand. (Any integer value)
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-siginfilesdir" associated qualifiers
+   -extension1         string     Default file extension
+
+   "-dbseqall" associated qualifiers
+   -sbegin2            integer    Start of each sequence to be used
+   -send2              integer    End of each sequence to be used
+   -sreverse2          boolean    Reverse (if DNA)
+   -sask2              boolean    Ask for begin/end/reverse
+   -snucleotide2       boolean    Sequence is nucleotide
+   -sprotein2          boolean    Sequence is protein
+   -slower2            boolean    Make lower case
+   -supper2            boolean    Make upper case
+   -sformat2           string     Input sequence format
+   -sdbname2           string     Database name
+   -sid2               string     Entryname
+   -ufo2               string     UFO features
+   -fformat2           string     Features format
+   -fopenfile2         string     Features file name
+
+   "-hitsoutdir" associated qualifiers
+   -extension3         string     Default file extension
+
+   "-alignoutdir" associated qualifiers
+   -extension4         string     Default file extension
+
+   "-resultsoutdir" associated qualifiers
+   -extension5         string     Default file extension
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

@@ -1,0 +1,66 @@
+Answers every drug discovery question about a sequence.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-outfile]           outfile    [*.crystalball] Output file name
+
+   Additional (Optional) qualifiers:
+   -competition        boolean    Who else is working with this target?
+   -rdtime             boolean    Total research and development time to bring
+                                  a drug for this target to market.
+   -rdcost             boolean    Total cost of our research and development
+                                  effort.
+   -animalstudies      boolean    What will we learn from the animal studies?
+   -clinicaltrials     boolean    Detail all of the surprises we'll get from
+                                  the clinical trials.
+   -fdaproblems        boolean    List all of the issues the FDA will raise
+                                  with our paperwork.
+   -fdatime            boolean    How long will the FDA take to render a
+                                  decision?
+   -profit             boolean    How much will we make after the drug gets to
+                                  market?
+
+   Advanced (Unprompted) qualifiers:
+   -everythingelse     boolean    Tell us everything else we'd really like to
+                                  know now rather than later
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

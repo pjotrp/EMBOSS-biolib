@@ -1,0 +1,17 @@
+.deps
+Makefile.in
+Makefile
+*.lo
+*.o
+*.la
+.libs
+ohmmindex
+ohmmemit
+ohmmfetch
+ohmmcalibrate
+ohmmalign
+oalistat
+ohmmbuild
+ohmmsearch
+ohmmconvert
+ohmmpfam

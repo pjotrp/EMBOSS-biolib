@@ -1,0 +1,1005 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: ehmmconvert
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+ehmmconvert
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Convert between profile HMM file formats
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+EMBASSY HMMER is a suite of application wrappers to the original hmmer v2.3.2 applications written by Sean Eddy. hmmer v2.3.2 must be installed on the same system as EMBOSS and the location of the hmmer executables must be defined in your path for EMBASSY HMMER to work.
+
+<p><b>Usage:</b>
+<br>ehmmconvert [options] oldhmmfile newhmmfile
+
+<p>hmmconvert reads an HMM file <oldhmmfile> in any HMMER format, and writes it to a new file <newhmmfile> in a new format. The input and output files must be different files; you can't reliably overwrite the old file. By default, the new HMM file is written in HMMER 2 ASCII format. Available formats are HMMER 2 ASCII (default), HMMER 2 binary (-b) GCG profile (-p) , and Compugen XSW extended profile (-P).
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+Please read the Userguide.pdf distributed with the original HMMER and included in the EMBASSY HMMER distribution under the DOCS directory. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with ehmmconvert</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ehmmconvert ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert -format G </b>
+Convert between profile HMM file formats
+
+hmmconvert - convert between profile HMM file formats
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Input HMM file:           ../ehmmcalibrate-ex-keep/globino.hmm
+Output HMM file:          globino.ehmmconvert
+Converting to:            GCG Profile .prf
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ - converted globins50
+
+1 HMM(s) converted and written to globino.ehmmconvert
+
+/shared/software/bin/hmmconvert -p  -F  ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+Where possible, the same command-line qualifier names and parameter order is used as in the original hmmer.  There are however several unavoidable differences and these are clearly documented in the "Notes" section below.
+<p>More or less all options documented as "expert" in the original hmmer user guide are given in ACD as "advanced" options (-options must be specified on the command-line in order to be prompted for a value for them).  
+<p>
+
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Convert between profile HMM file formats
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-oldhmmfile]        infile     HMM input file
+   -format             menu       [A] Select format (Values: A (ascii); B
+                                  (binary); G (gcg); X (xsw))
+  [-newhmmfile]        outfile    [*.ehmmconvert] HMM output file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-newhmmfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-oldhmmfile]<br>(Parameter 1)</td>
+<td>infile</td>
+<td>HMM input file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-format</td>
+<td>list</td>
+<td>Select format</td>
+<td><table><tr><td>A</td> <td><i>(ascii)</i></td></tr><tr><td>B</td> <td><i>(binary)</i></td></tr><tr><td>G</td> <td><i>(gcg)</i></td></tr><tr><td>X</td> <td><i>(xsw)</i></td></tr></table></td>
+<td>A</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-newhmmfile]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>HMM output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ehmmconvert</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-newhmmfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_newhmmfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+<H3>Alignment and sequence formats </H3>
+Input and output of alignments and sequences is limited to the formats that the original hmmer supports. These include stockholm, SELEX, MSF, Clustal, Phylip and A2M /aligned FASTA (alignments) and FASTA, GENBANK, EMBL, GCG, PIR (sequences).  It would be fairly straightforward to adapt the code to support all EMBOSS-supported formats. 
+
+<H3>Compressed input files </H3>
+Automatic processing of gzipped files is not supported. 
+<p>
+
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>ehmmconvert</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: ../ehmmcalibrate-ex-keep/globino.hmm</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+HMMER2.0  [2.3.2]
+NAME  globins50
+LENG  143
+ALPH  Amino
+RF    no
+CS    no
+MAP   yes
+COM   /shared/software/bin/hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
+COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
+NSEQ  50
+DATE  Thu Jul 15 12:00:00 2010
+CKSUM 9858
+XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
+NULT      -4  -8455
+NULE     595  -1558     85    338   -294    453  -1158    197    249    902  -1085   -142    -21   -313     45    531    201    384  -1998   -644 
+EVD   -35.959286   0.267496
+HMM        A      C      D      E      F      G      H      I      K      L      M      N      P      Q      R      S      T      V      W      Y    
+         m-&gt;m   m-&gt;i   m-&gt;d   i-&gt;m   i-&gt;i   d-&gt;m   d-&gt;d   b-&gt;m   m-&gt;e
+         -450      *  -1900
+     1    591  -1587    159   1351  -1874   -201    151  -1600    998  -1591   -693    389  -1272    595     42    -31     27   -693  -1797  -1134    14
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378   -450      * 
+     2   -926  -2616   2221   2269  -2845  -1178   -325  -2678   -300  -2596  -1810    220  -1592    939   -974   -671   -939  -2204  -2785  -1925    15
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     3   -638  -1715   -680    497  -2043  -1540     23  -1671   2380  -1641   -840   -222  -1595    437   1040   -564   -523  -1363   2124  -1313    16
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     4    829  -1571    -37    660  -1856   -873    152  -1578    894  -1573   -678    769  -1273   1284     58    224    447  -1175  -1782  -1125    17
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     5    369   -433   -475    286   -974  -1312    -19   -412    664    398    406   1030  -1394    388   -214   -261     85   -166  -1227   -725    18
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     6  -1291   -884  -3696  -3261  -1137  -3425  -2802   2322  -3066    111     19  -3028  -3275  -2855  -3100  -2670  -1269   2738  -2450  -2062    19
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     7    157   -413   -236    316  -1387  -1231     89   -863   1084   -431   -348    910  -1319    635    297     15    704   -483  -1497   -922    20
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     8    770  -1431    -43    459  -1751   -340     78  -1449    440  -1497   -631    866  -1302    825    -51    953    364  -1076  -1750  -1121    21
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+     9    420   -186  -2172  -1577      8  -1818   -694   1477  -1281    760    614  -1299  -1867  -1001  -1262   -189    -12   1401   -722   -364    22
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+    10   -961   -879  -2277  -1821   1366  -2213   -204   -399  -1500   -130    -39  -1427  -2266  -1186  -1511   -159   -913   -367   4721   1177    23
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+    11    -48  -1782    809    844  -2073   1456      8  -1811    315  -1803   -932    180  -1365    921   -218    173   -115  -1399  -2018  -1327    24
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   128   -415  -1926   1575   1399  -2219  -1163     17  -1983    527  -1929  -1039    341  -1367   1597   -212    257   -222  -1536  -2109  -1387   144
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   129   -529  -1434   -629   -143  -1926   -626   -171  -1460   2679  -1597   -839   -309  -1599    207    317   -530   -510   -130  -1840  -1369   145
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   130    811   -397  -2389  -1807   1883  -2039   -907    594  -1512   1077    687  -1532  -2065  -1201  -1483  -1125   -465   1067   -843   -472   146
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   131   -241   -102  -2327  -1710    724  -1767   -616    650  -1363   1074   1765   -718  -1809  -1026  -1252   -842   -181   1331   -541    695   147
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   132    723     95    385    823  -1820  -1168    167  -1540    875  -1362   -644    320  -1261    810    246    693    -67  -1141  -1753  -1098   148
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   133    551   -430  -1049   -481   -442    469   -241    465   -313    133    947   -411  -1543    197   -587   -146    202    522   -843   -429   149
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   134  -1086   -777  -3351  -2800    816  -2898  -1861   1501  -2515   1149    586  -2483  -2775  -2108  -2400  -2046  -1030   2380  -1511  -1216   150
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   135   1393   1409   -876   -345   -997   -525   -315   -590   -198   -847   -109   -420  -1441    -97    412    766   -130    139  -1306   -858   151
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   136     98  -1299     36    365  -1495  -1211   1241   -404    523   -952   -426   1174  -1303    511    -18    347    882   -853  -1566   -970   152
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   137   1308   -787    564   -132   -966  -1332   -203   -362    -49   -395    -57   -305  -1481     49   -437   -190   -182   1020  -1282   -802   153
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   138  -1746  -1358  -3897  -3341   -216  -3621  -2478   1774  -3040   2442   1157  -3189  -3229  -2422  -2853  -2824  -1659    392  -1720  -1647   154
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   139   1176  -1289   -179    534  -1606   -607     34  -1278    734  -1372   -534     44  -1325    433    -89    521    826   -941  -1666  -1072   155
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6528  -7571   -894  -1115   -701  -1378      *      * 
+   140    602  -1500   -135    850  -1753  -1214   1951  -1452    838  -1484    431    118  -1306    555    347    489   -153  -1085  -1723  -1092   156
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -22  -6602  -7644   -894  -1115   -701  -1378      *      * 
+   141    351  -1646   -165    546  -1976   -498     46  -1667   2193  -1662   -798     35  -1405    476    311    -73   -306  -1287  -1859  -1254   157
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -23  -6561  -7603   -894  -1115   -701  -1378      *      * 
+   142  -1995  -1606  -3095  -2870   1739  -3015    -98  -1012  -2520   -730    655  -1990  -2962  -1884  -2326  -2167  -1915  -1128    548   4089   158
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -720    275    394     45     96    359    117   -369   -294   -249 
+     -    -25  -6455  -7497   -894  -1115   -701  -1378      *      * 
+   143   -253  -1373   -267    301   -911   -565   1956   -450   1188  -1330   -497     33  -1352    502   1358   -205   -184   -941  -1604  -1026   159
+     -      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      *      * 
+     -      *      *      *      *      *      *      *      *      0 
+//
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>ehmmconvert</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: globino.ehmmconvert</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+!!AA_PROFILE 1.0
+(Peptide) HMMCONVERT v2.3.2 Length: 143 globins50||
+   Profile converted from a profile HMM using HMMER v2.3.2 emulation.
+   Use -nonor -noave -gap=10 -len=1 with profilesearch and friends
+      to get the closest approximation to HMMER bit scores.
+   WARNING: There is a loss of information in this conversion.
+      Neither the scores nor even the rank order of hits will be precisely
+      preserved in a comparison of HMMER hmmsearch to GCG profilesearch.
+      The profile score is an approximation of the (single-hit) HMMER score.
+
+Cons    A     C     D     E     F     G     H     I     K     L     M     N     P     Q     R     S     T     V     W     Y     U     B     Z     X   Gap   Len ..
+ E     57  -160    14   133  -189   -22    13  -161    97  -161   -71    37  -129    57     2    -5     0   -71  -181  -115    -5    24   103   -31   100   100
+ E    -94  -263   220   225  -286  -119   -34  -269   -31  -261  -182    20  -161    92   -99   -69   -95  -222  -280  -194   -68   128   173   -95    62   111
+ K    -65  -173   -69    47  -206  -155     0  -169   236  -166   -85   -24  -161    41   102   -58   -54  -138   210  -133   -58   -48    45   -60    62   111
+ A     81  -159    -5    64  -187   -89    13  -159    87  -159   -69    75  -129   126     3    20    42  -119  -180  -114    20    31    88   -34    62   111
+ L     35   -45   -49    26   -99  -133    -3   -43    64    37    38   101  -141    36   -23   -28     6   -18  -124   -74   -27    19    30   -15    62   111
+ V   -131   -90  -371  -328  -115  -344  -282   230  -308     9     0  -304  -329  -287  -311  -268  -128   271  -246  -208  -268  -340  -312  -167    62   111
+ K     13   -43   -25    29  -140  -125     7   -88   106   -45   -36    89  -133    61    27     0    68   -50  -151   -94     0    27    42   -20    62   111
+ S     75  -145    -6    44  -177   -35     5  -146    42  -151   -65    84  -132    80    -7    93    34  -109  -176  -114    93    35    58   -29    62   111
+ V     40   -20  -219  -159    -1  -183   -71   145  -130    74    59  -131  -188  -102  -128   -20    -3   138   -74   -38   -20  -178  -137   -45    62   111
+ W    -98   -89  -229  -184   134  -223   -22   -41  -151   -14    -5  -144  -228  -120  -153   -17   -93   -38   470   115   -17  -190  -159   -86    62   111
+! 11
+ G    -11  -184    74    78  -213   139    -5  -187    25  -186   -99    11  -142    85   -28    10   -17  -146  -208  -139    10    45    81   -44    62   111
+ K     -9  -131   -59     0  -149  -144    22   -36   236   -83   -46   -20  -152    33    30   -44   -36   -83  -154  -105   -44   -41    13   -40    62   111
+ V   -147  -115  -377  -323    12  -333  -235   148  -296    10    33  -292  -322  -260  -287  -248  -142   208  -205  -174  -248  -338  -298  -163    62   111
+ E      8  -124    -6    99  -144     9    18  -111    85   -88   -37    17  -122    59     7    16     4   -80  -150    -2    16     4    83   -18    58   111
+ K     30  -118   -10    42  -141    30    17  -107    75  -118    21    15   -64   100     6    28     8   -76  -148   -89    28     1    65   -18    58   111
+ N    -22  -189   139    51  -218  -119   182  -194    54  -189  -101   177  -138    80   -19   -27   -37  -150  -208  -137   -27   157    62   -52    58   111
+ V     67   -38  -118   -17   -38  -127   -29    48   -43    36    42   -64   -87     0   -67   -25   -13   103   -80    28   -25   -93   -10   -16    62   111
+ E     35  -171    84   135  -201   -13    10  -175    54  -172   -82    36   -52    55    -3    13    10  -132  -191  -122    13    62   104   -33    62   111
+ E     15  -170    53   146  -200   -16    12  -175    78  -145   -80    43  -129    91     0    15   -19  -131  -189  -120    15    49   125   -34    62   111
+ V     -8    38   -52   -84     1  -157    99    87   -63    20    52   -14  -163   -44   -80   -59   -12    79   -71   151   -59   -35   -69   -22    62   111
+! 21
+ G     -7   -72  -118  -133  -261   298  -153  -244  -163  -267  -185   -97  -158  -139  -180    59   -47  -157  -279  -244    58  -109  -136  -110    62   111
+ A     61  -121   -26    45  -138    33    78   -61    38  -116   -35     1  -134   116    -7    -4     6    -9  -150   -93    -4   -13    73   -18    62   111
+ E    -44  -192    99   203  -219  -119    -1  -195    29   -91  -103    55  -139   104   -24   -29   -40  -152  -211  -139   -29    79   165   -49    62   111
+ A    149    67  -199  -140    53  -169   -59    98  -112    -3    59  -116  -177   -86  -114   -62    20    88   -69   -32   -62  -160  -119   -40    62   111
+ L   -148  -127  -289  -248    30  -285  -111    14  -205   251    58  -218  -276  -174  -199  -204  -142   -21   -64   119  -204  -257  -219  -114    62   111
+ E     23  -105   -23    71  -118    -3     1     0    29   -66   -20    -6  -137    80   -15    12    46   -18   -12   -83    12   -15    75   -11    62   111
+ R    -54  -144   -70    -8  -173   -86    -4   -23    93  -140   -63   -27  -158    33   252   -26   -45  -106  -165  -120   -26   -50     7   -46    62   111
+ L   -114   -89  -324  -264    56  -279  -162    81  -233   207   250  -235  -263  -182  -217  -191   -57    51  -122  -104  -191  -283  -232  -109    62   111
+ L   -167  -133  -366  -314   273  -333  -170    75  -283   192    89  -280  -304  -218  -261  -250  -158    -1  -103   -47  -250  -327  -276  -142    62   111
+ V    -10   -72   -67    35   -58  -138    30    48    46   -27    10   -29  -146    62   -35   -15    29    96  -109   -62   -15   -49    45   -15    62   111
+! 31
+ V    -10   -95   -45     9  -107   -26    -3   -46    57   -88   -12     2  -140    60   -20    34    50   103  -130   -79    34   -23    29   -15    62   111
+ Y     16   -60  -103   -48    53  -154   126   -21   -32   -47    20    -9  -162   -19   -61   -54    17    -7   -68   250   -54   -59   -37   -29    62   111
+ P   -183  -198  -230  -249  -311  -205  -240  -328  -258  -330  -291  -233   404  -254  -256  -205  -215  -283  -278  -297  -205  -231  -251  -221    62   111
+ E     22  -122   -25    83  -139  -125     4  -104    37  -117   -36     0  -111   111    -7     5    56   -76   271   -94     5   -13    94   -28    62   111
+ T    101   -52  -157  -134  -205   -83  -124  -163  -124  -195  -116   -92  -146  -107  -144    65   282  -103  -232  -197    65  -127  -124   -82    62   111
+ K    -71  -182   -74    -7  -220  -159     0  -181   200   -57   -94   -26  -164   220    91   -62   -59  -149  -185  -140   -62   -52    81   -59    62   111
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ N    -78  -157   -46   -18     0  -163   124  -143   -12  -142   -79   260  -179    -9   -49   -74   -73  -121   -55   196   -74    95   -15   -56    61   111
+ F   -195  -158  -337  -311   359  -318   -76   -15  -276    86    23  -243  -307  -214  -255  -243  -189   -52    -9    92  -243  -294  -274  -149    62   111
+! 101
+ K    -36  -165   -27    73  -196  -131     9  -164   196  -162   -76    23  -139    53    97   -26     7   -42  -180  -121   -26    -3    65   -43    62   111
+ L    -26   -22  -189  -129   104  -172   -54    56   -44   124    65  -110  -177   -77    -1   -77   -20    95   -66   -29   -77  -153  -109   -34    62   111
+ L   -152  -117  -372  -315    37  -333  -220   151  -287   229    88  -292  -304  -228  -269  -250  -144    93  -158  -144  -250  -335  -281  -142    62   111
+ S     62  -114   -37     9  -171    94   -14  -139    64  -149   -66   -10  -136    23   -14   111    19  -100  -179  -122   111   -25    15   -29    62   111
+ E    -31  -178    80   103  -209   -28   180  -184    45  -179   -88   115  -132   103    -7   -17     8  -140  -197  -127   -17    96   103   -41    62   111
+ V     56   236  -210  -150   -17  -174   -63   128  -121    -1    83   -55  -181   -93  -119   -69   -20   135   -68   -32   -69  -138  -128   -45    62   111
+ L    -45   -78  -317  -257    80  -268  -155   143  -226   187   100  -225  -258  -181  -212  -179   -95    67  -124  -100  -179  -275  -228  -101    62   111
+ L    -71   -53  -262  -205   -32  -233  -123   171  -174   127    62  -181  -231   -19  -172  -143   -65   175  -114   -83  -143  -225  -132   -76    62   111
+ V    -17    36   -26    -6   -67  -139    54    53    19   -52    19   -33  -147    60   -25   -36   -11   138  -101   -56   -36   -29    19   -18    62   111
+ V    -32    73  -214  -160   -50  -175   -91    86  -134   -21    34  -134  -192  -110  -139   -55   106   220  -106   -69   -55  -177  -141   -57    62   111
+! 111
+ L   -158  -122  -373  -317   -23  -343  -232   144  -289   238   119  -299  -310  -231  -273  -261  -150    84  -167  -158  -261  -339  -283  -148    62   111
+ A    156  -136   -16    30  -162   -84    50  -129    85  -138   -55     3  -136    76     0    11   -21   -97  -166  -108    11    -7    48   -33    62   111
+ E     43     1    -1    70  -152  -120    76   -61    75   -84   -44    30  -129    52    32    36    29   -71  -158   -98    36    13    63   -19    62   111
+ K     16  -131   -23    32  -151  -124   240  -117   101  -127    31    16  -133    49    59   -17    10   -87  -157   -31   -17    -5    38   -31    62   111
+ L    -47   -51  -166  -112   170  -180   222    -6   -89    77    29   -98  -185   -66  -102    -8   -40     2   -19   103    -8  -135   -94   -39    62   111
+ G     -1  -102   -31    -9  -196   147   -43  -165   -19  -177   -95   -23   176    45   -61    31   -29  -117  -207  -153    31   -28    11   -40    62   111
+ K     63  -156    19    44  -187   -31    11  -160   137  -160   -70    40  -105    55     0    55     9  -119  -181  -115    55    28    48   -31    62   111
+ E     14  -177   158   145  -206  -118     6  -180    60  -134   -88    55  -134    49   -10   -20   -28  -117  -197  -128   -20   111   108   -42    62   111
+ F    -50   -35  -241  -185   267  -196   -46    19  -151    34   111  -142  -199  -114  -141  -104    10    23   162   101  -104  -195  -157   -62    62   111
+ T    -16  -105   -38    -1  -169   -16    16  -136     0  -150   -69    32  -140     7   -43   101   199   -98  -183  -128   101    -5     1   -37    62   111
+! 121
+ P    103    50   -66    37  -142  -113   -36  -101   -14  -124   -47   -34   210    -7   -53   -23   -21   -69  -164  -116   -23   -52    20   -33    62   111
+ E     29  -173    83   151  -203  -117    62  -177    48  -173   -83    18   -39   129    -3   -15   -22  -122  -192  -123   -15    53   143   -39    62   111
+ V     55    11  -153   -95   -22   -86     4    44   -33    26    84   -86  -165   -52   -86   -50     0   155   -68   -30   -50  -122   -78   -25    62   111
+ Q    -41  -184    56    57  -212  -120   240  -186    35  -184   -96    46  -139   218   -15    -1   -37  -145  -203  -134    -1    51   119   -54    62   111
+ A    186   -74   -74   -25  -107   -43    34   -67   -12   -31   -18   -36  -146    -4   -49    -2    14   -44  -136   -90    -2   -56   -17   -25    62   111
+ A    227   -52  -149  -115  -185    -7  -106  -146  -104  -174   -95   -84  -145   -87  -128   124   -20     1  -212  -175   124  -119  -104   -64    62   111
+ L    -44   -27  -255  -195   159  -195   -59    33  -159    74   170  -149  -197  -120  -144  -103   -37    68   290   107  -103  -206  -166   -61    62   111
+ E    -43  -194   155   138  -223  -118     0  -200    50  -194  -105    32  -138   157   -23    23   -24  -155  -212  -140    23    98   145   -53    62   111
+ K    -54  -145   -64   -16  -194   -64   -19  -147   266  -161   -85   -32  -161    18    29   -54   -52   -14  -185  -138   -54   -50    -2   -55    62   111
+ L     79   -41  -240  -182   186  -205   -92    57  -153   105    66  -155  -208  -122  -150  -114   -48   104   -86   -49  -114  -201  -159   -58    62   111
+! 131
+ L    -26   -12  -234  -172    70  -178   -63    63  -138   105   174   -73  -182  -104  -127   -86   -20   131   -56    67   -86  -160  -146   -47    62   111
+ A     70     7    36    80  -183  -118    14  -155    85  -138   -66    30  -128    79    22    67    -8  -116  -177  -111    67    33    79   -30    62   111
+ A     53   -44  -106   -50   -46    45   -26    44   -33    11    92   -43  -156    17   -60   -16    18    50   -86   -44   -16   -77   -23   -12    62   111
+ V   -110   -79  -337  -281    79  -291  -188   148  -253   113    56  -250  -279  -212  -241  -206  -104   236  -153  -123  -206  -296  -254  -118    62   111
+ A    137   139   -89   -36  -101   -54   -33   -60   -21   -86   -12   -43  -146   -11    39    74   -14    12  -132   -87    74   -68   -26   -22    62   111
+ T      7  -131     1    34  -151  -123   122   -42    50   -97   -44   115  -132    49    -3    32    86   -87  -158   -98    32    54    40   -23    62   111
+ A    128   -80    54   -15   -98  -135   -22   -38    -6   -41    -7   -32  -150     3   -45   -20   -20   100  -130   -82   -20    14    -8   -21    62   111
+ L   -176  -137  -391  -336   -23  -364  -249   175  -305   242   113  -320  -324  -244  -287  -284  -167    37  -173  -166  -284  -358  -300  -162    62   111
+ A    115  -130   -19    51  -162   -62     1  -129    71  -139   -55     2  -134    41   -10    50    80   -96  -168  -109    50    -9    47   -28    62   111
+ A     58  -151   -15    83  -177  -123   193  -147    82  -150    41    10  -132    53    32    47   -17  -110  -174  -111    47    -3    71   -34    62   111
+! 141
+ K     33  -166   -18    52  -199   -51     2  -168   217  -168   -81     1  -142    45    29    -9   -32  -130  -187  -127    -9    -9    49   -45    63   111
+ Y   -201  -162  -311  -289   171  -303   -11  -103  -254   -75    63  -201  -298  -190  -234  -218  -193  -114    52   406  -218  -260  -250  -157    63   111
+ K    -25  -137   -26    30   -91   -56   195   -45   118  -133   -49     3  -135    50   135   -20   -18   -94  -160  -102   -20   -12    37   -27    62   111
+ *    621    74   359   488   301   325   254   392   570   697   178   318   209   339   312   490   400   555    65   192     0     0     0     0 
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+include file="inc/localfiles.ihtml"
+   -->
+
+None.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+<H3>1. Command-line arguments</H3>
+The following original HMMER options are not supported:
+<br><pre>
+-h         : Use -help to get help information instead.
+-a         : Use -format to set HMM output file format. 
+-b         : Use -format to set HMM output file format. 
+-p         : Use -format to set HMM output file format. 
+-P         : Use -format to set HMM output file format. 
+-A         : Set append: "N" or append: "Y" for "newhmmfile" in the ACD file 
+             instead.  Note you cannot append to an empty file or one in GCG 
+             or Compugen (xsw) formats. 
+-F         : Always set (an existing newhmmfile will be overwritten).
+</pre>
+
+
+
+<H3>2. Installing EMBASSY HMMER</H3>
+The EMBASSY HMMER package contains "wrapper" applications providing an EMBOSS-style interface to the applications in the original HMMER package version 2.3.2 developed by Sean Eddy.  Please read the file INSTALL in the EMBASSY HMMER package distribution for installation instructions.
+
+<H3>3. Installing original HMMER</H3>
+To use EMBASSY HMMER, you will first need to download and install the original HMMER package.  Please read the file 00README in the the original HMMER package distribution for installation instructions:
+<pre>
+WWW home:       http://hmmer.wustl.edu/
+Distribution:   ftp://ftp.genetics.wustl.edu/pub/eddy/hmmer/
+</pre>
+
+<H3>4. Setting up HMMER</H3>
+For the EMBASSY HMMER package to work, the directory containing the original HMMER executables *must* be in your path. For example if you executables were installed to "/usr/local/hmmer/bin", then type:
+<pre>
+set path=(/usr/local/hmmer/bin/ $path)
+rehash
+</pre>
+
+<H3> 5. Getting help </H3>
+Please read the Userguide.pdf distributed with the original HMMER and included in the EMBASSY HMMER distribution under the DOCS directory. The first 3 chapters (Introduction, Installation and Tutorial) are particularly useful.
+<p>Please read the 'Notes' section below for a description of the differences between the original and EMBASSY HMMER, particularly which application command line options are supported. 
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+<H3>Types of input data</H3>
+hmmer v3.2.1 and therefore EMBASSY HMMER is only recommended for use with protein sequences.  If you provide a non-protein sequence you will be reprompted for a protein sequence.  To accept nucleic acid sequences you must replace instances of < type: "protein" > in the application ACD files with <type: "nucleic" >.
+
+<H3>Environment variables</H3>
+The original hmmer uses BLAST environment variables (below), if defined, to locate files. The EMBASSY HMMER does not.
+<pre>
+BLASTDB   location of sequence databases to be searched
+BLASMAT   location of substitution matrices
+HMMERDB   location of HMMs
+</pre>
+
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="ehmmalign.html">ehmmalign</a></td>
+<td>Align sequences to an HMM profile</td>
+</tr>
+
+<tr>
+<td><a href="ehmmbuild.html">ehmmbuild</a></td>
+<td>Build a profile HMM from an alignment</td>
+</tr>
+
+<tr>
+<td><a href="ehmmcalibrate.html">ehmmcalibrate</a></td>
+<td>Calibrate HMM search statistics</td>
+</tr>
+
+<tr>
+<td><a href="ehmmemit.html">ehmmemit</a></td>
+<td>Generate sequences from a profile HMM</td>
+</tr>
+
+<tr>
+<td><a href="ehmmfetch.html">ehmmfetch</a></td>
+<td>Retrieve an HMM from an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmindex.html">ehmmindex</a></td>
+<td>Create a binary SSI index for an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmpfam.html">ehmmpfam</a></td>
+<td>Search one or more sequences against an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ehmmsearch.html">ehmmsearch</a></td>
+<td>Search a sequence database with a profile HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/oalistat.html">oalistat</a></td>
+<td>Statistics for multiple alignment files</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmalign.html">ohmmalign</a></td>
+<td>Align sequences with an HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmbuild.html">ohmmbuild</a></td>
+<td>Build HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmcalibrate.html">ohmmcalibrate</a></td>
+<td>Calibrate a hidden Markov model</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmconvert.html">ohmmconvert</a></td>
+<td>Convert between HMM formats</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmemit.html">ohmmemit</a></td>
+<td>Extract HMM sequences</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmfetch.html">ohmmfetch</a></td>
+<td>Extract HMM from a database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmindex.html">ohmmindex</a></td>
+<td>Index an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmpfam.html">ohmmpfam</a></td>
+<td>Align single sequence with an HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmer/ohmmsearch.html">ohmmsearch</a></td>
+<td>Search sequence database with an HMM</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS conversion of a program written by Sean Eddy
+as part of his HMMER package.
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+Jon Ison
+<br>
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+<p>This program is an EMBASSY wrapper to a program written by Sean Eddy as part of his hmmer package.
+<p>Please report any bugs to the EMBOSS bug team in the first instance, not to Sean Eddy.
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

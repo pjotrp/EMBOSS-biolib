@@ -1,0 +1,819 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: oalistat
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+oalistat
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Statistics for multiple alignment files
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+
+
+EMBASSY HMMER is a port of the original hmmer
+v2.2.1 applications written by Sean Eddy.
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+
+
+
+
+
+Please read the Userguide.pdf distributed with the original HMMER and
+included in the EMBASSY HMMER distribution under the DOCS directory.
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with oalistat</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>oalistat ../ohmmalign-keep/globins630.ali </b>
+Statistics for multiple alignment files
+HMMER alistat program output file [globins630.oalistat]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Statistics for multiple alignment files
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-infile]            infile     HMMER alistat program input file
+  [-outfile]           outfile    [*.oalistat] HMMER alistat program output
+                                  file
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -additional         boolean    [N] Show additional information
+   -fast               boolean    [N] Use sampling method
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-infile]<br>(Parameter 1)</td>
+<td>infile</td>
+<td>HMMER alistat program input file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>HMMER alistat program output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.oalistat</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-additional</td>
+<td>boolean</td>
+<td>Show additional information</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-fast</td>
+<td>boolean</td>
+<td>Use sampling method</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>oalistat</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: ../ohmmalign-keep/globins630.ali</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+#=AU HMMER 2.1.1
+#=SQ BAHG_VITSP 1.0000 BAHG_VITSP - 0..0::0 -
+#=SQ GLB1_ANABR 1.0000 GLB1_ANABR - 0..0::0 -
+#=SQ GLB1_ARTSX 1.0000 GLB1_ARTSX - 0..0::0 -
+#=SQ GLB1_CALSO 1.0000 GLB1_CALSO - 0..0::0 -
+#=SQ GLB1_CHITH 1.0000 GLB1_CHITH - 0..0::0 -
+#=SQ GLB1_GLYDI 1.0000 GLB1_GLYDI - 0..0::0 -
+#=SQ GLB1_LUMTE 1.0000 GLB1_LUMTE - 0..0::0 -
+#=SQ GLB1_MORMR 1.0000 GLB1_MORMR - 0..0::0 -
+#=SQ GLB1_PARCH 1.0000 GLB1_PARCH - 0..0::0 -
+#=SQ GLB1_PETMA 1.0000 GLB1_PETMA - 0..0::0 -
+#=SQ GLB1_PHESE 1.0000 GLB1_PHESE - 0..0::0 -
+#=SQ GLB1_SCAIN 1.0000 GLB1_SCAIN - 0..0::0 -
+#=SQ GLB1_TYLHE 1.0000 GLB1_TYLHE - 0..0::0 -
+#=SQ GLB2_ANATR 1.0000 GLB2_ANATR - 0..0::0 -
+#=SQ GLB2_CALSO 1.0000 GLB2_CALSO - 0..0::0 -
+#=SQ GLB2_CHITH 1.0000 GLB2_CHITH - 0..0::0 -
+#=SQ GLB2_LUMTE 1.0000 GLB2_LUMTE - 0..0::0 -
+#=SQ GLB2_MORMR 1.0000 GLB2_MORMR - 0..0::0 -
+#=SQ GLB2_TYLHE 1.0000 GLB2_TYLHE - 0..0::0 -
+#=SQ GLB3_CHITH 1.0000 GLB3_CHITH - 0..0::0 -
+#=SQ GLB3_CHITP 1.0000 GLB3_CHITP - 0..0::0 -
+#=SQ GLB3_LAMSP 1.0000 GLB3_LAMSP - 0..0::0 -
+#=SQ GLB3_MORMR 1.0000 GLB3_MORMR - 0..0::0 -
+#=SQ GLB3_MYXGL 1.0000 GLB3_MYXGL - 0..0::0 -
+#=SQ GLB3_PETMA 1.0000 GLB3_PETMA - 0..0::0 -
+#=SQ GLB3_TYLHE 1.0000 GLB3_TYLHE - 0..0::0 -
+#=SQ GLB4_CHITH 1.0000 GLB4_CHITH - 0..0::0 -
+#=SQ GLB4_GLYDI 1.0000 GLB4_GLYDI - 0..0::0 -
+#=SQ GLB4_LUMTE 1.0000 GLB4_LUMTE - 0..0::0 -
+#=SQ GLB4_TYLHE 1.0000 GLB4_TYLHE - 0..0::0 -
+#=SQ GLB5_PETMA 1.0000 GLB5_PETMA - 0..0::0 -
+#=SQ GLB6_CHITH 1.0000 GLB6_CHITH - 0..0::0 -
+#=SQ GLB7_ARTSX 1.0000 GLB7_ARTSX - 0..0::0 -
+#=SQ GLB7_CHITH 1.0000 GLB7_CHITH - 0..0::0 -
+#=SQ GLB8_CHITH 1.0000 GLB8_CHITH - 0..0::0 -
+#=SQ GLB9_CHITH 1.0000 GLB9_CHITH - 0..0::0 -
+#=SQ GLBA_ANATR 1.0000 GLBA_ANATR - 0..0::0 -
+#=SQ GLBA_SCAIN 1.0000 GLBA_SCAIN - 0..0::0 -
+#=SQ GLBB_ANATR 1.0000 GLBB_ANATR - 0..0::0 -
+#=SQ GLBB_SCAIN 1.0000 GLBB_SCAIN - 0..0::0 -
+#=SQ GLBC_CAUAR 1.0000 GLBC_CAUAR - 0..0::0 -
+#=SQ GLBC_CHITH 1.0000 GLBC_CHITH - 0..0::0 -
+#=SQ GLBD_CAUAR 1.0000 GLBD_CAUAR - 0..0::0 -
+#=SQ GLBD_CHITH 1.0000 GLBD_CHITH - 0..0::0 -
+#=SQ GLBE_CHITH 1.0000 GLBE_CHITH - 0..0::0 -
+#=SQ GLBF_CHITH 1.0000 GLBF_CHITH - 0..0::0 -
+#=SQ GLBH_CHITH 1.0000 GLBH_CHITH - 0..0::0 -
+#=SQ GLBI_CHITP 1.0000 GLBI_CHITP - 0..0::0 -
+#=SQ GLBM_ANATR 1.0000 GLBM_ANATR - 0..0::0 -
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+MYG_GALJA   ...................
+MYG_GLOME   ...................
+MYG_GORBE   ...................
+MYG_GRAGE   ...................
+MYG_HALGR   ...................
+MYG_HETPO   ...................
+MYG_HORSE   ...................
+MYG_HUMAN   ...................
+MYG_HYLAG   ...................
+MYG_INIGE   ...................
+MYG_KOGSI   ...................
+MYG_LAGLA   ...................
+MYG_LAGMA   ...................
+MYG_LEPMU   ...................
+MYG_LOXAF   ...................
+MYG_LUTLU   ...................
+MYG_LYCPI   ...................
+MYG_MACFA   ...................
+MYG_MACRU   ...................
+MYG_MEGNO   ...................
+MYG_MELME   ...................
+MYG_MESCA   ...................
+MYG_MOUSE   ...................
+MYG_MUSAN   ...................
+MYG_NYCCO   ...................
+MYG_OCHPR   ...................
+MYG_ORCOR   ...................
+MYG_ORNAN   ...................
+MYG_ORYAF   ...................
+MYG_PANTR   ...................
+MYG_PAPAN   ...................
+MYG_PERPO   ...................
+MYG_PHOPH   ...................
+MYG_PHYCA   ...................
+MYG_PIG     ...................
+MYG_PONPY   ...................
+MYG_PROGU   ...................
+MYG_RABIT   ...................
+MYG_ROUAE   ...................
+MYG_SAISC   ...................
+MYG_SHEEP   ...................
+MYG_SPAEH   ...................
+MYG_TACAC   ...................
+MYG_THUAL   ...................
+MYG_TUPGL   ...................
+MYG_TURTR   ...................
+MYG_VARVA   ...................
+MYG_VULCH   ...................
+MYG_ZALCA   ...................
+MYG_ZIPCA   ...................
+
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>oalistat</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: globins630.oalistat</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+alistat 1.5m, Sept 1997
+
+Format:              SELEX alignment
+Number of sequences: 630
+Total # residues:    91425
+Smallest:            121
+Largest:             162
+Average length:      145.1
+Alignment length:    469
+Average identity:    25%
+Most related pair:   99%
+Most unrelated pair: 0%
+Most distant seq:    6%
+
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+include file="inc/localfiles.ihtml"
+   -->
+
+None
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/embassy/hmmernew/ehmmalign.html">ehmmalign</a></td>
+<td>Align sequences to an HMM profile</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmernew/ehmmbuild.html">ehmmbuild</a></td>
+<td>Build a profile HMM from an alignment</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmernew/ehmmcalibrate.html">ehmmcalibrate</a></td>
+<td>Calibrate HMM search statistics</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmernew/ehmmconvert.html">ehmmconvert</a></td>
+<td>Convert between profile HMM file formats</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmernew/ehmmemit.html">ehmmemit</a></td>
+<td>Generate sequences from a profile HMM</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmernew/ehmmfetch.html">ehmmfetch</a></td>
+<td>Retrieve an HMM from an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmernew/ehmmindex.html">ehmmindex</a></td>
+<td>Create a binary SSI index for an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmernew/ehmmpfam.html">ehmmpfam</a></td>
+<td>Search one or more sequences against an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/hmmernew/ehmmsearch.html">ehmmsearch</a></td>
+<td>Search a sequence database with a profile HMM</td>
+</tr>
+
+<tr>
+<td><a href="ohmmalign.html">ohmmalign</a></td>
+<td>Align sequences with an HMM</td>
+</tr>
+
+<tr>
+<td><a href="ohmmbuild.html">ohmmbuild</a></td>
+<td>Build HMM</td>
+</tr>
+
+<tr>
+<td><a href="ohmmcalibrate.html">ohmmcalibrate</a></td>
+<td>Calibrate a hidden Markov model</td>
+</tr>
+
+<tr>
+<td><a href="ohmmconvert.html">ohmmconvert</a></td>
+<td>Convert between HMM formats</td>
+</tr>
+
+<tr>
+<td><a href="ohmmemit.html">ohmmemit</a></td>
+<td>Extract HMM sequences</td>
+</tr>
+
+<tr>
+<td><a href="ohmmfetch.html">ohmmfetch</a></td>
+<td>Extract HMM from a database</td>
+</tr>
+
+<tr>
+<td><a href="ohmmindex.html">ohmmindex</a></td>
+<td>Index an HMM database</td>
+</tr>
+
+<tr>
+<td><a href="ohmmpfam.html">ohmmpfam</a></td>
+<td>Align single sequence with an HMM</td>
+</tr>
+
+<tr>
+<td><a href="ohmmsearch.html">ohmmsearch</a></td>
+<td>Search sequence database with an HMM</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS conversion of a program written by Sean Eddy
+as part of his HMMER package.
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

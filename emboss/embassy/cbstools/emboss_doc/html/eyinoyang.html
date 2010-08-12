@@ -1,0 +1,1001 @@
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBASSY: CBSTOOLS: eyinoyang
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+eyinoyang
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Reports O-(beta)-GlcNAc attachment sites
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+
+The YinOYang WWW server produces neural network predictions for
+O-ß-GlcNAc attachment sites in eukaryotic protein sequences. This
+server can also use NetPhos, to mark possible phosphorylated sites and
+hence identify "Yin-Yang" sites. 
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with eyinoyang</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eyinoyang </b>
+Reports O-(beta)-GlcNAc attachment sites
+Input (aligned) sequence set: <b>CBG_HUMAN.fsa</b>
+Output file [cbg_human.eyinoyang]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eyinoyang </b>
+Reports O-(beta)-GlcNAc attachment sites
+Input (aligned) sequence set: <b>LEUK_RAT.fsa</b>
+Output file [leuk_rat.eyinoyang]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.2">Go to the input files for this example</a><br><a href="#output.2">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Reports O-(beta)-GlcNAc attachment sites
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.eyinoyang] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -plot               boolean    [N] Produce graphics
+   -format             menu       [short] Format (Values: short (short); long
+                                  (long))
+   -netphos            boolean    [N] Run netphos and predict Yin-Yang sites
+   -threshold          float      [0.5] Report netphos only scores above this
+                                  value (Number from 0.000 to 1.000)
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>seqset</td>
+<td>(Aligned) sequence set filename and optional format, or reference (input USA)</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.eyinoyang</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-plot</td>
+<td>boolean</td>
+<td>Produce graphics</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-format</td>
+<td>list</td>
+<td>Format</td>
+<td><table><tr><td>short</td> <td><i>(short)</i></td></tr><tr><td>long</td> <td><i>(long)</i></td></tr></table></td>
+<td>short</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-netphos</td>
+<td>boolean</td>
+<td>Run netphos and predict Yin-Yang sites</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-threshold</td>
+<td>float</td>
+<td>Report netphos only scores above this value</td>
+<td>Number from 0.000 to 1.000</td>
+<td>0.5</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-sequence" associated seqset qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sbegin1<br>-sbegin_sequence</td>
+<td>integer</td>
+<td>Start of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -send1<br>-send_sequence</td>
+<td>integer</td>
+<td>End of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sreverse1<br>-sreverse_sequence</td>
+<td>boolean</td>
+<td>Reverse (if DNA)</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sask1<br>-sask_sequence</td>
+<td>boolean</td>
+<td>Ask for begin/end/reverse</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -snucleotide1<br>-snucleotide_sequence</td>
+<td>boolean</td>
+<td>Sequence is nucleotide</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sprotein1<br>-sprotein_sequence</td>
+<td>boolean</td>
+<td>Sequence is protein</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -slower1<br>-slower_sequence</td>
+<td>boolean</td>
+<td>Make lower case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -supper1<br>-supper_sequence</td>
+<td>boolean</td>
+<td>Make upper case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sformat1<br>-sformat_sequence</td>
+<td>string</td>
+<td>Input sequence format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sdbname1<br>-sdbname_sequence</td>
+<td>string</td>
+<td>Database name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sid1<br>-sid_sequence</td>
+<td>string</td>
+<td>Entryname</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ufo1<br>-ufo_sequence</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fformat1<br>-fformat_sequence</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fopenfile1<br>-fopenfile_sequence</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>eyinoyang</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: CBG_HUMAN.fsa</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;CBG_HUMAN
+MPLLLYTCLLWLPTSGLWTVQAMDPNAAYVNMSNHHRGLASANVDFAFSLYKHLVALSPK
+KNIFISPVSISMALAMLSLGTCGHTRAQLLQGLGFNLTERSETEIHQGFQHLHQLFAKSD
+TSLEMTMGNALFLDGSLELLESFSADIKHYYESEVLAMNFQDWATASRQINSYVKNKTQG
+KIVDLFSGLDSPAILVLVNYIFFKGTWTQPFDLASTREENFYVDETTVVKVPMMLQSSTI
+SYLHDSELPCQLVQMNYVGNGTVFFILPDKGKMNTVIAALSRDTINRWSAGLTSSQVDLY
+IPKVTISGVYDLGDVLEEMGIADLFTNQANFSRITQDAQLKSSKVVHKAVLQLNEEGVDT
+AGSTGVTLNLTSKPIILRFNQPFIIMIFDHFTWSSLFLARVMNPV
+</pre>
+</td></tr></table><p>
+
+<a name="input.2"></a>
+<h3>Input files for usage example 2</h3>
+<p><h3>File: LEUK_RAT.fsa</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;LEUK_RAT P13838 LEUKOSIALIN PRECURSOR (LEUCOCYTE SIALOGLYCOPROTEIN) (SIALOPHORIN) (CD43) (W3/13 ANTIGEN) (FRAGMENT). - RATTUS NORVEGICUS (RAT).
+WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAP
+ASSIPLGTPELSSFFFTSAGASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTIT
+NPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATTVSSETSGPPVTMATGSLGPS
+KETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLIA
+LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGN
+KSSGAPETDGSGQRPTLTTFFSRRKSRQGSVALEELKPGTGPNLKGEEEPLVGSEDEAVE
+TPTSDGPQAKDGAAPQSL
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+
+        #include file="inc/reportformats.ihtml"
+   -->
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: cbg_human.eyinoyang</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+The predictions for O-GlcNAc sites in 1 sequence
+
+
+###############################################################################
+Warning:   This sequence seems to contain a signal peptide !!
+         Proteins with signal peptides are most probably secreted
+          and are unlikely to contain an O-(beta)-GlcNAc site
+  # SignalP-NN ver. 3.0 euk predictions
+  # name		Cmax  pos ?  Ymax  pos ?  Smax  pos ?  Smean ?  D     ?
+  CBG_HUMAN             0.645  23 Y  0.717  23 Y  0.981  13 Y  0.886 Y  0.801 Y
+###############################################################################
+
+
+Name:  CBG_HUMAN 	Length:  405
+MPLLLYTCLLWLPTSGLWTVQAMDPNAAYVNMSNHHRGLASANVDFAFSLYKHLVALSPKKNIFISPVSISMALAMLSLG      80
+TCGHTRAQLLQGLGFNLTERSETEIHQGFQHLHQLFAKSDTSLEMTMGNALFLDGSLELLESFSADIKHYYESEVLAMNF     160
+QDWATASRQINSYVKNKTQGKIVDLFSGLDSPAILVLVNYIFFKGTWTQPFDLASTREENFYVDETTVVKVPMMLQSSTI     240
+SYLHDSELPCQLVQMNYVGNGTVFFILPDKGKMNTVIAALSRDTINRWSAGLTSSQVDLYIPKVTISGVYDLGDVLEEMG     320
+IADLFTNQANFSRITQDAQLKSSKVVHKAVLQLNEEGVDTAGSTGVTLNLTSKPIILRFNQPFIIMIFDHFTWSSLFLAR     400
+VMNPV                                                                                480
+..............G.....................................................G...........      80
+................................................................................     160
+....G...........................................................................     240
+................................................................G...............     320
+.....................GG.........................................................     400
+.....                                                                                480
+
+
+----------------------------------------------------------
+SeqName     Residue  O-GlcNAc  Potential  Thresh.  Thresh.
+                      result                (1)      (2)
+----------------------------------------------------------
+CBG_HUMAN      15  S    +        0.4952    0.4560   0.5650
+CBG_HUMAN      69  S    +        0.5330    0.5116   0.6400
+CBG_HUMAN     165  T    +        0.5099    0.4381   0.5409
+CBG_HUMAN     305  T    ++       0.5937    0.4585   0.5684
+CBG_HUMAN     342  S    ++       0.4782    0.3860   0.4707
+CBG_HUMAN     343  S    +        0.4153    0.4096   0.5025
+----------------------------------------------------------
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: leuk_rat.eyinoyang</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+The predictions for O-GlcNAc sites in 1 sequence
+
+
+Name:  LEUK_RAT 	Length:  378
+WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAPASSIPLGTPELSSFFFTSAG      80
+ASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTITNPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATT     160
+VSSETSGPPVTMATGSLGPSKETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLIA     240
+LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGNKSSGAPETDGSGQRPTLTTF     320
+FSRRKSRQGSVALEELKPGTGPNLKGEEEPLVGSEDEAVETPTSDGPQAKDGAAPQSL                           400
+.....G.............G..G....GG...G..........G.....G......GG...GG.................      80
+..........GGG...GG.........GG........G.G...GGG....G.............G.GGG...G.....G.     160
+.GG..G....G...........G........GGG...G.........G.....G......GG......G...........     240
+.....................G.............................GG.G............G.........G..     320
+...........................................G............G.                           400
+
+
+----------------------------------------------------------
+SeqName     Residue  O-GlcNAc  Potential  Thresh.  Thresh.
+                      result                (1)      (2)
+----------------------------------------------------------
+LEUK_RAT        6  S    ++       0.5334    0.4196   0.5159
+LEUK_RAT       20  T    +        0.4550    0.4247   0.5229
+LEUK_RAT       23  S    +++      0.6551    0.3665   0.4444
+LEUK_RAT       28  T    +        0.3938    0.3852   0.4697
+LEUK_RAT       29  S    +++      0.6920    0.4029   0.4935
+LEUK_RAT       33  S    +        0.4933    0.4381   0.5409
+LEUK_RAT       44  T    +++      0.6693    0.4165   0.5118
+LEUK_RAT       50  S    +        0.3897    0.3747   0.4554
+LEUK_RAT       57  T    ++       0.5390    0.4111   0.5046
+LEUK_RAT       58  T    +++      0.6271    0.4053   0.4967
+LEUK_RAT       62  S    +        0.4869    0.4238   0.5217
+LEUK_RAT       63  S    ++       0.6100    0.4194   0.5157
+LEUK_RAT       91  T    +        0.4330    0.4060   0.4977
+LEUK_RAT       92  T    ++       0.4961    0.3934   0.4807
+LEUK_RAT       93  S    +        0.4557    0.4124   0.5063
+LEUK_RAT       97  S    +        0.4692    0.4066   0.4985
+LEUK_RAT       98  T    +        0.5114    0.4222   0.5195
+LEUK_RAT      108  S    +        0.4984    0.4119   0.5056
+LEUK_RAT      109  S    +++      0.6209    0.3978   0.4866
+LEUK_RAT      118  T    ++++     0.7542    0.4267   0.5256
+LEUK_RAT      120  T    ++       0.5358    0.4281   0.5274
+LEUK_RAT      124  T    +++      0.6470    0.4087   0.5013
+LEUK_RAT      125  S    +++      0.7343    0.4145   0.5091
+LEUK_RAT      126  S    ++       0.6243    0.4313   0.5318
+LEUK_RAT      131  T    +        0.4973    0.4487   0.5552
+LEUK_RAT      145  T    ++++     0.7629    0.4440   0.5489
+LEUK_RAT      147  T    +++      0.6993    0.4525   0.5603
+LEUK_RAT      148  S    ++       0.5850    0.4536   0.5618
+LEUK_RAT      149  S    +        0.5067    0.4533   0.5614
+LEUK_RAT      153  S    +        0.4848    0.4352   0.5370
+LEUK_RAT      159  T    ++       0.6054    0.4765   0.5927
+LEUK_RAT      162  S    ++++     0.7702    0.4242   0.5221
+LEUK_RAT      163  S    +        0.4354    0.4092   0.5019
+LEUK_RAT      166  S    +        0.4314    0.3751   0.4560
+LEUK_RAT      171  T    +++      0.7201    0.4458   0.5513
+LEUK_RAT      183  T    +        0.4774    0.4040   0.4950
+LEUK_RAT      192  T    ++       0.5797    0.4320   0.5327
+LEUK_RAT      193  S    +++      0.6347    0.4159   0.5110
+LEUK_RAT      194  S    +        0.4443    0.3990   0.4883
+LEUK_RAT      198  S    +        0.4110    0.4073   0.4994
+LEUK_RAT      208  S    ++       0.5823    0.4501   0.5571
+LEUK_RAT      214  T    +        0.4242    0.4092   0.5020
+LEUK_RAT      221  T    ++       0.5461    0.4168   0.5122
+LEUK_RAT      222  T    ++       0.6041    0.4159   0.5110
+LEUK_RAT      229  S    +        0.4820    0.4089   0.5016
+LEUK_RAT      262  T    ++       0.4988    0.3886   0.4742
+LEUK_RAT      292  T    +        0.3937    0.3877   0.4730
+LEUK_RAT      293  T    ++       0.5152    0.3967   0.4851
+LEUK_RAT      295  S    +        0.4397    0.3839   0.4678
+LEUK_RAT      308  T    ++       0.5271    0.3720   0.4518
+LEUK_RAT      318  T    +        0.4814    0.4671   0.5800
+LEUK_RAT      364  S    ++       0.5089    0.3646   0.4419
+LEUK_RAT      377  S    +++      0.6489    0.3408   0.4097
+----------------------------------------------------------
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+None.
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/antigenic.html">antigenic</a></td>
+<td>Finds antigenic sites in proteins</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/digest.html">digest</a></td>
+<td>Reports on protein proteolytic enzyme or reagent cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="echlorop.html">echlorop</a></td>
+<td>Reports presence of chloroplast transit peptides</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/iprscan/eiprscan.html">eiprscan</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="elipop.html">elipop</a></td>
+<td>Prediction of lipoproteins</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/memenew/emast.html">emast</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/memenew/ememe.html">ememe</a></td>
+<td>Multiple EM for Motif Elicitation</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/memenew/ememetext.html">ememetext</a></td>
+<td>Multiple EM for Motif Elicitation. Text file only</td>
+</tr>
+
+<tr>
+<td><a href="enetnglyc.html">enetnglyc</a></td>
+<td>Reports N-glycosylation sites in human proteins</td>
+</tr>
+
+<tr>
+<td><a href="enetoglyc.html">enetoglyc</a></td>
+<td>Reports mucin type GalNAc O-glycosylation sites in mammalian proteins</td>
+</tr>
+
+<tr>
+<td><a href="enetphos.html">enetphos</a></td>
+<td>Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/epestfind.html">epestfind</a></td>
+<td>Finds PEST motifs as potential proteolytic cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="eprop.html">eprop</a></td>
+<td>Reports propeptide cleavage sites in proteins</td>
+</tr>
+
+<tr>
+<td><a href="esignalp.html">esignalp</a></td>
+<td>Reports protein signal cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="etmhmm.html">etmhmm</a></td>
+<td>Reports transmembrane helices</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/fuzzpro.html">fuzzpro</a></td>
+<td>Search for patterns in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/fuzztran.html">fuzztran</a></td>
+<td>Search for patterns in protein sequences (translated)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/helixturnhelix.html">helixturnhelix</a></td>
+<td>Identify nucleic acid-binding motifs in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/oddcomp.html">oddcomp</a></td>
+<td>Identify proteins with specified sequence word composition</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/meme/omeme.html">omeme</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/patmatdb.html">patmatdb</a></td>
+<td>Searches protein sequences with a sequence motif</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/patmatmotifs.html">patmatmotifs</a></td>
+<td>Scan a protein sequence with motifs from the PROSITE database</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepcoil.html">pepcoil</a></td>
+<td>Predicts coiled coil regions in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/preg.html">preg</a></td>
+<td>Regular expression search of protein sequence(s)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pscan.html">pscan</a></td>
+<td>Scans protein sequence(s) with fingerprints from the PRINTS database</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/sigcleave.html">sigcleave</a></td>
+<td>Reports on signal cleavage sites in a protein sequence</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS wrapper for a program written by the CBS group
+http://www.cbs.dtu.dk/index.shtml
+
+<p>
+The original CBS group application must be licensed and installed to
+use this wrapper.
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+<H2>
+    Comments
+</H2>
+
+None
+
+</BODY>
+</HTML>
+

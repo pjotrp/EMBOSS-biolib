@@ -1,0 +1,4071 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: ememetext
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+ememetext
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Multiple EM for Motif Elicitation. Text file only
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+EMBASSY MEME is a suite of application wrappers to the original meme v3.0.14 applications written by  Timothy Bailey. meme v3.0.14 must be installed on the same system as EMBOSS and the location of the meme executables must be defined in your path for EMBASSY MEME to work.
+
+<p><b>Usage:</b>
+<br>ememe [options] dataset outfile
+
+<p>The <outfile> parameter is new to EMBASSY MEME. The output is always written to <outfile>. The name of the input sequences may be specified with the -dataset option as normal.
+
+<p>  MEME -- Multiple EM for Motif Elicitation
+   
+<p>  MEME is a tool for discovering motifs in a group of related DNA or protein
+  sequences.
+   
+<p>  A motif is a sequence pattern that occurs repeatedly in a group of related
+  protein or DNA sequences. MEME represents motifs as position-dependent
+  letter-probability matrices which describe the probability of each possible
+  letter at each position in the pattern. Individual MEME motifs do not 
+  contain gaps. Patterns with variable-length gaps are split by MEME into two 
+  or more separate motifs.
+   
+<p>  MEME takes as input a group of DNA or protein sequences (the training set)
+  and outputs as many motifs as requested. MEME uses statistical modeling
+  techniques to automatically choose the best width, number of occurrences,
+  and description for each motif.
+   
+<p>  MEME outputs its results as a hypertext (HTML) document.
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+
+Please read the file README distributed with the original MEME. 
+
+
+<h3>  REQUIRED ARGUMENTS:</h3>
+<b>  	< dataset ><b>
+<br>       The name of the file containing the training set 
+  			sequences.  If < dataset > is the word "stdin", MEME
+  			reads from standard input.  
+  
+<p>  			The sequences in the dataset should be in 
+  			Pearson/FASTA format.  For example:
+<pre>  
+  			>ICYA_MANSE INSECTICYANIN A FORM (BLUE BILIPROTEIN)
+  			GDIFYPGYCPDVKPVNDFDLSAFAGAWHEIAK
+  			LPLENENQGKCTIAEYKYDGKKASVYNSFVSNGVKEYMEGDLEIAPDA
+  			>LACB_BOVIN BETA-LACTOGLOBULIN PRECURSOR (BETA-LG) 
+  			MKCLLLALALTCGAQALIVTQTMKGLDI
+  			QKVAGTWYSLAMAASDISLLDAQSAPLRVYVEELKPTPEGDLEILLQKW
+</pre>  				
+  			Sequences start with a header line followed by
+  			sequence lines.  A header line has
+  			the character ">" in position one, followed by
+  			an unique name without any spaces, followed by
+  			(optional) descriptive text.  After the header line 
+  			come the actual sequence lines.  Spaces and blank 
+  			lines are ignored.  Sequences may be in capital or 
+  			lowercase or both.  
+  
+<p>  			MEME uses the first word in the header line of each 
+  			sequence, truncated to 24 characters if necessary,
+  			as the name of the sequence. This name must be unique. 
+  			Sequences with duplicate names will be ignored. 
+  			(The first word in the title line is 
+  			everything following the ">" up to the first blank.)
+  
+<p>  			Sequence weights may be specified in the dataset
+  			file by special header lines where the unique name
+  			is "WEIGHTS" (all caps) and the descriptive 
+  			text is a list of sequence weights. 
+  			Sequence weights are numbers in the range 0 < w <=1.
+  			All weights are assigned in order to the
+  			sequences in the file. If there are more sequences
+  			than weights, the remainder are given weight one.
+  			Weights must be greater than zero and less than
+  			or equal to one.  Weights may be specified by
+  			more than one "WEIGHT" entry which may appear
+  			anywhere in the file.  When weights are used, 
+  			sequences will contribute to motifs in proportion
+  			to their weights.  Here is an example for a file
+  			of three sequences where the first two sequences are 
+  			very similar and it is desired to down-weight them:
+<pre>  
+  			>WEIGHTS 0.5 .5 1.0 
+  			>seq1
+  			GDIFYPGYCPDVKPVNDFDLSAFAGAWHEIAK
+  			>seq2
+  			GDMFCPGYCPDVKPVGDFDLSAFAGAWHELAK
+  			>seq3
+  			QKVAGTWYSLAMAASDISLLDAQSAPLRVYVEELKPTPEGDLEILLQKW
+</pre>  
+
+<h3>  OPTIONAL ARGUMENTS:</h3>
+   
+  MEME has a large number of optional inputs that can be used
+  to fine-tune its behavior.  To make these easier to understand
+  they are divided into the following categories:
+   
+<p><b>  		ALPHABET</b>	- control the alphabet for the motifs
+  				  (patterns) that MEME will search for
+   
+<p><b>  		DISTRIBUTION</b>	- control how MEME assumes the occurrences
+  				  of the motifs are distributed throughout
+  				  the training set sequences
+   
+<p><b>  		SEARCH</b>		- control how MEME searches for motifs
+   
+<p><b>                  SYSTEM</b>          - the -p <np> argument causes a version of MEME
+                                    compiled for a parallel CPU architecture
+                                    to be run.  (By placing < np > in quotes you
+                                    may pass installation specific switches to
+  				  the 'mpirun' command.  The number of 
+                                    processors to run on must be the first 
+  				  argument following -p).
+  
+<p>   
+  In what follows, < n > is an integer, < a > is a decimal number, and < string > 
+  is a string of characters.
+   
+<h3>  ALPHABET</h3>
+
+  MEME accepts either DNA or protein sequences, but not both in the same run.
+  By default, sequences are assumed to be protein.  The sequences must be in 
+  FASTA format.
+  
+<p>  DNA sequences must contain only the letters "ACGT", plus the ambiguous
+  letters "BDHKMNRSUVWY*-". 
+<p>  Protein sequences must contain only the letters "ACDEFGHIKLMNPQRSTVWY",
+  plus the ambiguous letters "BUXZ*-".
+  
+<p>  MEME converts all ambiguous letters to "X", which is treated as "unknown".
+   
+<p><b>  	-dna</b>		Assume sequences are DNA; default: protein sequences
+<p><b>  	-protein</b>	Assume sequences are protein
+  
+   
+<h3>  DISTRIBUTION</h3>
+
+  If you know how occurrences of motifs are distributed in the training set 
+  sequences, you can specify it with the following optional switches.  The 
+  default distribution of motif occurrences is assumed to be zero or one 
+  occurrence of per sequence.
+   
+<p><b>  	-mod < string > </b>   The type of distribution to assume.
+<p>  			oops<br>    One Occurrence Per Sequence
+<br>  				MEME assumes that each sequence in the dataset
+  				contains exactly one occurrence of each motif.
+  				This option is the fastest and most sensitive
+  				but the motifs returned by MEME may be 
+  				"blurry" if any of the sequences is missing
+  				them. 	
+   
+<p>  			zoops<br> Zero or One Occurrence Per Sequence
+<br>  				MEME assumes that each sequence may contain at
+  				most one occurrence of each motif. This option
+  				is useful when you suspect that some motifs
+  				may be missing from some of the sequences. In
+  				that case, the motifs found will be more
+  				accurate than using the first option. This
+  				option takes more computer time than the
+  				first option (about twice as much) and is
+  				slightly less sensitive to weak motifs present
+  				in all of the sequences.
+   
+<p>  			anr<br> 	Any Number of Repetitions
+<br>  				MEME assumes each sequence may contain any
+  				number of non-overlapping occurrences of each
+  				motif. This option is useful when you suspect
+  				that motifs repeat multiple times within a
+  				single sequence. In that case, the motifs 
+  				found will be much more accurate than using 
+  				one of the other options. This option can also
+  				be used to discover repeats within a single
+  				sequence. This option takes the much more
+  				computer time than the first option (about ten
+  				times as much) and is somewhat less sensitive
+  				to weak motifs which do not repeat within a
+  				single sequence than the other two options.
+   
+   
+<h3>  SEARCH</h3>
+  ------
+  
+<b>  A) OBJECTIVE FUNCTION </b>
+  
+<p>  MEME uses an objective function on motifs to select the "best" motif.
+  The objective function is based on the statistical significance of the 
+  log likelihood ratio (LLR) of the occurrences of the motif.  
+  The E-value of the motif is an estimate of the number of motifs (with the 
+  same width and number of occurrences) that would have equal or higher log 
+  likelihood ratio if the training set sequences had been generated randomly 
+  according to the (0-order portion of the) background model. 
+  
+<p>  MEME searches for the motif with the smallest E-value.
+  It searches over different motif widths, numbers of occurrences, and
+  positions in the training set for the motif occurrences.
+  The user may limit the range of motif widths and number of occurrences
+  that MEME tries using the switches described below.  In addition,
+  MEME trims the motif (using a dynamic programming multiple alignment) to 
+  eliminate any positions where there is a gap in any of the occurrences.  
+  
+<p>  The log likelihood ratio of a motif is
+<pre>
+  	llr = log (Pr(sites | motif) / Pr(sites | back))
+</pre>
+  and is a measure of how different the sites are from the background model.
+  Pr(sites | motif) is the probability of the occurrences given the a model
+  consisting of the position-specific probability matrix (PSPM) of the motif.
+  (The PSPM is output by MEME).
+<p>  Pr(sites | back) is the  probability of the occurrences given the background
+  model.  The background model is an n-order Markov model.  By default,
+  it is a 0-order model consisting of the frequencies of the letters in
+  the training set.  A different 0-order Markov model or higher order Markov 
+  models can be specified to MEME using the -bfile option described below.
+  
+<p>  The E-value reported by MEME is actually an approximation of the E-value
+  of the log likelihood ratio.  (An approximation is used because it is far
+  more efficient to compute.)  The approximation is based on the fact that
+  the log likelihood ratio of a motif is the sum of the log 
+  likelihood ratios of each column of the motif.  Instead of computing the 
+  statistical significance of this sum (its p-value), MEME computes the 
+  p-value of each column and then computes the significance of their product.  
+  Although not identical to the significance of the log likelihood ratio, this 
+  easier to compute objective function works very similarly in practice.
+  
+<p>  The motif significance is reported as the E-value of the motif.  
+<p>  The statistical signficance of a motif is computed based on:
+<ol>
+<li>  	 the log likelihood ratio,
+<li>  	 the width of the motif,
+<li>  	 the number of occurrences,
+<li>  	 the 0-order portion of the background model,
+<li>  	 the size of the training set, and
+<li>  	 the type of model (oops, zoops, or anr, which determines the
+  	   number of possible different motifs of the given width and
+  	   number of occurrences).
+</ol>
+  
+  MEME searches for motifs by performing Expectation Maximization (EM) on a 
+  motif model of a fixed width and using an initial estimate of the number of 
+  sites.  It then sorts the possible sites according to their probability 
+  according to EM.  MEME then and calculates the E-values of the first n sites 
+  in the sorted list for different values of n.  This procedure (first EM, 
+  followed by computing E-values for different numbers of sites) is repeated 
+  with different widths and different initial estimates of the number of 
+  sites.  MEME outputs the motif with the lowest E-value.
+  
+   
+<b>  B) NUMBER OF MOTIFS</b>
+   
+<b>  	-nmotifs < n > </b>   The number of *different* motifs to search
+  			for.  MEME will search for and output < n > motifs.
+  			Default: 1
+   
+<p><b>  	-evt < p > </b>	Quit looking for motifs if E-value exceeds < p >.
+  			Default: infinite (so by default MEME never quits
+  			before -nmotifs < n > have been found.)
+   
+   
+<b>  C) NUMBER OF MOTIF OCCURENCES  </b>
+   
+<b>  	-nsites < n > </b>
+<b>  	-minsites < n > </b>
+<b>  	-maxsites < n > </b>
+  			The (expected) number of occurrences of each motif.
+  			If -nsites is given, only that number of occurrences
+  			is tried.  Otherwise, numbers of occurrences between
+  			-minsites and -maxsites are tried as initial guesses
+  			for the number of motif occurrences.  These
+  			switches are ignored if mod = oops.
+   
+<p>  			Default:
+
+        <p> -minsites sqrt(number sequences)
+  	<p>			 -maxsites Default:
+  	<br>				zoops 	# of sequences
+  	<br>				anr	MIN(5*#sequences, 50)
+  
+<b>  	-wnsites < n > </b>	The weight on the prior on nsites.  This controls
+  			how strong the bias towards motifs with exactly
+  			nsites sites (or between minsites and maxsites sites)
+  			is.  It is a number in the range [0..1).  The
+  			larger it is, the stronger the bias towards 
+  			motifs with exactly nsites occurrences is.
+<p>  			Default: 0.8
+   
+<b>  D) MOTIF WIDTH </b>
+   
+<br><b>  	-w < n >  </b>
+<br><b>  	-minw < n > </b>
+<br><b>  	-maxw < n >  </b>
+<br>  
+  			The width of the motif(s) to search for.
+  			If -w is given, only that width is tried.
+  			Otherwise, widths between -minw and -maxw are tried.
+  			Default: -minw  8, -maxw 50 (defined in user.h)
+<br>  
+  			Note: If < n > is less than the length of the shortest 
+  			sequence in the dataset, < n > is reset by MEME to 
+  			that value. 
+  
+<b>  	-nomatrim </b>
+<b>  	-wg < a > </b> 
+<b>  	-ws < a > </b>
+<b>  	-noendgaps </b>
+<br>  			These switches control trimming (shortening) of
+  			motifs using the multiple alignment method.
+  			Specifying -nomatrim causes MEME to skip this and
+  			causes the other switches to be ignored.
+  			MEME finds the best motif
+  			found and then trims (shortens) it using the multiple 
+  			alignment method (described below). The number of 
+  			occurrences is then adjusted to maximize the motif 
+  			E-value, and then the motif width is further
+  			shortened to optimize the E-value.
+  
+<p>  			The multiple alignment method performs a separate 
+  			pairwise alignment of the site with the highest
+  			probability and each other possible site.
+  			(The alignment includes width/2 positions on either 
+  			side of the sites.) The pairwise alignment
+  			is controlled by the switches:
+<br>  				-wg < a > (gap cost; default: 11), 
+<br>  				-ws < a > (space cost; default 1), and, 
+<br>  				-noendgaps (do not penalize endgaps; default: 
+  					penalize endgaps).  
+<p>  			The pairwise alignments are then combined and the 
+  			method determines the widest section of the motif with 
+  			no insertions or deletions.  If this alignment
+  		        is shorter than < minw >, it tries to find an alignment
+  			allowing up to one insertion/deletion per motif
+  			column.  This continues (allowing up to 2, 3 ...
+  			insertions/deletions per motif column) until an 
+  			alignment of width at least < minw > is found. 
+  
+  
+<b>  E) BACKGROUND MODEL </b>
+<b>  	-bfile < bfile >  </b>
+<br>	The name of the file containing the background model
+  			for sequences.  The background model is the model
+  			of random sequences used by MEME.  The background 
+  			model is used by MEME 
+<br>
+<ol>
+<li>  				1) during EM as the "null model",
+<li>  				2) for calculating the log likelihood ratio
+  				   of a motif,
+<li>  				3) for calculating the significance (E-value) 
+  				   of a motif, and, 
+<li>  				4) for creating the position-specific scoring
+  				   matrix (log-odds matrix).
+</ol>
+  
+  			By default, the background model is a 0-order Markov 
+  			model based on the letter frequencies in the training 
+  			set.  
+  
+<p>  			Markov models of any order can be specified in < bfile > 
+  			by listing frequencies of all possible tuples of 
+  			length up to order+1.  
+  
+<p>  			Note that MEME uses only the 0-order portion (single
+  			letter frequencies) of the background model for
+  			purposes 3) and 4), but uses the full-order model
+  			for purposes 1) and 2), above.
+  
+<p>  			Example: To specify a 1-order Markov background model
+  		 		 for DNA, < bfile > might contain the following
+  				 lines.  Note that optional comment lines are
+  				 by "#" and are ignored by MEME.
+
+<pre>  
+  				# tuple   frequency_non_coding
+  				a       0.324
+  				c       0.176
+  				g       0.176
+  				t       0.324
+  				# tuple   frequency_non_coding
+  				aa      0.119
+  				ac      0.052
+  				ag      0.056
+  				at      0.097
+  				ca      0.058
+  				cc      0.033
+  				cg      0.028
+  				ct      0.056
+  				ga      0.056
+  				gc      0.035
+  				gg      0.033
+  				gt      0.052
+  				ta      0.091
+  				tc      0.056
+  				tg      0.058
+  				tt      0.119
+</pre>
+
+
+  
+  Sample -bfile files are given in directory tests: 
+<br>  	tests/nt.freq (DNA), and 
+<br>  	tests/na.freq (amino acid).
+  
+
+<b>  F) DNA PALINDROMES AND STRANDS </b>
+   
+<b>  	-revcomp</b>	motifs occurrences may be on the given DNA strand
+  			or on its reverse complement.
+<br>  			Default: look for DNA motifs only on the strand given 
+  			in the training set.
+   
+<p><b>  	-pal</b>		
+<br>  			Choosing -pal causes MEME to look for palindromes in 
+  			DNA datasets.  
+<p>  
+  			MEME averages the letter frequencies in corresponding 
+  			columns of the motif (PSPM) together. For instance, 
+  			if the width of the motif is 10, columns 1 and 10, 2 
+  			and 9, 3 and 8, etc., are averaged together.  The 
+  			averaging combines the frequency of A in one column 
+  			with T in the other, and the frequency of C in one 
+  			column with G in the other.  
+  			If neither option is not chosen, MEME does not 
+  			search for DNA palindromes.
+  
+  
+<p> <b>  G) EM ALGORITHM </b>
+   
+ <p><b> 	-maxiter < n > </b> 
+<br>   The number of iterations of EM to run from
+  			any starting point.
+  			EM is run for < n > iterations or until convergence
+  			(see -distance, below) from each starting point.
+<br>  			Default: 50
+   
+<p><b>  	-distance < a >   </b>
+<br> The convergence criterion.  MEME stops
+  			iterating EM when the change in the
+  			motif frequency matrix is less than < a >.
+  			(Change is the euclidean distance between
+  			two successive frequency matrices.)
+<br>  			Default: 0.001
+   
+<p><b>  	-prior < string > </p>
+<br>The prior distribution on the model parameters:
+  	<br>	<i>	dirichlet </i>      simple Dirichlet prior
+  					This is the default for -dna and 
+  					-alph.  It is based on the 
+  					non-redundant database letter
+  					frequencies.
+  	<br>	<i>	dmix</i>		mixture of Dirichlets prior
+  					This is the default for -protein. 
+  	<br>	<i>	mega</i>		extremely low variance dmix;
+  					variance is scaled inversely with
+  					the size of the dataset.
+  	<br>	<i>	megap</i>		mega for all but last iteration
+  					of EM; dmix on last iteration.
+  	<br>	<i>	addone</i>		add +1 to each observed count
+   
+
+<p><b>   	-b < a > </p>
+<br>	  The strength of the prior on model parameters:
+  				< a > = 0 means use intrinsic strength of prior
+  					for prior = dmix.
+<br>  			Defaults:
+  				0.01 if prior = dirichlet
+  				0 if prior = dmix
+   
+<p><b>   	-plib < string >  </b>
+<br>The name of the file containing the Dirichlet prior
+  			in the format of file prior30.plib.
+   
+   
+<p><b>  H) SELECTING STARTS FOR EM </b>
+   
+<br>  The default is for MEME to search the dataset for good starts for EM.  How 
+  the starting points are derived from the dataset is specified by the 
+  following switches.
+   
+<p>  The default type of mapping MEME uses is:
+<br>  		-spmap uni for -dna and -alph < string >
+<br>  		-spmap pam for -protein
+   
+<br>  	-spfuzz < a >     The fuzziness of the mapping.
+  			Possible values are greater than 0.  Meaning
+  			depends on -spmap, see below.
+   
+<br>  	-spmap < string >  The type of mapping function to use.
+<br>  		<i>	uni</i>     Use add-< a > prior when converting a substring
+  				to an estimate of theta.
+  				Default -spfuzz < a >: 0.5
+  		<i>	pam</i>     Use columns of PAM < a > matrix when converting
+  				a substring to an estimate of theta.
+  				Default -spfuzz < a >: 120 (PAM 120)
+   
+<p>  			Other types of starting points
+  			can be specified using the following switches.
+   
+<br>  	-cons < string >  Override the sampling of starting points
+  			and just use a starting point derived from
+  			< string >.
+<br>  			This is useful when an actual occurrence of
+  			a motif is known and can be used as the
+  			starting point for finding the motif.
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with ememetext</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ememetext crp0.s  -mod oops -revcomp ex.text </b>
+Multiple EM for Motif Elicitation. Text file only.
+output sequence set [crp0.fasta]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ememetext crp0.s -mod oops -revcomp -w 20 ex2.text </b>
+Multiple EM for Motif Elicitation. Text file only.
+output sequence set [crp0.fasta]: <b></b>
+w set, setting max and min to 20#######
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.2">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 3</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ememetext INO_up800.s -mod anr -revcomp -bfile memenew/yeast.nc.6.freq ex3.text </b>
+Multiple EM for Motif Elicitation. Text file only.
+output sequence set [ino_up800.fasta]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.3">Go to the input files for this example</a><br><a href="#output.3">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 4</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ememetext lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex4.text </b>
+Multiple EM for Motif Elicitation. Text file only.
+output sequence set [lipocalin.fasta]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.4">Go to the input files for this example</a><br><a href="#output.4">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 5</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ememetext farntrans5.s -mod anr -maxw 40 -maxsites 50 ex5.text </b>
+Multiple EM for Motif Elicitation. Text file only.
+output sequence set [farntrans5.fasta]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.5">Go to the input files for this example</a><br><a href="#output.5">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 6</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ememetext farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 ex6.text </b>
+Multiple EM for Motif Elicitation. Text file only.
+output sequence set [farntrans5.fasta]: <b></b>
+w set, setting max and min to 10#######
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.6">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 7</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ememetext farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3 ex7.text </b>
+Multiple EM for Motif Elicitation. Text file only.
+output sequence set [farntrans5.fasta]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.7">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 8</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ememetext adh.s -mod zoops -nmotifs 20 -evt 0.01 ex8.text </b>
+Multiple EM for Motif Elicitation. Text file only.
+output sequence set [adh.fasta]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.8">Go to the input files for this example</a><br><a href="#output.8">Go to the output files for this example</a><p><p>
+
+
+<h3>  EXAMPLES: </h3>
+  
+<p><b>Please note</b> the examples below are unedited excerpts of the original MEME documentation.  Bear in mind the EMBASSY and original MEME options may differ in practice (see "1. Command-line arguments").
+
+<p>  The following examples use data files provided in this release of MEME.  
+  MEME writes its output to standard output, so you will want to redirect it 
+  to a file in order for use with MAST.
+   
+<p>  1) A simple DNA example:
+<br>  	 meme crp0.s -dna -mod oops -pal > ex1.html
+   
+<p>  MEME looks for a single motif in the file crp0.s which contains DNA 
+  sequences in FASTA format.  The OOPS model is used so MEME assumes that 
+  every sequence contains exactly one occurrence of the motif.  The 
+  palindrome switch is given so the motif model (PSPM) is converted into a 
+  palindrome by combining corresponding frequency columns.  MEME automatically 
+  chooses the best width for the motif in this example since no width was 
+  specified.
+   
+<p>  2) Searching for motifs on both DNA strands:
+<br>           meme crp0.s -dna -mod oops -revcomp > ex2.html
+
+<p>    This is like the previous example except that the -revcomp switch tells
+  MEME to consider both DNA strands, and the -pal switch is absent so the
+  palindrome conversion is omitted.  When DNA uses both DNA strands, motif
+  occurrences on the two strands may not overlap.  That is, any position
+  in the sequence given in the training set may be contained in an occurrence
+  of a motif on the positive strand or the negative strand, but not both.
+  
+<p>  3) A fast DNA example:
+<br>  	meme crp0.s -dna -mod oops -revcomp -w 20 > ex3.html
+   
+<p>  This example differs from example 1) in that MEME is told to only 
+  consider motifs of width 20.  This causes MEME to execute about 10 
+  times faster.  The -w switch can also be used with protein datasets if 
+  the width of the motifs are known in advance.
+  
+<p>  4) Using a higher-order background model:
+<br>  	meme INO_up800.s -dna -mod anr -revcomp -bfile yeast.nc.6.freq > ex4.html
+  
+<p>  In this example we use -mod anr and -bfile yeast.nc.6.freq.  This specifies 
+  that
+<br>  	a) the motif may have any number of occurrences in each sequence, and,
+<br>  	b) the Markov model specified in yeast.nc.6.freq is used as the 
+  	   background model.  This file contains a fifth-order Markov model 
+             for the non-coding regions in the yeast genome.
+<br>  Using a higher order background model can often result in more sensitive
+  detection of motifs.  This is because the background model more accurately
+  models non-motif sequence, allowing MEME to discriminate against it and find 
+  the true motifs.
+  
+<p>  5) A simple protein example:
+<br>  	meme lipocalin.s -mod oops -maxw 20 -nmotifs 2 > ex5.html
+
+<p>  The -dna switch is absent, so MEME assumes the file lipocalin.s contains 
+  protein sequences.  MEME searches for two motifs each of width less than or 
+  equal to 20.
+  (Specifying -maxw 20 makes MEME run faster since it does not have to 
+  consider motifs longer than 20.) Each motif is assumed to occur in each 
+  of the sequences because the OOPS model is specified.
+   
+<p>  6) Another simple protein example:
+<br>     	meme farntrans5.s -mod anr -maxw 40 -maxsites 50 > ex6.html
+
+<p>     MEME searches for a motif of width up to 40 with up to 50 occurrences in
+  the entire training set.  The ANR sequence model is specified,
+  which allows each motif to have any number of occurrences in each sequence.  
+  This dataset contains motifs with multiple repeats of motifs in each 
+  sequence.  This example is fairly time consuming due to the fact that the 
+  time required to initiale the motif probability tables is proportional 
+  to < maxw > times < maxsites >.  By default, MEME only looks for motifs up to 
+  29 letters wide with a maximum total of number of occurrences equal to twice 
+  the number of sequences or 30, whichever is less.
+  
+<p>  7) A much faster protein example:
+<br>  	meme farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 > ex7.html
+  
+<p>  This time MEME is constrained to search for three motifs of width exactly 
+  ten.  The effect is to break up the long motif found in the previous 
+  example.  The -w switch forces motifs to be *exactly* ten letters wide.
+  This example is much faster because, since only one width is considered, the
+  time to build the motif probability tables is only proportional to 
+  < maxsites >.
+  
+<p>  8) Splitting the sites into three:
+<br>  	meme farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3 > ex8.html
+  
+<p>  This forces each motif to have 24 occurrences, exactly, and be up to 12 
+  letters wide.
+  
+<p>  9) A larger protein example with E-value cutoff:
+<br>  	meme adh.s -mod zoops -nmotifs 20 -evt 0.01 > ex9.html
+
+<p>  In this example, MEME looks for up to 20 motifs, but stops when a motif is
+  found with E-value greater than 0.01.  Motifs with large E-values are likely
+  to be statistical artifacts rather than biologically significant.
+
+
+
+
+
+
+
+<H2>
+    Command line arguments
+</H2>
+Where possible, the same command-line qualifier names and parameter order is used as in the original meme. There are however several unavoidable differences and these are clearly documented in the "Notes" section below.
+
+<p>Most of the options in the original meme are given in ACD as "advanced" or
+"additional" options. -options must be specified on the command-line in order 
+to be prompted for a value for "additional" options but "advanced" options 
+will never be prompted for.  
+<p>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Multiple EM for Motif Elicitation. Text file only.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-dataset]           seqset     User must provide the full filename of a set
+                                  of sequences, not an indirect reference,
+                                  e.g. a USA is NOT acceptable.
+  [-outtext]           outfile    [*.ememetext] MEME program text output file
+  [-outseq]            seqoutset  [<sequence>.<format>] Sequence set filename
+                                  and optional format (output USA)
+
+   Additional (Optional) qualifiers:
+   -bfile              infile     The name of the file containing the
+                                  background model for sequences. The
+                                  background model is the model of random
+                                  sequences used by MEME. The background model
+                                  is used by MEME 1) during EM as the 'null
+                                  model', 2) for calculating the log
+                                  likelihood ratio of a motif, 3) for
+                                  calculating the significance (E-value) of a
+                                  motif, and, 4) for creating the
+                                  position-specific scoring matrix (log-odds
+                                  matrix). See application documentation for
+                                  more information.
+   -plibfile           infile     The name of the file containing the
+                                  Dirichlet prior in the format of file
+                                  prior30.plib
+   -mod                selection  [zoops] If you know how occurrences of
+                                  motifs are distributed in the training set
+                                  sequences, you can specify it with these
+                                  options. The default distribution of motif
+                                  occurrences is assumed to be zero or one
+                                  occurrence per sequence. oops : One
+                                  Occurrence Per Sequence. MEME assumes that
+                                  each sequence in the dataset contains
+                                  exactly one occurrence of each motif. This
+                                  option is the fastest and most sensitive but
+                                  the motifs returned by MEME may be 'blurry'
+                                  if any of the sequences is missing them.
+                                  zoops : Zero or One Occurrence Per Sequence.
+                                  MEME assumes that each sequence may contain
+                                  at most one occurrence of each motif. This
+                                  option is useful when you suspect that some
+                                  motifs may be missing from some of the
+                                  sequences. In that case, the motifs found
+                                  will be more accurate than using the first
+                                  option. This option takes more computer time
+                                  than the first option (about twice as much)
+                                  and is slightly less sensitive to weak
+                                  motifs present in all of the sequences. anr
+                                  : Any Number of Repetitions. MEME assumes
+                                  each sequence may contain any number of
+                                  non-overlapping occurrences of each motif.
+                                  This option is useful when you suspect that
+                                  motifs repeat multiple times within a single
+                                  sequence. In that case, the motifs found
+                                  will be much more accurate than using one of
+                                  the other options. This option can also be
+                                  used to discover repeats within a single
+                                  sequence. This option takes the much more
+                                  computer time than the first option (about
+                                  ten times as much) and is somewhat less
+                                  sensitive to weak motifs which do not repeat
+                                  within a single sequence than the other two
+                                  options.
+   -nmotifs            integer    [1] The number of *different* motifs to
+                                  search for. MEME will search for and output
+                                  <n> motifs. (Any integer value)
+   -text               boolean    [N] Default output is in HTML
+   -prior              selection  [dirichlet] The prior distribution on the
+                                  model parameters. dirichlet: Simple
+                                  Dirichlet prior. This is the default for
+                                  -dna and -alph. It is based on the
+                                  non-redundant database letter frequencies.
+                                  dmix: Mixture of Dirichlets prior. This is
+                                  the default for -protein. mega: Extremely
+                                  low variance dmix; variance is scaled
+                                  inversely with the size of the dataset.
+                                  megap: Mega for all but last iteration of
+                                  EM; dmix on last iteration. addone: Add +1
+                                  to each observed count.
+   -evt                float      [-1] Quit looking for motifs if E-value
+                                  exceeds this value. Has an extremely high
+                                  default so by default MEME never quits
+                                  before -nmotifs <n> have been found. A value
+                                  of -1 here is a shorthand for infinity.
+                                  (Any numeric value)
+   -nsites             integer    [-1] These switches are ignored if mod =
+                                  oops. The (expected) number of occurrences
+                                  of each motif. If a value for -nsites is
+                                  specified, only that number of occurrences
+                                  is tried. Otherwise, numbers of occurrences
+                                  between -minsites and -maxsites are tried as
+                                  initial guesses for the number of motif
+                                  occurrences. If a value is not specified for
+                                  -minsites and maxsites then the default
+                                  hardcoded into MEME, as opposed to the
+                                  default value given in the ACD file, is
+                                  used. The hardcoded default value of
+                                  -minsites is equal to sqrt(number
+                                  sequences). The hardcoded default value of
+                                  -maxsites is equal to the number of
+                                  sequences (zoops) or MIN(5* num.sequences,
+                                  50) (anr). A value of -1 here represents
+                                  nsites being unspecified. (Any integer
+                                  value)
+   -minsites           integer    [-1] These switches are ignored if mod =
+                                  oops. The (expected) number of occurrences
+                                  of each motif. If a value for -nsites is
+                                  specified, only that number of occurrences
+                                  is tried. Otherwise, numbers of occurrences
+                                  between -minsites and -maxsites are tried as
+                                  initial guesses for the number of motif
+                                  occurrences. If a value is not specified for
+                                  -minsites and maxsites then the default
+                                  hardcoded into MEME, as opposed to the
+                                  default value given in the ACD file, is
+                                  used. The hardcoded default value of
+                                  -minsites is equal to sqrt(number
+                                  sequences). The hardcoded default value of
+                                  -maxsites is equal to the number of
+                                  sequences (zoops) or MIN(5 * num.sequences,
+                                  50) (anr). A value of -1 here represents
+                                  minsites being unspecified. (Any integer
+                                  value)
+   -maxsites           integer    [-1] These switches are ignored if mod =
+                                  oops. The (expected) number of occurrences
+                                  of each motif. If a value for -nsites is
+                                  specified, only that number of occurrences
+                                  is tried. Otherwise, numbers of occurrences
+                                  between -minsites and -maxsites are tried as
+                                  initial guesses for the number of motif
+                                  occurrences. If a value is not specified for
+                                  -minsites and maxsites then the default
+                                  hardcoded into MEME, as opposed to the
+                                  default value given in the ACD file, is
+                                  used. The hardcoded default value of
+                                  -minsites is equal to sqrt(number
+                                  sequences). The hardcoded default value of
+                                  -maxsites is equal to the number of
+                                  sequences (zoops) or MIN(5 * num.sequences,
+                                  50) (anr). A value of -1 here represents
+                                  maxsites being unspecified. (Any integer
+                                  value)
+   -wnsites            float      [0.8] The weight of the prior on nsites.
+                                  This controls how strong the bias towards
+                                  motifs with exactly nsites sites (or between
+                                  minsites and maxsites sites) is. It is a
+                                  number in the range [0..1). The larger it
+                                  is, the stronger the bias towards motifs
+                                  with exactly nsites occurrences is. (Any
+                                  numeric value)
+   -w                  integer    [-1] The width of the motif(s) to search
+                                  for. If -w is given, only that width is
+                                  tried. Otherwise, widths between -minw and
+                                  -maxw are tried. Note: if width is less than
+                                  the length of the shortest sequence in the
+                                  dataset, width is reset by MEME to that
+                                  value. A value of -1 here represents -w
+                                  being unspecified. (Any integer value)
+   -minw               integer    [8] The width of the motif(s) to search for.
+                                  If -w is given, only that width is tried.
+                                  Otherwise, widths between -minw and -maxw
+                                  are tried. Note: if width is less than the
+                                  length of the shortest sequence in the
+                                  dataset, width is reset by MEME to that
+                                  value. (Any integer value)
+   -maxw               integer    [50] The width of the motif(s) to search
+                                  for. If -w is given, only that width is
+                                  tried. Otherwise, widths between -minw and
+                                  -maxw are tried. Note: if width is less than
+                                  the length of the shortest sequence in the
+                                  dataset, width is reset by MEME to that
+                                  value. (Any integer value)
+   -nomatrim           boolean    [N] The -nomatrim, -wg, -ws and -noendgaps
+                                  switches control trimming (shortening) of
+                                  motifs using the multiple alignment method.
+                                  Specifying -nomatrim causes MEME to skip
+                                  this and causes the other switches to be
+                                  ignored. The pairwise alignment is
+                                  controlled by the switches -wg (gap cost),
+                                  -ws (space cost) and -noendgaps (do not
+                                  penalize endgaps). See application
+                                  documentation for further information.
+   -wg                 integer    [11] The -nomatrim, -wg, -ws and -noendgaps
+                                  switches control trimming (shortening) of
+                                  motifs using the multiple alignment method.
+                                  Specifying -nomatrim causes MEME to skip
+                                  this and causes the other switches to be
+                                  ignored. The pairwise alignment is
+                                  controlled by the switches -wg (gap cost),
+                                  -ws (space cost) and -noendgaps (do not
+                                  penalize endgaps). See application
+                                  documentation for further information. (Any
+                                  integer value)
+   -ws                 integer    [1] The -nomatrim, -wg, -ws and -noendgaps
+                                  switches control trimming (shortening) of
+                                  motifs using the multiple alignment method.
+                                  Specifying -nomatrim causes MEME to skip
+                                  this and causes the other switches to be
+                                  ignored. The pairwise alignment is
+                                  controlled by the switches -wg (gap cost),
+                                  -ws (space cost) and -noendgaps (do not
+                                  penalize endgaps). See application
+                                  documentation for further information. (Any
+                                  integer value)
+   -noendgaps          boolean    [N] The -nomatrim, -wg, -ws and -noendgaps
+                                  switches control trimming (shortening) of
+                                  motifs using the multiple alignment method.
+                                  Specifying -nomatrim causes MEME to skip
+                                  this and causes the other switches to be
+                                  ignored. The pairwise alignment is
+                                  controlled by the switches -wg (gap cost),
+                                  -ws (space cost) and -noendgaps (do not
+                                  penalise endgaps). See application
+                                  documentation for further information.
+   -revcomp            boolean    [N] Motif occurrences may be on the given
+                                  DNA strand or on its reverse complement. The
+                                  default is to look for DNA motifs only on
+                                  the strand given in the training set.
+   -pal                boolean    [N] Choosing -pal causes MEME to look for
+                                  palindromes in DNA datasets. MEME averages
+                                  the letter frequencies in corresponding
+                                  columns of the motif (PSPM) together. For
+                                  instance, if the width of the motif is 10,
+                                  columns 1 and 10, 2 and 9, 3 and 8, etc.,
+                                  are averaged together. The averaging
+                                  combines the frequency of A in one column
+                                  with T in the other, and the frequency of C
+                                  in one column with G in the other.
+   -[no]nostatus       boolean    [Y] Set this option to prevent progress
+                                  reports to the terminal.
+
+   Advanced (Unprompted) qualifiers:
+   -maxiter            integer    [50] The number of iterations of EM to run
+                                  from any starting point. EM is run for <n>
+                                  iterations or until convergence (see
+                                  -distance, below) from each starting point.
+                                  (Any integer value)
+   -distance           float      [0.001] The convergence criterion. MEME
+                                  stops iterating EM when the change in the
+                                  motif frequency matrix is less than <a>.
+                                  (Change is the euclidean distance between
+                                  two successive frequency matrices.) (Any
+                                  numeric value)
+   -b                  float      [-1.0] The strength of the prior on model
+                                  parameters. A value of 0 means use intrinsic
+                                  strength of prior if prior = dmix. The
+                                  default values are 0.01 if prior = dirichlet
+                                  or 0 if prior = dmix. These defaults are
+                                  hardcoded into MEME (the value of the
+                                  default in the ACD file is not used). A
+                                  value of -1 here represents -b being
+                                  unspecified. (Any numeric value)
+   -spfuzz             float      [-1.0] The fuzziness of the mapping.
+                                  Possible values are greater than 0. Meaning
+                                  depends on -spmap, see below. See the
+                                  application documentation for more
+                                  information. A value of -1.0 here represents
+                                  -spfuzz being unspecified. (Any numeric
+                                  value)
+   -spmap              selection  [default] The type of mapping function to
+                                  use. uni: Use prior when converting a
+                                  substring to an estimate of theta. Default
+                                  -spfuzz <a>: 0.5. pam: Use columns of PAM
+                                  <a> matrix when converting a substring to an
+                                  estimate of theta. Default -spfuzz <a>: 120
+                                  (PAM 120). See the application
+                                  documentation for more information.
+   -cons               string     Override the sampling of starting points and
+                                  just use a starting point derived from
+                                  <string>. This is useful when an actual
+                                  occurrence of a motif is known and can be
+                                  used as the starting point for finding the
+                                  motif. See the application documentation for
+                                  more information. (Any string)
+   -maxsize            integer    [-1] Maximum dataset size in characters (-1
+                                  = use meme default). (Any integer value)
+   -p                  integer    [0] Only values of >0 will be applied. The
+                                  -p <np> argument causes a version of MEME
+                                  compiled for a parallel CPU architecture to
+                                  be run. (By placing <np> in quotes you may
+                                  pass installation specific switches to the
+                                  'mpirun' command. The number of processors
+                                  to run on must be the first argument
+                                  following -p). (Any integer value)
+   -time               integer    [0] Only values of more than 0 will be
+                                  applied. (Any integer value)
+   -sf                 string     Print <sf> as name of sequence file (Any
+                                  string)
+   -heapsize           integer    [64] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information. (Any
+                                  integer value)
+   -xbranch            boolean    [N] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information.
+   -wbranch            boolean    [N] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information.
+   -bfactor            integer    [3] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information. (Any
+                                  integer value)
+
+   Associated qualifiers:
+
+   "-dataset" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outtext" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-outseq" associated qualifiers
+   -osformat3          string     Output seq format
+   -osextension3       string     File name extension
+   -osname3            string     Base file name
+   -osdirectory3       string     Output directory
+   -osdbname3          string     Database name to add
+   -ossingle3          boolean    Separate file for each entry
+   -oufo3              string     UFO features
+   -offormat3          string     Features format
+   -ofname3            string     Features file name
+   -ofdirectory3       string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-dataset]<br>(Parameter 1)</td>
+<td>seqset</td>
+<td>User must provide the full filename of a set of sequences, not an indirect reference, e.g. a USA is NOT acceptable.</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-outtext]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>MEME program text output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ememetext</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-outseq]<br>(Parameter 3)</td>
+<td>seqoutset</td>
+<td>Sequence set filename and optional format (output USA)</td>
+<td>Writeable sequences</td>
+<td><i>&lt;*&gt;</i>.<i>format</i></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bfile</td>
+<td>infile</td>
+<td>The name of the file containing the background model for sequences. The background model is the model of random sequences used by MEME. The background model is used by MEME 1) during EM as the 'null model', 2) for calculating the log likelihood ratio of a motif, 3) for calculating the significance (E-value) of a motif, and, 4) for creating the position-specific scoring matrix (log-odds matrix). See application documentation for more information.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-plibfile</td>
+<td>infile</td>
+<td>The name of the file containing the Dirichlet prior in the format of file prior30.plib</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-mod</td>
+<td>selection</td>
+<td>If you know how occurrences of motifs are distributed in the training set sequences, you can specify it with these options. The default distribution of motif occurrences is assumed to be zero or one occurrence per sequence. oops : One Occurrence Per Sequence. MEME assumes that each sequence in the dataset contains exactly one occurrence of each motif. This option is the fastest and most sensitive but the motifs returned by MEME may be 'blurry' if any of the sequences is missing them. zoops : Zero or One Occurrence Per Sequence. MEME assumes that each sequence may contain at most one occurrence of each motif. This option is useful when you suspect that some motifs may be missing from some of the sequences. In that case, the motifs found will be more accurate than using the first option. This option takes more computer time than the first option (about twice as much) and is slightly less sensitive to weak motifs present in all of the sequences. anr : Any Number of Repetitions. MEME assumes each sequence may contain any number of non-overlapping occurrences of each motif. This option is useful when you suspect that motifs repeat multiple times within a single sequence. In that case, the motifs found will be much more accurate than using one of the other options. This option can also be used to discover repeats within a single sequence. This option takes the much more computer time than the first option (about ten times as much) and is somewhat less sensitive to weak motifs which do not repeat within a single sequence than the other two options.</td>
+<td>Choose from selection list of values</td>
+<td>zoops</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-nmotifs</td>
+<td>integer</td>
+<td>The number of *different* motifs to search for. MEME will search for and output &lt;n&gt; motifs.</td>
+<td>Any integer value</td>
+<td>1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-text</td>
+<td>boolean</td>
+<td>Default output is in HTML</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-prior</td>
+<td>selection</td>
+<td>The prior distribution on the model parameters. dirichlet: Simple Dirichlet prior. This is the default for -dna and -alph. It is based on the non-redundant database letter frequencies. dmix: Mixture of Dirichlets prior. This is the default for -protein. mega: Extremely low variance dmix; variance is scaled inversely with the size of the dataset. megap: Mega for all but last iteration of EM; dmix on last iteration. addone: Add +1 to each observed count.</td>
+<td>Choose from selection list of values</td>
+<td>dirichlet</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-evt</td>
+<td>float</td>
+<td>Quit looking for motifs if E-value exceeds this value. Has an extremely high default so by default MEME never quits before -nmotifs &lt;n&gt; have been found. A value of -1 here is a shorthand for infinity.</td>
+<td>Any numeric value</td>
+<td>-1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-nsites</td>
+<td>integer</td>
+<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5* num.sequences, 50) (anr). A value of -1 here represents nsites being unspecified.</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-minsites</td>
+<td>integer</td>
+<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5 * num.sequences, 50) (anr). A value of -1 here represents minsites being unspecified.</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-maxsites</td>
+<td>integer</td>
+<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5 * num.sequences, 50) (anr). A value of -1 here represents maxsites being unspecified.</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-wnsites</td>
+<td>float</td>
+<td>The weight of the prior on nsites. This controls how strong the bias towards motifs with exactly nsites sites (or between minsites and maxsites sites) is. It is a number in the range [0..1). The larger it is, the stronger the bias towards motifs with exactly nsites occurrences is.</td>
+<td>Any numeric value</td>
+<td>0.8</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-w</td>
+<td>integer</td>
+<td>The width of the motif(s) to search for. If -w is given, only that width is tried. Otherwise, widths between -minw and -maxw are tried. Note: if width is less than the length of the shortest sequence in the dataset, width is reset by MEME to that value. A value of -1 here represents -w being unspecified.</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-minw</td>
+<td>integer</td>
+<td>The width of the motif(s) to search for. If -w is given, only that width is tried. Otherwise, widths between -minw and -maxw are tried. Note: if width is less than the length of the shortest sequence in the dataset, width is reset by MEME to that value.</td>
+<td>Any integer value</td>
+<td>8</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-maxw</td>
+<td>integer</td>
+<td>The width of the motif(s) to search for. If -w is given, only that width is tried. Otherwise, widths between -minw and -maxw are tried. Note: if width is less than the length of the shortest sequence in the dataset, width is reset by MEME to that value.</td>
+<td>Any integer value</td>
+<td>50</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-nomatrim</td>
+<td>boolean</td>
+<td>The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method. Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored. The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalize endgaps). See application documentation for further information.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-wg</td>
+<td>integer</td>
+<td>The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method. Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored. The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalize endgaps). See application documentation for further information.</td>
+<td>Any integer value</td>
+<td>11</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ws</td>
+<td>integer</td>
+<td>The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method. Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored. The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalize endgaps). See application documentation for further information.</td>
+<td>Any integer value</td>
+<td>1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-noendgaps</td>
+<td>boolean</td>
+<td>The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method. Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored. The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalise endgaps). See application documentation for further information.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-revcomp</td>
+<td>boolean</td>
+<td>Motif occurrences may be on the given DNA strand or on its reverse complement. The default is to look for DNA motifs only on the strand given in the training set.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-pal</td>
+<td>boolean</td>
+<td>Choosing -pal causes MEME to look for palindromes in DNA datasets. MEME averages the letter frequencies in corresponding columns of the motif (PSPM) together. For instance, if the width of the motif is 10, columns 1 and 10, 2 and 9, 3 and 8, etc., are averaged together. The averaging combines the frequency of A in one column with T in the other, and the frequency of C in one column with G in the other.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]nostatus</td>
+<td>boolean</td>
+<td>Set this option to prevent progress reports to the terminal.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-maxiter</td>
+<td>integer</td>
+<td>The number of iterations of EM to run from any starting point. EM is run for &lt;n&gt; iterations or until convergence (see -distance, below) from each starting point.</td>
+<td>Any integer value</td>
+<td>50</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-distance</td>
+<td>float</td>
+<td>The convergence criterion. MEME stops iterating EM when the change in the motif frequency matrix is less than &lt;a&gt;. (Change is the euclidean distance between two successive frequency matrices.)</td>
+<td>Any numeric value</td>
+<td>0.001</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-b</td>
+<td>float</td>
+<td>The strength of the prior on model parameters. A value of 0 means use intrinsic strength of prior if prior = dmix. The default values are 0.01 if prior = dirichlet or 0 if prior = dmix. These defaults are hardcoded into MEME (the value of the default in the ACD file is not used). A value of -1 here represents -b being unspecified.</td>
+<td>Any numeric value</td>
+<td>-1.0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-spfuzz</td>
+<td>float</td>
+<td>The fuzziness of the mapping. Possible values are greater than 0. Meaning depends on -spmap, see below. See the application documentation for more information. A value of -1.0 here represents -spfuzz being unspecified.</td>
+<td>Any numeric value</td>
+<td>-1.0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-spmap</td>
+<td>selection</td>
+<td>The type of mapping function to use. uni: Use prior when converting a substring to an estimate of theta. Default -spfuzz &lt;a&gt;: 0.5. pam: Use columns of PAM &lt;a&gt; matrix when converting a substring to an estimate of theta. Default -spfuzz &lt;a&gt;: 120 (PAM 120). See the application documentation for more information.</td>
+<td>Choose from selection list of values</td>
+<td>default</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-cons</td>
+<td>string</td>
+<td>Override the sampling of starting points and just use a starting point derived from &lt;string&gt;. This is useful when an actual occurrence of a motif is known and can be used as the starting point for finding the motif. See the application documentation for more information.</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-maxsize</td>
+<td>integer</td>
+<td>Maximum dataset size in characters (-1 = use meme default).</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-p</td>
+<td>integer</td>
+<td>Only values of &gt;0 will be applied. The -p &lt;np&gt; argument causes a version of MEME compiled for a parallel CPU architecture to be run. (By placing &lt;np&gt; in quotes you may pass installation specific switches to the 'mpirun' command. The number of processors to run on must be the first argument following -p).</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-time</td>
+<td>integer</td>
+<td>Only values of more than 0 will be applied.</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-sf</td>
+<td>string</td>
+<td>Print &lt;sf&gt; as name of sequence file</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-heapsize</td>
+<td>integer</td>
+<td>The search for good EM starting points can be improved by using a branching search. A branching search begins with a fixed-size heap of best EM starts identified during the search of subsequences from the dataset. These starts are also called seeds. The fixed-size heap of seeds is used as the branch-heap during the first iteration of branching search. See the application documentation for more information.</td>
+<td>Any integer value</td>
+<td>64</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-xbranch</td>
+<td>boolean</td>
+<td>The search for good EM starting points can be improved by using a branching search. A branching search begins with a fixed-size heap of best EM starts identified during the search of subsequences from the dataset. These starts are also called seeds. The fixed-size heap of seeds is used as the branch-heap during the first iteration of branching search. See the application documentation for more information.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-wbranch</td>
+<td>boolean</td>
+<td>The search for good EM starting points can be improved by using a branching search. A branching search begins with a fixed-size heap of best EM starts identified during the search of subsequences from the dataset. These starts are also called seeds. The fixed-size heap of seeds is used as the branch-heap during the first iteration of branching search. See the application documentation for more information.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-bfactor</td>
+<td>integer</td>
+<td>The search for good EM starting points can be improved by using a branching search. A branching search begins with a fixed-size heap of best EM starts identified during the search of subsequences from the dataset. These starts are also called seeds. The fixed-size heap of seeds is used as the branch-heap during the first iteration of branching search. See the application documentation for more information.</td>
+<td>Any integer value</td>
+<td>3</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-dataset" associated seqset qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sbegin1<br>-sbegin_dataset</td>
+<td>integer</td>
+<td>Start of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -send1<br>-send_dataset</td>
+<td>integer</td>
+<td>End of each sequence to be used</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sreverse1<br>-sreverse_dataset</td>
+<td>boolean</td>
+<td>Reverse (if DNA)</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sask1<br>-sask_dataset</td>
+<td>boolean</td>
+<td>Ask for begin/end/reverse</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -snucleotide1<br>-snucleotide_dataset</td>
+<td>boolean</td>
+<td>Sequence is nucleotide</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sprotein1<br>-sprotein_dataset</td>
+<td>boolean</td>
+<td>Sequence is protein</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -slower1<br>-slower_dataset</td>
+<td>boolean</td>
+<td>Make lower case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -supper1<br>-supper_dataset</td>
+<td>boolean</td>
+<td>Make upper case</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sformat1<br>-sformat_dataset</td>
+<td>string</td>
+<td>Input sequence format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sdbname1<br>-sdbname_dataset</td>
+<td>string</td>
+<td>Database name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -sid1<br>-sid_dataset</td>
+<td>string</td>
+<td>Entryname</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ufo1<br>-ufo_dataset</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fformat1<br>-fformat_dataset</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fopenfile1<br>-fopenfile_dataset</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outtext" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outtext</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outseq" associated seqoutset qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -osformat3<br>-osformat_outseq</td>
+<td>string</td>
+<td>Output seq format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -osextension3<br>-osextension_outseq</td>
+<td>string</td>
+<td>File name extension</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -osname3<br>-osname_outseq</td>
+<td>string</td>
+<td>Base file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -osdirectory3<br>-osdirectory_outseq</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -osdbname3<br>-osdbname_outseq</td>
+<td>string</td>
+<td>Database name to add</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ossingle3<br>-ossingle_outseq</td>
+<td>boolean</td>
+<td>Separate file for each entry</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -oufo3<br>-oufo_outseq</td>
+<td>string</td>
+<td>UFO features</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -offormat3<br>-offormat_outseq</td>
+<td>string</td>
+<td>Features format</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ofname3<br>-ofname_outseq</td>
+<td>string</td>
+<td>Features file name</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -ofdirectory3<br>-ofdirectory_outseq</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+<H3>Sequence formats </H3>
+The original MEME only supported input sequences in FASTA format. EMBASSY MEME supports all EMBOSS-supported sequence formats. 
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>meme</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: crp0.s</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;ce1cg
+TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGTTTTTTTGATCGTTTTCACAA
+AAATGGAAGTCCACAGTCTTGACAG
+&gt;ara
+GACAAAAACGCGTAACAAAAGTGTCTATAATCACGGCAGAAAAGTCCACATTGATTATTTGCACGGCGTCACACTTTGCT
+ATGCCATAGCATTTTTATCCATAAG
+&gt;bglr1
+ACAAATCCCAATAACTTAATTATTGGGATTTGTTATATATAACTTTATAAATTCCTAAAATTACACAAAGTTAATAACTG
+TGAGCATGGTCATATTTTTATCAAT
+&gt;crp
+CACAAAGCGAAAGCTATGCTAAAACAGTCAGGATGCTACAGTAATACATTGATGTACTGCATGTATGCAAAGGACGTCAC
+ATTACCGTGCAGTACAGTTGATAGC
+&gt;cya
+ACGGTGCTACACTTGTATGTAGCGCATCTTTCTTTACGGTCAATCAGCAAGGTGTTAAATTGATCACGTTTTAGACCATT
+TTTTCGTCGTGAAACTAAAAAAACC
+&gt;deop2
+AGTGAATTATTTGAACCAGATCGCATTACAGTGATGCAAACTTGTAAGTAGATTTCCTTAATTGTGATGTGTATCGAAGT
+GTGTTGCGGAGTAGATGTTAGAATA
+&gt;gale
+GCGCATAAAAAACGGCTAAATTCTTGTGTAAACGATTCCACTAATTTATTCCATGTCACACTTTTCGCATCTTTGTTATG
+CTATGGTTATTTCATACCATAAGCC
+&gt;ilv
+GCTCCGGCGGGGTTTTTTGTTATCTGCAATTCAGTACAAAACGTGATCAACCCCTCAATTTTCCCTTTGCTGAAAAATTT
+TCCATTGTCTCCCCTGTAAAGCTGT
+&gt;lac
+AACGCAATTAATGTGAGTTAGCTCACTCATTAGGCACCCCAGGCTTTACACTTTATGCTTCCGGCTCGTATGTTGTGTGG
+AATTGTGAGCGGATAACAATTTCAC
+&gt;male
+ACATTACCGCCAATTCTGTAACAGAGATCACACAAAGCGACGGTGGGGCGTAGGGGCAAGGAGGATGGAAAGAGGTTGCC
+GTATAAAGAAACTAGAGTCCGTTTA
+&gt;malk
+GGAGGAGGCGGGAGGATGAGAACACGGCTTCTGTGAACTAAACCGAGGTCATGTAAGGAATTTCGTGATGTTGCTTGCAA
+AAATCGTGGCGATTTTATGTGCGCA
+&gt;malt
+GATCAGCGTCGTTTTAGGTGAGTTGTTAATAAAGATTTGGAATTGTGACACAGTGCAAATTCAGACACATAAAAAAACGT
+CATCGCTTGCATTAGAAAGGTTTCT
+&gt;ompa
+GCTGACAAAAAAGATTAAACATACCTTATACAAGACTTTTTTTTCATATGCCTGACGGAGTTCACACTTGTAAGTTTTCA
+ACTACGTTGTAGACTTTACATCGCC
+&gt;tnaa
+TTTTTTAAACATTAAAATTCTTACGTAATTTATAATCTTTAAAAAAAGCATTTAATATTGCTCCCCGAACGATTGTGATT
+CGATTCACATTTAAACAATTTCAGA
+&gt;uxu1
+CCCATGAGAGTGAAATTGTTGTGATGTGGTTAACCCAATTAGAATTCGGGATTGACATGTCTTACCAAAAGGTAGAACTT
+ATACGCCATCTCATCCGATGCAAGC
+&gt;pbr322
+CTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCACCATATGCGGTGTGAAATACCGCACAGATGCGTAA
+GGAGAAAATACCGCATCAGGCGCTC
+&gt;trn9cat
+CTGTGACGGAAGATCACTTCGCAGAATAAATAAATCCTGGTGTCCCTGTTGATACCGGGAAGCCCTGGGCCAACTTTTGG
+CGAAAATGAGACGTTGATCGGCACG
+&gt;tdc
+GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTGGAAAGTATTGAAAGTTAATT
+TGTGAGTGGTCGCACATATCCTGTT
+</pre>
+</td></tr></table><p>
+
+<a name="input.3"></a>
+<h3>Input files for usage example 3</h3>
+<p><h3>File: INO_up800.s</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;CHO1	 sequence of the region upstream from YER026C
+CCGACCCAAATGTAATGGAACAATATTATTTGACACTTGATCAGCAGCAAAATAATCACC
+AAAATATGGCCTGGTTGACTCCTCCACAACTGCCACCTCATTTAGAAAACGTCATTTTGA
+ATAGTTACTCAAACGCGCAAACTGATAATACGTCTGGCGCCCTTCCCATTCCGAACCATG
+TTATATTGAACCATCTGGCGACAAGCAGTATTAAGCATAATACATTATGTGTCGCATCCA
+TTGTTAGGTATAAACAAAAATACGTGACCCAAATACTGTATACACCATTGCAATAGATAT
+GATTATAGAGCTTATAGCTACATCTTTTTAGATAAAAGCGAAGATGTTTCTGCGATTTTT
+CCATTATAGCTCTCCATGATACTAAATATCAAGGTCTACATGTAAGTATTTGTATATATG
+GGTTGGAATGTATATACGTATATACGTACGTACGTACGTATATGCACATAATTGTTACGG
+GATGTATATATAAATTAGTAGCATTATAGAAGATATCCCTAACATCAATCCCCACTCCTT
+CTCAATGTGTGCAGACTTCTGTGCCAGACACTGAATATATATCAGTAATTGGTCAAAATC
+ACTTTGAACGTTCACACGGCACCCTCACGCCTTTGAGCTTTCACATGGACCCATCTAAAG
+ATGAAGATCCGTATTTTATAGGAAACATTATAAATAAGGAAAGAGAGATACACCTATTTT
+TTTCATTTTGTGGGTGATTGTCATTTTTAGTTGTCTATTTGATTCAATCAAAAAACAAAA
+ATAAAACTATATATTAAAAA
+&gt;CHO2	 sequence of the region upstream from YGR157W
+ACCCTCTAACGCGAATAAAGCGAATGACAGCGGCACCATTAATATGGCGAAACTGCAATT
+ACTACCTGAAAACCAACAAGATATGATCAAACAAGTTCTTACTTTGACACCTGCCCAGAT
+CCAAAGTTTACCAAGTGACCAGCAACTTATGGTGGAAAACTTTAGAAAAGAATATATAAT
+CTAAGTAATCAGAGCCATAGCGTATCAGAAAACCACACCTAATTAGATGGTTCTTGCATC
+TGTACCTCTTATCACTAAAAGCGGCACTAAACTTCCAACATTAAATGTTTGCCTTGTTAA
+ATATATATTTTTGCCTTGGTTTAAATTGGTCAAGACAGTCAATTGCCACACTTTTCTCAT
+GCCGCATTCATTATTCGCGAAGTTTTCCACACAAAACTGTGAAAATGAACGGCGATGCCA
+GAAACGGCAAAACCTCAAATGTTAGATAACGTGGATCTCCGACACATGTGAATTTATAAG
+TAGGCATATGAAAATACAGATTCTTTCCACTGTGTTCCCTTTTATTCCCTTCTCATGTGA
+AGAGTTCACACCAAATCTTCAAAATATAACTAATATAGTAGAGTTTGATTCAAAGGACCT
+TTTTTTTTGCCTCTTTGATTAGTTTATCTTCTTTTCTTCATTTTATCCCCTAATTTTATA
+CGTTAGTTCAACCTAACAATCCAGGATTTCATTAACAAGAAAGGTAAAAGTAACCTATCA
+AGGCTATTTTGAAAAAAAAAATTCCGCCCTGAATATTTCGAGTGATTTTCTTAGTGACAA
+AGCTTTTTCTTCATCTGTAG
+&gt;FAS1	 sequence of the region upstream from YKL182W
+CCGGGTTATAGCAGCGTCTGCTCCGCATCACGATACACGAGGTGCAGGCACGGTTCACTA
+CTCCCCTGGCCTCCAACAAACGACGGCCAAAAACTTCACATGCCGCCCAGCCAAGCATAA
+TTACGCAACAGCGATCTTTCCGTCGCACAAGTTAAAAGAAATTGTTGAAAAATACAAATA
+ATCGCGAACAATACGTTGTTGCTATTTAACGCTTTTGGTCTGACAGTAAGTGTGCCTTTC
+CCAATCACCGAAAAGTGTTGAACGATTCACTGCGACAATAATCAGAGATTACAGTCGGCA
+TTTTGGCATTTTTGGCATACTTTTTATCGATTGAACCATCTTCTCCAAACACTTTTCCTT
+TTTCCTTCTATTCTGCAGGACCAACTAAAACTGGGTATATATATCATTATCTATATATAT
+AAACGGCTTTCAACAAAGTTATAGGGGAAAACTAAAAATATAAGAAAAAAAAAGGTATTG
+ATTGATAAGGAAAAAGAACCAAGGGAAAAATATAAAAAAGTACATTGGGCCTTTTCATAC
+TTGTTATCACTTACATTACAAAGAAGAACAAACAACTTTTTTAAACGAATTTTCTTTCTT
+CCTTTTTCAATTTATTAATTCTTTTTTTCCATACAATTCAAGGTCAAATATATTCTTATA
+TGCTCTTTGAATATTTCTGAAAAATATATAAAGAAAAGAAACTACAAGAACATCATCCGG
+AAAATCAGATTATAGACTAGGATTCCGCTCTTTTTAGTATATTTATTCGCCACACCTAAC
+TGCTCTATTATTCGCTCATT
+&gt;FAS2	 sequence of the region upstream from YPL231W
+TCCAGGCAAGGCACCAAGAGTTATTGAAACTAGAAAAATCCATGGCAGAACTTACTCAAT
+TGTTTAATGACATGGAAGAACTGGTAATAGAACAACAAGAAAACGTAGACGTCATCGACA
+AGAACGTTGAAGACGCTCAACTCGACGTAGAACAGGGTGTCGGTCATACCGATAAAGCCG
+TCAAGAGTGCCAGAAAAGCAAGAAAGAACAAGATTAGATGTTGGTTGATTGTATTCGCCA
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+CTCTTCCTAAAAATACATTGGGCATTACCCGCAAACTAACCCATCGCTTAGCAAAATCCA
+ACCATTTTTTTTTTATCTCCCGCGTTTTCACATGCTACCTCATTCGCCTCGTAACGTTAC
+GACCGAAATCTCACTAAGGCACGGTTTGTTGGGCAGTTTACAGATGTTGGATAACCAGTT
+GTTTCTAAACGGTTATGCCTCATATATAACTTGTTAACTGAAGGTTACACAAGACCACAT
+CACCACTGTCGTGCTTTTCTAATAACCGCTATATTAGACGTTTAAAGGGCTACAGCAACA
+CCAATTGAAATACCATCATT
+&gt;ACC1	 sequence of the region upstream from YNR016C
+TATCCAAAGGGGAATGCTTCATCTTGTTGAACAACGCCCAACAATTTCCACTGCCCACCG
+AATCGTTGCGCCCGTTAAAATCTTCACATGGCCCGGCCGCGCGCGCGTTGTGCCAACAAG
+TCGCAGTCGAAATTCAACCGCTCATTGCCACTCTCTCTACTGCTTGGTGAACTAGGCTAT
+ACGCTCAATCAGCGCCAAGATATATAAGAAGAACAGCACTCCCAGTCGTATTCTGGCACA
+GTATAGCCTAGCACAATCACTGTCACAATTGTTATCGGTTCTACAATTGTTCTGCTCTCT
+TCAATTTTCCTTTCCTTATTCTACTCTTTTTATCCCTTTCGTACAGTTTACCTGAAGATA
+AAAAACAACAAAGCCAATTCCCTAATTTGCAATCGCCATTTGCATCTATATATATATATT
+TGTTGTGCCATTTTTTTATCCTCTGTGAGTGATCGGTGCATGTGTTTATAAAAGTTTATT
+CATTCTACTATACGAACTTTTCCCTCTGCCCTTCCCTCCCGCTTCATCCTTATTTTTGGA
+CAATAAACTAGAGAACAATTTGAACTTGAATTGGAATTCAGATTCAGAGCAAGAGACAAG
+AAACTTCCCTTTTTCTTCTCCACATATTATTATTTATTCGTGTATTTTCTTTTAACGATA
+CGATACGATACGACACGATACGATACGACACGCTACTATACTATACAAATATAATAGTAT
+AATAACCGATTCGTCTTCTAGCTTAATTTTTTTCCGTTCCCGAAACAGCGCAGAAAATTA
+GAAAAAATCAAGTTTCTACC
+&gt;INO1	 sequence of the region upstream from YJL153C
+AGCAAACAACCAAATATAATTTAGAAATGGACAGAGACCATATTAATGACCATGACCATC
+GAATGAGCTATTCCATCAACAAGGACGACTTGTTGTTAATGGTTTTGGCGGTTTTCATTC
+CCCCAGTGGCCGTCTGGAAGCGTAAGGGTATGTTCAACAGGGATACACTATTGAACTTAC
+TTCTCTTCCTACTGTTATTCTTCCCAGCAATCATTCACGCTTGCTACGTTGTATATGAAA
+CGAGTAGTGAACGTTCGTACGATCTTTCACGCAGACATGCGACTGCGCCCGCCGTAGACC
+GTGACCTGGAAGCTCACCCTGCAGAGGAATCTCAAGCACAGCCTCCAGCATATGATGAAG
+ACGATGAGGCCGGTGCCGATGTGCCCTTGATGGACAACAAACAACAGCTCTCTTCCGGCC
+GTACTTAGTGATCGGAACGAGCTCTTTATCACCGTAGTTCTAAATAACACATAGAGTAAA
+TTATTGCCTTTTTCTTCGTTCCTTTTGTTCTTCACGTCCTTTTTATGAAATACGTGCCGG
+TGTTCCGGGGTTGGATGCGGAATCGAAAGTGTTGAATGTGAAATATGCGGAGGCCAAGTA
+TGCGCTTCGGCGGCTAAATGCGGCATGTGAAAAGTATTGTCTATTTTATCTTCATCCTTC
+TTTCCCAGAATATTGAACTTATTTAATTCACATGGAGCAGAGAAAGCGCACCTCTGCGTT
+GGCGGCAATGTTAATTTGAGACGTATATAAATTGGAGCTTTCGTCACCTTTTTTTGGCTT
+GTTCTGTTGTCGGGTTCCTA
+&gt;OPI3	 sequence of the region upstream from YJR073C
+GTGTCCACAACGTGAAACTTCCGTACCATTTCTTGCAACAATTGGTAAACAGCATGACAT
+CTTGCAGGCAACTCTTTGTTGCTTGCTTGCGACGCCTCCTCCTTTGTCAAAGGTACATTA
+ATGGAGATGACCACATCCGTGTCAAACTGGGTTAATCTGATCAACGCTACGCCGATGACA
+ACGGTCTGTGCCAGATCTGGTTTTCCCCACTTATTTGCTACTTCCATAACGAGTCCGGTG
+AACTTGGTTCCTTGCTGAACAGTGTCTTCTTGTAAAGCTTCCCATTTGGTGGTCCCGTTC
+AACTCCGTCAGGTCTTCCACGTGGAACTGCCAAGCCTCCTTCAGATCGCTCTTGTCGACC
+GTCTCCAAGAGATCCACGATAATGCTTTCATTGGTGGCTAGTCCATCTTCGAATTCTTCT
+TCATCGCGACGGGAATTGACGTACACCTCCTGTGTATCGGGGACTTCTCTTAGAGTAGAA
+GCGTCTATAAACCCAGGTGGGACGACAGTAGTGATGGCGCCGCCGTATAATTCGACTTCC
+TTGTTGTTCATGCTTCCTTGATGACCAGGGTAGGTGTCAATGAGAGTGCATGTGGAAAGT
+TGCACCGGTTGTGAAATATGAGAAGCCTTTTCAATCTTCATATGCAAACCCACACATGCA
+TCGTTGGTTTCTGTCCACTGCCACTGCAATGACCACTGGATAAGGGGTCTTTATAAGAGA
+ACACATATGAAGAACATGAACGTTCTTGGACAGAGCCATAAACAGCAATTGAAGACAACA
+AGAATAGCGCAAGTCAAGCG
+</pre>
+</td></tr></table><p>
+<p><h3>File: yeast.nc.6.freq</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+# seq	frequency_non_coding
+a	0.32442758667668
+c	0.175572413323319
+g	0.175572413323319
+t	0.32442758667668
+# seq	frequency_non_coding
+aa	0.118982244161714
+ac	0.0521182743409142
+ag	0.0559273922850834
+at	0.0973159523835682
+ca	0.0584827538751812
+cc	0.0326990007534392
+cg	0.0284473890701011
+ct	0.0559273922850834
+ga	0.0559247902310797
+gc	0.0348909421343666
+gg	0.0326990007534392
+gt	0.0521182743409142
+ta	0.0910768051171416
+tc	0.0559247902310797
+tg	0.0584827538751812
+tt	0.118982244161714
+# seq	observed_freq
+aaa	0.049152768651441
+aac	0.0174036386740962
+aag	0.0213094373095717
+aat	0.0313483273294989
+aca	0.0183651016732642
+acc	0.00948257362793872
+acg	0.00868125792953577
+act	0.0156686613162602
+aga	0.0191771324713567
+agc	0.0105445268863571
+agg	0.0105978127875158
+agt	0.0157042817827957
+ata	0.0333561053334843
+atc	0.0152910264515268
+atg	0.0174586621589883
+att	0.0311913655989118
+caa	0.0201461250000362
+cac	0.0104918201797762
+cag	0.0104046513958155
+cat	0.0175637859748612
+cca	0.0105905728552932
+ccc	0.0063256735815742
+ccg	0.00537550487667355
+cct	0.0106563114398748
+cga	0.00831404856720293
+cgc	0.00609312695858266
+cgg	0.00532859011587077
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+tttatc	0.000598827491406134
+tttatg	0.000612506661319178
+tttatt	0.00158183592505095
+tttcaa	0.000947937370357122
+tttcac	0.000474696300599468
+tttcag	0.000478625423872363
+tttcat	0.000873720597424649
+tttcca	0.000523301010716029
+tttccc	0.000362352479611488
+tttccg	0.00028871779901574
+tttcct	0.000716701189593004
+tttcga	0.000341251632405197
+tttcgc	0.000242004888993536
+tttcgg	0.000211736087483821
+tttcgt	0.000410229574307143
+tttcta	0.000718884035855724
+tttctc	0.000684977157241476
+tttctg	0.00052009950286404
+tttctt	0.00171891867034976
+tttgaa	0.000813910609826126
+tttgac	0.000305161907528229
+tttgag	0.000387236927006494
+tttgat	0.000670424848823344
+tttgca	0.000441080468153583
+tttgcc	0.000306471615285861
+tttgcg	0.000215228641504173
+tttgct	0.000500599409583743
+tttgga	0.000346635986519906
+tttggc	0.000271400551998163
+tttggg	0.000238366811889003
+tttggt	0.000427110252072176
+tttgta	0.000642920985913074
+tttgtc	0.000363807710453302
+tttgtg	0.000376613741861258
+tttgtt	0.00102200862020541
+ttttaa	0.00107774396144686
+ttttac	0.00076588799204629
+ttttag	0.000618473107770613
+ttttat	0.00164935863611109
+ttttca	0.00119867364440154
+ttttcc	0.000846944349935286
+ttttcg	0.000516897995012051
+ttttct	0.00167235128341174
+ttttga	0.00088157884397044
+ttttgc	0.000600137199163766
+ttttgg	0.000542364534743782
+ttttgt	0.00103670645170773
+ttttta	0.00171950076268648
+tttttc	0.00190678897202784
+tttttg	0.00124276713890848
+tttttt	0.00570057577663487
+</pre>
+</td></tr></table><p>
+
+<a name="input.4"></a>
+<h3>Input files for usage example 4</h3>
+<p><h3>File: lipocalin.s</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;ICYA_MANSE
+GDIFYPGYCPDVKPVNDFDLSAFAGAWHEIAKLPLENENQGKCTIAEYKYDGKKASVYNSFVSNGVKEYMEGDLEIAPDA
+KYTKQGKYVMTFKFGQRVVNLVPWVLATDYKNYAINYNCDYHPDKKAHSIHAWILSKSKVLEGNTKEVVDNVLKTFSHLI
+DASKFISNDFSEAACQYSTTYSLTGPDRH
+&gt;LACB_BOVIN
+MKCLLLALALTCGAQALIVTQTMKGLDIQKVAGTWYSLAMAASDISLLDAQSAPLRVYVEELKPTPEGDLEILLQKWENG
+ECAQKKIIAEKTKIPAVFKIDALNENKVLVLDTDYKKYLLFCMENSAEPEQSLACQCLVRTPEVDDEALEKFDKALKALP
+MHIRLSFNPTQLEEQCHI
+&gt;BBP_PIEBR
+NVYHDGACPEVKPVDNFDWSNYHGKWWEVAKYPNSVEKYGKCGWAEYTPEGKSVKVSNYHVIHGKEYFIEGTAYPVGDSK
+IGKIYHKLTYGGVTKENVFNVLSTDNKNYIIGYYCKYDEDKKGHQDFVWVLSRSKVLTGEAKTAVENYLIGSPVVDSQKL
+VYSDFSEAACKVN
+&gt;RETB_BOVIN
+ERDCRVSSFRVKENFDKARFAGTWYAMAKKDPEGLFLQDNIVAEFSVDENGHMSATAKGRVRLLNNWDVCADMVGTFTDT
+EDPAKFKMKYWGVASFLQKGNDDHWIIDTDYETFAVQYSCRLLNLDGTCADSYSFVFARDPSGFSPEVQKIVRQRQEELC
+LARQYRLIPHNGYCDGKSERNIL
+&gt;MUP2_MOUSE
+MKMLLLLCLGLTLVCVHAEEASSTGRNFNVEKINGEWHTIILASDKREKIEDNGNFRLFLEQIHVLEKSLVLKFHTVRDE
+ECSELSMVADKTEKAGEYSVTYDGFNTFTIPKTDYDNFLMAHLINEKDGETFQLMGLYGREPDLSSDIKERFAKLCEEHG
+ILRENIIDLSNANRCLQARE
+</pre>
+</td></tr></table><p>
+
+<a name="input.5"></a>
+<h3>Input files for usage example 5</h3>
+<p><h3>File: farntrans5.s</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;RAM1_YEAST PROTEIN FARNESYLTRANSFERASE BETA SUBUNIT (EC 2.5.1.-) (CAAX FARN
+MRQRVGRSIA RAKFINTALL GRKRPVMERV VDIAHVDSSK AIQPLMKELE TDTTEARYKV
+LQSVLEIYDD EKNIEPALTK EFHKMYLDVA FEISLPPQMT ALDASQPWML YWIANSLKVM
+DRDWLSDDTK RKIVVKLFTI SPSGGPFGGG PGQLSHLAST YAAINALSLC DNIDGCWDRI
+DRKGIYQWLI SLKEPNGGFK TCLEVGEVDT RGIYCALSIA TLLNILTEEL TEGVLNYLKN
+CQNYEGGFGS CPHVDEAHGG YTFCATASLA ILRSMDQINV EKLLEWSSAR QLQEERGFCG
+RSNKLVDGCY SFWVGGSAAI LEAFGYGQCF NKHALRDYIL YCCQEKEQPG LRDKPGAHSD
+FYHTNYCLLG LAVAESSYSC TPNDSPHNIK CTPDRLIGSS KLTDVNPVYG LPIENVRKII
+HYFKSNLSSP S
+
+&gt;PFTB_RAT PROTEIN FARNESYLTRANSFERASE BETA SUBUNIT (EC 2.5.1.-) (CAAX FARNES
+MASSSSFTYY CPPSSSPVWS EPLYSLRPEH ARERLQDDSV ETVTSIEQAK VEEKIQEVFS
+SYKFNHLVPR LVLQREKHFH YLKRGLRQLT DAYECLDASR PWLCYWILHS LELLDEPIPQ
+IVATDVCQFL ELCQSPDGGF GGGPGQYPHL APTYAAVNAL CIIGTEEAYN VINREKLLQY
+LYSLKQPDGS FLMHVGGEVD VRSAYCAASV ASLTNIITPD LFEGTAEWIA RCQNWEGGIG
+GVPGMEAHGG YTFCGLAALV ILKKERSLNL KSLLQWVTSR QMRFEGGFQG RCNKLVDGCY
+SFWQAGLLPL LHRALHAQGD PALSMSHWMF HQQALQEYIL MCCQCPAGGL LDKPGKSRDF
+YHTCYCLSGL SIAQHFGSGA MLHDVVMGVP ENVLQPTHPV YNIGPDKVIQ ATTHFLQKPV
+PGFEECEDAV TSDPATD
+
+&gt;BET2_YEAST YPT1/SEC4 PROTEINS GERANYLGERANYLTRANSFERASE BETA SUBUNIT (EC 2.
+MSGSLTLLKE KHIRYIESLD TNKHNFEYWL TEHLRLNGIY WGLTALCVLD SPETFVKEEV
+ISFVLSCWDD KYGAFAPFPR HDAHLLTTLS AVQILATYDA LDVLGKDRKV RLISFIRGNQ
+LEDGSFQGDR FGEVDTRFVY TALSALSILG ELTSEVVDPA VDFVLKCYNF DGGFGLCPNA
+ESHAAQAFTC LGALAIANKL DMLSDDQLEE IGWWLCERQL PEGGLNGRPS KLPDVCYSWW
+VLSSLAIIGR LDWINYEKLT EFILKCQDEK KGGISDRPEN EVDVFHTVFG VAGLSLMGYD
+NLVPIDPIYC MPKSVTSKFK KYPYK
+
+&gt;RATRABGERB Rat rab geranylgeranyl transferase beta-subunit
+MGTQQKDVTIKSDAPDTLLLEKHADYIASYGSKKDDYEYCMSEY
+LRMSGVYWGLTVMDLMGQLHRMNKEEILVFIKSCQHECGGVSASIGHDPHLLYTLSAV
+QILTLYDSIHVINVDKVVAYVQSLQKEDGSFAGDIWGEIDTRFSFCAVATLALLGKLD
+AINVEKAIEFVLSCMNFDGGFGCRPGSESHAGQIYCCTGFLAITSQLHQVNSDLLGWW
+LCERQLPSGGLNGRPEKLPDVCYSWWVLASLKIIGRLHWIDREKLRSFILACQDEETG
+GFADRPGDMVDPFHTLFGIAGLSLLGEEQIKPVSPVFCMPEEVLQRVNVQPELVS
+
+&gt;CAL1_YEAST RAS PROTEINS GERANYLGERANYLTRANSFERASE (EC 2.5.1.-) (PROTEIN GER
+MCQATNGPSR VVTKKHRKFF ERHLQLLPSS HQGHDVNRMA IIFYSISGLS IFDVNVSAKY
+GDHLGWMRKH YIKTVLDDTE NTVISGFVGS LVMNIPHATT INLPNTLFAL LSMIMLRDYE
+YFETILDKRS LARFVSKCQR PDRGSFVSCL DYKTNCGSSV DSDDLRFCYI AVAILYICGC
+RSKEDFDEYI DTEKLLGYIM SQQCYNGAFG AHNEPHSGYT SCALSTLALL SSLEKLSDKF
+KEDTITWLLH RQVSSHGCMK FESELNASYD QSDDGGFQGR ENKFADTCYA FWCLNSLHLL
+TKDWKMLCQT ELVTNYLLDR TQKTLTGGFS KNDEEDADLY HSCLGSAALA LIEGKFNGEL
+CIPQEIFNDF SKRCCF
+
+</pre>
+</td></tr></table><p>
+
+<a name="input.8"></a>
+<h3>Input files for usage example 8</h3>
+<p><h3>File: adh.s</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;2BHD_STREX 20-BETA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.53)
+MNDLSGKTVIITGGARGLGAEAARQAVAAGARVVLADVLDEEGAATARELGDAARYQHLDVTIEEDWQRVVAYAREEFGSVDGLVNNAGISTGMFLETESVERFRKVVDINLTGVFIGMKTVIPAMKDAGGGSIVNISSAAGLMGLALTSSYGASKWGVRGLSKLAAVELGTDRIRVNSVHPGMTYTPMTAETGIRQGEGNYPNTPMGRVGNEPGEIAGAVVKLLSDTSSYVTGAELAVDGGWTTGPTVKYVMGQ
+&gt;3BHD_COMTE 3-BETA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.51)
+TNRLQGKVALVTGGASGVGLEVVKLLLGEGAKVAFSDINEAAGQQLAAELGERSMFVRHDVSSEADWTLVMAAVQRRLGTLNVLVNNAGILLPGDMETGRLEDFSRLLKINTESVFIGCQQGIAAMKETGGSIINMASVSSWLPIEQYAGYSASKAAVSALTRAAALSCRKQGYAIRVNSIHPDGIYTPMMQASLPKGVSKEMVLHDPKLNRAGRAYMPERIAQLVLFLASDESSVMSGGELHADNSILGMGL
+&gt;ADH_DROME ALCOHOL DEHYDROGENASE (EC 1.1.1.1)
+SFTLTNKNVIFVAGLGGIGLDTSKELLKRDLKNLVILDRIENPAAIAELKAINPKVTVTFYPYDVTVPIAETTKLLKTIFAQLKTVDVLINGAGILDDHQIERTIAVNYTGLVNTTTAILDFWDKRKGGPGGIICNIGSVTGFNAIYQVPVYSGTKAAVVNFTSSLAKLAPITGVTAYTVNPGITRTTLVHKFNSWLDVEPQVAEKLLAHPTQPSLACAENFVKAIELNQNGAIWKLDLGTLEAIQWTKHWDSGI
+&gt;AP27_MOUSE ADIPOCYTE P27 PROTEIN (AP27)
+MKLNFSGLRALVTGAGKGIGRDTVKALHASGAKVVAVTRTNSDLVSLAKECPGIEPVCVDLGDWDATEKALGGIGPVDLLVNNAALVIMQPFLEVTKEAFDRSFSVNLRSVFQVSQMVARDMINRGVPGSIVNVSSMVAHVTFPNLITYSSTKGAMTMLTKAMAMELGPHKIRVNSVNPTVVLTDMGKKVSADPEFARKLKERHPLRKFAEVEDVVNSILFLLSDRSASTSGGGILVDAGYLAS
+&gt;BA72_EUBSP 7-ALPHA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.159) (BILE ACID 7-DEHYDROXYLASE) (BILE ACID-INDUCIBLE PROTEIN)
+MNLVQDKVTIITGGTRGIGFAAAKIFIDNGAKVSIFGETQEEVDTALAQLKELYPEEEVLGFAPDLTSRDAVMAAVGQVAQKYGRLDVMINNAGITSNNVFSRVSEEEFKHIMDINVTGVFNGAWCAYQCMKDAKKGVIINTASVTGIFGSLSGVGYPASKASVIGLTHGLGREIIRKNIRVVGVAPGVVNTDMTNGNPPEIMEGYLKALPMKRMLEPEEIANVYLFLASDLASGITATTVSVDGAYRP
+&gt;BDH_HUMAN D-BETA-HYDROXYBUTYRATE DEHYDROGENASE PRECURSOR (EC 1.1.1.30) (BDH) (3-HYDROXYBUTYRATE DEHYDROGENASE) (FRAGMENT)
+GLRPPPPGRFSRLPGKTLSACDRENGARRPLLLGSTSFIPIGRRTYASAAEPVGSKAVLVTGCDSGFGFSLAKHLHSKGFLVFAGCLMKDKGHDGVKELDSLNSDRLRTVQLNVFRSEEVEKVVGDCPFEPEGPEKGMWGLVNNAGISTFGEVEFTSLETYKQVAEVNLWGTVRMTKSFLPLIRRAKGRVVNISSMLGRMANPARSPYCITKFGVEAFSDCLRYEMYPLGVKVSVVEPGNFIAATSLYNPESIQAIAKKMWEELPEVVRKDYGKKYFDEKIAKMETYCSSGSTDTSPVIDAVTHALTATTPYTRYHPMDYYWWLRMQIMTHLPGAISDMIYIR
+&gt;BPHB_PSEPS BIPHENYL-CIS-DIOL DEHYDROGENASE (EC 1.3.1.-)
+MKLKGEAVLITGGASGLGRALVDRFVAEAKVAVLDKSAERLAELETDLGDNVLGIVGDVRSLEDQKQAASRCVARFGKIDTLIPNAGIWDYSTALVDLPEESLDAAFDEVFHINVKGYIHAVKALPALVASRGNVIFTISNAGFYPNGGGPLYTAAKQAIVGLVRELAFELAPYVRVNGVGPGGMNSDMRGPSSLGMGSKAISTVPLADMLKSVLPIGRMPEVEEYTGAYVFFATRGDAAPASGALVNYDGGLGVRGFFSGAGGNDLLEQLNIHP
+&gt;BUDC_KLETE ACETOIN(DIACETYL) REDUCTASE (EC 1.1.1.5) (ACETOIN DEHYDROGENASE)
+MQKVALVTGAGQGIGKAIALRLVKDGFAVAIADYNDATATAVAAEINQAGGRAVAIKVDVSRRDQVFAAVEQARKALGGFNVIVNNAGIAPSTPIESITEEIVDRVYNINVKGVIWGMQAAVEAFKKEGHGGKIVNACSQAGHVGNPELAVYSSSKFAVRGLTQTAARDLAPLGITVNGFCPGIVKTPMWAEIDRQCRKRRANRWATARLNLPNASPLAACRSLKTSPPACRSSPARIPTI
+&gt;DHES_HUMAN ESTRADIOL 17 BETA-DEHYDROGENASE (EC 1.1.1.62) (20 ALPHA-HYDROXYSTEROID DEHYDROGENASE) (E2DH) (17-BETA-HSD) (PLACENTAL 17-BETA-HYDROXYSTEROID DEHYDROGENASE)
+ARTVVLITGCSSGIGLHLAVRLASDPSQSFKVYATLRDLKTQGRLWEAARALACPPGSLETLQLDVRDSKSVAAARERVTEGRVDVLVCNAGLGLLGPLEALGEDAVASVLDVNVVGTVRMLQAFLPDMKRRGSGRVLVTGSVGGLMGLPFNDVYCASKFALEGLCESLAVLLLPFGVHLSLIECGPVHTAFMEKVLGSPEEVLDRTDIHTFHRFYQYLAHSKQVFREAAQNPEEVAEVFLTALRAPKPTLRYFTTERFLPLLRMRLDDPSGSNYVTAMHREVFGDVPAKAEAGAEAGGGAGPGAEDEAGRSAVGDPELGDPPAAPQ
+&gt;DHGB_BACME GLUCOSE 1-DEHYDROGENASE B (EC 1.1.1.47)
+MYKDLEGKVVVITGSSTGLGKSMAIRFATEKAKVVVNYRSKEDEANSVLEEEIKKVGGEAIAVKGDVTVESDVINLVQSAIKEFGKLDVMINNAGMENPVSSHEMSLSDWNKVIDTNLTGAFLGSREAIKYFVENDIKGTVINMSSVHEWKIPWPLFVHYAASKGGMKLMTETLALEYAPKGIRVNNIGPGAINTPINAEKFADPEQRADVESMIPMGYIGEPEEIAAVAWLASSEASYVTGITLFADGGMTQYPSFQAGRG
+&gt;DHII_HUMAN CORTICOSTEROID 11-BETA-DEHYDROGENASE (EC 1.1.1.146) (11-DH) (11-BETA- HYDROXYSTEROID DEHYDROGENASE) (11-BETA-HSD)
+MAFMKKYLLPILGLFMAYYYYSANEEFRPEMLQGKKVIVTGASKGIGREMAYHLAKMGAHVVVTARSKETLQKVVSHCLELGAASAHYIAGTMEDMTFAEQFVAQAGKLMGGLDMLILNHITNTSLNLFHDDIHHVRKSMEVNFLSYVVLTVAALPMLKQSNGSIVVVSSLAGKVAYPMVAAYSASKFALDGFFSSIRKEYSVSRVNVSITLCVLGLIDTETAMKAVSGIVHMQAAPKEECALEIIKGGALRQEEVYYDSSLWTTLLIRNPCRKILEFLYSTSYNMDRFINK
+&gt;DHMA_FLAS1 N-ACYLMANNOSAMINE 1-DEHYDROGENASE (EC 1.1.1.233) (NAM-DH) 
+TTAGVSRRPGRLAGKAAIVTGAAGGIGRATVEAYLREGASVVAMDLAPRLAATRYEEPGAIPIACDLADRAAIDAAMADAVARLGGLDILVAGGALKGGTGNFLDLSDADWDRYVDVNMTGTFLTCRAGARMAVAAGAGKDGRSARIITIGSVNSFMAEPEAAAYVAAKGGVAMLTRAMAVDLARHGILVNMIAPGPVDVTGNNTGYSEPRLAEQVLDEVALGRPGLPEEVATAAVFLAEDGSSFITGSTITIDGGLSAMIFGGMREGRR
+&gt;ENTA_ECOLI 2,3-DIHYDRO-2,3-DIHYDROXYBENZOATE DEHYDROGENASE (EC 1.3.1.28)
+MDFSGKNVWVTGAGKGIGYATALAFVEAGAKVTGFDQAFTQEQYPFATEVMDVADAAQVAQVCQRLLAETERLDALVNAAGILRMGATDQLSKEDWQQTFAVNVGGAFNLFQQTMNQFRRQRGGAIVTVASDAAHTPRIGMSAYGASKAALKSLALSVGLELAGSGVRCNVVSPGSTDTDMQRTLWVSDDAEEQRIRGFGEQFKLGIPLGKIARPQEIANTILFLASDLASHITLQDIVVDGGSTLGA
+&gt;FIXR_BRAJA FIXR PROTEIN
+MGLDLPNDNLIRGPLPEAHLDRLVDAVNARVDRGEPKVMLLTGASRGIGHATAKLFSEAGWRIISCARQPFDGERCPWEAGNDDHFQVDLGDHRMLPRAITEVKKRLAGAPLHALVNNAGVSPKTPTGDRMTSLTTSTDTWMRVFHLNLVAPILLAQGLFDELRAASGSIVNVTSIAGSRVHPFAGSAYATSKAALASLTRELAHDYAPHGIRVNAIAPGEIRTDMLSPDAEARVVASIPLRRVGTPDEVAKVIFFLCSDAASYVTGAEVPINGGQHL
+&gt;GUTD_ECOLI SORBITOL-6-PHOSPHATE 2-DEHYDROGENASE (EC 1.1.1.140) (GLUCITOL-6- PHOSPHATE DEHYDROGENASE) (KETOSEPHOSPHATE REDUCTASE)
+MNQVAVVIGGGQTLGAFLCHGLAAEGYRVAVVDIQSDKAANVAQEINAEYGESMAYGFGADATSEQSCLALSRGVDEIFGRVDLLVYSAGIAKAAFISDFQLGDFDRSLQVNLVGYFLCAREFSRLMIRDGIQGRIIQINSKSGKVGSKHNSGYSAAKFGGVGLTQSLALDLAEYGITVHSLMLGNLLKSPMFQSLLPQYATKLGIKPDQVEQYYIDKVPLKRGCDYQDVLNMLLFYASPKASYCTGQSINVTGGQVMF
+&gt;HDE_CANTR HYDRATASE-DEHYDROGENASE-EPIMERASE (HDE)
+MSPVDFKDKVVIITGAGGGLGKYYSLEFAKLGAKVVVNDLGGALNGQGGNSKAADVVVDEIVKNGGVAVADYNNVLDGDKIVETAVKNFGTVHVIINNAGILRDASMKKMTEKDYKLVIDVHLNGAFAVTKAAWPYFQKQKYGRIVNTSSPAGLYGNFGQANYASAKSALLGFAETLAKEGAKYNIKANAIAPLARSRMTESILPPPMLEKLGPEKVAPLVLYLSSAENELTGQFFEVAAGFYAQIRWERSGGVLFKPDQSFTAEVVAKRFSEILDYDDSRKPEYLKNQYPFMLNDYATLTNE
+ARKLPANDASGAPTVSLKDKVVLITGAGAGLGKEYAKWFAKYGAKVVVNDFKDATKTVDEIKAAGGEAWPDQHDVAKDSEAIIKNVIDKYGTIDILVNNAGILRDRSFAKMSKQEWDSVQQVHLIGTFNLSRLAWPYFVEKQFGRIINITSTSGIYGNFGQANYSSSKAGILGLSKTMAIEGAKNNIKVNIVAPHAETAMTLTIFREQDKNLYHADQVAPLLVYLGTDDVPVTGETSEIGGGWIGNTRWQRAKGAVSHDEHTTVEFIKEHLNEITDFTTDTENPKSTTESSMAILSAVGGDDD
+DDDEDEEEDEGDEEEDEEDEEEDDPVWRFDDRDVILYNIALGATTKQLKYVYENDSDFQVIPTFGHLITFNSGKSQNSFAKLLRNFNPMLLLHGEHYLKVHSWPPPTEGEIKTTFEPIATTPKGTNVVIVHGSKSVDNKSGELIYSNEATYFIRNCQADNKVYADRPAFATNQFLAPKRAPDYQVDVPVSEDLAALYRLSGDRNPLHIDPNFAKGAKFPKPILHGMCTYGLSAKALIDKFGMFNEIKARFTGIVFPGETLRVLAWKESDDTIVFQTHVVDRGTIAINNAAIKLVGDKAKI
+&gt;HDHA_ECOLI 7-ALPHA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.159) (HSDH)
+MFNSDNLRLDGKCAIITGAGAGIGKEIAITFATAGASVVVSDINADAANHVVDEIQQLGGQAFACRCDITSEQELSALADFAISKLGKVDILVNNAGGGGPKPFDMPMADFRRAYELNVFSFFHLSQLVAPEMEKNGGGVILTITSMAAENKNINMTSYASSKAAASHLVRNMAFDLGEKNIRVNGIAPGAILTDALKSVITPEIEQKMLQHTPIRRLGQPQDIANAALFLCSPAASWVSGQILTVSGGGVQELN
+&gt;LIGD_PSEPA C ALPHA-DEHYDROGENASE (EC -.-.-.-)
+MKDFQDQVAFITGGASGAGFGQAKVFGQAGAKIVVADVRAEAVEKAVAELEGLGITAHGIVLDIMDREAYARAADEVEAVFGQAPTLLSNTAGVNSFGPIEKTTYDDFDWIIGVNLNGVINGMVTFVPRMIASGRPGHIVTVSSLGGFMGSALAGPYSAAKAASINLMEGYRQGLEKYGIGVSVCTPANIKSNIAEASRLRPAKYGTSGYVENEESIASLHSIHQHGLEPEKLAEAIKKGVEDNALYIIPYPEVREGLEKHFQAIIDSVAPMESDPEGARQRVEALMAWGRDRTRVFAEGDKKGA
+&gt;NODG_RHIME NODULATION PROTEIN G (HOST-SPECIFICITY OF NODULATION PROTEIN C)
+MFELTGRKALVTGASGAIGGAIARVLHAQGAIVGLHGTQIEKLETLATELGDRVKLFPANLANRDEVKALGQRAEADLEGVDILVNNAGITKDGLFLHMADPDWDIVLEVNLTAMFRLTREITQQMIRRRNGRIINVTSVAGAIGNPGQTNYCASKAGMIGFSKSLAQEIATRNITVNCVAPGFIESAMTDKLNHKQKEKIMVAIPIHRMGTGTEVASAVAYLASDHAAYVTGQTIHVNGGMAMI
+&gt;RIDH_KLEAE RIBITOL 2-DEHYDROGENASE (EC 1.1.1.56) (RDH)
+MKHSVSSMNTSLSGKVAAITGAASGIGLECARTLLGAGAKVVLIDREGEKLNKLVAELGENAFALQVDLMQADQVDNLLQGILQLTGRLDIFHANAGAYIGGPVAEGDPDVWDRVLHLNINAAFRCVRSVLPHLIAQKSGDIIFTAVIAGVVPVIWEPVYTASKFAVQAFVHTTRRQVAQYGVRVGAVLPGPVVTALLDDWPKAKMDEALANGSLMQPIEVAESVLFMVTRSKNVTVRDIVILPNSVDL
+&gt;YINL_LISMO HYPOTHETICAL 26.8 KD PROTEIN IN INLA 5'REGION (ORFA)
+MTIKNKVIIITGASSGIGKATALLLAEKGAKLVLAARRVEKLEKIVQIIKANSGEAIFAKTDVTKREDNKKLVELAIERYGKVDAIFLNAGIMPNSPLSALKEDEWEQMIDINIKGVLNGIAAVLPSFIAQKSGHIIATSSVAGLKAYPGGAVYGATKWAVRDLMEVLRMESAQEGTNIRTATIYPAAINTELLETITDKETEQGMTSLYKQYGITPDRIASIVAYAIDQPEDVNVNEFTVGPTSQPW
+&gt;YRTP_BACSU HYPOTHETICAL 25.3 KD PROTEIN IN RTP 5'REGION (ORF238)
+MQSLQHKTALITGGGRGIGRATALALAKEGVNIGLIGRTSANVEKVAEEVKALGVKAAFAAADVKDADQVNQAVAQVKEQLGDIDILINNAGISKFGGFLDLSADEWENIIQVNLMGVYHVTRAVLPEMIERKAGDIINISSTAGQRGAAVTSAYSASKFAVLGLTESLMQEVRKHNIRVSALTPSTVASDMSIELNLTDGNPEKVMQPEDLAEYMVAQLKLDPRIFIKTAGLWSTNP
+&gt;CSGA_MYXXA no comment
+MRAFATNVCTGPVDVLINNAGVSGLWCALGDVDYADMARTFTINALGPLR
+VTSAMLPGLRQGALRRVAHVTSRMGSLAANTDGGAYAYRMSKAALNMAVR
+SMSTDLRPEGFVTVLLHPGWVQTDMGGPDATLPAPDSVRGMLRVIDGLNP
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+FSIAAMNELELK
+&gt;FVT1_HUMAN no comment
+MLLLAAAFLVAFVLLLYMVSPLISPKPLALPGAHVVVTGGSSGIGKCIAI
+ECYKQGAFITLVARNEDKLLQAKKEIEMHSINDKQVVLCISVDVSQDYNQ
+VENVIKQAQEKLGPVDMLVNCAGMAVSGKFEDLEVSTFERLMSINYLGSV
+YPSRAVITTMKERRVGRIVFVSSQAGQLGLFGFTAYSASKFAIRGLAEAL
+QMEVKPYNVYITVAYPPDTDTPGFAEENRTKPLETRLISETTSVCKPEQV
+AKQIVKDAIQGNFNSSLGSDGYMLSALTCGMAPVTSITEGLQQVVTMGLF
+RTIALFYLGSFDSIVRRCMMQREKSENADKTA
+&gt;HMTR_LEIMA no comment
+MTAPTVPVALVTGAAKRLGRSIAEGLHAEGYAVCLHYHRSAAEANALSAT
+LNARRPNSAITVQADLSNVATAPVSGADGSAPVTLFTRCAELVAACYTHW
+GRCDVLVNNASSFYPTPLLRNDEDGHEPCVGDREAMETATADLFGSNAIA
+PYFLIKAFAHRSRHPSQASRTNYSIINMVDAMTNQPLLGYTIYTMAKGAL
+EGLTRSAALELAPLQIRVNGVGPGLSVLVDDMPPAVWEGHRSKVPLYQRD
+SSAAEVSDVVIFLCSSKAKYITGTCVKVDGGYSLTRA
+&gt;MAS1_AGRRA no comment
+MHQLWAYDVGTLGCVSYHALPDIKRHSPKSGHLYLNKPSLRSFILQCPSL
+ARTLVLPSHQPVSRSSTSSAMVQPISTRKKCTCKVKNIGVCRAPARTSVS
+MELANAKRFSPATFSANFLSXSVVCSPLLRAIQTALIANIGFLCFDIDED
+LKERDFGKHEGGYGPLKMFEDNYPDCEDTEMFSLRVAKALTHAKNENTLF
+VSHGGVLRVIAALLGVDLTKEHTNNGRVLHFRRGFSHWTVEIHQSPVILV
+SGSNRGVGKAIAEDLIAHGYRLSLGARKVKDLEVAFGPQDEWLHYARFDA
+EDHGTMAAWVTAAVEKFGRIDGLVNNAGYGEPVNLDKHVDYQRFHLQWYI
+NCVAPLRMTELCLPHLYETGSGRIVNINSMSGQRVLNPLVGYNMTKHALG
+GLTKTTQHVGWDRRCAAIDICLGFVATDMSAWTDLIASKDMIQPEDIAKL
+VREAIERPNRAYVPRSEVMCIKEATR
+&gt;PCR_PEA no comment
+MALQTASMLPASFSIPKEGKIGASLKDSTLFGVSSLSDSLKGDFTSSALR
+CKELRQKVGAVRAETAAPATPAVNKSSSEGKKTLRKGNVVITGASSGLGL
+ATAKALAESGKWHVIMACRDYLKAARAAKSAGLAKENYTIMHLDLASLDS
+VRQFVDNFRRSEMPLDVLINNAAVYFPTAKEPSFTADGFEISVGTNHLGH
+FLLSRLLLEDLKKSDYPSKRLIIVGSITGNTNTLAGNVPPKANLGDLRGL
+AGGLTGLNSSAMIDGGDFDGAKAYKDSKVCNMLTMQEFHRRYHEETGITF
+ASLYPGCIATTGLFREHIPLFRTLFPPFQKYITKGYVSEEESGKRLAQVV
+SDPSLTKSGVYWSWNNASASFENQLSQEASDAEKARKVWEVSEKLVGLA
+&gt;RFBB_NEIGO no comment
+MQTEGKKNILVTGGAGFIGSAVVRHIIQNTRDSVVNLDKLTYAGNLESLT
+DIADNPRYAFEQVDICDRAELDRVFAQYRPDAVMHLAAESHVDRAIGSAG
+EFIRTNIVGTFDLLEAARAYWQQMPSEKREAFRFHHISTDEVYGDLHGTD
+DLFTETTPYAPSSPYSASKAAADHLVRAWQRTYRLPSIVSNCSNNYGPRQ
+FPEKLIPLMILNALSGKPLPVYGDGAQIRDWLFVEDHARALYQVVTEGVV
+GETYNIGGHNEKTNLEVVKTICALLEELAPEKPAGVARYEDLITFVQDRP
+GHDARYAVDAAKIRRDLGWLPLETFESGLRKTVQWYLDNKTRRQNA
+&gt;YURA_MYXXA no comment
+RQHTGGLHGGDELPDGVGDGCLQRPGTRAGAVARQAGVRVFAAGRRLPQL
+QAADEAPGGRRHRGARGVDVTKADATLERIRALDAEAGGLDLVVANAGVG
+GTTNAKRLPWERVRGIIDTNVTGAAATLSAVLPQMVERKRGHLVGVSSLA
+GFRGLPATRYSASKAFLSTFMESLRVDLRGTGVRVTCIYPGFVKSELTAT
+NNFPMPFLMETHDAVELMGKGIVRGDAEVSFPWQLAVPTRMAKVLPNPLF
+DAAARRLR
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: crp0.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;ce1cg
+TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGT
+TTTTTTGATCGTTTTCACAAAAATGGAAGTCCACAGTCTTGACAG
+&gt;ara
+GACAAAAACGCGTAACAAAAGTGTCTATAATCACGGCAGAAAAGTCCACATTGATTATTT
+GCACGGCGTCACACTTTGCTATGCCATAGCATTTTTATCCATAAG
+&gt;bglr1
+ACAAATCCCAATAACTTAATTATTGGGATTTGTTATATATAACTTTATAAATTCCTAAAA
+TTACACAAAGTTAATAACTGTGAGCATGGTCATATTTTTATCAAT
+&gt;crp
+CACAAAGCGAAAGCTATGCTAAAACAGTCAGGATGCTACAGTAATACATTGATGTACTGC
+ATGTATGCAAAGGACGTCACATTACCGTGCAGTACAGTTGATAGC
+&gt;cya
+ACGGTGCTACACTTGTATGTAGCGCATCTTTCTTTACGGTCAATCAGCAAGGTGTTAAAT
+TGATCACGTTTTAGACCATTTTTTCGTCGTGAAACTAAAAAAACC
+&gt;deop2
+AGTGAATTATTTGAACCAGATCGCATTACAGTGATGCAAACTTGTAAGTAGATTTCCTTA
+ATTGTGATGTGTATCGAAGTGTGTTGCGGAGTAGATGTTAGAATA
+&gt;gale
+GCGCATAAAAAACGGCTAAATTCTTGTGTAAACGATTCCACTAATTTATTCCATGTCACA
+CTTTTCGCATCTTTGTTATGCTATGGTTATTTCATACCATAAGCC
+&gt;ilv
+GCTCCGGCGGGGTTTTTTGTTATCTGCAATTCAGTACAAAACGTGATCAACCCCTCAATT
+TTCCCTTTGCTGAAAAATTTTCCATTGTCTCCCCTGTAAAGCTGT
+&gt;lac
+AACGCAATTAATGTGAGTTAGCTCACTCATTAGGCACCCCAGGCTTTACACTTTATGCTT
+CCGGCTCGTATGTTGTGTGGAATTGTGAGCGGATAACAATTTCAC
+&gt;male
+ACATTACCGCCAATTCTGTAACAGAGATCACACAAAGCGACGGTGGGGCGTAGGGGCAAG
+GAGGATGGAAAGAGGTTGCCGTATAAAGAAACTAGAGTCCGTTTA
+&gt;malk
+GGAGGAGGCGGGAGGATGAGAACACGGCTTCTGTGAACTAAACCGAGGTCATGTAAGGAA
+TTTCGTGATGTTGCTTGCAAAAATCGTGGCGATTTTATGTGCGCA
+&gt;malt
+GATCAGCGTCGTTTTAGGTGAGTTGTTAATAAAGATTTGGAATTGTGACACAGTGCAAAT
+TCAGACACATAAAAAAACGTCATCGCTTGCATTAGAAAGGTTTCT
+&gt;ompa
+GCTGACAAAAAAGATTAAACATACCTTATACAAGACTTTTTTTTCATATGCCTGACGGAG
+TTCACACTTGTAAGTTTTCAACTACGTTGTAGACTTTACATCGCC
+&gt;tnaa
+TTTTTTAAACATTAAAATTCTTACGTAATTTATAATCTTTAAAAAAAGCATTTAATATTG
+CTCCCCGAACGATTGTGATTCGATTCACATTTAAACAATTTCAGA
+&gt;uxu1
+CCCATGAGAGTGAAATTGTTGTGATGTGGTTAACCCAATTAGAATTCGGGATTGACATGT
+CTTACCAAAAGGTAGAACTTATACGCCATCTCATCCGATGCAAGC
+&gt;pbr322
+CTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCACCATATGCGGTGTGA
+AATACCGCACAGATGCGTAAGGAGAAAATACCGCATCAGGCGCTC
+&gt;trn9cat
+CTGTGACGGAAGATCACTTCGCAGAATAAATAAATCCTGGTGTCCCTGTTGATACCGGGA
+AGCCCTGGGCCAACTTTTGGCGAAAATGAGACGTTGATCGGCACG
+&gt;tdc
+GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTG
+GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= crp0.fasta
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+ce1cg                    1.0000    105  ara                      1.0000    105  
+bglr1                    1.0000    105  crp                      1.0000    105  
+cya                      1.0000    105  deop2                    1.0000    105  
+gale                     1.0000    105  ilv                      1.0000    105  
+lac                      1.0000    105  male                     1.0000    105  
+malk                     1.0000    105  malt                     1.0000    105  
+ompa                     1.0000    105  tnaa                     1.0000    105  
+uxu1                     1.0000    105  pbr322                   1.0000    105  
+trn9cat                  1.0000    105  tdc                      1.0000    105  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+--------------------------------------------------------------------------------
+GTGA[TC][CG][TC][ATG][GT][TC]TCACA
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.47 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+ce1cg                            1.94e-03  64_[+1(1.07e-05)]_26
+ara                              5.19e-04  57_[-1(2.85e-06)]_33
+bglr1                            1.76e-03  78_[-1(9.67e-06)]_12
+crp                              2.34e-03  65_[-1(1.29e-05)]_25
+cya                              8.88e-04  52_[-1(4.88e-06)]_38
+deop2                            1.76e-03  9_[-1(9.67e-06)]_81
+gale                             1.06e-02  54_[+1(5.85e-05)]_36
+ilv                              2.85e-02  105
+lac                              2.93e-04  11_[-1(1.61e-06)]_79
+male                             2.80e-03  16_[-1(1.54e-05)]_74
+malk                             9.85e-04  64_[+1(5.41e-06)]_26
+malt                             2.12e-03  44_[+1(1.17e-05)]_46
+ompa                             4.19e-04  51_[+1(2.30e-06)]_39
+tnaa                             7.20e-04  74_[+1(3.95e-06)]_16
+uxu1                             2.80e-03  20_[+1(1.54e-05)]_70
+pbr322                           9.85e-04  55_[-1(5.41e-06)]_35
+trn9cat                          4.18e-02  105
+tdc                              3.35e-03  81_[+1(1.84e-05)]_9
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: ex2.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= crp0.fasta
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+ce1cg                    1.0000    105  ara                      1.0000    105  
+bglr1                    1.0000    105  crp                      1.0000    105  
+cya                      1.0000    105  deop2                    1.0000    105  
+gale                     1.0000    105  ilv                      1.0000    105  
+lac                      1.0000    105  male                     1.0000    105  
+malk                     1.0000    105  malt                     1.0000    105  
+ompa                     1.0000    105  tnaa                     1.0000    105  
+uxu1                     1.0000    105  pbr322                   1.0000    105  
+trn9cat                  1.0000    105  tdc                      1.0000    105  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+--------------------------------------------------------------------------------
+[TA][AT]AT[GT]T[GA][AC][AGT]C[CTAGA]A[CTG][GAC]TCACA[AC]
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.07 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+ce1cg                            1.25e-03  60_[+1(7.30e-06)]_25
+ara                              1.68e-06  54_[+1(9.77e-09)]_31
+bglr1                            1.93e-03  77_[-1(1.12e-05)]_8
+crp                              8.74e-04  62_[+1(5.08e-06)]_23
+cya                              2.47e-03  51_[-1(1.44e-05)]_34
+deop2                            3.29e-04  6_[+1(1.91e-06)]_79
+gale                             1.23e-04  41_[+1(7.15e-07)]_44
+ilv                              4.96e-03  38_[+1(2.89e-05)]_47
+lac                              2.67e-04  8_[+1(1.55e-06)]_77
+male                             4.93e-04  13_[+1(2.86e-06)]_72
+malk                             2.47e-03  62_[-1(1.44e-05)]_23
+malt                             4.09e-05  42_[-1(2.38e-07)]_43
+ompa                             9.58e-04  49_[-1(5.57e-06)]_36
+tnaa                             1.38e-04  72_[-1(8.02e-07)]_13
+uxu1                             7.96e-04  18_[-1(4.63e-06)]_67
+pbr322                           4.03e-04  54_[-1(2.34e-06)]_31
+trn9cat                          6.32e-02  105
+tdc                              4.03e-04  79_[-1(2.34e-06)]_6
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.3"></a>
+<h3>Output files for usage example 3</h3>
+<p><h3>File: ino_up800.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;CHO1 sequence of the region upstream from YER026C
+CCGACCCAAATGTAATGGAACAATATTATTTGACACTTGATCAGCAGCAAAATAATCACC
+AAAATATGGCCTGGTTGACTCCTCCACAACTGCCACCTCATTTAGAAAACGTCATTTTGA
+ATAGTTACTCAAACGCGCAAACTGATAATACGTCTGGCGCCCTTCCCATTCCGAACCATG
+TTATATTGAACCATCTGGCGACAAGCAGTATTAAGCATAATACATTATGTGTCGCATCCA
+TTGTTAGGTATAAACAAAAATACGTGACCCAAATACTGTATACACCATTGCAATAGATAT
+GATTATAGAGCTTATAGCTACATCTTTTTAGATAAAAGCGAAGATGTTTCTGCGATTTTT
+CCATTATAGCTCTCCATGATACTAAATATCAAGGTCTACATGTAAGTATTTGTATATATG
+GGTTGGAATGTATATACGTATATACGTACGTACGTACGTATATGCACATAATTGTTACGG
+GATGTATATATAAATTAGTAGCATTATAGAAGATATCCCTAACATCAATCCCCACTCCTT
+CTCAATGTGTGCAGACTTCTGTGCCAGACACTGAATATATATCAGTAATTGGTCAAAATC
+ACTTTGAACGTTCACACGGCACCCTCACGCCTTTGAGCTTTCACATGGACCCATCTAAAG
+ATGAAGATCCGTATTTTATAGGAAACATTATAAATAAGGAAAGAGAGATACACCTATTTT
+TTTCATTTTGTGGGTGATTGTCATTTTTAGTTGTCTATTTGATTCAATCAAAAAACAAAA
+ATAAAACTATATATTAAAAA
+&gt;CHO2 sequence of the region upstream from YGR157W
+ACCCTCTAACGCGAATAAAGCGAATGACAGCGGCACCATTAATATGGCGAAACTGCAATT
+ACTACCTGAAAACCAACAAGATATGATCAAACAAGTTCTTACTTTGACACCTGCCCAGAT
+CCAAAGTTTACCAAGTGACCAGCAACTTATGGTGGAAAACTTTAGAAAAGAATATATAAT
+CTAAGTAATCAGAGCCATAGCGTATCAGAAAACCACACCTAATTAGATGGTTCTTGCATC
+TGTACCTCTTATCACTAAAAGCGGCACTAAACTTCCAACATTAAATGTTTGCCTTGTTAA
+ATATATATTTTTGCCTTGGTTTAAATTGGTCAAGACAGTCAATTGCCACACTTTTCTCAT
+GCCGCATTCATTATTCGCGAAGTTTTCCACACAAAACTGTGAAAATGAACGGCGATGCCA
+GAAACGGCAAAACCTCAAATGTTAGATAACGTGGATCTCCGACACATGTGAATTTATAAG
+TAGGCATATGAAAATACAGATTCTTTCCACTGTGTTCCCTTTTATTCCCTTCTCATGTGA
+AGAGTTCACACCAAATCTTCAAAATATAACTAATATAGTAGAGTTTGATTCAAAGGACCT
+TTTTTTTTGCCTCTTTGATTAGTTTATCTTCTTTTCTTCATTTTATCCCCTAATTTTATA
+CGTTAGTTCAACCTAACAATCCAGGATTTCATTAACAAGAAAGGTAAAAGTAACCTATCA
+AGGCTATTTTGAAAAAAAAAATTCCGCCCTGAATATTTCGAGTGATTTTCTTAGTGACAA
+AGCTTTTTCTTCATCTGTAG
+&gt;FAS1 sequence of the region upstream from YKL182W
+CCGGGTTATAGCAGCGTCTGCTCCGCATCACGATACACGAGGTGCAGGCACGGTTCACTA
+CTCCCCTGGCCTCCAACAAACGACGGCCAAAAACTTCACATGCCGCCCAGCCAAGCATAA
+TTACGCAACAGCGATCTTTCCGTCGCACAAGTTAAAAGAAATTGTTGAAAAATACAAATA
+ATCGCGAACAATACGTTGTTGCTATTTAACGCTTTTGGTCTGACAGTAAGTGTGCCTTTC
+CCAATCACCGAAAAGTGTTGAACGATTCACTGCGACAATAATCAGAGATTACAGTCGGCA
+TTTTGGCATTTTTGGCATACTTTTTATCGATTGAACCATCTTCTCCAAACACTTTTCCTT
+TTTCCTTCTATTCTGCAGGACCAACTAAAACTGGGTATATATATCATTATCTATATATAT
+AAACGGCTTTCAACAAAGTTATAGGGGAAAACTAAAAATATAAGAAAAAAAAAGGTATTG
+ATTGATAAGGAAAAAGAACCAAGGGAAAAATATAAAAAAGTACATTGGGCCTTTTCATAC
+TTGTTATCACTTACATTACAAAGAAGAACAAACAACTTTTTTAAACGAATTTTCTTTCTT
+CCTTTTTCAATTTATTAATTCTTTTTTTCCATACAATTCAAGGTCAAATATATTCTTATA
+TGCTCTTTGAATATTTCTGAAAAATATATAAAGAAAAGAAACTACAAGAACATCATCCGG
+AAAATCAGATTATAGACTAGGATTCCGCTCTTTTTAGTATATTTATTCGCCACACCTAAC
+TGCTCTATTATTCGCTCATT
+&gt;FAS2 sequence of the region upstream from YPL231W
+TCCAGGCAAGGCACCAAGAGTTATTGAAACTAGAAAAATCCATGGCAGAACTTACTCAAT
+TGTTTAATGACATGGAAGAACTGGTAATAGAACAACAAGAAAACGTAGACGTCATCGACA
+AGAACGTTGAAGACGCTCAACTCGACGTAGAACAGGGTGTCGGTCATACCGATAAAGCCG
+TCAAGAGTGCCAGAAAAGCAAGAAAGAACAAGATTAGATGTTGGTTGATTGTATTCGCCA
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+CTCTTCCTAAAAATACATTGGGCATTACCCGCAAACTAACCCATCGCTTAGCAAAATCCA
+ACCATTTTTTTTTTATCTCCCGCGTTTTCACATGCTACCTCATTCGCCTCGTAACGTTAC
+GACCGAAATCTCACTAAGGCACGGTTTGTTGGGCAGTTTACAGATGTTGGATAACCAGTT
+GTTTCTAAACGGTTATGCCTCATATATAACTTGTTAACTGAAGGTTACACAAGACCACAT
+CACCACTGTCGTGCTTTTCTAATAACCGCTATATTAGACGTTTAAAGGGCTACAGCAACA
+CCAATTGAAATACCATCATT
+&gt;ACC1 sequence of the region upstream from YNR016C
+TATCCAAAGGGGAATGCTTCATCTTGTTGAACAACGCCCAACAATTTCCACTGCCCACCG
+AATCGTTGCGCCCGTTAAAATCTTCACATGGCCCGGCCGCGCGCGCGTTGTGCCAACAAG
+TCGCAGTCGAAATTCAACCGCTCATTGCCACTCTCTCTACTGCTTGGTGAACTAGGCTAT
+ACGCTCAATCAGCGCCAAGATATATAAGAAGAACAGCACTCCCAGTCGTATTCTGGCACA
+GTATAGCCTAGCACAATCACTGTCACAATTGTTATCGGTTCTACAATTGTTCTGCTCTCT
+TCAATTTTCCTTTCCTTATTCTACTCTTTTTATCCCTTTCGTACAGTTTACCTGAAGATA
+AAAAACAACAAAGCCAATTCCCTAATTTGCAATCGCCATTTGCATCTATATATATATATT
+TGTTGTGCCATTTTTTTATCCTCTGTGAGTGATCGGTGCATGTGTTTATAAAAGTTTATT
+CATTCTACTATACGAACTTTTCCCTCTGCCCTTCCCTCCCGCTTCATCCTTATTTTTGGA
+CAATAAACTAGAGAACAATTTGAACTTGAATTGGAATTCAGATTCAGAGCAAGAGACAAG
+AAACTTCCCTTTTTCTTCTCCACATATTATTATTTATTCGTGTATTTTCTTTTAACGATA
+CGATACGATACGACACGATACGATACGACACGCTACTATACTATACAAATATAATAGTAT
+AATAACCGATTCGTCTTCTAGCTTAATTTTTTTCCGTTCCCGAAACAGCGCAGAAAATTA
+GAAAAAATCAAGTTTCTACC
+&gt;INO1 sequence of the region upstream from YJL153C
+AGCAAACAACCAAATATAATTTAGAAATGGACAGAGACCATATTAATGACCATGACCATC
+GAATGAGCTATTCCATCAACAAGGACGACTTGTTGTTAATGGTTTTGGCGGTTTTCATTC
+CCCCAGTGGCCGTCTGGAAGCGTAAGGGTATGTTCAACAGGGATACACTATTGAACTTAC
+TTCTCTTCCTACTGTTATTCTTCCCAGCAATCATTCACGCTTGCTACGTTGTATATGAAA
+CGAGTAGTGAACGTTCGTACGATCTTTCACGCAGACATGCGACTGCGCCCGCCGTAGACC
+GTGACCTGGAAGCTCACCCTGCAGAGGAATCTCAAGCACAGCCTCCAGCATATGATGAAG
+ACGATGAGGCCGGTGCCGATGTGCCCTTGATGGACAACAAACAACAGCTCTCTTCCGGCC
+GTACTTAGTGATCGGAACGAGCTCTTTATCACCGTAGTTCTAAATAACACATAGAGTAAA
+TTATTGCCTTTTTCTTCGTTCCTTTTGTTCTTCACGTCCTTTTTATGAAATACGTGCCGG
+TGTTCCGGGGTTGGATGCGGAATCGAAAGTGTTGAATGTGAAATATGCGGAGGCCAAGTA
+TGCGCTTCGGCGGCTAAATGCGGCATGTGAAAAGTATTGTCTATTTTATCTTCATCCTTC
+TTTCCCAGAATATTGAACTTATTTAATTCACATGGAGCAGAGAAAGCGCACCTCTGCGTT
+GGCGGCAATGTTAATTTGAGACGTATATAAATTGGAGCTTTCGTCACCTTTTTTTGGCTT
+GTTCTGTTGTCGGGTTCCTA
+&gt;OPI3 sequence of the region upstream from YJR073C
+GTGTCCACAACGTGAAACTTCCGTACCATTTCTTGCAACAATTGGTAAACAGCATGACAT
+CTTGCAGGCAACTCTTTGTTGCTTGCTTGCGACGCCTCCTCCTTTGTCAAAGGTACATTA
+ATGGAGATGACCACATCCGTGTCAAACTGGGTTAATCTGATCAACGCTACGCCGATGACA
+ACGGTCTGTGCCAGATCTGGTTTTCCCCACTTATTTGCTACTTCCATAACGAGTCCGGTG
+AACTTGGTTCCTTGCTGAACAGTGTCTTCTTGTAAAGCTTCCCATTTGGTGGTCCCGTTC
+AACTCCGTCAGGTCTTCCACGTGGAACTGCCAAGCCTCCTTCAGATCGCTCTTGTCGACC
+GTCTCCAAGAGATCCACGATAATGCTTTCATTGGTGGCTAGTCCATCTTCGAATTCTTCT
+TCATCGCGACGGGAATTGACGTACACCTCCTGTGTATCGGGGACTTCTCTTAGAGTAGAA
+GCGTCTATAAACCCAGGTGGGACGACAGTAGTGATGGCGCCGCCGTATAATTCGACTTCC
+TTGTTGTTCATGCTTCCTTGATGACCAGGGTAGGTGTCAATGAGAGTGCATGTGGAAAGT
+TGCACCGGTTGTGAAATATGAGAAGCCTTTTCAATCTTCATATGCAAACCCACACATGCA
+TCGTTGGTTTCTGTCCACTGCCACTGCAATGACCACTGGATAAGGGGTCTTTATAAGAGA
+ACACATATGAAGAACATGAACGTTCTTGGACAGAGCCATAAACAGCAATTGAAGACAACA
+AGAATAGCGCAAGTCAAGCG
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex3.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= ino_up800.fasta
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+CHO1                     1.0000    800  CHO2                     1.0000    800  
+FAS1                     1.0000    800  FAS2                     1.0000    800  
+ACC1                     1.0000    800  INO1                     1.0000    800  
+OPI3                     1.0000    800  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme ino_up800.fasta -bfile ../../data/memenew/yeast.nc.6.freq -mod anr -prior dirichlet -revcomp -nostatus -dna -text 
+
+model:  mod=           anr    nmotifs=         1    evt=           inf
+object function=  E-value of product of p-values
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.714286  0.285714  0.000000 
+ 0.428571  0.500000  0.000000  0.071429 
+ 0.357143  0.214286  0.357143  0.071429 
+ 0.214286  0.714286  0.000000  0.071429 
+ 0.357143  0.571429  0.071429  0.000000 
+ 0.071429  0.428571  0.142857  0.357143 
+ 0.142857  0.428571  0.000000  0.428571 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 1 regular expression
+--------------------------------------------------------------------------------
+TTCACATG[CG][CA][AGC][CA][CA][CT][CT]
+--------------------------------------------------------------------------------
+
+
+
+
+Time 10.22 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+CHO1                             3.16e-04  162_[+1(3.61e-06)]_351_[+1(9.87e-05)]_67_[+1(2.01e-07)]_14_[+1(7.50e-07)]_146
+CHO2                             9.08e-04  353_[+1(5.77e-07)]_109_[-1(7.24e-06)]_308
+FAS1                             9.60e-06  94_[+1(6.11e-09)]_691
+FAS2                             2.82e-04  566_[+1(1.80e-07)]_219
+ACC1                             6.55e-04  82_[+1(4.17e-07)]_703
+INO1                             4.14e-05  546_[-1(2.94e-06)]_6_[-1(8.23e-07)]_34_[-1(2.64e-08)]_55_[+1(1.09e-06)]_99
+OPI3                             1.57e-03  581_[-1(1.82e-06)]_40_[+1(1.00e-06)]_149
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.4"></a>
+<h3>Output files for usage example 4</h3>
+<p><h3>File: lipocalin.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;ICYA_MANSE
+GDIFYPGYCPDVKPVNDFDLSAFAGAWHEIAKLPLENENQGKCTIAEYKYDGKKASVYNS
+FVSNGVKEYMEGDLEIAPDAKYTKQGKYVMTFKFGQRVVNLVPWVLATDYKNYAINYNCD
+YHPDKKAHSIHAWILSKSKVLEGNTKEVVDNVLKTFSHLIDASKFISNDFSEAACQYSTT
+YSLTGPDRH
+&gt;LACB_BOVIN
+MKCLLLALALTCGAQALIVTQTMKGLDIQKVAGTWYSLAMAASDISLLDAQSAPLRVYVE
+ELKPTPEGDLEILLQKWENGECAQKKIIAEKTKIPAVFKIDALNENKVLVLDTDYKKYLL
+FCMENSAEPEQSLACQCLVRTPEVDDEALEKFDKALKALPMHIRLSFNPTQLEEQCHI
+&gt;BBP_PIEBR
+NVYHDGACPEVKPVDNFDWSNYHGKWWEVAKYPNSVEKYGKCGWAEYTPEGKSVKVSNYH
+VIHGKEYFIEGTAYPVGDSKIGKIYHKLTYGGVTKENVFNVLSTDNKNYIIGYYCKYDED
+KKGHQDFVWVLSRSKVLTGEAKTAVENYLIGSPVVDSQKLVYSDFSEAACKVN
+&gt;RETB_BOVIN
+ERDCRVSSFRVKENFDKARFAGTWYAMAKKDPEGLFLQDNIVAEFSVDENGHMSATAKGR
+VRLLNNWDVCADMVGTFTDTEDPAKFKMKYWGVASFLQKGNDDHWIIDTDYETFAVQYSC
+RLLNLDGTCADSYSFVFARDPSGFSPEVQKIVRQRQEELCLARQYRLIPHNGYCDGKSER
+NIL
+&gt;MUP2_MOUSE
+MKMLLLLCLGLTLVCVHAEEASSTGRNFNVEKINGEWHTIILASDKREKIEDNGNFRLFL
+EQIHVLEKSLVLKFHTVRDEECSELSMVADKTEKAGEYSVTYDGFNTFTIPKTDYDNFLM
+AHLINEKDGETFQLMGLYGREPDLSSDIKERFAKLCEEHGILRENIIDLSNANRCLQARE
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex4.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= lipocalin.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+ICYA_MANSE               1.0000    189  LACB_BOVIN               1.0000    178  
+BBP_PIEBR                1.0000    173  RETB_BOVIN               1.0000    183  
+MUP2_MOUSE               1.0000    180  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme lipocalin.fasta -mod oops -nmotifs 2 -prior dirichlet -maxw 20 -nostatus -protein -text 
+
+model:  mod=          oops    nmotifs=         2    evt=           inf
+object function=  E-value of product of p-values
+width:  minw=            8    maxw=           20    minic=        0.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.000000  0.200000  0.200000  0.000000  0.000000  0.000000  0.000000  0.600000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.600000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.400000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.600000 
+ 0.400000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.400000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.400000  0.000000  0.200000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000 
+ 0.200000  0.000000  0.000000  0.000000  0.200000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.000000  0.200000  0.000000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.600000 
+ 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.200000  0.200000  0.200000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.000000  0.200000 
+ 0.000000  0.600000  0.000000  0.200000  0.000000  0.000000  0.000000  0.200000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 2 regular expression
+--------------------------------------------------------------------------------
+[ENF][NDL][VDKT][FHPV][WLNT][VI][LIP][DAKS]TD[YN][KDE][NKT][YF][ALI][ILMV][AFGNQ][YCH][LMNSY][CEI]
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.12 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+ICYA_MANSE                       5.85e-32  13_[1(1.17e-18)]_67_[2(2.23e-20)]_70
+LACB_BOVIN                       2.65e-27  21_[1(4.11e-17)]_64_[2(3.82e-17)]_18_[1(7.85e-05)]_17
+BBP_PIEBR                        3.66e-31  12_[1(6.04e-19)]_64_[2(3.37e-19)]_58
+RETB_BOVIN                       1.46e-29  10_[1(6.49e-18)]_71_[2(1.16e-18)]_63
+MUP2_MOUSE                       2.28e-27  23_[1(1.21e-16)]_62_[2(1.09e-17)]_56
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 2 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.5"></a>
+<h3>Output files for usage example 5</h3>
+<p><h3>File: farntrans5.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;RAM1_YEAST PROTEIN FARNESYLTRANSFERASE BETA SUBUNIT (EC 2.5.1.-) (CAAX FARN
+MRQRVGRSIARAKFINTALLGRKRPVMERVVDIAHVDSSKAIQPLMKELETDTTEARYKV
+LQSVLEIYDDEKNIEPALTKEFHKMYLDVAFEISLPPQMTALDASQPWMLYWIANSLKVM
+DRDWLSDDTKRKIVVKLFTISPSGGPFGGGPGQLSHLASTYAAINALSLCDNIDGCWDRI
+DRKGIYQWLISLKEPNGGFKTCLEVGEVDTRGIYCALSIATLLNILTEELTEGVLNYLKN
+CQNYEGGFGSCPHVDEAHGGYTFCATASLAILRSMDQINVEKLLEWSSARQLQEERGFCG
+RSNKLVDGCYSFWVGGSAAILEAFGYGQCFNKHALRDYILYCCQEKEQPGLRDKPGAHSD
+FYHTNYCLLGLAVAESSYSCTPNDSPHNIKCTPDRLIGSSKLTDVNPVYGLPIENVRKII
+HYFKSNLSSPS
+&gt;PFTB_RAT PROTEIN FARNESYLTRANSFERASE BETA SUBUNIT (EC 2.5.1.-) (CAAX FARNES
+MASSSSFTYYCPPSSSPVWSEPLYSLRPEHARERLQDDSVETVTSIEQAKVEEKIQEVFS
+SYKFNHLVPRLVLQREKHFHYLKRGLRQLTDAYECLDASRPWLCYWILHSLELLDEPIPQ
+IVATDVCQFLELCQSPDGGFGGGPGQYPHLAPTYAAVNALCIIGTEEAYNVINREKLLQY
+LYSLKQPDGSFLMHVGGEVDVRSAYCAASVASLTNIITPDLFEGTAEWIARCQNWEGGIG
+GVPGMEAHGGYTFCGLAALVILKKERSLNLKSLLQWVTSRQMRFEGGFQGRCNKLVDGCY
+SFWQAGLLPLLHRALHAQGDPALSMSHWMFHQQALQEYILMCCQCPAGGLLDKPGKSRDF
+YHTCYCLSGLSIAQHFGSGAMLHDVVMGVPENVLQPTHPVYNIGPDKVIQATTHFLQKPV
+PGFEECEDAVTSDPATD
+&gt;BET2_YEAST YPT1/SEC4 PROTEINS GERANYLGERANYLTRANSFERASE BETA SUBUNIT (EC 2.
+MSGSLTLLKEKHIRYIESLDTNKHNFEYWLTEHLRLNGIYWGLTALCVLDSPETFVKEEV
+ISFVLSCWDDKYGAFAPFPRHDAHLLTTLSAVQILATYDALDVLGKDRKVRLISFIRGNQ
+LEDGSFQGDRFGEVDTRFVYTALSALSILGELTSEVVDPAVDFVLKCYNFDGGFGLCPNA
+ESHAAQAFTCLGALAIANKLDMLSDDQLEEIGWWLCERQLPEGGLNGRPSKLPDVCYSWW
+VLSSLAIIGRLDWINYEKLTEFILKCQDEKKGGISDRPENEVDVFHTVFGVAGLSLMGYD
+NLVPIDPIYCMPKSVTSKFKKYPYK
+&gt;RATRABGERB Rat rab geranylgeranyl transferase beta-subunit
+MGTQQKDVTIKSDAPDTLLLEKHADYIASYGSKKDDYEYCMSEYLRMSGVYWGLTVMDLM
+GQLHRMNKEEILVFIKSCQHECGGVSASIGHDPHLLYTLSAVQILTLYDSIHVINVDKVV
+AYVQSLQKEDGSFAGDIWGEIDTRFSFCAVATLALLGKLDAINVEKAIEFVLSCMNFDGG
+FGCRPGSESHAGQIYCCTGFLAITSQLHQVNSDLLGWWLCERQLPSGGLNGRPEKLPDVC
+YSWWVLASLKIIGRLHWIDREKLRSFILACQDEETGGFADRPGDMVDPFHTLFGIAGLSL
+LGEEQIKPVSPVFCMPEEVLQRVNVQPELVS
+&gt;CAL1_YEAST RAS PROTEINS GERANYLGERANYLTRANSFERASE (EC 2.5.1.-) (PROTEIN GER
+MCQATNGPSRVVTKKHRKFFERHLQLLPSSHQGHDVNRMAIIFYSISGLSIFDVNVSAKY
+GDHLGWMRKHYIKTVLDDTENTVISGFVGSLVMNIPHATTINLPNTLFALLSMIMLRDYE
+YFETILDKRSLARFVSKCQRPDRGSFVSCLDYKTNCGSSVDSDDLRFCYIAVAILYICGC
+RSKEDFDEYIDTEKLLGYIMSQQCYNGAFGAHNEPHSGYTSCALSTLALLSSLEKLSDKF
+KEDTITWLLHRQVSSHGCMKFESELNASYDQSDDGGFQGRENKFADTCYAFWCLNSLHLL
+TKDWKMLCQTELVTNYLLDRTQKTLTGGFSKNDEEDADLYHSCLGSAALALIEGKFNGEL
+CIPQEIFNDFSKRCCF
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex5.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= farntrans5.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  
+BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  
+CAL1_YEAST               1.0000    376  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme farntrans5.fasta -mod anr -prior dirichlet -maxsites 50 -maxw 40 -nostatus -protein -text 
+
+model:  mod=           anr    nmotifs=         1    evt=           inf
+object function=  E-value of product of p-values
+width:  minw=            8    maxw=           40    minic=        0.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.000000  0.000000  0.166667  0.055556  0.388889  0.000000  0.000000  0.000000  0.000000  0.000000  0.222222  0.000000  0.000000  0.000000  0.055556  0.000000  0.055556  0.055556  0.000000 
+ 0.111111  0.000000  0.111111  0.055556  0.000000  0.166667  0.000000  0.000000  0.333333  0.000000  0.055556  0.055556  0.000000  0.055556  0.000000  0.055556  0.000000  0.000000  0.000000  0.000000 
+ 0.000000  0.000000  0.055556  0.444444  0.055556  0.000000  0.055556  0.000000  0.000000  0.222222  0.055556  0.000000  0.000000  0.000000  0.000000  0.055556  0.000000  0.000000  0.000000  0.055556 
+ 0.222222  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.055556  0.000000  0.000000  0.000000  0.000000  0.166667  0.000000  0.055556  0.166667  0.000000  0.333333  0.000000  0.000000 
+ 0.000000  0.000000  0.722222  0.000000  0.000000  0.000000  0.277778  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.111111  0.000000  0.000000  0.000000  0.111111  0.222222  0.000000  0.000000  0.000000  0.111111  0.000000  0.000000  0.055556  0.000000  0.000000  0.000000  0.166667  0.222222  0.000000  0.000000 
+ 0.111111  0.277778  0.000000  0.000000  0.111111  0.166667  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.166667  0.000000  0.000000  0.000000  0.000000  0.166667 
+ 0.000000  0.000000  0.000000  0.000000  0.111111  0.000000  0.277778  0.000000  0.000000  0.000000  0.000000  0.000000  0.055556  0.111111  0.000000  0.055556  0.000000  0.000000  0.000000  0.388889 
+ 0.166667  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.055556  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.333333  0.388889  0.055556  0.000000  0.000000 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 1 regular expression
+--------------------------------------------------------------------------------
+Qx[EP][DE]GG[FL]G[GD]RP[GN]K[EL][VA][DH][GV]C[YH][TS]
+--------------------------------------------------------------------------------
+
+
+
+
+Time  1.49 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+RAM1_YEAST                       1.98e-11  140_[1(3.83e-06)]_82_[1(3.85e-11)]_29_[1(4.81e-14)]_33_[1(3.01e-12)]_67
+PFTB_RAT                         2.50e-14  133_[1(5.98e-14)]_31_[1(1.26e-12)]_28_[1(5.88e-16)]_29_[1(5.97e-17)]_42_[1(1.38e-13)]_74
+BET2_YEAST                       5.50e-14  119_[1(1.69e-13)]_28_[1(3.03e-13)]_31_[1(1.80e-16)]_29_[1(5.98e-14)]_38
+RATRABGERB                       8.82e-14  126_[1(1.53e-13)]_28_[1(9.50e-15)]_28_[1(2.83e-16)]_29_[1(2.05e-15)]_40
+CAL1_YEAST                       2.42e-13  270_[1(6.78e-16)]_32_[1(4.48e-11)]_34
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.6"></a>
+<h3>Output files for usage example 6</h3>
+<p><h3>File: ex6.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= farntrans5.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  
+BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  
+CAL1_YEAST               1.0000    376  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme farntrans5.fasta -mod anr -nmotifs 3 -prior dirichlet -maxsites 30 -w 10 -nostatus -protein -text 
+
+model:  mod=           anr    nmotifs=         3    evt=           inf
+object function=  E-value of product of p-values
+width:  minw=           10    maxw=           10    minic=        0.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.000000  0.142857  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.142857  0.000000  0.571429  0.000000  0.071429  0.000000  0.000000  0.000000  0.071429  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.285714  0.071429  0.000000  0.000000  0.000000  0.000000  0.214286  0.000000  0.071429  0.285714  0.000000  0.071429 
+ 0.000000  0.000000  0.071429  0.785714  0.000000  0.000000  0.071429  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.071429  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.071429  0.000000  0.000000  0.142857  0.000000  0.000000  0.000000  0.000000  0.785714  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
+ 0.071429  0.000000  0.000000  0.000000  0.000000  0.000000  0.214286  0.142857  0.000000  0.428571  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.142857  0.000000  0.000000 
+ 0.071429  0.000000  0.000000  0.000000  0.071429  0.000000  0.000000  0.285714  0.000000  0.285714  0.000000  0.000000  0.000000  0.000000  0.142857  0.000000  0.071429  0.071429  0.000000  0.000000 
+ 0.071429  0.000000  0.142857  0.214286  0.000000  0.071429  0.142857  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.071429  0.071429  0.142857  0.000000  0.071429  0.000000  0.000000 
+ 0.000000  0.000000  0.000000  0.000000  0.357143  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.071429  0.571429 
+ 0.000000  0.000000  0.000000  0.000000  0.071429  0.000000  0.000000  0.500000  0.000000  0.142857  0.000000  0.000000  0.000000  0.000000  0.000000  0.071429  0.000000  0.214286  0.000000  0.000000 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 3 regular expression
+--------------------------------------------------------------------------------
+[IL]N[KVR]EK[LH][IL]E[YF][IV]
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.47 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+RAM1_YEAST                       1.28e-15  109_[2(1.99e-06)]_24_[1(9.95e-09)]_6_[2(3.56e-08)]_43_[2(6.10e-07)]_2_[3(1.62e-05)]_10_[1(6.34e-09)]_7_[2(6.90e-10)]_6_[3(7.11e-09)]_7_[1(3.91e-09)]_6_[2(8.06e-07)]_9_[3(4.43e-08)]_24_[2(1.85e-06)]_40_[3(3.31e-08)]_8
+PFTB_RAT                         1.38e-16  72_[3(4.86e-08)]_21_[2(7.36e-07)]_23_[1(2.07e-10)]_6_[2(1.20e-08)]_9_[3(2.23e-09)]_22_[2(1.35e-06)]_22_[1(2.12e-09)]_6_[2(2.28e-08)]_23_[1(6.68e-11)]_68_[2(8.11e-08)]_65
+BET2_YEAST                       3.95e-16  6_[3(6.29e-09)]_22_[2(2.41e-07)]_6_[3(1.97e-07)]_74_[2(1.05e-07)]_6_[3(5.91e-05)]_6_[1(3.56e-09)]_6_[2(8.11e-08)]_25_[1(1.39e-09)]_6_[2(1.03e-08)]_6_[3(9.33e-10)]_7_[1(3.44e-08)]_6_[2(1.46e-06)]_29
+RATRABGERB                       3.89e-16  17_[3(1.70e-07)]_38_[3(2.44e-08)]_38_[3(5.33e-08)]_22_[2(5.42e-08)]_6_[3(5.01e-10)]_6_[1(6.01e-10)]_6_[2(9.24e-08)]_22_[1(3.56e-09)]_6_[2(4.12e-08)]_6_[3(2.91e-09)]_7_[1(6.95e-09)]_6_[2(2.83e-06)]_31
+CAL1_YEAST                       5.03e-15  41_[2(7.36e-07)]_74_[3(3.01e-05)]_32_[2(8.06e-07)]_12_[3(2.20e-08)]_20_[2(1.92e-07)]_44_[1(1.82e-10)]_6_[2(3.07e-08)]_77
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 3 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.7"></a>
+<h3>Output files for usage example 7</h3>
+<p><h3>File: ex7.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= farntrans5.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  
+BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  
+CAL1_YEAST               1.0000    376  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme farntrans5.fasta -mod anr -nmotifs 3 -prior dirichlet -nsites 24 -maxw 12 -nostatus -protein -text 
+
+model:  mod=           anr    nmotifs=         3    evt=           inf
+object function=  E-value of product of p-values
+width:  minw=            8    maxw=           12    minic=        0.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ 0.000000  0.000000  0.125000  0.583333  0.000000  0.000000  0.041667  0.000000  0.125000  0.000000  0.000000  0.000000  0.000000  0.041667  0.041667  0.041667  0.000000  0.000000  0.000000  0.000000 
+ 0.083333  0.000000  0.000000  0.083333  0.000000  0.083333  0.000000  0.000000  0.625000  0.041667  0.000000  0.000000  0.041667  0.000000  0.000000  0.041667  0.000000  0.000000  0.000000  0.000000 
+ 0.125000  0.000000  0.000000  0.000000  0.000000  0.000000  0.166667  0.166667  0.000000  0.333333  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.208333  0.000000  0.000000 
+ 0.041667  0.000000  0.000000  0.000000  0.041667  0.000000  0.000000  0.250000  0.000000  0.250000  0.000000  0.000000  0.000000  0.083333  0.125000  0.000000  0.083333  0.083333  0.000000  0.041667 
+ 0.041667  0.000000  0.125000  0.208333  0.000000  0.041667  0.083333  0.000000  0.041667  0.000000  0.000000  0.083333  0.000000  0.208333  0.041667  0.083333  0.000000  0.041667  0.000000  0.000000 
+ 0.041667  0.000000  0.000000  0.000000  0.291667  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.041667  0.000000  0.000000  0.000000  0.000000  0.041667  0.125000  0.458333 
+ 0.000000  0.000000  0.000000  0.000000  0.125000  0.000000  0.000000  0.333333  0.000000  0.250000  0.000000  0.000000  0.000000  0.000000  0.000000  0.041667  0.041667  0.208333  0.000000  0.000000 
+ 0.041667  0.000000  0.000000  0.083333  0.000000  0.000000  0.000000  0.041667  0.166667  0.333333  0.083333  0.000000  0.000000  0.041667  0.000000  0.083333  0.083333  0.000000  0.000000  0.041667 
+ 0.083333  0.000000  0.041667  0.000000  0.000000  0.000000  0.041667  0.000000  0.125000  0.000000  0.041667  0.041667  0.000000  0.000000  0.083333  0.500000  0.000000  0.000000  0.000000  0.041667 
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+	Motif 3 regular expression
+--------------------------------------------------------------------------------
+INVEK[LV][IL][EQ][YF][ILV]LS
+--------------------------------------------------------------------------------
+
+
+
+
+Time  0.58 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+RAM1_YEAST                       2.42e-16  35_[3(3.87e-06)]_62_[1(1.43e-07)]_23_[2(2.96e-09)]_3_[1(4.98e-09)]_8_[3(4.87e-07)]_21_[1(3.26e-08)]_4_[3(6.95e-07)]_5_[2(3.84e-07)]_4_[1(6.42e-10)]_4_[3(2.63e-08)]_6_[2(7.99e-09)]_3_[1(2.34e-07)]_7_[3(2.04e-07)]_7_[2(2.81e-07)]_15_[2(1.16e-06)]_26_[3(1.79e-09)]_6
+PFTB_RAT                         3.08e-19  49_[3(1.45e-06)]_11_[3(3.82e-08)]_19_[1(4.06e-08)]_22_[2(1.38e-10)]_3_[1(9.07e-10)]_7_[3(5.77e-11)]_5_[2(8.29e-08)]_3_[1(9.97e-08)]_21_[2(1.99e-09)]_3_[1(8.60e-09)]_4_[3(8.26e-07)]_6_[2(5.90e-11)]_32_[3(1.82e-06)]_6_[2(4.62e-08)]_3_[1(1.31e-07)]_28_[3(4.11e-06)]_23
+BET2_YEAST                       9.82e-18  6_[3(7.95e-09)]_20_[1(7.52e-09)]_4_[3(3.82e-08)]_6_[2(4.17e-08)]_39_[2(5.11e-08)]_3_[1(1.27e-09)]_4_[3(2.11e-06)]_5_[2(5.63e-10)]_3_[1(2.32e-08)]_24_[2(1.99e-09)]_3_[1(6.42e-10)]_4_[3(7.88e-10)]_6_[2(8.71e-10)]_3_[1(6.15e-08)]_27
+RATRABGERB                       2.86e-20  17_[3(4.04e-07)]_20_[1(1.20e-07)]_4_[3(2.99e-08)]_5_[2(1.09e-07)]_19_[3(1.57e-08)]_5_[2(1.31e-07)]_3_[1(2.05e-09)]_4_[3(6.10e-12)]_5_[2(4.94e-11)]_3_[1(7.50e-08)]_21_[2(2.25e-10)]_3_[1(2.39e-09)]_4_[3(5.99e-09)]_6_[2(8.34e-11)]_3_[1(1.99e-07)]_29
+CAL1_YEAST                       2.39e-16  10_[3(4.04e-07)]_19_[1(2.94e-07)]_79_[2(6.23e-06)]_23_[1(7.50e-08)]_10_[3(7.88e-10)]_5_[2(4.15e-07)]_1_[1(5.56e-08)]_43_[2(7.55e-10)]_3_[1(8.60e-09)]_6_[3(3.19e-06)]_7_[2(1.56e-07)]_38
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 3 reached.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+<a name="output.8"></a>
+<h3>Output files for usage example 8</h3>
+<p><h3>File: adh.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;2BHD_STREX 20-BETA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.53)
+MNDLSGKTVIITGGARGLGAEAARQAVAAGARVVLADVLDEEGAATARELGDAARYQHLD
+VTIEEDWQRVVAYAREEFGSVDGLVNNAGISTGMFLETESVERFRKVVDINLTGVFIGMK
+TVIPAMKDAGGGSIVNISSAAGLMGLALTSSYGASKWGVRGLSKLAAVELGTDRIRVNSV
+HPGMTYTPMTAETGIRQGEGNYPNTPMGRVGNEPGEIAGAVVKLLSDTSSYVTGAELAVD
+GGWTTGPTVKYVMGQ
+&gt;3BHD_COMTE 3-BETA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.51)
+TNRLQGKVALVTGGASGVGLEVVKLLLGEGAKVAFSDINEAAGQQLAAELGERSMFVRHD
+VSSEADWTLVMAAVQRRLGTLNVLVNNAGILLPGDMETGRLEDFSRLLKINTESVFIGCQ
+QGIAAMKETGGSIINMASVSSWLPIEQYAGYSASKAAVSALTRAAALSCRKQGYAIRVNS
+IHPDGIYTPMMQASLPKGVSKEMVLHDPKLNRAGRAYMPERIAQLVLFLASDESSVMSGG
+ELHADNSILGMGL
+&gt;ADH_DROME ALCOHOL DEHYDROGENASE (EC 1.1.1.1)
+SFTLTNKNVIFVAGLGGIGLDTSKELLKRDLKNLVILDRIENPAAIAELKAINPKVTVTF
+YPYDVTVPIAETTKLLKTIFAQLKTVDVLINGAGILDDHQIERTIAVNYTGLVNTTTAIL
+DFWDKRKGGPGGIICNIGSVTGFNAIYQVPVYSGTKAAVVNFTSSLAKLAPITGVTAYTV
+NPGITRTTLVHKFNSWLDVEPQVAEKLLAHPTQPSLACAENFVKAIELNQNGAIWKLDLG
+TLEAIQWTKHWDSGI
+&gt;AP27_MOUSE ADIPOCYTE P27 PROTEIN (AP27)
+MKLNFSGLRALVTGAGKGIGRDTVKALHASGAKVVAVTRTNSDLVSLAKECPGIEPVCVD
+LGDWDATEKALGGIGPVDLLVNNAALVIMQPFLEVTKEAFDRSFSVNLRSVFQVSQMVAR
+DMINRGVPGSIVNVSSMVAHVTFPNLITYSSTKGAMTMLTKAMAMELGPHKIRVNSVNPT
+VVLTDMGKKVSADPEFARKLKERHPLRKFAEVEDVVNSILFLLSDRSASTSGGGILVDAG
+YLAS
+&gt;BA72_EUBSP 7-ALPHA-HYDROXYSTEROID DEHYDROGENASE (EC 1.1.1.159) (BILE ACID 7-DEHYDROXYLASE) (BILE ACID-INDUCIBLE PROTEIN)
+MNLVQDKVTIITGGTRGIGFAAAKIFIDNGAKVSIFGETQEEVDTALAQLKELYPEEEVL
+GFAPDLTSRDAVMAAVGQVAQKYGRLDVMINNAGITSNNVFSRVSEEEFKHIMDINVTGV
+FNGAWCAYQCMKDAKKGVIINTASVTGIFGSLSGVGYPASKASVIGLTHGLGREIIRKNI
+RVVGVAPGVVNTDMTNGNPPEIMEGYLKALPMKRMLEPEEIANVYLFLASDLASGITATT
+VSVDGAYRP
+&gt;BDH_HUMAN D-BETA-HYDROXYBUTYRATE DEHYDROGENASE PRECURSOR (EC 1.1.1.30) (BDH) (3-HYDROXYBUTYRATE DEHYDROGENASE) (FRAGMENT)
+GLRPPPPGRFSRLPGKTLSACDRENGARRPLLLGSTSFIPIGRRTYASAAEPVGSKAVLV
+TGCDSGFGFSLAKHLHSKGFLVFAGCLMKDKGHDGVKELDSLNSDRLRTVQLNVFRSEEV
+EKVVGDCPFEPEGPEKGMWGLVNNAGISTFGEVEFTSLETYKQVAEVNLWGTVRMTKSFL
+PLIRRAKGRVVNISSMLGRMANPARSPYCITKFGVEAFSDCLRYEMYPLGVKVSVVEPGN
+FIAATSLYNPESIQAIAKKMWEELPEVVRKDYGKKYFDEKIAKMETYCSSGSTDTSPVID
+AVTHALTATTPYTRYHPMDYYWWLRMQIMTHLPGAISDMIYIR
+&gt;BPHB_PSEPS BIPHENYL-CIS-DIOL DEHYDROGENASE (EC 1.3.1.-)
+MKLKGEAVLITGGASGLGRALVDRFVAEAKVAVLDKSAERLAELETDLGDNVLGIVGDVR
+SLEDQKQAASRCVARFGKIDTLIPNAGIWDYSTALVDLPEESLDAAFDEVFHINVKGYIH
+AVKALPALVASRGNVIFTISNAGFYPNGGGPLYTAAKQAIVGLVRELAFELAPYVRVNGV
+GPGGMNSDMRGPSSLGMGSKAISTVPLADMLKSVLPIGRMPEVEEYTGAYVFFATRGDAA
+PASGALVNYDGGLGVRGFFSGAGGNDLLEQLNIHP
+&gt;BUDC_KLETE ACETOIN(DIACETYL) REDUCTASE (EC 1.1.1.5) (ACETOIN DEHYDROGENASE)
+MQKVALVTGAGQGIGKAIALRLVKDGFAVAIADYNDATATAVAAEINQAGGRAVAIKVDV
+SRRDQVFAAVEQARKALGGFNVIVNNAGIAPSTPIESITEEIVDRVYNINVKGVIWGMQA
+AVEAFKKEGHGGKIVNACSQAGHVGNPELAVYSSSKFAVRGLTQTAARDLAPLGITVNGF
+CPGIVKTPMWAEIDRQCRKRRANRWATARLNLPNASPLAACRSLKTSPPACRSSPARIPT
+I
+&gt;DHES_HUMAN ESTRADIOL 17 BETA-DEHYDROGENASE (EC 1.1.1.62) (20 ALPHA-HYDROXYSTEROID DEHYDROGENASE) (E2DH) (17-BETA-HSD) (PLACENTAL 17-BETA-HYDROXYSTEROID DEHYDROGENASE)
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+GVHQKEGWPSSAYGVTKIGVTVLSRIHARKLSEQRKGDKILLNACCPGWVRTDMAGPKAT
+KSPEEGAETPVYLALLPPDAEGPHGQFVSEKRVEQW
+&gt;FABI_ECOLI no comment
+MGFLSGKRILVTGVASKLSIAYGIAQAMHREGAELAFTYQNDKLKGRVEEFAAQLGSDIV
+LQCDVAEDASIDTMFAELGKVWPKFDGFVHSIGFAPGDQLDGDYVNAVTREGFKIAHDIS
+SYSFVAMAKACRSMLNPGSALLTLSYLGAERAIPNYNVMGLAKASLEANVRYMANAMGPE
+GVRVNAISAGPIRTLAASGIKDFRKMLAHCEAVTPIRRTVTIEDVGNSAAFLCSDLSAGI
+SGEVVHVDGGFSIAAMNELELK
+&gt;FVT1_HUMAN no comment
+MLLLAAAFLVAFVLLLYMVSPLISPKPLALPGAHVVVTGGSSGIGKCIAIECYKQGAFIT
+LVARNEDKLLQAKKEIEMHSINDKQVVLCISVDVSQDYNQVENVIKQAQEKLGPVDMLVN
+CAGMAVSGKFEDLEVSTFERLMSINYLGSVYPSRAVITTMKERRVGRIVFVSSQAGQLGL
+FGFTAYSASKFAIRGLAEALQMEVKPYNVYITVAYPPDTDTPGFAEENRTKPLETRLISE
+TTSVCKPEQVAKQIVKDAIQGNFNSSLGSDGYMLSALTCGMAPVTSITEGLQQVVTMGLF
+RTIALFYLGSFDSIVRRCMMQREKSENADKTA
+&gt;HMTR_LEIMA no comment
+MTAPTVPVALVTGAAKRLGRSIAEGLHAEGYAVCLHYHRSAAEANALSATLNARRPNSAI
+TVQADLSNVATAPVSGADGSAPVTLFTRCAELVAACYTHWGRCDVLVNNASSFYPTPLLR
+NDEDGHEPCVGDREAMETATADLFGSNAIAPYFLIKAFAHRSRHPSQASRTNYSIINMVD
+AMTNQPLLGYTIYTMAKGALEGLTRSAALELAPLQIRVNGVGPGLSVLVDDMPPAVWEGH
+RSKVPLYQRDSSAAEVSDVVIFLCSSKAKYITGTCVKVDGGYSLTRA
+&gt;MAS1_AGRRA no comment
+MHQLWAYDVGTLGCVSYHALPDIKRHSPKSGHLYLNKPSLRSFILQCPSLARTLVLPSHQ
+PVSRSSTSSAMVQPISTRKKCTCKVKNIGVCRAPARTSVSMELANAKRFSPATFSANFLS
+XSVVCSPLLRAIQTALIANIGFLCFDIDEDLKERDFGKHEGGYGPLKMFEDNYPDCEDTE
+MFSLRVAKALTHAKNENTLFVSHGGVLRVIAALLGVDLTKEHTNNGRVLHFRRGFSHWTV
+EIHQSPVILVSGSNRGVGKAIAEDLIAHGYRLSLGARKVKDLEVAFGPQDEWLHYARFDA
+EDHGTMAAWVTAAVEKFGRIDGLVNNAGYGEPVNLDKHVDYQRFHLQWYINCVAPLRMTE
+LCLPHLYETGSGRIVNINSMSGQRVLNPLVGYNMTKHALGGLTKTTQHVGWDRRCAAIDI
+CLGFVATDMSAWTDLIASKDMIQPEDIAKLVREAIERPNRAYVPRSEVMCIKEATR
+&gt;PCR_PEA no comment
+MALQTASMLPASFSIPKEGKIGASLKDSTLFGVSSLSDSLKGDFTSSALRCKELRQKVGA
+VRAETAAPATPAVNKSSSEGKKTLRKGNVVITGASSGLGLATAKALAESGKWHVIMACRD
+YLKAARAAKSAGLAKENYTIMHLDLASLDSVRQFVDNFRRSEMPLDVLINNAAVYFPTAK
+EPSFTADGFEISVGTNHLGHFLLSRLLLEDLKKSDYPSKRLIIVGSITGNTNTLAGNVPP
+KANLGDLRGLAGGLTGLNSSAMIDGGDFDGAKAYKDSKVCNMLTMQEFHRRYHEETGITF
+ASLYPGCIATTGLFREHIPLFRTLFPPFQKYITKGYVSEEESGKRLAQVVSDPSLTKSGV
+YWSWNNASASFENQLSQEASDAEKARKVWEVSEKLVGLA
+&gt;RFBB_NEIGO no comment
+MQTEGKKNILVTGGAGFIGSAVVRHIIQNTRDSVVNLDKLTYAGNLESLTDIADNPRYAF
+EQVDICDRAELDRVFAQYRPDAVMHLAAESHVDRAIGSAGEFIRTNIVGTFDLLEAARAY
+WQQMPSEKREAFRFHHISTDEVYGDLHGTDDLFTETTPYAPSSPYSASKAAADHLVRAWQ
+RTYRLPSIVSNCSNNYGPRQFPEKLIPLMILNALSGKPLPVYGDGAQIRDWLFVEDHARA
+LYQVVTEGVVGETYNIGGHNEKTNLEVVKTICALLEELAPEKPAGVARYEDLITFVQDRP
+GHDARYAVDAAKIRRDLGWLPLETFESGLRKTVQWYLDNKTRRQNA
+&gt;YURA_MYXXA no comment
+RQHTGGLHGGDELPDGVGDGCLQRPGTRAGAVARQAGVRVFAAGRRLPQLQAADEAPGGR
+RHRGARGVDVTKADATLERIRALDAEAGGLDLVVANAGVGGTTNAKRLPWERVRGIIDTN
+VTGAAATLSAVLPQMVERKRGHLVGVSSLAGFRGLPATRYSASKAFLSTFMESLRVDLRG
+TGVRVTCIYPGFVKSELTATNNFPMPFLMETHDAVELMGKGIVRGDAEVSFPWQLAVPTR
+MAKVLPNPLFDAAARRLR
+</pre>
+</td></tr></table><p>
+<p><h3>File: ex8.text</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.2.0 (Release date: Wed Jul 22 01:12:17 PDT 2009)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= adh.fasta
+ALPHABET= ACDEFGHIKLMNPQRSTVWY
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+2BHD_STREX               1.0000    255  3BHD_COMTE               1.0000    253  
+ADH_DROME                1.0000    255  AP27_MOUSE               1.0000    244  
+BA72_EUBSP               1.0000    249  BDH_HUMAN                1.0000    343  
+BPHB_PSEPS               1.0000    275  BUDC_KLETE               1.0000    241  
+DHES_HUMAN               1.0000    327  DHGB_BACME               1.0000    262  
+DHII_HUMAN               1.0000    292  DHMA_FLAS1               1.0000    270  
+ENTA_ECOLI               1.0000    248  FIXR_BRAJA               1.0000    278  
+GUTD_ECOLI               1.0000    259  HDE_CANTR                1.0000    906  
+HDHA_ECOLI               1.0000    255  LIGD_PSEPA               1.0000    305  
+NODG_RHIME               1.0000    245  RIDH_KLEAE               1.0000    249  
+YINL_LISMO               1.0000    248  YRTP_BACSU               1.0000    238  
+CSGA_MYXXA               1.0000    166  DHB2_HUMAN               1.0000    387  
+DHB3_HUMAN               1.0000    310  DHCA_HUMAN               1.0000    276  
+FABI_ECOLI               1.0000    262  FVT1_HUMAN               1.0000    332  
+HMTR_LEIMA               1.0000    287  MAS1_AGRRA               1.0000    476  
+PCR_PEA                  1.0000    399  RFBB_NEIGO               1.0000    346  
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+2BHD_STREX                       3.00e-81  5_[2(6.76e-13)]_2_[8(2.79e-13)]_24_[3(3.26e-12)]_12_[4(1.64e-13)]_2_[6(1.48e-15)]_5_[1(8.10e-19)]_[7(4.84e-10)]_24_[5(1.29e-21)]_13
+3BHD_COMTE                       4.50e-74  5_[2(6.53e-15)]_2_[8(6.48e-16)]_24_[3(4.42e-12)]_12_[4(1.98e-11)]_1_[6(3.58e-11)]_5_[1(1.62e-15)]_2_[7(1.89e-08)]_28_[5(5.31e-21)]_6
+ADH_DROME                        2.38e-37  5_[2(3.69e-11)]_56_[3(1.89e-10)]_4_[4(2.17e-11)]_5_[6(1.44e-11)]_5_[1(4.20e-13)]_[7(2.82e-07)]_66
+AP27_MOUSE                       6.69e-75  6_[2(1.73e-14)]_2_[8(5.45e-13)]_19_[3(4.79e-10)]_12_[4(7.74e-13)]_3_[6(1.19e-11)]_5_[1(3.16e-22)]_[7(9.85e-08)]_25_[5(3.17e-19)]_4
+BA72_EUBSP                       1.68e-81  5_[2(3.44e-14)]_2_[8(8.85e-13)]_29_[3(1.25e-13)]_12_[4(2.96e-14)]_2_[6(2.51e-14)]_5_[1(1.55e-16)]_[7(3.30e-09)]_23_[5(3.54e-23)]_3
+BDH_HUMAN                        1.27e-45  54_[2(9.49e-15)]_59_[3(1.36e-10)]_12_[4(4.70e-13)]_1_[6(3.80e-14)]_5_[1(6.62e-18)]_107
+BPHB_PSEPS                       3.73e-42  4_[2(5.94e-14)]_1_[8(3.23e-06)]_24_[3(9.73e-11)]_17_[4(1.11e-11)]_[6(1.24e-10)]_5_[1(4.44e-14)]_94
+BUDC_KLETE                       3.15e-66  1_[2(1.49e-17)]_2_[8(5.08e-13)]_27_[3(1.52e-10)]_12_[4(1.59e-12)]_3_[6(1.82e-13)]_5_[1(2.03e-21)]_[7(5.92e-10)]_52
+DHES_HUMAN                       2.57e-42  1_[2(5.94e-14)]_58_[3(2.01e-11)]_12_[4(8.18e-12)]_2_[6(4.83e-13)]_5_[1(2.45e-17)]_144
+DHGB_BACME                       3.04e-66  6_[2(8.39e-15)]_56_[3(1.76e-12)]_12_[4(2.54e-14)]_3_[6(6.03e-10)]_6_[1(9.72e-20)]_[7(3.36e-07)]_24_[5(2.28e-20)]_12
+DHII_HUMAN                       1.93e-53  33_[2(4.63e-17)]_2_[8(1.21e-15)]_28_[3(1.70e-08)]_12_[4(6.26e-11)]_1_[6(1.10e-13)]_5_[1(7.62e-16)]_81
+DHMA_FLAS1                       8.76e-61  13_[2(8.39e-15)]_49_[3(5.34e-08)]_13_[4(3.17e-15)]_8_[6(3.28e-11)]_5_[1(6.62e-18)]_34_[5(1.77e-22)]_14
+ENTA_ECOLI                       3.09e-68  4_[2(1.11e-16)]_44_[3(5.83e-10)]_12_[4(6.04e-13)]_2_[6(2.09e-11)]_5_[1(1.55e-16)]_[7(4.26e-08)]_33_[5(2.99e-25)]_5
+FIXR_BRAJA                       9.12e-69  35_[2(3.91e-15)]_52_[3(2.72e-09)]_18_[4(2.86e-11)]_1_[6(9.83e-12)]_6_[1(3.46e-21)]_[7(5.02e-09)]_20_[5(5.45e-24)]_3
+GUTD_ECOLI                       1.30e-71  1_[2(4.40e-11)]_2_[8(6.15e-15)]_29_[3(3.92e-10)]_12_[4(3.17e-15)]_3_[6(6.62e-12)]_5_[1(5.21e-19)]_44_[5(1.77e-22)]_4
+HDE_CANTR                        1.58e-58  7_[2(1.53e-11)]_60_[3(4.28e-11)]_12_[4(3.59e-08)]_2_[6(1.14e-07)]_5_[1(1.97e-12)]_21_[5(5.78e-05)]_80_[2(5.54e-17)]_50_[3(9.64e-14)]_12_[4(6.17e-14)]_2_[6(3.31e-14)]_5_[1(5.78e-18)]_57_[8(3.01e-13)]_329
+HDHA_ECOLI                       5.20e-81  10_[2(2.96e-16)]_2_[8(3.51e-15)]_27_[3(9.10e-12)]_11_[4(1.78e-12)]_2_[6(4.26e-11)]_5_[1(6.04e-19)]_[7(4.32e-07)]_24_[5(7.10e-25)]_6
+LIGD_PSEPA                       3.19e-45  5_[2(1.34e-12)]_2_[8(8.35e-16)]_53_[4(2.15e-13)]_3_[6(3.81e-13)]_5_[1(1.18e-15)]_120
+NODG_RHIME                       2.04e-87  5_[2(1.72e-12)]_2_[8(9.46e-16)]_24_[3(1.76e-12)]_12_[4(2.54e-14)]_2_[6(1.18e-16)]_5_[1(4.63e-22)]_[7(4.68e-07)]_23_[5(2.47e-23)]_4
+RIDH_KLEAE                       2.13e-56  13_[2(1.14e-15)]_2_[8(5.42e-20)]_24_[3(4.46e-09)]_12_[4(4.70e-13)]_2_[6(1.34e-10)]_5_[1(4.60e-17)]_61
+YINL_LISMO                       1.43e-58  4_[2(2.66e-17)]_2_[8(7.36e-16)]_27_[3(1.24e-09)]_12_[4(9.87e-13)]_2_[6(2.06e-13)]_5_[1(5.04e-15)]_2_[7(5.94e-07)]_55
+YRTP_BACSU                       3.25e-69  5_[2(2.15e-16)]_2_[8(5.11e-14)]_27_[3(2.07e-12)]_12_[4(5.23e-15)]_2_[6(5.95e-15)]_5_[1(5.59e-22)]_[7(1.07e-06)]_46
+CSGA_MYXXA                       2.43e-28  9_[3(1.51e-12)]_13_[4(3.03e-10)]_31_[1(1.25e-13)]_[7(1.33e-11)]_41
+DHB2_HUMAN                       1.75e-51  81_[2(2.62e-15)]_55_[3(5.65e-09)]_13_[4(9.87e-13)]_1_[6(6.62e-12)]_5_[1(8.10e-19)]_1_[8(2.58e-13)]_101
+DHB3_HUMAN                       1.82e-48  47_[2(3.44e-14)]_2_[8(5.51e-15)]_26_[3(6.73e-08)]_14_[4(3.14e-12)]_2_[6(5.41e-12)]_5_[1(4.56e-15)]_84
+DHCA_HUMAN                       3.85e-44  3_[2(1.54e-14)]_3_[8(1.21e-05)]_27_[3(1.10e-14)]_12_[4(4.78e-05)]_[6(2.51e-11)]_46_[1(7.01e-12)]_4_[7(1.11e-12)]_42
+FABI_ECOLI                       3.60e-30  5_[2(8.23e-11)]_132_[1(1.74e-13)]_34_[5(2.46e-22)]_12
+FVT1_HUMAN                       2.52e-62  31_[2(1.36e-14)]_2_[8(1.50e-16)]_32_[3(6.81e-12)]_12_[4(3.91e-12)]_2_[6(7.76e-16)]_5_[1(1.13e-17)]_[7(5.08e-07)]_63_[4(2.64e-05)]_25
+HMTR_LEIMA                       2.44e-44  5_[2(1.23e-12)]_73_[3(8.68e-11)]_80_[1(1.14e-19)]_31_[5(1.29e-21)]_6
+MAS1_AGRRA                       2.00e-27  172_[7(1.01e-05)]_63_[2(4.05e-12)]_51_[3(3.78e-12)]_19_[1(6.98e-11)]_43_[7(2.41e-08)]_47
+PCR_PEA                          6.40e-31  25_[1(2.02e-10)]_31_[2(1.54e-14)]_55_[3(2.10e-10)]_13_[4(5.76e-11)]_95_[7(8.04e-08)]_87
+RFBB_NEIGO                       7.66e-16  5_[2(1.72e-12)]_138_[1(5.57e-15)]_153
+YURA_MYXXA                       5.59e-32  35_[8(6.92e-05)]_26_[3(6.11e-09)]_12_[4(7.46e-06)]_2_[6(2.64e-13)]_4_[1(2.11e-19)]_[7(2.35e-07)]_61
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because motif E-value &gt; 1.00e-02.
+********************************************************************************
+
+CPU: emboss4.ebi.ac.uk
+
+********************************************************************************
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<p>  The MEME results consist of:
+<ul>  
+<li>         The version of MEME and the date it was released. 
+<li>         The reference to cite if you use MEME in your research. 
+<li>          A description of the sequences you submitted (the "training set")
+         showing the name, "weight" and length of each sequence. 
+<li>         The command line summary detailing the parameters with which you
+         ran MEME. 
+<li>         Information on each of the motifs MEME discovered, including: 
+  <ol>
+  <li>       1.A summary line showing the width, number of occurrences, log
+                likelihood ratio and statistical significance of the motif. 
+  <li>       2.A simplified position-specific probability matrix. 
+  <li>       3.A diagram showing the degree of conservation at each motif
+                position. 
+  <li>       4.A multilevel consensus sequence showing the most conserved
+                letter(s) at each motif position. 
+  <li>       5.The occurrences of the motif sorted by p-value and aligned with
+                each other. 
+  <li>       6.Block diagrams of the occurrences of the motif within each
+                sequence in the training set. 
+  <li>       7.The motif in BLOCKS format. 
+  <li>       8.A position-specific scoring matrix (PSSM) for use by the
+                MAST database search program. 
+  <li>       9.The position specific probability matrix (PSPM) describing the
+  </ol>              motif. 
+
+<li>     A summary of motifs showing an optimized (non-overlapping) tiling of
+         all of the motifs onto each of the sequences in the training set. 
+  
+<li>         The reason why MEME stopped and the name of the CPU on which it ran. 
+<li>         This explanation of how to interpret MEME results.  
+</ul>
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+include file="inc/localfiles.ihtml"
+   -->
+
+None.
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+<H3>1. Command-line arguments</H3>
+The following original MEME options are not supported:
+<br><pre>
+-h         : Use -help to get help information.
+-dna	   : EMBOSS will specify whether sequences use a DNA alphabet 
+             automatically.
+-protein   : EMBOSS will specify whether sequences use a protein alphabet 
+             automatically.
+</pre>
+
+<p>
+The following additional options are provided:
+<br><pre>
+outfile    : Application output that was normally written to stdout.
+</pre>
+
+Note: ememe makes a temporary local copy of its input sequence data.  You must ensure there is sufficient disk space for this in the directory that ememe is run.
+
+
+<H3>2. Installing EMBASSY MEMENEW</H3>
+The EMBASSY MEMENEW package contains "wrapper" applications providing an EMBOSS-style interface to the applications in the original MEME package version 4.4.0 developed by Timothy L. Bailey.  Please read the file README in the EMBASSY MEME package distribution for installation instructions.
+
+
+<H3>3. Installing original MEME</H3>
+To use EMBASSY MEMENEW, you will first need to download and install the original MEME package:
+<pre>
+WWW home:       http://meme.sdsc.edu/meme/
+Distribution:   http://meme.nbcr.net/downloads/old_versions/  
+</pre>
+Please read the file README in the the original MEME package distribution for installation instructions.
+
+
+<H3>4. Setting up MEME</H3>
+For the EMBASSY MEMENEW package to work, the directory containing the original MEME executables *must* be in your path. For example if you executables were installed to "/usr/local/meme/bin", then type:
+<pre>
+set path=(/usr/local/meme/bin/ $path)
+rehash
+</pre>
+
+
+<H3> 5. Getting help </H3>
+Once you have installed the original MEME, type
+<pre>
+meme > meme.txt 
+mast > mast.txt 
+</pre>
+to retrieve the meme and mast documentation into text files. The same documentation is given here and in the ememe documentation.
+<p>Please read the 'Notes' section below for a description of the differences between the original and EMBASSY MEMENEW, particularly which application command line options are supported. 
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+<p>(MEME) Timothy L. Bailey and Charles Elkan, "Fitting a mixture model by expectation maximization to discover motifs in biopolymers", Proceedings of the Second International Conference on Intelligent Systems for Molecular Biology, pp. 28-36, AAAI Press, Menlo Park, California, 1994.
+<p>(MAST) Timothy L. Bailey and Michael Gribskov, "Combining evidence using p-values: application to sequence homology searches", Bioinformatics, Vol. 14, pp. 48-54, 1998. 
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+<H3>Input data</H3>
+
+
+<H3>Sequence input </H3>
+Note: ememe makes a temporary local copy of its input sequence data.  You must ensure there is sufficient disk space for this in the directory that ememe is run.
+<p>The user must provide the full filename of a sequence database for the sequence input ("seqset" ACD option), not an indirect reference, e.g. a USA is NOT acceptable.  This is because meme (which ememe wraps) does not support USAs, and a full sequence database is too big to write to a temporary file that the original meme would understand.
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/antigenic.html">antigenic</a></td>
+<td>Finds antigenic sites in proteins</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/digest.html">digest</a></td>
+<td>Reports on protein proteolytic enzyme or reagent cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/echlorop.html">echlorop</a></td>
+<td>Reports presence of chloroplast transit peptides</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/iprscan/eiprscan.html">eiprscan</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/elipop.html">elipop</a></td>
+<td>Prediction of lipoproteins</td>
+</tr>
+
+<tr>
+<td><a href="emast.html">emast</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="ememe.html">ememe</a></td>
+<td>Multiple EM for Motif Elicitation</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/enetnglyc.html">enetnglyc</a></td>
+<td>Reports N-glycosylation sites in human proteins</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/enetoglyc.html">enetoglyc</a></td>
+<td>Reports mucin type GalNAc O-glycosylation sites in mammalian proteins</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/enetphos.html">enetphos</a></td>
+<td>Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/epestfind.html">epestfind</a></td>
+<td>Finds PEST motifs as potential proteolytic cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/eprop.html">eprop</a></td>
+<td>Reports propeptide cleavage sites in proteins</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/esignalp.html">esignalp</a></td>
+<td>Reports protein signal cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/etmhmm.html">etmhmm</a></td>
+<td>Reports transmembrane helices</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/cbstools/eyinoyang.html">eyinoyang</a></td>
+<td>Reports O-(beta)-GlcNAc attachment sites</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/fuzzpro.html">fuzzpro</a></td>
+<td>Search for patterns in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/fuzztran.html">fuzztran</a></td>
+<td>Search for patterns in protein sequences (translated)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/helixturnhelix.html">helixturnhelix</a></td>
+<td>Identify nucleic acid-binding motifs in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/oddcomp.html">oddcomp</a></td>
+<td>Identify proteins with specified sequence word composition</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/meme/omeme.html">omeme</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/patmatdb.html">patmatdb</a></td>
+<td>Searches protein sequences with a sequence motif</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/patmatmotifs.html">patmatmotifs</a></td>
+<td>Scan a protein sequence with motifs from the PROSITE database</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepcoil.html">pepcoil</a></td>
+<td>Predicts coiled coil regions in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/preg.html">preg</a></td>
+<td>Regular expression search of protein sequence(s)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pscan.html">pscan</a></td>
+<td>Scans protein sequence(s) with fingerprints from the PRINTS database</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/sigcleave.html">sigcleave</a></td>
+<td>Reports on signal cleavage sites in a protein sequence</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+Jon Ison
+<br>
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+<p>
+Please report all bugs to the EMBOSS bug team (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+
+<p>This program is an EMBASSY wrapper to a program written by Timothy L. Bailey as part of his meme package.
+<p>Please report any bugs to the EMBOSS bug team in the first instance, not to Timothy L. Bailey.
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,834 @@
+                                  ehmmpfam
+
+
+
+Wiki
+
+   The master copies of EMBOSS documentation are available at
+   http://emboss.open-bio.org/wiki/Appdocs on the EMBOSS Wiki.
+
+   Please help by correcting and extending the Wiki pages.
+
+Function
+
+   Search one or more sequences against an HMM database
+
+Description
+
+   EMBASSY HMMER is a suite of application wrappers to the original hmmer
+   v2.3.2 applications written by Sean Eddy. hmmer v2.3.2 must be
+   installed on the same system as EMBOSS and the location of the hmmer
+   executables must be defined in your path for EMBASSY HMMER to work.
+
+   Usage:
+   ehmmpfam [options] hmmfile seqfile outfile
+
+   The outfile parameter is new to EMBASSY HMMER.
+
+   hmmpfam reads a sequence file and compares each sequence in it, one at
+   a time, against all the HMMs in a file looking for signifcantly similar
+   sequence matches. hmmfile will be looked for first in the current
+   working directory, then in a directory named by the environment
+   variable HMMERDB. This lets administrators install HMM library(s) such
+   as Pfam in a common location. There is a separate output report
+   (written to file for each sequence in seqfile. This report consists of
+   three sections: a ranked list of the best scoring HMMs, a list of the
+   best scoring domains in order of their occurrence in the sequence, and
+   alignments for all the best scoring domains. A sequence score may be
+   higher than a domain score for the same sequence if there is more than
+   one domain in the sequence; the sequence score takes into account all
+   the domains. All sequences scoring above the -E and -T cutoffs are
+   shown in the first list, then every domain found in this list is shown
+   in the second list of domain hits. If desired, E-value and bit score
+   thresholds may also be applied to the domain list using the -domE and
+   -domT options.
+
+Algorithm
+
+   Please read the Userguide.pdf distributed with the original HMMER and
+   included in the EMBASSY HMMER distribution under the DOCS directory.
+
+Usage
+
+   Here is a sample session with ehmmpfam
+
+
+% ehmmpfam ../ehmmcalibrate-ex2-keep/myhmmso 7LES_DROME myhmmso.ehmmpfam -A 10 -
+E 10
+Search one or more sequences against an HMM database.
+
+
+/shared/software/bin/hmmpfam -A 10 -E 10.000000 -T -1000000.000000 -Z 59021 --do
+mE 1000000.000000 --domT -1000000.000000  --informat FASTA ../ehmmcalibrate-ex2-
+keep/myhmmso ./ehmmpfam-1234567890.1234
+
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+Command line arguments
+
+   Where possible, the same command-line qualifier names and parameter
+   order is used as in the original hmmer. There are however several
+   unavoidable differences and these are clearly documented in the "Notes"
+   section below.
+
+   More or less all options documented as "expert" in the original hmmer
+   user guide are given in ACD as "advanced" options (-options must be
+   specified on the command-line in order to be prompted for a value for
+   them).
+
+Search one or more sequences against an HMM database.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-hmmfile]           infile     File of HMMs.
+  [-seqfile]           seqall     File of sequences.
+   -a                  integer    [100] Limits the alignment output to the
+                                  best scoring domains. -A0 shuts off the
+                                  alignment output and can be used to reduce
+                                  the size of output files. (Any integer
+                                  value)
+   -e                  float      [10.] Set the E-value cutoff for the
+                                  per-sequence ranked hit list to , where
+                                   is a positive real number. The default
+                                  is 10.0. Hits with E-values better than
+                                  (less than) this threshold will be shown.
+                                  (Any numeric value)
+  [-outfile]           outfile    [*.ehmmpfam] There is a separate output
+                                  report for each sequence in seqfile. This
+                                  report consists of three sections: a ranked
+                                  list of the best scoring HMMs, a list of the
+                                  best scoring domains in order of their
+                                  occurrence in the sequence, and alignments
+                                  for all the best scoring domains.
+
+   Additional (Optional) qualifiers:
+   -nuc                boolean    [N] Specify that models and sequence are
+                                  nucleic acid, not protein. Other HMMER
+                                  programs autodetect this; but because of the
+                                  order in which hmmpfam accesses data, it
+                                  can't reliably determine the correct
+                                  'alphabet' by itself.
+   -t                  float      [-1000000.] Set the bit score cutoff for the
+                                  per-sequence ranked hit list to , where
+                                   is a real number. The default is
+                                  negative infinity; by default, the threshold
+                                  is controlled by E-value and not by bit
+                                  score. Hits with bit scores better than
+                                  (greater than) this threshold will be shown.
+                                  (Any numeric value)
+   -z                  integer    [59021] Calculate the E-value scores as if
+                                  we had seen a sequence database of
+                                  sequences. The default is arbitrarily set to
+                                  59021, the size of Swissprot 34. (Any
+                                  integer value)
+
+   Advanced (Unprompted) qualifiers:
+   -acc                boolean    [N] Report HMM accessions instead of names
+                                  in the output reports. Useful for
+                                  high-throughput annotation, where the data
+                                  are being parsed for storage in a relational
+                                  database.
+   -compat             boolean    [N] Use the output format of HMMER 2.1.1,
+                                  the 1998-2001 public release; provided so
+                                  2.1.1 parsers don't have to be rewritten.
+   -cpu                integer    [0] Sets the maximum number of CPUs that the
+                                  program will run on. The default is to use
+                                  all CPUs in the machine. Overrides the HMMER
+                                  NCPU environment variable. Only affects
+                                  threaded versions of HMMER (the default on
+                                  most systems). (Any integer value)
+   -cutga              boolean    [N] Use Pfam GA (gathering threshold) score
+                                  cutoffs. Equivalent to -globT  -domT
+                                  , but the GA1 and GA2 cutoffs are read
+                                  from each HMM in the input HMM database
+                                  individually. hmmbuild puts these cutoffs
+                                  there if the alignment file was annotated in
+                                  a Pfam-friendly alignment format (extended
+                                  SELEX or Stockholm format) and the optional
+                                  GA annotation line was present. If these
+                                  cutoffs are not set in the HMM file, -cut ga
+                                  doesn't work.
+   -cuttc              boolean    [N] Use Pfam TC (trusted cutoff) score
+                                  cutoffs. Equivalent to -globT  -domT
+                                  , but the TC1 and TC2 cutoffs are read
+                                  from each HMM in hmmfile individually.
+                                  hmmbuild puts these cutoffs there if the
+                                  alignment file was annotated in a
+                                  Pfam-friendly alignment format (extended
+                                  SELEX or Stockholm format) and the optional
+                                  TC annotation line was present. If these
+                                  cutoffs are not set in the HMM file, -cut tc
+                                  doesn't work.
+   -cutnc              boolean    [N] Use Pfam NC (noise cutoff) score
+                                  cutoffs. Equivalent to -globT  -domT
+                                  , but the NC1 and NC2 cutoffs are read
+                                  from each HMM in hmmfile individually.
+                                  hmmbuild puts these cutoffs there if the
+                                  alignment file was annotated in a
+                                  Pfam-friendly alignment format (extended
+                                  SELEX or Stockholm format) and the optional
+                                  NC annotation line was present. If these
+                                  cutoffs are not set in the HMM file, -cut nc
+                                  doesn't work.
+   -dome               float      [1000000.] Set the E-value cutoff for the
+                                  per-domain ranked hit list to , where
+                                  is a positive real number. The default is
+                                  infinity; by default, all domains in the
+                                  sequences that passed the frst threshold
+                                  will be reported in the second list, so that
+                                  the number of domains reported in the
+                                  per-sequence list is consistent with the
+                                  number that appear in the per-domain list.
+                                  (Any numeric value)
+   -domt               float      [-1000000.] Set the bit score cutoff for the
+                                  per-domain ranked hit list to , where
+                                   is a real number. The default is
+                                  negative infinity; by default, all domains
+                                  in the sequences that passed the frst
+                                  threshold will be reported in the second
+                                  list, so that the number of domains reported
+                                  in the per-sequence list is consistent with
+                                  the number that appear in the per-domain
+                                  list. Important note: only one domain in a
+                                  sequence is absolutely controlled by this
+                                  parameter, or by --domT. The second and
+                                  subsequent domains in a sequence have a de
+                                  facto bit score threshold of 0 because of
+                                  the details of how HMMER works. HMMER
+                                  requires at least one pass through the main
+                                  model per sequence; to do more than one pass
+                                  (more than one domain) the multidomain
+                                  alignment must have a better score than the
+                                  single domain alignment, and hence the extra
+                                  domains must contribute positive score. See
+                                  the Users' Guide for more detail. (Any
+                                  numeric value)
+   -forward            boolean    [N] Use the Forward algorithm instead of the
+                                  Viterbi algorithm to determine the
+                                  per-sequence scores. Per-domain scores are
+                                  still determined by the Viterbi algorithm.
+                                  Some have argued that Forward is a more
+                                  sensitive algorithm for detecting remote
+                                  sequence homologues; my experiments with
+                                  HMMER have not confrmed this, however.
+   -nulltwo            boolean    [N] Turn off the post hoc second null model.
+                                  By default, each alignment is rescored by a
+                                  postprocessing step that takes into account
+                                  possible biased composition in either the
+                                  HMM or the target sequence. This is almost
+                                  essential in database searches, especially
+                                  with local alignment models. There is a very
+                                  small chance that this postprocessing might
+                                  remove real matches, and in these cases
+                                  --null2 may improve sensitivity at the
+                                  expense of reducing specifcity by letting
+                                  biased composition hits through.
+   -pvm                boolean    [N] Run on a Parallel Virtual Machine (PVM).
+                                  The PVM must already be running. The client
+                                  program hmmpfam-pvm must be installed on
+                                  all the PVM nodes. The HMM database hmmfile
+                                  and an associated GSI index file hmmfile.gsi
+                                  must also be installed on all the PVM
+                                  nodes. (The GSI index is produced by the
+                                  program hmmindex.) Because the PVM
+                                  implementation is I/O bound, it is highly
+                                  recommended that each node have a local copy
+                                  of hmmfile rather than NFS mounting a
+                                  shared copy. Optional PVM support must have
+                                  been compiled into HMMER for -pvm to
+                                  function.
+   -xnu                boolean    [N] Turn on XNU filtering of target protein
+                                  sequences. Has no effect on nucleic acid
+                                  sequences. In trial experiments, -xnu
+                                  appears to perform less well than the
+                                  default post hoc null2 model.
+
+   Associated qualifiers:
+
+   "-seqfile" associated qualifiers
+   -sbegin2            integer    Start of each sequence to be used
+   -send2              integer    End of each sequence to be used
+   -sreverse2          boolean    Reverse (if DNA)
+   -sask2              boolean    Ask for begin/end/reverse
+   -snucleotide2       boolean    Sequence is nucleotide
+   -sprotein2          boolean    Sequence is protein
+   -slower2            boolean    Make lower case
+   -supper2            boolean    Make upper case
+   -sformat2           string     Input sequence format
+   -sdbname2           string     Database name
+   -sid2               string     Entryname
+   -ufo2               string     UFO features
+   -fformat2           string     Features format
+   -fopenfile2         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+
+Input file format
+
+  Alignment and sequence formats
+
+   Input and output of alignments and sequences is limited to the formats
+   that the original hmmer supports. These include stockholm, SELEX, MSF,
+   Clustal, Phylip and A2M /aligned FASTA (alignments) and FASTA, GENBANK,
+   EMBL, GCG, PIR (sequences). It would be fairly straightforward to adapt
+   the code to support all EMBOSS-supported formats.
+
+  Compressed input files
+
+   Automatic processing of gzipped files is not supported.
+
+   ehmmpfam reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: ../ehmmcalibrate-ex2-keep/myhmmso
+
+HMMER2.0  [2.3.2]
+NAME  rrm
+LENG  77
+ALPH  Amino
+RF    no
+CS    no
+MAP   yes
+COM   /shared/software/bin/hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --
+idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../
+data/hmmnew/rrm.sto
+COM   /shared/software/bin/hmmcalibrate --mean 350.000000 --num 5000 --sd 350.00
+0000 --seed 1 ../ehmmbuild-ex4-keep/myhmms
+NSEQ  90
+DATE  Thu Jul 15 12:00:00 2010
+CKSUM 8325
+XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
+NULT      -4  -8455
+NULE     595  -1558     85    338   -294    453  -1158    197    249    902  -10
+85   -142    -21   -313     45    531    201    384  -1998   -644
+EVD   -45.860321   0.213107
+HMM        A      C      D      E      F      G      H      I      K      L
+ M      N      P      Q      R      S      T      V      W      Y
+         m->m   m->i   m->d   i->m   i->i   d->m   d->d   b->m   m->e
+          -16      *  -6492
+     1  -1084    390  -8597  -8255  -5793  -8424  -8268   2395  -8202   2081  -1
+197  -8080  -8115  -8020  -8297  -7789  -5911   1827  -7525  -7140     1
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378    -16      *
+     2  -2140  -3785  -6293  -2251   3226  -2495   -727   -638  -2421   -545   -
+675  -5146  -5554  -4879  -1183  -2536  -1928    267     76   3171     2
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      *
+     3  -2542    458  -8584  -8273  -6055  -8452  -8531   2304  -8255   -324
+101  -8104  -8170  -8221  -8440  -7840  -5878   3145  -7857  -7333     3
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      *
+     4  -1505  -5144  -1922   -558  -1842   2472  -3303  -2213   1099  -5160  -4
+233    372  -4738   -530   1147    168    498  -4766  -5327  -1476     4
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      *
+     5  -3724  -5184    300  -3013  -1655   1803  -3353  -5245  -1569  -2686  -4
+276   3495  -1963  -1331  -1054  -1472  -3664  -4803  -5369     -2     5
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      *
+     6  -1569  -6106  -8967  -8363    555  -8531  -7279    654  -8092   2953
+-94  -8220  -7908  -1643  -7682  -7771  -6460    -59  -6191  -6284     6
+     -   -151   -504    230     45   -380    399    101   -621    211   -470   -
+713    278    399     48     91    360    113   -364   -299   -254
+     -   -178  -3113 -12684  -1600   -578   -701  -1378      *      *
+     7   -409  -5130   -215  -2987  -1709   -956    690  -5188   -395  -5144  -4
+224    729   3054  -2862  -3409    354   1293  -1381  -5321  -4644    13
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      *
+     8  -3674  -5118  -1004    639    420  -4652    176  -2050    404  -1039   -
+935     16   1755    168    147   -275    198  -1472   1889   1977    14
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      *
+     9   -408  -5134   2415   1299   -950    -66   -767  -1296  -2889  -1843  -4
+224   1084   -968  -1439  -1854    540   -314  -2304  -5320    -60    15
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      *
+    10    586   1804  -6294   -631  -1627  -1671  -4374   1029  -2223   -162   1
+172  -5147  -5554  -1870  -5058  -2327   1741   1687  -4242    687    16
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11642 -12684   -894  -1115   -701  -1378      *      *
+    11  -2134  -5144    845  -1187  -1652  -1667  -3303  -5216   -513   -801  -4
+233   1026  -1873   -543   -619    575   2956  -4766  -5327  -4644    17
+
+
+  [Part of this file has been deleted for brevity]
+
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      *
+   279  -7207  -7306  -8076  -6588  -8459  -7223  -5448  -7982  -1500  -7531  -6
+953  -6369  -7277  -5081   4236  -7139  -6862  -7777  -7053  -7277   454
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      *
+   280   -694   -163  -5922  -5286  -1204  -2048   -610   1082  -1800   1434  -2
+618  -4776   2951  -4509  -4688  -1216  -1648  -2829    202     21   455
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -  -3168 -11253   -171   -894  -1115   -701  -1378      *      *
+   281  -1412  -2132  -2007  -2293  -4366   3113  -2847  -4225  -3107  -4377  -3
+503   1660  -2881  -2661  -3396    961  -1821  -3134  -4516  -4119   456
+     -   -150   -489    232     42   -382    400    104   -627    211   -465   -
+722    274    393     51     95    359    116   -370   -296   -245
+     -  -2121   -637  -2975   -831  -1191  -6099    -21      *      *
+   282   -968  -1818  -1787  -1351  -3112    953  -1494  -2818  -1122  -2911  -2
+044  -1365  -2340  -1133   1510   1816   2121  -2205  -3137  -2649   459
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -   -228  -7899  -2816   -894  -1115  -4964    -47      *      *
+   283    840  -1663   -994    969   1159    503   -604  -1413   -325  -1594   -
+814   -688  -1996   -267   1103   -851   -755  -1179   2900  -1437   460
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -9  -7938  -8980   -894  -1115    -89  -4060      *      *
+   284  -3257  -4642   -697  -2590  -1218   -252  -2907  -4655  -1306  -2353   -
+529    482  -1607  -2459  -1398   2112   2745  -4246  -4848  -4187   461
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11183 -12226   -894  -1115   -186  -3045      *      *
+   285   2163    763  -1619  -5296   2250  -2060  -4007   1241  -4891   -489
+484  -4781   -226  -4515  -4692   -678  -1688   -813    264  -3530   462
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      *
+   286   -268   -329   -158    917   -541  -1990    350  -4851   1273  -1075
+388  -1130    233    840    993   -602    801   -595  -4964   -857   463
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      *
+   287    109   -243    672   2304  -5103  -4283    488  -4854  -1317  -2269   -
+656   -492  -1519   2679   -655   -618  -3248  -4404  -4965  -1114   464
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      *
+   288   1312   1294  -6215  -5593   -206  -1244  -4339   2188  -5201   1409
+395  -5091  -5478  -4828  -5009  -4538  -3794   1162  -4187  -3846   465
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -    -23 -11253  -6022   -894  -1115   -701  -1378      *      *
+   289  -3562    799  -5767  -2054  -1235  -2075    318    138    237   2164   1
+713  -1454  -5145  -1272   -730  -4172  -1640   1071  -3865    -34   466
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11231 -12273   -894  -1115  -1470   -646      *      *
+   290     73   1351   -674   1236  -1549  -2008   1350  -4834   1049  -2498  -3
+851   1801  -4356   1813   -115   -223  -1582  -1052  -4945  -4262   467
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11231 -12273   -894  -1115   -369  -2147      *      *
+   291  -1739   -320    777  -2654  -1419  -2051   4360  -4707  -1358  -2412   -
+689  -1300  -4399   -224    537    531   -289  -2010  -4905  -1057   468
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -11253 -12295   -894  -1115   -701  -1378      *      *
+   292  -3345  -4494   -233   -332   -563  -1986  -3051    333     99   1063  -3
+616  -3072   2953  -1026  -1490   -943  -1528  -1070  -4753  -4151   469
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -10815 -11857   -894  -1115   -701  -1378      *      *
+   293  -6409  -5751  -7614  -7636   2593  -7311  -4003  -5084  -7219   -150   -
+151  -6210  -7172   -849  -6723  -6510  -6299  -1387   4881   2807   470
+     -   -149   -500    233     43   -381    399    106   -626    210   -466   -
+720    275    394     45     96    359    117   -369   -294   -249
+     -     -1 -10749 -11791   -894  -1115   -701  -1378      *      *
+   294  -4057  -3817  -6415  -5791   3203  -1638  -4541   1679  -5412    765   1
+434  -5333  -5617  -4930  -5182  -4791  -3987   1226    750  -3959   471
+     -      *      *      *      *      *      *      *      *      *      *
+  *      *      *      *      *      *      *      *      *      *
+     -      *      *      *      *      *      *      *      *      0
+//
+
+  File: 7LES_DROME
+
+ID   7LES_DROME     STANDARD;      PRT;  2554 AA.
+AC   P13368;
+DT   01-JAN-1990 (Rel. 13, Created)
+DT   01-JAN-1990 (Rel. 13, Last sequence update)
+DT   01-NOV-1997 (Rel. 35, Last annotation update)
+DE   SEVENLESS PROTEIN (EC 2.7.1.112).
+GN   SEV.
+OS   Drosophila melanogaster (Fruit fly).
+OC   Eukaryota; Metazoa; Arthropoda; Tracheata; Hexapoda; Insecta;
+OC   Pterygota; Neoptera; Endopterygota; Diptera; Brachycera; Muscomorpha;
+OC   Ephydroidea; Drosophilidae; Drosophila.
+RN   [1]
+RP   SEQUENCE FROM N.A.
+RC   STRAIN=CANTON-S;
+RX   MEDLINE; 88282538.
+RA   BASLER K., HAFEN E.;
+RT   "Control of photoreceptor cell fate by the sevenless protein requires
+RT   a functional tyrosine kinase domain.";
+RL   Cell 54:299-311(1988).
+RN   [2]
+RP   SEQUENCE FROM N.A.
+RC   STRAIN=OREGON-R;
+RX   MEDLINE; 88329706.
+RA   BOWTELL D.L.L., SIMON M.A., RUBIN G.M.;
+RT   "Nucleotide sequence and structure of the sevenless gene of
+RT   Drosophila melanogaster.";
+RL   Genes Dev. 2:620-634(1988).
+RN   [3]
+RP   IDENTIFICATION OF FN-III REPEATS.
+RX   MEDLINE; 90199889.
+RA   NORTON P.A., HYNES R.O., RESS D.J.G.;
+RT   "Sevenless: seven found?";
+RL   Cell 61:15-16(1990).
+CC   -!- FUNCTION: RECEPTOR FOR AN EXTRACELLULAR SIGNAL REQUIRED TO
+CC       INSTRUCT A CELL TO DIFFERENTIATE INTO A R7 PHOTORECEPTOR. THE
+CC       LIGAND FOR SEV IS THE BOSS (BRIDE OF SEVENLESS) PROTEIN ON THE
+CC       SURFACE OF THE NEIGHBORING R8 CELL.
+CC   -!- CATALYTIC ACTIVITY: ATP + A PROTEIN TYROSINE = ADP +
+CC       PROTEIN TYROSINE PHOSPHATE.
+CC   -!- SUBUNIT: MAY FORM A COMPLEX WITH DRK AND SOS.
+CC   -!- SIMILARITY: BELONGS TO THE INSULIN RECEPTOR FAMILY OF TYROSINE-
+CC       PROTEIN KINASES. SEVENLESS SUBFAMILY.
+CC   -!- SIMILARITY: CONTAINS 7 FIBRONECTIN TYPE III-LIKE DOMAINS.
+CC   -!- CAUTION: UNCLEAR WHETHER THE POTENTIAL MEMBRANE SPANNING REGION
+CC       NEAR THE N-TERMINUS IS PRESENT AS A TRANSMEMBRANE DOMAIN IN THE
+CC       NATIVE PROTEIN OR SERVES AS A CLEAVED SIGNAL SEQUENCE.
+CC   --------------------------------------------------------------------------
+CC   This SWISS-PROT entry is copyright. It is produced through a collaboration
+CC   between  the Swiss Institute of Bioinformatics  and the  EMBL outstation -
+CC   the European Bioinformatics Institute.  There are no  restrictions on  its
+
+
+  [Part of this file has been deleted for brevity]
+
+FT   VARIANT    1703   1703       N -> H.
+FT   VARIANT    1730   1730       R -> K.
+FT   VARIANT    1731   1731       G -> E.
+FT   VARIANT    1741   1741       V -> M.
+FT   VARIANT    2271   2271       R -> C.
+FT   CONFLICT   1823   1823       E -> Q (IN REF. 2).
+SQ   SEQUENCE   2554 AA;  287107 MW;  1143D891 CRC32;
+     MTMFWQQNVD HQSDEQDKQA KGAAPTKRLN ISFNVKIAVN VNTKMTTTHI NQQAPGTSSS
+     SSNSQNASPS KIVVRQQSSS FDLRQQLARL GRQLASGQDG HGGISTILII NLLLLILLSI
+     CCDVCRSHNY TVHQSPEPVS KDQMRLLRPK LDSDVVEKVA IWHKHAAAAP PSIVEGIAIS
+     SRPQSTMAHH PDDRDRDRDP SEEQHGVDER MVLERVTRDC VQRCIVEEDL FLDEFGIQCE
+     KADNGEKCYK TRCTKGCAQW YRALKELESC QEACLSLQFY PYDMPCIGAC EMAQRDYWHL
+     QRLAISHLVE RTQPQLERAP RADGQSTPLT IRWAMHFPEH YLASRPFNIQ YQFVDHHGEE
+     LDLEQEDQDA SGETGSSAWF NLADYDCDEY YMCEILEALI PYTQYRFRFE LPFGENRDEV
+     LYSPATPAYQ TPPEGAPISA PVIEHLMGLD DSHLAVHWHP GRFTNGPIEG YRLRLSSSEG
+     NATSEQLVPA GRGSYIFSQL QAGTNYTLAL SMINKQGEGP VAKGFVQTHS ARNEKPAKDL
+     TESVLLVGRR AVMWQSLEPA GENSMIYQSQ EELADIAWSK REQQLWLLNV HGELRSLKFE
+     SGQMVSPAQQ LKLDLGNISS GRWVPRRLSF DWLHHRLYFA MESPERNQSS FQIISTDLLG
+     ESAQKVGESF DLPVEQLEVD ALNGWIFWRN EESLWRQDLH GRMIHRLLRI RQPGWFLVQP
+     QHFIIHLMLP QEGKFLEISY DGGFKHPLPL PPPSNGAGNG PASSHWQSFA LLGRSLLLPD
+     SGQLILVEQQ GQAASPSASW PLKNLPDCWA VILLVPESQP LTSAGGKPHS LKALLGAQAA
+     KISWKEPERN PYQSADAARS WSYELEVLDV ASQSAFSIRN IRGPIFGLQR LQPDNLYQLR
+     VRAINVDGEP GEWTEPLAAR TWPLGPHRLR WASRQGSVIH TNELGEGLEV QQEQLERLPG
+     PMTMVNESVG YYVTGDGLLH CINLVHSQWG CPISEPLQHV GSVTYDWRGG RVYWTDLARN
+     CVVRMDPWSG SRELLPVFEA NFLALDPRQG HLYYATSSQL SRHGSTPDEA VTYYRVNGLE
+     GSIASFVLDT QQDQLFWLVK GSGALRLYRA PLTAGGDSLQ MIQQIKGVFQ AVPDSLQLLR
+     PLGALLWLER SGRRARLVRL AAPLDVMELP TPDQASPASA LQLLDPQPLP PRDEGVIPMT
+     VLPDSVRLDD GHWDDFHVRW QPSTSGGNHS VSYRLLLEFG QRLQTLDLST PFARLTQLPQ
+     AQLQLKISIT PRTAWRSGDT TRVQLTTPPV APSQPRRLRV FVERLATALQ EANVSAVLRW
+     DAPEQGQEAP MQALEYHISC WVGSELHEEL RLNQSALEAR VEHLQPDQTY HFQVEARVAA
+     TGAAAGAASH ALHVAPEVQA VPRVLYANAE FIGELDLDTR NRRRLVHTAS PVEHLVGIEG
+     EQRLLWVNEH VELLTHVPGS APAKLARMRA EVLALAVDWI QRIVYWAELD ATAPQAAIIY
+     RLDLCNFEGK ILQGERVWST PRGRLLKDLV ALPQAQSLIW LEYEQGSPRN GSLRGRNLTD
+     GSELEWATVQ PLIRLHAGSL EPGSETLNLV DNQGKLCVYD VARQLCTASA LRAQLNLLGE
+     DSIAGQLAQD SGYLYAVKNW SIRAYGRRRQ QLEYTVELEP EEVRLLQAHN YQAYPPKNCL
+     LLPSSGGSLL KATDCEEQRC LLNLPMITAS EDCPLPIPGV RYQLNLTLAR GPGSEEHDHG
+     VEPLGQWLLG AGESLNLTDL LPFTRYRVSG ILSSFYQKKL ALPTLVLAPL ELLTASATPS
+     PPRNFSVRVL SPRELEVSWL PPEQLRSESV YYTLHWQQEL DGENVQDRRE WEAHERRLET
+     AGTHRLTGIK PGSGYSLWVQ AHATPTKSNS SERLHVRSFA ELPELQLLEL GPYSLSLTWA
+     GTPDPLGSLQ LECRSSAEQL RRNVAGNHTK MVVEPLQPRT RYQCRLLLGY AATPGAPLYH
+     GTAEVYETLG DAPSQPGKPQ LEHIAEEVFR VTWTAARGNG APIALYNLEA LQARSDIRRR
+     RRRRRRNSGG SLEQLPWAEE PVVVEDQWLD FCNTTELSCI VKSLHSSRLL LFRVRARSLE
+     HGWGPYSEES ERVAEPFVSP EKRGSLVLAI IAPAAIVSSC VLALVLVRKV QKRRLRAKKL
+     LQQSRPSIWS NLSTLQTQQQ LMAVRNRAFS TTLSDADIAL LPQINWSQLK LLRFLGSGAF
+     GEVYEGQLKT EDSEEPQRVA IKSLRKGASE FAELLQEAQL MSNFKHENIV RLVGICFDTE
+     SISLIMEHME AGDLLSYLRA ARATSTQEPQ PTAGLSLSEL LAMCIDVANG CSYLEDMHFV
+     HRDLACRNCL VTESTGSTDR RRTVKIGDFG LARDIYKSDY YRKEGEGLLP VRWMSPESLV
+     DGLFTTQSDV WAFGVLCWEI LTLGQQPYAA RNNFEVLAHV KEGGRLQQPP MCTEKLYSLL
+     LLCWRTDPWE RPSFRRCYNT LHAISTDLRR TQMASATADT VVSCSRPEFK VRFDGQPLEE
+     HREHNERPED ENLTLREVPL KDKQLYANEG VSRL
+//
+
+Output file format
+
+   ehmmpfam outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
+
+  Output files for usage example
+
+  File: myhmmso.ehmmpfam
+
+hmmpfam - search one or more sequences against HMM database
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:                 ../ehmmcalibrate-ex2-keep/myhmmso
+Sequence file:            ./ehmmpfam-1234567890.1234
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query sequence: 7LES_DROME
+Accession:      [none]
+Description:    P13368 SEVENLESS PROTEIN (EC 2.7.1.112).
+
+Scores for sequence family classification (score includes all domains):
+Model    Description                                    Score    E-value  N
+-------- -----------                                    -----    ------- ---
+pkinase  Protein kinase domain                          314.6    1.2e-90   1
+fn3      Fibronectin type III domain                    176.6      4e-49   6
+
+Parsed for domains:
+Model    Domain  seq-f seq-t    hmm-f hmm-t      score  E-value
+-------- ------- ----- -----    ----- -----      -----  -------
+fn3        1/6     437   522 ..     1    84 []    48.3  1.7e-10
+fn3        2/6     825   914 ..     1    84 []    13.4     0.09
+fn3        3/6    1292  1389 ..     1    84 []    15.9     0.05
+fn3        4/6    1799  1891 ..     1    84 []    63.5  4.5e-15
+fn3        5/6    1899  1978 ..     1    84 []    15.2     0.06
+fn3        6/6    1993  2107 ..     1    84 []    20.3    0.018
+pkinase    1/1    2209  2483 ..     1   294 []   314.6  1.2e-90
+
+Alignments of top-scoring domains:
+fn3: domain 1 of 6, from 437 to 522: score 48.3, E = 1.7e-10
+                CS    C CCCCEEEEEECCTTCCEEEEECCC CCCCCCCEEEEE.ECCCCCC
+                   *->P.saPtnltvtdvtstsltlsWsppt.gngpitgYevtyRqpkngge
+                      P saP   + +++ ++ l ++W p +  ngpi+gY++++ +++ g+
+  7LES_DROME   437    PiSAPVIEHLMGLDDSHLAVHWHPGRfTNGPIEGYRLRL-SSSEGNA 482
+
+                CS CCCCEEECCCCCECECCEEEEECCCCEEEEEECCC CCCC
+                   wneltvpgtttsytltgLkPgteYevrVqAvnggG.GpeS<-*
+                   + e+ vp    sy+++ L++gt+Y++ +  +n +G+Gp
+  7LES_DROME   483 TSEQLVPAGRGSYIFSQLQAGTNYTLALSMINKQGeGPVA    522
+
+fn3: domain 2 of 6, from 825 to 914: score 13.4, E = 0.09
+                CS    CCCCCEEEEEECCTTCCEEEEECCC       CCCCCCCEEEEE.EC
+                   *->PsaPtnltvtdvtstsltlsWsppt.......gngpitgYevtyRqp
+                       ++P  l++   ++  + +sW+ p++++ ++ + +   +Ye+++  +
+  7LES_DROME   825    GGKPHSLKALL-GAQAAKISWKEPErnpyqsaDAARSWSYELEV-LD 869
+
+                CS CCCCCCCCCE EECCCCCECECCEEEEECCCCEEEEEECCC  CCCC
+                   knggewnelt.vpgtttsytltgLkPgteYevrVqAvnggG..GpeS<-*
+
+
+  [Part of this file has been deleted for brevity]
+
+                CS CCEEECCCCCECECCEEEEECCCCEEEEEECCC CCCC
+                   eltvpgtttsytltgLkPgteYevrVqAvnggG.GpeS<-*
+                   +++v g+ t ++++ L+P t+Y+ r+    ++++G++
+  7LES_DROME  1941 RRNVAGNHTKMVVEPLQPRTRYQCRLLLGYAATpGAPL    1978
+
+fn3: domain 6 of 6, from 1993 to 2107: score 20.3, E = 0.018
+                CS    CCCCCEEEEEECCTTCCEEEEECCC CCCCCCCEEEEE.ECCCCCC
+                   *->PsaPtnltvtdvtstsltlsWsppt.gngpitgYevtyRqpkngge.
+                      Ps+P+ ++ + + +  ++++W++++++++pi  Y+++   ++++  +
+  7LES_DROME  1993    PSQPGKPQLEHIAEEVFRVTWTAARgNGAPIALYNLEA-LQARSDIr 2038
+
+                CS                            CCCCEEECCCC CECECCEEEEE
+                   ...........................wneltvpgttt.sytltgLkPgt
+                   +++++++++++++ ++ +  +++   ++++l+  +tt  s++++ L   +
+  7LES_DROME  2039 rrrrrrrrnsggsleqlpwaeepvvveDQWLDFCNTTElSCIVKSLHSSR 2088
+
+                CS CCCCEEEEEE CCC CCCC
+                   eYevrVqAvn.ggG.GpeS<-*
+                      +rV+A++ ++G Gp+S
+  7LES_DROME  2089 LLLFRVRARSlEHGwGPYS    2107
+
+pkinase: domain 1 of 1, from 2209 to 2483: score 314.6, E = 1.2e-90
+                   *->yelleklGeGsfGkVykakhkd...ktgkiVAvKilkkekesikekr
+                      ++ll+ lG+G+fG+Vy++++k+++++  ++VA+K l+k+++++ e
+  7LES_DROME  2209    LKLLRFLGSGAFGEVYEGQLKTedsEEPQRVAIKSLRKGASEFAE-- 2253
+
+                   flrEiqilkrLsHpNIvrligvfedtddhlylvmEymegGdLfdylrrng
+                   +l E+q++ +++H+NIvrl g++  + +++ l+mE+me GdL++ylr+ +
+  7LES_DROME  2254 LLQEAQLMSNFKHENIVRLVGICF-DTESISLIMEHMEAGDLLSYLRAAR 2302
+
+                   ..........gplsekeakkialQilrGleYLHsngivHRDLKpeNILld
+                    +++++++++  ls  e++ ++ ++++G +YL+++++vHRDL+ +N+L++
+  7LES_DROME  2303 atstqepqptAGLSLSELLAMCIDVANGCSYLEDMHFVHRDLACRNCLVT 2352
+
+                   en......dgtvKiaDFGLArlle..sssklttfvGTpwYmmAPEvileg
+                   e +++++++ tvKi+DFGLAr++++++++++ + +  p+++m+PE  l +
+  7LES_DROME  2353 EStgstdrRRTVKIGDFGLARDIYksDYYRKEGEGLLPVRWMSPES-LVD 2401
+
+                   rgysskvDvWSlGviLyElltggplfpgadlpaftggdevdqliifvlkl
+                     +++++DvW++Gv+++E+lt g                         ++
+  7LES_DROME  2402 GLFTTQSDVWAFGVLCWEILTLG-------------------------QQ 2426
+
+                   PfsdelpktridpleelfriikrpglrlplpsncSeelkdLlkkcLnkDP
+                   P+         ++ +e+++++k+ g+rl +p+ c e l++Ll  c++ DP
+  7LES_DROME  2427 PYAA-------RNNFEVLAHVKE-GGRLQQPPMCTEKLYSLLLLCWRTDP 2468
+
+                   skRpGsatakeilnhpwf<-*
+                   ++Rp   +++ + n +
+  7LES_DROME  2469 WERP---SFRRCYNTLHA    2483
+
+//
+
+Data files
+
+   None.
+
+Notes
+
+  1. Command-line arguments
+
+   The following original HMMER options are not supported:
+-h         : Use -help to get help information instead.
+-informat  : All common sequence file formats are supported automatically.
+-n         : Use -nuc instead (-n causes problems for GUI developers)
+
+   The following additional options are provided:
+-outfile   : Output file with HMM.
+
+  2. Installing EMBASSY HMMER
+
+   The EMBASSY HMMER package contains "wrapper" applications providing an
+   EMBOSS-style interface to the applications in the original HMMER
+   package version 2.3.2 developed by Sean Eddy. Please read the file
+   INSTALL in the EMBASSY HMMER package distribution for installation
+   instructions.
+
+  3. Installing original HMMER
+
+   To use EMBASSY HMMER, you will first need to download and install the
+   original HMMER package. Please read the file 00README in the the
+   original HMMER package distribution for installation instructions:
+WWW home:       http://hmmer.wustl.edu/
+Distribution:   ftp://ftp.genetics.wustl.edu/pub/eddy/hmmer/
+
+  4. Setting up HMMER
+
+   For the EMBASSY HMMER package to work, the directory containing the
+   original HMMER executables *must* be in your path. For example if you
+   executables were installed to "/usr/local/hmmer/bin", then type:
+set path=(/usr/local/hmmer/bin/ $path)
+rehash
+
+  5. Getting help
+
+   Please read the Userguide.pdf distributed with the original HMMER and
+   included in the EMBASSY HMMER distribution under the DOCS directory.
+   The first 3 chapters (Introduction, Installation and Tutorial) are
+   particularly useful.
+
+   Please read the 'Notes' section below for a description of the
+   differences between the original and EMBASSY HMMER, particularly which
+   application command line options are supported.
+
+References
+
+   None.
+
+Warnings
+
+  Types of input data
+
+   hmmer v3.2.1 and therefore EMBASSY HMMER is only recommended for use
+   with protein sequences. If you provide a non-protein sequence you will
+   be reprompted for a protein sequence. To accept nucleic acid sequences
+   you must replace instances of < type: "protein" > in the application
+   ACD files with .
+
+  Environment variables
+
+   The original hmmer uses BLAST environment variables (below), if
+   defined, to locate files. The EMBASSY HMMER does not.
+BLASTDB   location of sequence databases to be searched
+BLASMAT   location of substitution matrices
+HMMERDB   location of HMMs
+
+  Disk space requirements
+
+   ehmmpfam makes a temporary local copy of its input sequence data. You
+   must ensure there is sufficient disk space for this in the directory
+   that ehmmpfam is run.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+                    Program name                   Description
+                    ehmmalign     Align sequences to an HMM profile
+                    ehmmbuild     Build a profile HMM from an alignment
+   ehmmcalibrate    Calibrate HMM search statistics
+                    ehmmconvert   Convert between profile HMM file formats
+                    ehmmemit      Generate sequences from a profile HMM
+                    ehmmfetch     Retrieve an HMM from an HMM database
+                    ehmmindex     Create a binary SSI index for an HMM database
+                    ehmmsearch    Search a sequence database with a profile HMM
+                    oalistat      Statistics for multiple alignment files
+                    ohmmalign     Align sequences with an HMM
+                    ohmmbuild     Build HMM
+   ohmmcalibrate    Calibrate a hidden Markov model
+                    ohmmconvert   Convert between HMM formats
+                    ohmmemit      Extract HMM sequences
+                    ohmmfetch     Extract HMM from a database
+                    ohmmindex     Index an HMM database
+                    ohmmpfam      Align single sequence with an HMM
+                    ohmmsearch    Search sequence database with an HMM
+
+Author(s)
+
+                    This program is an EMBOSS conversion of a program written by Sean Eddy
+                    as part of his HMMER package.
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author. Jon
+                    Ison
+   European         Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton,         Cambridge CB10 1SD, UK
+
+                    Please report all bugs to the EMBOSS bug team
+                    (emboss-bug (c) emboss.open-bio.org) not to the original author.
+
+                    This program is an EMBASSY wrapper to a program written by Sean Eddy as
+                    part of his hmmer package.
+
+                    Please report any bugs to the EMBOSS bug team in the first instance,
+                    not to Sean Eddy.
+
+History
+
+Target users
+
+                    This program is intended to be used by everyone and everything, from
+                    naive users to embedded scripts.

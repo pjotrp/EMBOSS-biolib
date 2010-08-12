@@ -1,0 +1,65 @@
+Reports protein signal cleavage sites
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+   -type               menu       [euk] Organism type to use (Values: euk
+                                  (euk); gramp (gram positive); gramn (gram
+                                  negative))
+   -method             menu       [nn+hmm] Method to use (Values: nn+hmm
+                                  (Neural net plus hmm); nn (Neural net); hmm
+                                  (Hmm))
+   -format             menu       [full] Output format (Values: full (Full);
+                                  summary (Summary); short (Short))
+   -gmode              menu       [none] Graphics output (Values: none (none);
+                                  gif (gif); eps (eps); gif+eps (gif+eps); ps
+                                  (ps))
+   -synver             menu       [3.0] Signalp version weights (Values: 1.0
+                                  (1.0); 1.1 (1.1); 2.0 (2.0); 3.0 (3.0))
+  [-outfile]           outfile    [*.esignalp] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -truncate           integer    [0] Truncate sequence to n N-terminal
+                                  residues (0=off) (Integer 0 or more)
+   -keepall            boolean    [N] Keep all gnuplot files
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

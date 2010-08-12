@@ -1,0 +1,102 @@
+application: einverted [
+  documentation: "Finds inverted repeats in nucleotide sequences"
+  groups: "Nucleic:Repeats, Nucleic:2D structure"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+    relations: "EDAM:0000157 topic Sequence composition"
+    relations: "EDAM:0000379 operation Repeat sequence identification"
+    relations: "EDAM:0000278 operation RNA secondary structure prediction"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "dna"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  integer: gap [
+    default: "12"
+    standard: "Y"
+    information: "Gap penalty"
+    relations: "EDAM:0002137 data Gap penalty"
+  ]
+
+  integer: threshold [
+    default: "50"
+    standard: "Y"
+    information: "Minimum score threshold"
+    relations: "EDAM:0002146 data Threshold"
+  ]
+
+  integer: match [
+    default: "3"
+    standard: "Y"
+    information: "Match score"
+    relations: "EDAM:0001401 data Match reward score"
+  ]
+
+  integer: mismatch [
+    default: "-4"
+    standard: "Y"
+    information: "Mismatch score"
+    relations: "EDAM:0001402 data Mismatch penalty score"
+  ]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: maxrepeat [
+    additional: "Y"
+    default: "2000"
+    information: "Maximum extent of repeats"
+    help: "Maximum separation between the start of repeat and the end
+           of the inverted repeat (the default is 2000 bases)."
+    relations: "EDAM:0001249 data Sequence length"
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    extension: "inv"
+    knowntype: "inverted output"
+    information: "Sanger Centre program inverted output file"
+    relations: "EDAM:0000969 data Free text"
+  ]
+
+  seqout: outseq [
+    parameter: "Y"
+    nullok: "Y"
+    information: "File for sequence of regions of inverted
+                  repeats."
+    help: "The sequence of the inverted repeat regions without gap
+           characters."
+    relations: "EDAM:0000848 data Sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+endsection: output

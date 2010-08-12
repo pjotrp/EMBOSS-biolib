@@ -1,0 +1,33 @@
+application: embossversion [
+  documentation: "Reports the current EMBOSS version number"
+  groups: "Utils:Misc"
+    relations: "EDAM:0000088 topic Literature and documentation"
+    relations: "EDAM:0000515 operation Tool information retrieval"
+]
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  boolean: full [
+    additional: "Y"
+    information: "Show all EMBOSS version information fields"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    additional: "Y"
+    default: "stdout"
+    knowntype: "embossversion output"
+    relations: "EDAM:0001671 data Tool version information"
+  ]
+
+endsection: output

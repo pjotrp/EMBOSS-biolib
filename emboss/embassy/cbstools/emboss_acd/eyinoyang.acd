@@ -1,0 +1,79 @@
+application: eyinoyang [
+  documentation: "Reports O-(beta)-GlcNAc attachment sites"
+  groups: "Protein:Motifs"
+  embassy: "cbstools"
+  external: "yinOyang CBStools website http://www.cbs.dtu.dk/services/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+    aligned: "Y"
+    relations: "EDAM: Sequence alignment data"                             
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: plot [
+    default: "N"
+    information: "Produce graphics"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  list: format [
+    header:   "Output format"
+    default: "short"
+    minimum: "1"
+    maximum: "1"
+    values: "short:short, long:long"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Format"
+    relations: "EDAM: Generic string array"                                
+  ]
+
+  boolean: netphos [
+    default: "N"
+    information: "Run netphos and predict Yin-Yang sites"
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  float: threshold [
+    default: "0.5"
+    minimum: "0.0"
+    maximum: "1.0"
+    information: "Report netphos only scores above this value"
+    relations: "EDAM: Generic float"                                       
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "eyinoyang output"
+    relations:  "EDAM:Protein post-translation modification site report"   
+  ]
+
+endsection: output

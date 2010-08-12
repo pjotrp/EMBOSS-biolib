@@ -1,0 +1,60 @@
+Mixed parsimony algorithm
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-infile]            infile     Phylip mix program input file
+*  -datasets           integer    [0] How many data sets (Any integer value)
+   -method             menu       [Wag] Choose the method to use (Values: Wag
+                                  (Wagner); Cam (Camin-Sokal); Mix (Mixed))
+*  -randseed           integer    [0] Random number seed (must be odd) (Any
+                                  integer value)
+*  -randtimes          integer    [0] Number of times to jumble (Any integer
+                                  value)
+   -og                 toggle     [N] Outgroup root
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+*  -valthresh          float      [1.0] Threshold value (Number 1.000 or more)
+  [-outfile]           outfile    [emix.outfile] Phylip mix program output
+                                  file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [emix.treefile] Phylip tree output file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -ancestral          boolean    [N] Use ancestral states in input file
+   -multsets           toggle     [N] Analyze multiple data sets
+   -[no]besttree       toggle     [Y] Search for best tree
+*  -random             toggle     [N] Randomize input order of species
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -statesatnodes      boolean    [N] Print states at all nodes of tree
+   -steps              boolean    [N] Print out steps in each character
+   -[no]drawtree       boolean    [Y] Draw tree
+
+   Advanced (Unprompted) qualifiers:
+   -thresh             toggle     [N] Use Threshold parsimony
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-treefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

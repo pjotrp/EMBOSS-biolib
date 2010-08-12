@@ -1,0 +1,346 @@
+                           SSEMATCH documentation
+
+
+
+CONTENTS
+
+   1.0 SUMMARY
+   2.0 INPUTS & OUTPUTS
+   3.0 INPUT FILE FORMAT
+   4.0 OUTPUT FILE FORMAT
+   5.0 DATA FILES
+   6.0 USAGE
+   7.0 KNOWN BUGS & WARNINGS
+   8.0 NOTES
+   9.0 DESCRIPTION
+   10.0 ALGORITHM
+   11.0 RELATED APPLICATIONS
+   12.0 DIAGNOSTIC ERROR MESSAGES
+   13.0 AUTHORS
+   14.0 REFERENCES
+
+1.0 SUMMARY
+
+   Search a DCF file for secondary structure matches
+
+2.0 INPUTS & OUTPUTS
+
+   Reads a DCF file (domain classification file) and a file of secondary
+   structure (query) and writes DCF files containing the top-scoring
+   matches (domains) between the query and domains from the DCF file. The
+   secondary strructure file contains a (1) secondary structure element
+   map (a string where each character represents a secondary structure
+   element) and (2) a secondary structure string (each character
+   represents an amino acid residue) for a given query. Matches are found
+   by global alignment of (1) element maps and (2) strings (individual
+   residues) to generate the two DCF (output) files.
+   The DCF input file must contain domain secondary structure information,
+   which can be added by using DOMAINSSE.
+   The names of the secondary structure file, DCF files (input and output)
+   and number of top-scoring matches to report are specified by the user.
+   A log file is also written.
+
+3.0 INPUT FILE FORMAT
+
+   Domain classification file
+   The format of the DCF file is described in the SCOPPARSE documentation.
+   The DCF input file must contain domain secondary structure information,
+   which can be added by using DOMAINSSE.
+   Secondary structure file
+   The format of the secondary structure file (Figure 1) is identical to
+   the SS and SE records from a DCF file (see DOMAINSSE documentation.).
+   The records are as follows:
+     * (1) SS - Secondary structure assignment (per residue). A simplified
+       3-state assignment: H (helix), E (extended, beta strand) and L
+       (loop, open coil) should be used.
+     * (2) SE - Secondary structure element assignment (per secondary
+       structure element). The same 3-state assignment as for the SS
+       record should be used.
+
+   Note that if the file contains secondary structure characters other
+   than H, E and L they will be converted before they are used by SSEMATCH
+   (see NOTES below).
+
+  Input files for usage example
+
+  File: sse.in
+
+SE   HEEE
+SS   SEQUENCE    43 AA;   5411 MW;  61C5458D CRC32;
+     LLLLLLHHHH EEEEEEEEEE EEEEEEEEEE EELLLEEEEE LLL
+
+  File: ../domainsse-keep/domainsse.out
+
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+SE   HH
+XX
+SS   SEQUENCE    46 AA;   6039 MW;  32D7FC5C51294C12 CRC64;
+     LLLHHHHHHH LLHHHHHHHH HHHHHHHHHH HHHHHLLEEE EEELLL
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+SE   HEEE
+XX
+SS   SEQUENCE    43 AA;   5411 MW;  F2A5FA03304F5F35 CRC64;
+     LLLLLLHHHH EEEEEEEEEE EEEEEEEEEE EELLLEEEEE LLL
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+
+4.0 OUTPUT FILE FORMAT
+
+   The format of the DCF file is described in the SCOPPARSE documentation.
+   SSEMATCH adds an extra comment line at the top containing the score for
+   the appropriate alignment (residue or element).
+
+  Output files for usage example
+
+  File: res.dcf
+
+XX   ALIGNMENT SCORE 100.000
+XX
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+SE   HEEE
+XX
+SS   SEQUENCE    43 AA;   5411 MW;  F2A5FA03304F5F35 CRC64;
+     LLLLLLHHHH EEEEEEEEEE EEEEEEEEEE EELLLEEEEE LLL
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+
+  File: elm.dcf
+
+XX   ALIGNMENT SCORE 100.000
+XX
+ID   D1CS4A_
+XX
+EN   1CS4
+XX
+TY   SCOP
+XX
+SI   53931 CL; 54861 FO; 55073 SF; 55074 FA; 55077 DO; 55078 SO; 39418 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Ferredoxin-like
+XX
+SF   Adenylyl and guanylyl cyclase catalytic domain
+XX
+FA   Adenylyl and guanylyl cyclase catalytic domain
+XX
+DO   Adenylyl cyclase VC1, domain C1a
+XX
+OS   Dog (Canis familiaris)
+XX
+SE   HH
+XX
+SS   SEQUENCE    46 AA;   6039 MW;  32D7FC5C51294C12 CRC64;
+     LLLHHHHHHH LLHHHHHHHH HHHHHHHHHH HHHHHLLEEE EEELLL
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+
+  File: ssematch.log
+
+
+5.0 DATA FILES
+
+   SSEMATCH requires a secondary structure substitution table such as
+   SSSUB distributed with EMBOSS. An example (taken from Wallqvist et al)
+   is shown in Figure 3.
+   Figure 3 Excerpt from a DCF (output) file
+
+    H   E   C   *
+H   2 -15  -4  -7
+E -15   4  -4  -7
+C  -4  -4   2  -7
+*  -7  -7  -7   1
+
+6.0 USAGE
+
+  6.1 COMMAND LINE ARGUMENTS
+
+Search a DCF file for secondary structure matches.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-ssinfile]          infile     This option specifies the name of the file
+                                  of secondary structure (input).
+  [-dcfinfile]         infile     This option specifies the name of the DCF
+                                  file (domain classification file) (input). A
+                                  'domain classification file' contains
+                                  classification and other data for domains
+                                  from SCOP or CATH, in DCF format
+                                  (EMBL-like). The files are generated by
+                                  using SCOPPARSE and CATHPARSE. Domain
+                                  sequence information can be added to the
+                                  file by using DOMAINSEQS.
+   -maxhits            integer    [5] This option specifies the number of
+                                  top-scoring matches to report. (Any integer
+                                  value)
+  [-outssfile]         outfile    [*.ssematch] This option specifies the name
+                                  of the file containing top-scoring domains
+                                  for residue-based alignment (output).A
+                                  'domain classification file' contains
+                                  classification and other data for domains
+                                  from SCOP or CATH, in DCF format
+                                  (EMBL-like).
+  [-outsefile]         outfile    [*.ssematch] This option specifies the name
+                                  of the file containing top-scoring domains
+                                  for secondary structure element-based
+                                  alignment (output). A 'domain classification
+                                  file' contains classification and other
+                                  data for domains from SCOP or CATH, in DCF
+                                  format (EMBL-like).
+   -logfile            outfile    [ssematch.log] This option specifies the
+                                  name of the ssematch log file (output).
+
+   Additional (Optional) qualifiers:
+   -datafile           matrixf    [SSSUB] This option specifies the secondary
+                                  structure substitution matrix.
+   -rgapopen           float      [10.0 for any sequence] This options
+                                  specifies the gap insertion penalty for
+                                  reside-based alignment. The gap insertion
+                                  penalty is the score taken away when a gap
+                                  is created. The best value depends on the
+                                  choice of comparison matrix. The default
+                                  value assumes you are using the EBLOSUM62
+                                  matrix for protein sequences, and the
+                                  EDNAFULL matrix for nucleotide sequences.
+                                  (Floating point number from 1.0 to 100.0)
+   -rgapextend         float      [0.5 for any sequence] This options
+                                  specifies the gap extension penalty for
+                                  residue-based alignment. The gap extension,
+                                  penalty is added to the standard gap penalty
+                                  for each base or residue in the gap. This
+                                  is how long gaps are penalized. Usually you
+                                  will expect a few long gaps rather than many
+                                  short gaps, so the gap extension penalty
+                                  should be lower than the gap penalty.
+                                  (Floating point number from 0.0 to 10.0)
+   -egapopen           float      [10.0 for any sequence] This options
+                                  specifies the gap insertion penalty for
+                                  element-based alignment. The gap insertion
+                                  penalty is the score taken away when a gap
+                                  is created. The best value depends on the
+                                  choice of comparison matrix. The default
+                                  value assumes you are using the EBLOSUM62
+                                  matrix for protein sequences, and the
+                                  EDNAFULL matrix for nucleotide sequences.
+                                  (Floating point number from 1.0 to 100.0)
+   -egapextend         float      [0.5 for any sequence] This options
+                                  specifies the gap extension penalty for
+                                  secondary structure element-based alignment.
+                                  The gap extension, penalty is added to the
+                                  standard gap penalty for each base or
+                                  residue in the gap. This is how long gaps
+                                  are penalized. Usually you will expect a few
+                                  long gaps rather than many short gaps, so
+                                  the gap extension penalty should be lower
+                                  than the gap penalty. (Floating point number
+                                  from 0.0 to 10.0)
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outssfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   "-outsefile" associated qualifiers
+   -odirectory4        string     Output directory
+
+   "-logfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+

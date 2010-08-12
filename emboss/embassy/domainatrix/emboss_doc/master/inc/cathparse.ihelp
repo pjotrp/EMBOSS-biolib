@@ -1,0 +1,61 @@
+Generates DCF file from raw CATH files.
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-listfile]          infile     [caths.list.v2.4] This option specifies the
+                                  name of raw CATH classification file
+                                  (caths.list.vX.X) (input). The raw CATH
+                                  parsable files (classification and
+                                  description files) available from
+                                  ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4).
+  [-domfile]           infile     [domlist.v2.4] This option specifies the
+                                  name of raw CATH classification file
+                                  (domlist.vX.X) (input). The raw CATH
+                                  parsable files (classification and
+                                  description files) available from
+                                  ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4).
+  [-namesfile]         infile     [CAT.names.all.v2.4] This option specifies
+                                  the name of raw CATH classification file
+                                  (CAT.names.all.vX.X) (input). The raw CATH
+                                  parsable files (classification and
+                                  description files) available from
+                                  ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4).
+  [-outfile]           outfile    [Ecath.dat] This option specifies the name
+                                  of CATH DCF file (domain classification
+                                  file) (output). A 'domain classification
+                                  file' contains classification and other data
+                                  for domains from SCOP or CATH, in DCF
+                                  format (EMBL-like). The files are generated
+                                  by using SCOPPARSE and CATHPARSE. Domain
+                                  sequence information can be added to the
+                                  file by using DOMAINSEQS.
+   -logfile            outfile    [cathparse.log] This option specifies the
+                                  name of the CATHPARSE log file.
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory4        string     Output directory
+
+   "-logfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

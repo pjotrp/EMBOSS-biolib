@@ -1,0 +1,859 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: fclique
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+fclique
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+Wiki
+</H2>
+
+The master copies of EMBOSS documentation are available
+at <a href="http://emboss.open-bio.org/wiki/Appdocs">
+http://emboss.open-bio.org/wiki/Appdocs</a>
+on the EMBOSS Wiki.
+
+<p>
+Please help by correcting and extending the Wiki pages.
+
+<H2>
+    Function
+</H2>
+Largest clique program
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+Finds the largest clique of mutually compatible characters, and the
+phylogeny which they recommend, for discrete character data with two
+states. The largest clique (or all cliques within a given size range
+of the largest one) are found by a very fast branch and bound search
+method. The method does not allow for missing data. For such cases the
+T (Threshold) option of PARS or MIX may be a useful
+alternative. Compatibility methods are particular useful when some
+characters are of poor quality and the rest of good quality, but when
+it is not known in advance which ones are which.
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+This program uses the compatibility method for unrooted two-state
+characters to obtain the largest cliques of characters and the trees
+which they suggest. This approach originated in the work of Le Quesne
+(1969), though the algorithms were not precisely specified until the
+later work of Estabrook, Johnson, and McMorris (1976a, 1976b). These
+authors proved the theorem that a group of two-state characters which
+were pairwise compatible would be jointly compatible. This program
+uses an algorithm inspired by the Kent Fiala - George Estabrook
+program CLINCH, though closer in detail to the algorithm of Bron and
+Kerbosch (1973). I am indebted to Kent Fiala for pointing out that
+paper to me, and to David Penny for decribing to me his
+branch-and-bound approach to finding largest cliques, from which I
+have also borrowed. I am particularly grateful to Kent Fiala for
+catching a bug in versions 2.0 and 2.1 which resulted in those
+versions failing to find all of the cliques which they should. The
+program computes a compatibility matrix for the characters, then uses
+a recursive procedure to examine all possible cliques of characters.
+
+<p>
+After one pass through all possible cliques, the program knows the
+size of the largest clique, and during a second pass it prints out the
+cliques of the right size. It also, along with each clique, prints out
+the tree suggested by that clique.
+
+<h3>
+  ASSUMPTIONS
+</h3>
+Basically the following assumptions are made: 
+
+<ol>
+
+<li>Each character evolves independently. 
+
+<li>Different lineages evolve independently. 
+
+<li>The ancestral state is not known. 
+
+<li>Each character has a small chance of being one which evolves so
+rapidly, or is so thoroughly misinterpreted, that it provides no
+information on the tree.
+
+<li>The probability of a single change in a character (other than in
+the high rate characters) is low but not as low as the probability of
+being one of these "bad" characters.
+
+<li>The probability of two changes in a low-rate character is much
+less than the probability that it is a high-rate character.
+
+<li>The true tree has segments which are not so unequal in length that
+two changes in a long are as easy to envisage as one change in a short
+segment.  </ol>
+
+<p>
+The assumptions of compatibility methods have been treated in several
+of my papers (1978b, 1979, 1981b, 1988b), especially the 1981
+paper. For an opposing view arguing that the parsimony methods make no
+substantive assumptions such as these, see the papers by Farris (1983)
+and Sober (1983a, 1983b), but also read the exchange between
+Felsenstein and Sober (1986).
+
+<p>
+A constant available for alteration at the beginning of the program is
+the form width, "FormWide", which you may want to change to make it as
+large as possible consistent with the page width available on your
+output device, so as to avoid the output of cliques and of trees
+getting wrapped around unnecessarily.
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with fclique</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fclique </b>
+Largest clique program
+Phylip discrete states file: <b>clique.dat</b>
+Phylip clique program output file [clique.fclique]: <b></b>
+
+
+Output written to file "clique.fclique"
+
+Tree written on file "clique.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+Largest clique program
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-infile]            discretestates Phylip discrete states file
+  [-outfile]           outfile    [*.fclique] Phylip clique program output
+                                  file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -ancfile            properties Phylip ancestral states file (optional)
+   -factorfile         properties Phylip multistate factors file (optional)
+   -weights            properties Phylip weights file (optional)
+   -cliqmin            integer    [0] Minimum clique size (Integer 0 or more)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    [*.fclique] Phylip tree output file
+                                  (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -printcomp          boolean    [N] Print out compatibility matrix
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left">Qualifier</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Standard (Mandatory) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-infile]<br>(Parameter 1)</td>
+<td>discretestates</td>
+<td>Phylip discrete states file</td>
+<td>Discrete states file</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>outfile</td>
+<td>Phylip clique program output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.fclique</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Additional (Optional) qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-ancfile</td>
+<td>properties</td>
+<td>Phylip ancestral states file (optional)</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-factorfile</td>
+<td>properties</td>
+<td>Phylip multistate factors file (optional)</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-weights</td>
+<td>properties</td>
+<td>Phylip weights file (optional)</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-cliqmin</td>
+<td>integer</td>
+<td>Minimum clique size</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-outgrno</td>
+<td>integer</td>
+<td>Species number to use as outgroup</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]trout</td>
+<td>toggle</td>
+<td>Write out trees to tree file</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-outtreefile</td>
+<td>outfile</td>
+<td>Phylip tree output file (optional)</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.fclique</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-printdata</td>
+<td>boolean</td>
+<td>Print data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]progress</td>
+<td>boolean</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-[no]treeprint</td>
+<td>boolean</td>
+<td>Print out tree</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td>-printcomp</td>
+<td>boolean</td>
+<td>Print out compatibility matrix</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Advanced (Unprompted) qualifiers</th>
+</tr>
+
+<tr>
+<td colspan=5>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>Associated qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outfile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory2<br>-odirectory_outfile</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>"-outtreefile" associated outfile qualifiers
+</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -odirectory</td>
+<td>string</td>
+<td>Output directory</td>
+<td>Any string</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=5>General qualifiers</th>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -auto</td>
+<td>boolean</td>
+<td>Turn off prompts</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -stdout</td>
+<td>boolean</td>
+<td>Write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -filter</td>
+<td>boolean</td>
+<td>Read first file from standard input, write first file to standard output</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -options</td>
+<td>boolean</td>
+<td>Prompt for standard and additional values</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -debug</td>
+<td>boolean</td>
+<td>Write debug output to program.dbg</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -verbose</td>
+<td>boolean</td>
+<td>Report some/full command line options</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -help</td>
+<td>boolean</td>
+<td>Report command line options and exit. More information on associated and general qualifiers can be found with -help -verbose</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -warning</td>
+<td>boolean</td>
+<td>Report warnings</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -error</td>
+<td>boolean</td>
+<td>Report errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -fatal</td>
+<td>boolean</td>
+<td>Report fatal errors</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -die</td>
+<td>boolean</td>
+<td>Report dying program messages</td>
+<td>Boolean value Yes/No</td>
+<td>Y</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<td> -version</td>
+<td>boolean</td>
+<td>Report version number and exit</td>
+<td>Boolean value Yes/No</td>
+<td>N</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+Input to the algorithm is standard, but the "?", "P", and "B" states
+are not allowed. This is a serious limitation of this program. If you
+want to find large cliques in data that have "?" states, I recommend
+that you use <b>fmix</b> instead with the -Threshold option and the value
+of the threshold set to 2.0. The theory underlying this is given in my
+paper on character weighting (Felsenstein, 1981b).
+
+
+<p>
+
+<b>fclique</b> reads discrete character data with 2 states.
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: clique.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+     5    6
+Alpha     110110
+Beta      110000
+Gamma     100110
+Delta     001001
+Epsilon   001110
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>fclique</b> 
+writes the cliques to the text output file and a tree to a separate output file
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: clique.fclique</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Largest clique program, version 3.69
+
+
+
+
+Largest Cliques
+------- -------
+
+
+Characters: (  1  2  3  6)
+
+
+  Tree and characters:
+
+     2  1  3  6
+     0  0  1  1
+
+             +1-Delta     
+       +0--1-+
+  +--0-+     +--Epsilon   
+  !    !
+  !    +--------Gamma     
+  !
+  +-------------Alpha     
+  !
+  +-------------Beta      
+
+remember: this is an unrooted tree!
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: clique.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(((Delta,Epsilon),Gamma),Alpha,Beta);
+</pre>
+</td></tr></table><p>
+
+
+<H2>
+    Data files
+</H2>
+
+None
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/embassy/phylip/eclique.html">eclique</a></td>
+<td>Largest clique program</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/edollop.html">edollop</a></td>
+<td>Dollo and polymorphism parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/edolpenny.html">edolpenny</a></td>
+<td>Penny algorithm Dollo or polymorphism</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/efactor.html">efactor</a></td>
+<td>Multistate to binary recoding program</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/emix.html">emix</a></td>
+<td>Mixed parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/epenny.html">epenny</a></td>
+<td>Penny algorithm, branch-and-bound</td>
+</tr>
+
+<tr>
+<td><a href="fdollop.html">fdollop</a></td>
+<td>Dollo and polymorphism parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdolpenny.html">fdolpenny</a></td>
+<td>Penny algorithm Dollo or polymorphism</td>
+</tr>
+
+<tr>
+<td><a href="ffactor.html">ffactor</a></td>
+<td>Multistate to binary recoding program</td>
+</tr>
+
+<tr>
+<td><a href="fmix.html">fmix</a></td>
+<td>Mixed parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fmove.html">fmove</a></td>
+<td>Interactive mixed method parsimony</td>
+</tr>
+
+<tr>
+<td><a href="fpars.html">fpars</a></td>
+<td>Discrete character parsimony</td>
+</tr>
+
+<tr>
+<td><a href="fpenny.html">fpenny</a></td>
+<td>Penny algorithm, branch-and-bound</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS conversion of a program written by Joe
+Felsenstein as part of his PHYLIP package.
+
+<p>
+Please report all bugs to the EMBOSS bug team  (emboss-bug&nbsp;&copy;&nbsp;emboss.open-bio.org) not to the original author.
+
+
+<H2>
+    History
+</H2>
+
+Written (2004) - Joe Felsenstein, University of Washington.
+<p>
+Converted (August 2004) to an EMBASSY program by the EMBOSS team.
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

@@ -1,0 +1,33 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: mse.msf</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+!!NA_MULTIPLE_ALIGNMENT 1.0
+
+  mse.msf MSF: 120 Type: N 15/07/10 CompCheck: 2784 ..
+
+  Name: MSFM1      Len: 120  Check: 8587 Weight: 1.00
+  Name: MSFM2      Len: 120  Check: 5766 Weight: 1.00
+  Name: MSFM3      Len: 120  Check: 8431 Weight: 1.00
+
+//
+
+           1                                               50
+MSFM1      ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTAC
+MSFM2      ACGTACGTACGTACGTACGTacgt....ACGTACGTACGTACGTACGTAC
+MSFM3      ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTCGTACGTACG
+
+           51                                             100
+MSFM1      GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+MSFM2      GTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+MSFM3      TACGTACGTACGTACGTACGTACGTACGTAACGTACGTACGTACGTACGT
+
+           101              120
+MSFM1      ACGTACGTACGTACGTACGT
+MSFM2      ACGTACGTTGCAACGTACGT
+MSFM3      ACGTACGTACGTACGTACGT
+
+</pre>
+</td></tr></table><p>

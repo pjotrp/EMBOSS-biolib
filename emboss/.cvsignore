@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Makefile.in Makefile *.o
 .deps .libs
 
@@ -60,3 +61,34 @@ prima primers
 seqinfo seqretall seqretallfeat
 seqretset seqretsingle seqrettype sqltest
 testplot treetypedisplay
+=======
+local
+x
+autom4te.cache
+Makefile.in
+Makefile
+configure
+libtool
+.cproject
+.project
+aclocal.m4
+config.cache
+config.guess
+config.log
+config.status
+config.sub
+eclipse.dic
+000todo.txt
+000wrappers.txt
+INSTALL.auto
+depcomp
+install-sh
+x.x
+myconfig.csh
+acdvalidreport.txt
+myall.csh
+myembassyall.csh
+acdvalid.txt
+myembassyconfig.csh
+summary.log
+>>>>>>> d453c9a0328d12c94baed7ea06ce97de9e5cc1a2

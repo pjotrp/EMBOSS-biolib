@@ -1,0 +1,81 @@
+application: octanol [
+  documentation: "Draw a White-Wimley protein hydropathy plot"
+  groups: "Protein:Composition"
+    relations: "EDAM:0000137 topic Protein hydropathy"
+    relations: "EDAM:0000401 operation Protein sequence hydropathy calculation"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  sequence: sequence [
+    parameter: "Y"
+    type: "protein"
+    relations: "EDAM:0001219 data Pure protein sequence"
+    relations: "EDAM:0000849 data Sequence record"
+  ]
+
+  datafile: datafile [
+    additional: "Y"
+    default: "Ewhite-wimley.dat"
+    information: "White-Wimley data file"
+    knowntype: "white wimley datafile"
+    relations: "EDAM:0001507 data Amino acid White-Wimley data"
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: width [
+    additional: "Y"
+    information: "Window size"
+    default: "19"
+    minimum: "1"
+    maximum: "200"
+    relations: "EDAM:0001251 data Window size"
+  ]
+
+endsection: additional
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  xygraph: graph [
+    parameter: "Y"
+    multiple: "3"
+    gxtitle: "$(sequence.name)"
+    gytitle: "Total Free Energy (Kcal/mol)"
+    gtitle: "White-Wimley Plot"
+    relations: "EDAM:0001522 data Protein sequence hydropathy plot"
+  ]
+
+  boolean: plotoctanol [
+    additional: "Y"
+    default: "N"
+    information: "Display the octanol plot"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: plotinterface [
+    additional: "Y"
+    default: "N"
+    information: "Display the interface plot"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: plotdifference [
+    additional: "Y"
+    default: "Y"
+    information: "Display the difference plot"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: output

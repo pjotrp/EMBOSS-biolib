@@ -1,0 +1,80 @@
+Nucleic acid sequence Distance Matrix program
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqsetall  File containing one or more sequence
+                                  alignments
+   -method             menu       [F84 distance model] Choose the method to
+                                  use (Values: f (F84 distance model); k
+                                  (Kimura 2-parameter distance); j
+                                  (Jukes-Cantor distance); l (LogDet
+                                  distance); s (Similarity table))
+  [-outfile]           outfile    [*.fdnadist] Phylip distance matrix output
+                                  file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+*  -gamma              menu       [No distribution parameters used] Gamma
+                                  distribution (Values: g (Gamma distributed
+                                  rates); i (Gamma+invariant sites); n (No
+                                  distribution parameters used))
+*  -ncategories        integer    [1] Number of substitution rate categories
+                                  (Integer from 1 to 9)
+*  -rate               array      [1.0] Category rates
+*  -categories         properties File of substitution rate categories
+   -weights            properties Weights file
+*  -gammacoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+*  -invarfrac          float      [0.0] Fraction of invariant sites (Number
+                                  from 0.000 to 1.000)
+*  -ttratio            float      [2.0] Transition/transversion ratio (Number
+                                  0.001 or more)
+*  -[no]freqsfrom      toggle     [Y] Use empirical base frequencies from
+                                  seqeunce input
+*  -basefreq           array      [0.25 0.25 0.25 0.25] Base frequencies for A
+                                  C G T/U (use blanks to separate)
+   -lower              boolean    [N] Output as a lower triangular distance
+                                  matrix
+   -humanreadable      boolean    [@($(method)==s?Y:N)] Output as a
+                                  human-readable distance matrix
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

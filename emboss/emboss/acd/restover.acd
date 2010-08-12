@@ -1,0 +1,161 @@
+application: restover [
+  documentation: "Find restriction enzymes producing a specific overhang"
+  groups: "Nucleic:Restriction"
+    relations: "EDAM:0000100 topic Nucleic acid restriction"
+    relations: "EDAM:0000431 operation Restriction site identification"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqall: sequence [
+    parameter: "Y"
+    type: "DNA"
+    relations: "EDAM:0001215 data Pure DNA sequence"
+    relations: "EDAM:0000849 data Sequence record"
+    relations: "EDAM:0002178 data 1 or more"
+  ]
+
+  datafile: datafile [
+    default: ""
+    information: "Restriction enzyme data file (optional)"
+    knowntype: "restriction enzyme data"
+    nullok: "Y"
+    relations: "EDAM:0001518 data Restriction enzyme pattern data"
+  ]
+
+  datafile: mfile [
+    default: "Emethylsites.dat"
+    information: "Restriction enzyme methylation data file"
+    knowntype: "restriction enzyme methylation data"
+    relations: "EDAM:0001517 data Restriction enzyme information"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+  string: seqcomp [
+    parameter: "Y"
+    information: "Overlap sequence"
+    knowntype: "nucleotide sequence"
+    relations: "EDAM:0001210 data Pure nucleotide sequence"
+  ]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  integer: min [
+    minimum: "1"
+    maximum: "1000"
+    default: "1"
+    information: "Minimum cuts per RE"
+    relations: "EDAM:0001773 data Tool-specific parameter"
+  ]
+
+  integer: max [
+    minimum: "$(min)"
+    default: "2000000000"
+    information: "Maximum cuts per RE"
+    relations: "EDAM:0001773 data Tool-specific parameter"
+  ]
+
+  boolean: single [
+    default: "N"
+    information: "Force single site only cuts"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: threeprime [
+    default: "N"
+    information: "Use 3' overhang e.g. BamHI has CTAG as a 5'
+                  overhang, and ApaI has CCGG as 3' overhang."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: blunt [
+    default: "Y"
+    information: "Allow blunt end cutters"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: sticky [
+    default: "Y"
+    information: "Allow sticky end cutters"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: ambiguity [
+    default: "Y"
+    information: "Allow ambiguous matches"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: plasmid [
+    default: "N"
+    information: "Allow circular DNA"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: methylation [
+    default: "N"
+    information: "Use methylation data"
+    help: "If this is set then RE recognition sites will not match
+           methylated bases."
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: commercial [
+    default: "Y"
+    information: "Only enzymes with suppliers"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  boolean: html [
+    default: "N"
+    information: "Create HTML output"
+    outputmodifier: "Y"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: limit [
+    default: "Y"
+    information: "Limits reports to one isoschizomer"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: alphabetic [
+    default: "N"
+    information: "Sort output alphabetically"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  boolean: fragments [
+    default: "N"
+    information: "Show fragment lengths"
+    relations: "EDAM:0002135 data Toggle"
+  ]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "restover output"
+    relations: "EDAM:0001305 data Restriction site report"
+  ]
+
+endsection: output

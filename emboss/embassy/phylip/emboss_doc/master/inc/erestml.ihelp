@@ -1,0 +1,58 @@
+Restriction site Maximum Likelihood method
+Version: EMBOSS:6.3.0
+
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-datafile]          infile     Phylip restml program input file
+*  -datasets           integer    [2] Number of sets (Integer 2 or more)
+*  -random             toggle     [N] Randomize input order of species
+*  -randseed           integer    [3] Random number seed (must be odd) (Any
+                                  integer value)
+*  -randtimes          integer    [3] How many times to randomise (Any integer
+                                  value)
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+  [-outfile]           outfile    [erestml.outfile] Phylip restml program
+                                  output file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [erestml.treefile] Phylip tree output file
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -multsets           toggle     [N] Analyze multiple data sets
+   -[no]besttree       toggle     [Y] Search for best tree
+   -og                 toggle     [N] Outgroup root
+   -[no]allsites       boolean    [Y] Are all sites detected
+*  -lengths            boolean    [N] Use lengths from user trees
+   -sitelen            integer    [6] Site length (Integer from 1 to 8)
+   -extrap             float      [100.0] Extrapolation factor (Number 0.001
+                                  or more)
+*  -global             boolean    [N] Global rearrangements
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -[no]drawtree       boolean    [Y] Draw tree
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-treefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options and exit. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+   -version            boolean    Report version number and exit
+

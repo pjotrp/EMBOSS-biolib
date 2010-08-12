@@ -1,7 +1,9 @@
+## Makefile.am for EMBOSS
+## Process this file with automake to produce Makefile.in in all directories.
 
-SUBDIRS = acd data
+ACLOCAL_AMFLAGS = -I m4
 
-EXTRA_DIST = emboss.default.template
+AUTOMAKE_OPTIONS = gnits
 
 if ISSHARED
 if ISAIXIA64
@@ -26,54 +28,8 @@ seqinfo seqretall seqretallfeat \
 seqretset seqretsingle seqrettype sqltest \
 testplot treetypedisplay
 
-bin_PROGRAMS = aaindexextract abiview \
-acdc acdpretty acdtable acdtrace acdvalid \
-aligncopy aligncopypair antigenic \
-backtranambig backtranseq banana biosed btwisted \
-cai chaos charge checktrans chips \
-cirdna codcmp codcopy coderet \
-compseq cons consambig cpgplot cpgreport \
-cusp cutgextract cutseq \
-dan dbiblast dbifasta dbiflat dbigcg \
-dbxfasta dbxflat dbxgcg \
-degapseq density descseq diffseq digest distmat \
-dotmatcher dotpath dottup dreg \
-edialign einverted embossdata embossversion emma \
-emowse entret epestfind eprimer3 \
-equicktandem est2genome etandem \
-extractalign extractfeat extractseq \
-featcopy featreport findkm freak fuzznuc fuzzpro fuzztran \
-garnier geecee getorf helixturnhelix hmoment \
-iep infoalign infobase inforesidue infoseq isochore \
-jaspextract jaspscan jembossctl lindna listor \
-makenucseq makeprotseq marscan \
-maskambignuc maskambigprot maskfeat maskseq \
-matcher megamerger merger msbar \
-mwcontam mwfilter \
-needle needleall newcpgreport newcpgseek newseq \
-nohtml noreturn nospace notab notseq nthseq nthseqset \
-octanol oddcomp \
-palindrome pasteseq patmatdb patmatmotifs \
-pepcoil pepinfo pepnet pepstats \
-pepwheel pepwindow pepwindowall \
-plotcon plotorf polydot preg \
-prettyplot prettyseq primersearch printsextract \
-profit prophecy prophet \
-prosextract pscan psiphi \
-rebaseextract recoder redata remap  \
-restover restrict revseq \
-seealso seqmatchall seqret seqretsetall seqretsplit \
-showalign showdb showfeat showorf showpep showseq \
-shuffleseq sigcleave silent sirna sixpack sizeseq \
-skipredundant skipseq splitsource splitter stretcher \
-stssearch supermatcher syco \
-tcode textsearch tfextract tfm tfscan \
-tmap tranalign transeq \
-trimest trimseq trimspace twofeat \
-union vectorstrip \
-water whichdb wobble \
-wordcount wordfinder wordmatch wossname \
-yank
+# tar to pick up the other directories
+# then remove any CVS subdirectories
 
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax/pcre \
@@ -320,3 +276,4 @@ pkgdatadir=$(prefix)/share/$(PACKAGE)
 #else
 #
 #endif
+

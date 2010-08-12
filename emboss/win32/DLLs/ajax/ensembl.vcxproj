@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{24921C7D-68A3-4BE8-B9E2-EC5D6D10234E}</ProjectGuid>
+    <RootNamespace>ensembl</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\ajax\pcre;..\..\..\ajax\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;ENSEMBL_EXPORTS;_POSIX_;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ajax.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)ensembl.dll</OutputFile>
+      <AdditionalLibraryDirectories>..\..\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>ensembldll.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)ensembl.pdb</ProgramDatabaseFile>
+      <SubSystem>NotSet</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)ensembl.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\..\..\ajax\pcre;..\..\..\ajax\core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;ENSEMBL_EXPORTS;_POSIX_;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ajax.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)ensembl.dll</OutputFile>
+      <AdditionalLibraryDirectories>..\..\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>ensembldll.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>NotSet</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)ensembl.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\ajax\ensembl\ensanalysis.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensassembly.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensassemblyexception.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensassemblymapper.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensattribute.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensbaseadaptor.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\enscache.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\enscoordsystem.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensdatabaseadaptor.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensdatabaseconnection.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensdatabaseentry.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensdensity.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensditag.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensexon.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensexternaldatabase.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensfeature.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensgene.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensgvindividual.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensgvpopulation.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensgvsample.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensintron.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\enskaryotype.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensmapper.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensmarker.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensmetacoordinate.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensmetainformation.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensmiscellaneous.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensprediction.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensprojectionsegment.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensqc.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensqcalignment.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensqcdatabase.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensqcsequence.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensregistry.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensrepeat.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensseqregion.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\enssequence.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\enssequenceedit.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensslice.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensstorable.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\enstable.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\enstranscript.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\enstranslation.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensutility.c" />
+    <ClCompile Include="..\..\..\ajax\ensembl\ensvariation.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\ajax\ensembl\ensanalysis.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensassembly.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensassemblyexception.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensassemblymapper.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensattribute.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensbaseadaptor.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\enscache.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\enscoordsystem.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensdata.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensdatabaseadaptor.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensdatabaseconnection.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensdatabaseentry.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensdensity.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensditag.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensembl.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensexon.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensexternaldatabase.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensfeature.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensgene.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensgvdata.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensgvindividual.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensgvpopulation.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensgvsample.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensintron.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\enskaryotype.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensmapper.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensmarker.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensmetacoordinate.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensmetainformation.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensmiscellaneous.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensprediction.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensprojectionsegment.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensqc.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensqcalignment.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensqcdatabase.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensqcsequence.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensregistry.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensrepeat.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensseqregion.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\enssequence.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\enssequenceedit.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensslice.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensstorable.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\enstable.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\enstranscript.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\enstranslation.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensutility.h" />
+    <ClInclude Include="..\..\..\ajax\ensembl\ensvariation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\core\core.vcxproj">
+      <Project>{d79bd1fa-cbbe-45be-b73f-0018a25678e2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\graphics\ajaxg.vcxproj">
+      <Project>{0af44082-e707-4ee0-a02e-d7e77ca1862d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\pcre\pcre.vcxproj">
+      <Project>{131e6282-fae3-4b71-a6af-e2e84a88d0c4}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

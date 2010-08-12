@@ -1,0 +1,113 @@
+application: ehmmalign [
+  documentation: "Align sequences to an HMM profile"
+  groups: "HMM"
+  gui: "yes"
+  batch: "yes"
+  cpu: "medium"
+  embassy: "hmmernew"
+  external: "hmmalign HMMER 2.3.2 available from http://hmmer.wustl.edu/"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: hmmfile [
+    parameter: "Y"
+    knowntype: "hmm"
+    information: "HMMER hidden markov model file"
+    help: "File containing a HMM profile"
+    relations:  "EDAM: HMMER hidden Markov model"                      
+  ]
+
+  seqset: seqfile [
+    parameter: "Y"
+    type: "gapstopprotein"
+    help: "File containing a (set of) sequence(s)"
+    aligned: "N"
+    relations: "EDAM: Protein sequence record"                             
+  ]
+
+  infile: mapali [
+    default: ""
+    information: "HMMER alignment file (optional)"
+    knowntype: "hmmer alignment"
+    nullok: "Y"
+    help: "Reads an alignment from file and aligns it as a single
+           object to the HMM; e.g. the alignment in file is held fixed. This
+           allows you to align sequences to a model with hmmalign and view
+           them in the context of an existing trusted multiple alignment. The
+           alignment to the alignment is defined by a 'map' kept in the HMM,
+           and so is fast and guaranteed to be consistent with the way the
+           HMM was constructed from the alignment. The alignment in the file
+           must be exactly the alignment that the HMM was built from. Compare
+           the -withali option."
+    relations:  "EDAM: HMMER sequence alignment file"                  
+  ]
+
+  infile: withali [
+    default: ""
+    information: "HMMER alignment file (optional)"
+    knowntype: "hmmer alignment"
+    nullok: "Y"
+    help: "Reads an alignment from file and aligns it as a single
+           object to the HMM; e.g. the alignment in file is held fixed. This
+           allows you to align sequences to a model with hmmalign and view
+           them in the context of an existing trusted multiple alignment. The
+           alignment to the alignment is done with a heuristic (nonoptimal)
+           dynamic programming procedure, which may be somewhat slow and is
+           not guaranteed to be completely consistent with the way the HMM
+           was constructed (though it should be quite close). However, any
+           alignment can be used, not just the alignment that the HMM was
+           built from. Compare the -mapali option."
+    relations:  "EDAM: HMMER sequence alignment file"                  
+  ]
+
+endsection: input
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  align: o [
+    parameter: "Y"
+    help: "Multiple sequence alignment output file."
+    aformat: "fasta"
+    relations: "EDAM: Sequence alignment data"                             
+  ]
+
+  boolean: m [
+    additional: "Y"
+    default: "N"
+    information: "Only show match state alignment symbols."
+    help: "Include in the alignment only those symbols aligned to
+           match states. Do not show symbols assigned to insert states."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+  boolean: q [
+    additional: "Y"
+    default: "N"
+    information: "Suppress all output except the alignment."
+    help: "Quiet; suppress all output except the alignment itself.
+           Useful for piping or redirecting the output."
+    relations: "EDAM: Generic boolean"                                     
+  ]
+
+endsection: output
